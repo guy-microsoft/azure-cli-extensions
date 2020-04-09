@@ -25,20 +25,19 @@ CLASSIFIERS = [
     'Intended Audience :: Developers',
     'Intended Audience :: System Administrators',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'License :: OSI Approved :: MIT License',
 ]
 
 # TODO: Add any additional SDK dependencies here
-DEPENDENCIES = [
-]
+DEPENDENCIES = []
 
-with open('README.md', 'r', encoding='utf-8') as f:
+with open('README.rst', 'r', encoding='utf-8') as f:
     README = f.read()
 with open('HISTORY.rst', 'r', encoding='utf-8') as f:
     HISTORY = f.read()

@@ -5,8 +5,8 @@
 # pylint: disable=wildcard-import
 # pylint: disable=unused-wildcard-import
 
-from .generated.custom import *  # noqa: F403
+from .generated.action import *  # noqa: F403
 try:
-    from .manual.custom import *  # noqa: F403
+    from .manual.action import *  # noqa: F403
 except ImportError:
     pass
