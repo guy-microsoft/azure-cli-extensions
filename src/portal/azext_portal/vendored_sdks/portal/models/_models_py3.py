@@ -30,7 +30,7 @@ class Dashboard(msrest.serialization.Model):
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
     :param lenses: The dashboard lenses.
-    :type lenses: dict[str, ~portal.models.DashboardLens]
+    :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
     :param metadata: The dashboard metadata.
     :type metadata: dict[str, object]
     """
@@ -79,7 +79,7 @@ class DashboardLens(msrest.serialization.Model):
     :param order: Required. The lens order.
     :type order: int
     :param parts: Required. The dashboard parts.
-    :type parts: dict[str, ~portal.models.DashboardParts]
+    :type parts: dict[str, ~azure.mgmt.portal.models.DashboardParts]
     :param metadata: The dashboard len's metadata.
     :type metadata: dict[str, object]
     """
@@ -113,7 +113,7 @@ class DashboardListResult(msrest.serialization.Model):
     """List of dashboards.
 
     :param value: The array of custom resource provider manifests.
-    :type value: list[~portal.models.Dashboard]
+    :type value: list[~azure.mgmt.portal.models.Dashboard]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
@@ -141,7 +141,7 @@ class DashboardParts(msrest.serialization.Model):
     All required parameters must be populated in order to send to Azure.
 
     :param position: Required. The dashboard's part position.
-    :type position: ~portal.models.DashboardPartsPosition
+    :type position: ~azure.mgmt.portal.models.DashboardPartsPosition
     :param metadata: The dashboard part's metadata.
     :type metadata: dict[str, object]
     """
@@ -217,32 +217,6 @@ class DashboardPartsPosition(msrest.serialization.Model):
         self.metadata = metadata
 
 
-class DashboardProperties(msrest.serialization.Model):
-    """The shared dashboard properties.
-
-    :param lenses: The dashboard lenses.
-    :type lenses: dict[str, ~portal.models.DashboardLens]
-    :param metadata: The dashboard metadata.
-    :type metadata: dict[str, object]
-    """
-
-    _attribute_map = {
-        'lenses': {'key': 'lenses', 'type': '{DashboardLens}'},
-        'metadata': {'key': 'metadata', 'type': '{object}'},
-    }
-
-    def __init__(
-        self,
-        *,
-        lenses: Optional[Dict[str, "DashboardLens"]] = None,
-        metadata: Optional[Dict[str, object]] = None,
-        **kwargs
-    ):
-        super(DashboardProperties, self).__init__(**kwargs)
-        self.lenses = lenses
-        self.metadata = metadata
-
-
 class ErrorDefinition(msrest.serialization.Model):
     """Error definition.
 
@@ -253,7 +227,7 @@ class ErrorDefinition(msrest.serialization.Model):
     :ivar message: Description of the error.
     :vartype message: str
     :ivar details: Internal error details.
-    :vartype details: list[~portal.models.ErrorDefinition]
+    :vartype details: list[~azure.mgmt.portal.models.ErrorDefinition]
     """
 
     _validation = {
@@ -278,38 +252,12 @@ class ErrorDefinition(msrest.serialization.Model):
         self.details = None
 
 
-class ErrorResponseException(HttpResponseError):
-    """Server responded with exception of type: 'ErrorResponse'.
-
-    :param response: Server response to be deserialized.
-    :param error_model: A deserialized model of the response body as model.
-    """
-
-    def __init__(self, response, error_model):
-        self.error = error_model
-        super(ErrorResponseException, self).__init__(response=response, error_model=error_model)
-
-    @classmethod
-    def from_response(cls, response, deserialize):
-        """Deserialize this response as this exception, or a subclass of this exception.
-
-        :param response: Server response to be deserialized.
-        :param deserialize: A deserializer
-        """
-        model_name = 'ErrorResponse'
-        error = deserialize(model_name, response)
-        if error is None:
-            error = deserialize.dependencies[model_name]()
-        return error._EXCEPTION_TYPE(response, error)
-
-
 class ErrorResponse(msrest.serialization.Model):
     """Error response.
 
-    :param error: Error definition.
-    :type error: ~portal.models.ErrorDefinition
+    :param error: The error details.
+    :type error: ~azure.mgmt.portal.models.ErrorDefinition
     """
-    _EXCEPTION_TYPE = ErrorResponseException
 
     _attribute_map = {
         'error': {'key': 'error', 'type': 'ErrorDefinition'},
@@ -331,7 +279,7 @@ class PatchableDashboard(msrest.serialization.Model):
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
     :param lenses: The dashboard lenses.
-    :type lenses: dict[str, ~portal.models.DashboardLens]
+    :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
     :param metadata: The dashboard metadata.
     :type metadata: dict[str, object]
     """
@@ -364,7 +312,7 @@ class ResourceProviderOperation(msrest.serialization.Model):
     :param is_data_action: Indicates whether the operation applies to data-plane.
     :type is_data_action: str
     :param display: Display metadata associated with the operation.
-    :type display: ~portal.models.ResourceProviderOperationDisplay
+    :type display: ~azure.mgmt.portal.models.ResourceProviderOperationDisplay
     """
 
     _attribute_map = {
@@ -427,7 +375,7 @@ class ResourceProviderOperationList(msrest.serialization.Model):
     """Results of the request to list operations.
 
     :param value: List of operations supported by this resource provider.
-    :type value: list[~portal.models.ResourceProviderOperation]
+    :type value: list[~azure.mgmt.portal.models.ResourceProviderOperation]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
