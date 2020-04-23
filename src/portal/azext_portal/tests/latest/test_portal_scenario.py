@@ -35,7 +35,7 @@ def step__dashboards_put_create_or_update_a_dashboard(test, rg):
              '":5,\\"y\\":5}}}}}}}},\\"bLens\\":{{\\"order\\":2,\\"parts\\":{{}}}}}}" '
              '--metadata "{{\\"metadata\\":{{\\"ColSpan\\":2,\\"RowSpan\\":1,\\"X\\":4,\\"Y\\":3}}}}" '
              '--tags aKey="aValue" anotherKey="anotherValue" '
-             '--dashboard-name "{testDashboard}" '
+             '--name "{testDashboard}" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -44,7 +44,7 @@ def step__dashboards_put_create_or_update_a_dashboard(test, rg):
 @try_manual
 def step__dashboards_get_get_a_dashboard(test, rg):
     test.cmd('az portal dashboard show '
-             '--dashboard-name "{testDashboard}" '
+             '--name "{testDashboard}" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -69,7 +69,7 @@ def step__dashboards_get_list_all_custom_resource_providers_on_the_subscription(
 def step__dashboards_patch_update_a_dashboard(test, rg):
     test.cmd('az portal dashboard update '
              '--tags aKey="bValue" anotherKey="anotherValue2" '
-             '--dashboard-name "{testDashboard}" '
+             '--name "{testDashboard}" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -78,7 +78,7 @@ def step__dashboards_patch_update_a_dashboard(test, rg):
 @try_manual
 def step__dashboards_delete_delete_a_dashboard(test, rg):
     test.cmd('az portal dashboard delete '
-             '--dashboard-name "{testDashboard}" '
+             '--name "{testDashboard}" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -88,20 +88,26 @@ def cleanup(test, rg):
     pass
 
 
+@try_manual
+def call_scenario(test, rg):
+    setup(test, rg)
+    step__dashboards_put_create_or_update_a_dashboard(test, rg)
+    step__dashboards_get_get_a_dashboard(test, rg)
+    step__dashboards_get_list_all_custom_resource_providers_on_the_resourcegroup(test, rg)
+    step__dashboards_get_list_all_custom_resource_providers_on_the_subscription(test, rg)
+    step__dashboards_patch_update_a_dashboard(test, rg)
+    step__dashboards_delete_delete_a_dashboard(test, rg)
+    cleanup(test, rg)
+
+
+@try_manual
 class PortalScenarioTest(ScenarioTest):
 
     @ResourceGroupPreparer(name_prefix='clitestportal_testRG'[:7], key='rg', parameter_name='rg')
     def test_portal(self, rg):
 
         self.kwargs.update({
-            'testDashboard': self.create_random_name(prefix='clitestdashboards'[:7], length=24),
+            'testDashboard': 'testDashboard',
         })
 
-        setup(self, rg)
-        step__dashboards_put_create_or_update_a_dashboard(self, rg)
-        step__dashboards_get_get_a_dashboard(self, rg)
-        step__dashboards_get_list_all_custom_resource_providers_on_the_resourcegroup(self, rg)
-        step__dashboards_get_list_all_custom_resource_providers_on_the_subscription(self, rg)
-        step__dashboards_patch_update_a_dashboard(self, rg)
-        step__dashboards_delete_delete_a_dashboard(self, rg)
-        cleanup(self, rg)
+        call_scenario(self, rg)

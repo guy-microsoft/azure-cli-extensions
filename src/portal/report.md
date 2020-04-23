@@ -7,7 +7,7 @@ create a portal dashboard.
 |Option|Type|Description|Path (SDK)|Path (swagger)|
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The name of the resource group.|resource_group_name|
-|**--dashboard-name**|string|The name of the dashboard.|dashboard_name|
+|**--name**|string|The name of the dashboard.|name|
 |**--location**|string|Resource location|location|
 |**--tags**|dictionary|Resource tags|tags|
 |**--lenses**|dictionary|The dashboard lenses.|lenses|
@@ -19,7 +19,7 @@ delete a portal dashboard.
 |Option|Type|Description|Path (SDK)|Path (swagger)|
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The name of the resource group.|resource_group_name|
-|**--dashboard-name**|string|The name of the dashboard.|dashboard_name|
+|**--name**|string|The name of the dashboard.|name|
 ### portal dashboard list
 
 list a portal dashboard.
@@ -34,7 +34,7 @@ show a portal dashboard.
 |Option|Type|Description|Path (SDK)|Path (swagger)|
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The name of the resource group.|resource_group_name|
-|**--dashboard-name**|string|The name of the dashboard.|dashboard_name|
+|**--name**|string|The name of the dashboard.|name|
 ### portal dashboard update
 
 update a portal dashboard.
@@ -42,7 +42,7 @@ update a portal dashboard.
 |Option|Type|Description|Path (SDK)|Path (swagger)|
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The name of the resource group.|resource_group_name|
-|**--dashboard-name**|string|The name of the dashboard.|dashboard_name|
+|**--name**|string|The name of the dashboard.|name|
 |**--tags**|dictionary|Resource tags|tags|
 |**--lenses**|dictionary|The dashboard lenses.|lenses|
 |**--metadata**|dictionary|The dashboard metadata.|metadata|

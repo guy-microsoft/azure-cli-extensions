@@ -21,14 +21,14 @@ def portal_dashboard_list(cmd, client,
 
 def portal_dashboard_show(cmd, client,
                           resource_group_name,
-                          dashboard_name):
+                          name):
     return client.get(resource_group_name=resource_group_name,
-                      dashboard_name=dashboard_name)
+                      dashboard_name=name)
 
 
 def portal_dashboard_create(cmd, client,
                             resource_group_name,
-                            dashboard_name,
+                            name,
                             location,
                             tags=None,
                             lenses=None,
@@ -38,7 +38,7 @@ def portal_dashboard_create(cmd, client,
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
     return client.create_or_update(resource_group_name=resource_group_name,
-                                   dashboard_name=dashboard_name,
+                                   dashboard_name=name,
                                    location=location,
                                    tags=tags,
                                    lenses=lenses,
@@ -47,7 +47,7 @@ def portal_dashboard_create(cmd, client,
 
 def portal_dashboard_update(cmd, client,
                             resource_group_name,
-                            dashboard_name,
+                            name,
                             tags=None,
                             lenses=None,
                             metadata=None):
@@ -56,7 +56,7 @@ def portal_dashboard_update(cmd, client,
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
     return client.update(resource_group_name=resource_group_name,
-                         dashboard_name=dashboard_name,
+                         dashboard_name=name,
                          tags=tags,
                          lenses=lenses,
                          metadata=metadata)
@@ -64,6 +64,6 @@ def portal_dashboard_update(cmd, client,
 
 def portal_dashboard_delete(cmd, client,
                             resource_group_name,
-                            dashboard_name):
+                            name):
     return client.delete(resource_group_name=resource_group_name,
-                         dashboard_name=dashboard_name)
+                         dashboard_name=name)

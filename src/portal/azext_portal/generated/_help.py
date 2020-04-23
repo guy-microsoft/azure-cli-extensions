@@ -32,7 +32,7 @@ helps['portal dashboard show'] = """
     examples:
       - name: Get a Dashboard
         text: |-
-               az portal dashboard show --dashboard-name "testDashboard" --resource-group "testRG"
+               az portal dashboard show --name "testDashboard" --resource-group "testRG"
 """
 
 helps['portal dashboard create'] = """
@@ -44,8 +44,8 @@ helps['portal dashboard create'] = """
                az portal dashboard create --location "eastus" --lenses "{\\"aLens\\":{\\"order\\":1,\\"parts\\":{\\"aPa\
 rt\\":{\\"position\\":{\\"colSpan\\":3,\\"rowSpan\\":4,\\"x\\":1,\\"y\\":2}},\\"bPart\\":{\\"position\\":{\\"colSpan\\"\
 :6,\\"rowSpan\\":6,\\"x\\":5,\\"y\\":5}}}},\\"bLens\\":{\\"order\\":2,\\"parts\\":{}}}" --metadata "{\\"metadata\\":{\\\
-"ColSpan\\":2,\\"RowSpan\\":1,\\"X\\":4,\\"Y\\":3}}" --tags aKey="aValue" anotherKey="anotherValue" --dashboard-name "t\
-estDashboard" --resource-group "testRG"
+"ColSpan\\":2,\\"RowSpan\\":1,\\"X\\":4,\\"Y\\":3}}" --tags aKey="aValue" anotherKey="anotherValue" --name "testDashboa\
+rd" --resource-group "testRG"
 """
 
 helps['portal dashboard update'] = """
@@ -54,8 +54,8 @@ helps['portal dashboard update'] = """
     examples:
       - name: Update a Dashboard
         text: |-
-               az portal dashboard update --tags aKey="bValue" anotherKey="anotherValue2" --dashboard-name "testDashboa\
-rd" --resource-group "testRG"
+               az portal dashboard update --tags aKey="bValue" anotherKey="anotherValue2" --name "testDashboard" --reso\
+urce-group "testRG"
 """
 
 helps['portal dashboard delete'] = """
@@ -64,5 +64,5 @@ helps['portal dashboard delete'] = """
     examples:
       - name: Delete a Dashboard
         text: |-
-               az portal dashboard delete --dashboard-name "testDashboard" --resource-group "testRG"
+               az portal dashboard delete --name "testDashboard" --resource-group "testRG"
 """
