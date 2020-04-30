@@ -70,6 +70,9 @@ try:
     from ._models_py3 import SqlDBTableDataSetMapping
     from ._models_py3 import SqlDwTableDataSet
     from ._models_py3 import SqlDwTableDataSetMapping
+    from ._models_py3 import StorageAccountDataSet
+    from ._models_py3 import StorageAccountDataSetMapping
+    from ._models_py3 import StorageAccountPath
     from ._models_py3 import SynchronizationDetails
     from ._models_py3 import SynchronizationDetailsList
     from ._models_py3 import SynchronizationSetting
@@ -141,6 +144,9 @@ except (SyntaxError, ImportError):
     from ._models import SqlDBTableDataSetMapping  # type: ignore
     from ._models import SqlDwTableDataSet  # type: ignore
     from ._models import SqlDwTableDataSetMapping  # type: ignore
+    from ._models import StorageAccountDataSet  # type: ignore
+    from ._models import StorageAccountDataSetMapping  # type: ignore
+    from ._models import StorageAccountPath  # type: ignore
     from ._models import SynchronizationDetails  # type: ignore
     from ._models import SynchronizationDetailsList  # type: ignore
     from ._models import SynchronizationSetting  # type: ignore
@@ -228,6 +234,9 @@ __all__ = [
     'SqlDBTableDataSetMapping',
     'SqlDwTableDataSet',
     'SqlDwTableDataSetMapping',
+    'StorageAccountDataSet',
+    'StorageAccountDataSetMapping',
+    'StorageAccountPath',
     'SynchronizationDetails',
     'SynchronizationDetailsList',
     'SynchronizationSetting',
