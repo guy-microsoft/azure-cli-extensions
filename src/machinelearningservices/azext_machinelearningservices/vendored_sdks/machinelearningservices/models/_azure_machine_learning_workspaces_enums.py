@@ -82,6 +82,15 @@ class ProvisioningState(str, Enum):
     failed = "Failed"
     canceled = "Canceled"
 
+class ProvisionPublicIp(str, Enum):
+    """State of public IP provisioning. Possible values are: Enabled - Indicates that the compute
+    nodes will have public IPs provisioned. Disabled - Indicates that the compute nodes will have a
+    private endpoint and no public IPs.
+    """
+
+    enabled = "Enabled"
+    disabled = "Disabled"
+
 class ReasonCode(str, Enum):
     """The reason for the restriction.
     """

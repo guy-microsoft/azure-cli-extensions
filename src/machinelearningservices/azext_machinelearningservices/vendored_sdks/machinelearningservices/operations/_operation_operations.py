@@ -59,7 +59,7 @@ class OperationOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.OperationListResult"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-03-01"
+        api_version = "2020-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:

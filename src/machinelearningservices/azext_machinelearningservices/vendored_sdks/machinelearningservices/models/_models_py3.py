@@ -574,6 +574,11 @@ class AmlComputeProperties(msrest.serialization.Model):
      "NotSpecified". Default value: "NotSpecified".
     :type remote_login_port_public_access: str or
      ~azure.mgmt.machinelearningservices.models.RemoteLoginPortPublicAccess
+    :param provision_public_ip: State of public IP provisioning. Possible values are: Enabled -
+     Indicates that the compute nodes will have public IPs provisioned. Disabled - Indicates that
+     the compute nodes will have a private endpoint and no public IPs. Possible values include:
+     "Enabled", "Disabled". Default value: "Enabled".
+    :type provision_public_ip: str or ~azure.mgmt.machinelearningservices.models.ProvisionPublicIp
     :ivar allocation_state: Allocation state of the compute. Possible values are: steady -
      Indicates that the compute is not resizing. There are no changes to the number of compute nodes
      in the compute in progress. A compute enters this state when it is created and when no
@@ -613,6 +618,7 @@ class AmlComputeProperties(msrest.serialization.Model):
         'user_account_credentials': {'key': 'userAccountCredentials', 'type': 'UserAccountCredentials'},
         'subnet': {'key': 'subnet', 'type': 'ResourceId'},
         'remote_login_port_public_access': {'key': 'remoteLoginPortPublicAccess', 'type': 'str'},
+        'provision_public_ip': {'key': 'provisionPublicIp', 'type': 'str'},
         'allocation_state': {'key': 'allocationState', 'type': 'str'},
         'allocation_state_transition_time': {'key': 'allocationStateTransitionTime', 'type': 'iso-8601'},
         'errors': {'key': 'errors', 'type': '[MachineLearningServiceError]'},
@@ -630,6 +636,7 @@ class AmlComputeProperties(msrest.serialization.Model):
         user_account_credentials: Optional["UserAccountCredentials"] = None,
         subnet: Optional["ResourceId"] = None,
         remote_login_port_public_access: Optional[Union[str, "RemoteLoginPortPublicAccess"]] = "NotSpecified",
+        provision_public_ip: Optional[Union[str, "ProvisionPublicIp"]] = "Enabled",
         **kwargs
     ):
         super(AmlComputeProperties, self).__init__(**kwargs)
@@ -639,6 +646,7 @@ class AmlComputeProperties(msrest.serialization.Model):
         self.user_account_credentials = user_account_credentials
         self.subnet = subnet
         self.remote_login_port_public_access = remote_login_port_public_access
+        self.provision_public_ip = provision_public_ip
         self.allocation_state = None
         self.allocation_state_transition_time = None
         self.errors = None
