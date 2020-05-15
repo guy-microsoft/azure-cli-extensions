@@ -6,14 +6,4 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._portal import Portal
-from ._version import VERSION
-
-__version__ = VERSION
-__all__ = ['Portal']
-
-try:
-    from .patch import patch_sdk
-    patch_sdk()
-except ImportError:
-    pass
+VERSION = "0.1.0"
