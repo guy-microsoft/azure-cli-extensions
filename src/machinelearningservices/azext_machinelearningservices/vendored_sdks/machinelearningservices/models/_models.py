@@ -520,11 +520,15 @@ class AmlComputeProperties(msrest.serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
+    :param os_type: Compute OS Type. Possible values include: "Linux", "Windows".
+    :type os_type: str or ~azure.mgmt.machinelearningservices.models.OsType
     :param vm_size: Virtual Machine Size.
     :type vm_size: str
     :param vm_priority: Virtual Machine priority. Possible values include: "Dedicated",
      "LowPriority".
     :type vm_priority: str or ~azure.mgmt.machinelearningservices.models.VmPriority
+    :param virtual_machine_image: Virtual Machine image for AML Compute - windows only.
+    :type virtual_machine_image: ~azure.mgmt.machinelearningservices.models.VirtualMachineImage
     :param scale_settings: Scale settings for AML Compute.
     :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
     :param user_account_credentials: Credentials for an administrator user account that will be
@@ -575,8 +579,10 @@ class AmlComputeProperties(msrest.serialization.Model):
     }
 
     _attribute_map = {
+        'os_type': {'key': 'osType', 'type': 'str'},
         'vm_size': {'key': 'vmSize', 'type': 'str'},
         'vm_priority': {'key': 'vmPriority', 'type': 'str'},
+        'virtual_machine_image': {'key': 'virtualMachineImage', 'type': 'VirtualMachineImage'},
         'scale_settings': {'key': 'scaleSettings', 'type': 'ScaleSettings'},
         'user_account_credentials': {'key': 'userAccountCredentials', 'type': 'UserAccountCredentials'},
         'subnet': {'key': 'subnet', 'type': 'ResourceId'},
@@ -594,8 +600,10 @@ class AmlComputeProperties(msrest.serialization.Model):
         **kwargs
     ):
         super(AmlComputeProperties, self).__init__(**kwargs)
+        self.os_type = kwargs.get('os_type', None)
         self.vm_size = kwargs.get('vm_size', None)
         self.vm_priority = kwargs.get('vm_priority', None)
+        self.virtual_machine_image = kwargs.get('virtual_machine_image', None)
         self.scale_settings = kwargs.get('scale_settings', None)
         self.user_account_credentials = kwargs.get('user_account_credentials', None)
         self.subnet = kwargs.get('subnet', None)
@@ -2629,6 +2637,31 @@ class VirtualMachine(Compute):
         self.ssh_port = kwargs.get('ssh_port', None)
         self.address = kwargs.get('address', None)
         self.administrator_account = kwargs.get('administrator_account', None)
+
+
+class VirtualMachineImage(msrest.serialization.Model):
+    """Virtual Machine image for Windows AML Compute.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param id: Required. Virtual Machine image path.
+    :type id: str
+    """
+
+    _validation = {
+        'id': {'required': True},
+    }
+
+    _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(VirtualMachineImage, self).__init__(**kwargs)
+        self.id = kwargs['id']
 
 
 class VirtualMachineSecrets(ComputeSecrets):
