@@ -50,6 +50,13 @@ class NodeState(str, Enum):
     leaving = "leaving"
     preempted = "preempted"
 
+class OsType(str, Enum):
+    """Compute OS Type
+    """
+
+    linux = "Linux"
+    windows = "Windows"
+
 class PrivateEndpointConnectionProvisioningState(str, Enum):
     """The current provisioning state.
     """
