@@ -9,9 +9,10 @@ from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
 import warnings
 
 from azure.core.async_paging import AsyncItemPaged, AsyncList
-from azure.core.exceptions import map_error
+from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import AsyncHttpResponse, HttpRequest
+from azure.mgmt.core.exceptions import ARMErrorFormat
 
 from ... import models
 
@@ -21,10 +22,11 @@ ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T
 class DashboardOperations:
     """DashboardOperations async operations.
 
-    You should not instantiate directly this class, but create a Client instance that will create it for you and attach it as attribute.
+    You should not instantiate this class directly. Instead, you should create a Client instance that
+    instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~portal.models
+    :type models: ~azure.mgmt.portal.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -60,19 +62,20 @@ class DashboardOperations:
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :param lenses: The dashboard lenses.
-        :type lenses: dict[str, ~portal.models.DashboardLens]
+        :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
         :param metadata: The dashboard metadata.
         :type metadata: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Dashboard or Dashboard or the result of cls(response)
-        :rtype: ~portal.models.Dashboard or ~portal.models.Dashboard
-        :raises: ~portal.models.ErrorResponseException:
+        :return: Dashboard or the result of cls(response)
+        :rtype: ~azure.mgmt.portal.models.Dashboard or ~azure.mgmt.portal.models.Dashboard
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType["models.Dashboard"] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
 
-        dashboard = models.Dashboard(location=location, tags=tags, lenses=lenses, metadata=metadata)
+        _dashboard = models.Dashboard(location=location, tags=tags, lenses=lenses, metadata=metadata)
         api_version = "2019-01-01-preview"
+        content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
         url = self.create_or_update.metadata['url']
@@ -84,25 +87,27 @@ class DashboardOperations:
         url = self._client.format_url(url, **path_format_arguments)
 
         # Construct parameters
-        query_parameters: Dict[str, Any] = {}
+        query_parameters = {}  # type: Dict[str, Any]
         query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
         # Construct headers
-        header_parameters: Dict[str, Any] = {}
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
-        header_parameters['Content-Type'] = 'application/json'
-
-        # Construct body
-        body_content = self._serialize.body(dashboard, 'Dashboard')
 
         # Construct and send request
-        request = self._client.put(url, query_parameters, header_parameters, body_content)
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_dashboard, 'Dashboard')
+        body_content_kwargs['content'] = body_content
+        request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
+
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
         if response.status_code not in [200, 201]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise models.ErrorResponseException.from_response(response, self._deserialize)
+            error = self._deserialize(models.ErrorResponse, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         deserialized = None
         if response.status_code == 200:
@@ -132,10 +137,10 @@ class DashboardOperations:
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: None or the result of cls(response)
         :rtype: None
-        :raises: ~portal.models.ErrorResponseException:
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType[None] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
         api_version = "2019-01-01-preview"
 
         # Construct URL
@@ -148,11 +153,11 @@ class DashboardOperations:
         url = self._client.format_url(url, **path_format_arguments)
 
         # Construct parameters
-        query_parameters: Dict[str, Any] = {}
+        query_parameters = {}  # type: Dict[str, Any]
         query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
         # Construct headers
-        header_parameters: Dict[str, Any] = {}
+        header_parameters = {}  # type: Dict[str, Any]
 
         # Construct and send request
         request = self._client.delete(url, query_parameters, header_parameters)
@@ -161,7 +166,8 @@ class DashboardOperations:
 
         if response.status_code not in [200, 204]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise models.ErrorResponseException.from_response(response, self._deserialize)
+            error = self._deserialize(models.ErrorResponse, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
           return cls(pipeline_response, None, {})
@@ -182,11 +188,11 @@ class DashboardOperations:
         :type dashboard_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Dashboard or the result of cls(response)
-        :rtype: ~portal.models.Dashboard
-        :raises: ~portal.models.ErrorResponseException:
+        :rtype: ~azure.mgmt.portal.models.Dashboard
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType["models.Dashboard"] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
         api_version = "2019-01-01-preview"
 
         # Construct URL
@@ -199,11 +205,11 @@ class DashboardOperations:
         url = self._client.format_url(url, **path_format_arguments)
 
         # Construct parameters
-        query_parameters: Dict[str, Any] = {}
+        query_parameters = {}  # type: Dict[str, Any]
         query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
         # Construct headers
-        header_parameters: Dict[str, Any] = {}
+        header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
@@ -213,7 +219,8 @@ class DashboardOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise models.ErrorResponseException.from_response(response, self._deserialize)
+            error = self._deserialize(models.ErrorResponse, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         deserialized = self._deserialize('Dashboard', pipeline_response)
 
@@ -241,19 +248,20 @@ class DashboardOperations:
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :param lenses: The dashboard lenses.
-        :type lenses: dict[str, ~portal.models.DashboardLens]
+        :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
         :param metadata: The dashboard metadata.
         :type metadata: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Dashboard or the result of cls(response)
-        :rtype: ~portal.models.Dashboard
-        :raises: ~portal.models.ErrorResponseException:
+        :rtype: ~azure.mgmt.portal.models.Dashboard
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType["models.Dashboard"] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
 
-        dashboard = models.PatchableDashboard(tags=tags, lenses=lenses, metadata=metadata)
+        _dashboard = models.PatchableDashboard(tags=tags, lenses=lenses, metadata=metadata)
         api_version = "2019-01-01-preview"
+        content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
         url = self.update.metadata['url']
@@ -265,25 +273,27 @@ class DashboardOperations:
         url = self._client.format_url(url, **path_format_arguments)
 
         # Construct parameters
-        query_parameters: Dict[str, Any] = {}
+        query_parameters = {}  # type: Dict[str, Any]
         query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
         # Construct headers
-        header_parameters: Dict[str, Any] = {}
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
-        header_parameters['Content-Type'] = 'application/json'
-
-        # Construct body
-        body_content = self._serialize.body(dashboard, 'PatchableDashboard')
 
         # Construct and send request
-        request = self._client.patch(url, query_parameters, header_parameters, body_content)
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_dashboard, 'PatchableDashboard')
+        body_content_kwargs['content'] = body_content
+        request = self._client.patch(url, query_parameters, header_parameters, **body_content_kwargs)
+
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise models.ErrorResponseException.from_response(response, self._deserialize)
+            error = self._deserialize(models.ErrorResponse, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         deserialized = self._deserialize('Dashboard', pipeline_response)
 
@@ -304,11 +314,11 @@ class DashboardOperations:
         :type resource_group_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: DashboardListResult or the result of cls(response)
-        :rtype: ~portal.models.DashboardListResult
-        :raises: ~portal.models.ErrorResponseException:
+        :rtype: ~azure.mgmt.portal.models.DashboardListResult
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType["models.DashboardListResult"] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DashboardListResult"]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
         api_version = "2019-01-01-preview"
 
         def prepare_request(next_link=None):
@@ -324,11 +334,11 @@ class DashboardOperations:
                 url = next_link
 
             # Construct parameters
-            query_parameters: Dict[str, Any] = {}
+            query_parameters = {}  # type: Dict[str, Any]
             query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
             # Construct headers
-            header_parameters: Dict[str, Any] = {}
+            header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
 
             # Construct and send request
@@ -340,7 +350,7 @@ class DashboardOperations:
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
-            return deserialized.next_link, AsyncList(list_of_elem)
+            return deserialized.next_link or None, AsyncList(list_of_elem)
 
         async def get_next(next_link=None):
             request = prepare_request(next_link)
@@ -349,8 +359,9 @@ class DashboardOperations:
             response = pipeline_response.http_response
 
             if response.status_code not in [200]:
+                error = self._deserialize(models.ErrorResponse, response)
                 map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise models.ErrorResponseException.from_response(response, self._deserialize)
+                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
             return pipeline_response
 
@@ -367,11 +378,11 @@ class DashboardOperations:
 
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: DashboardListResult or the result of cls(response)
-        :rtype: ~portal.models.DashboardListResult
-        :raises: ~portal.models.ErrorResponseException:
+        :rtype: ~azure.mgmt.portal.models.DashboardListResult
+        :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls: ClsType["models.DashboardListResult"] = kwargs.pop('cls', None )
-        error_map = kwargs.pop('error_map', {})
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DashboardListResult"]
+        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
         api_version = "2019-01-01-preview"
 
         def prepare_request(next_link=None):
@@ -386,11 +397,11 @@ class DashboardOperations:
                 url = next_link
 
             # Construct parameters
-            query_parameters: Dict[str, Any] = {}
+            query_parameters = {}  # type: Dict[str, Any]
             query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
             # Construct headers
-            header_parameters: Dict[str, Any] = {}
+            header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
 
             # Construct and send request
@@ -402,7 +413,7 @@ class DashboardOperations:
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
-            return deserialized.next_link, AsyncList(list_of_elem)
+            return deserialized.next_link or None, AsyncList(list_of_elem)
 
         async def get_next(next_link=None):
             request = prepare_request(next_link)
@@ -411,8 +422,9 @@ class DashboardOperations:
             response = pipeline_response.http_response
 
             if response.status_code not in [200]:
+                error = self._deserialize(models.ErrorResponse, response)
                 map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise models.ErrorResponseException.from_response(response, self._deserialize)
+                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
             return pipeline_response
 
