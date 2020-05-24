@@ -12,6 +12,7 @@ from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
 
 from ._configuration_async import KustoManagementClientConfiguration
+from .operations_async import DemoClusterOperations
 from .operations_async import ClusterOperations
 from .operations_async import ClusterPrincipalAssignmentOperations
 from .operations_async import DatabaseOperations
@@ -25,6 +26,8 @@ from .. import models
 class KustoManagementClient(object):
     """The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases.
 
+    :ivar demo_cluster: DemoClusterOperations operations
+    :vartype demo_cluster: azure.mgmt.kusto.aio.operations_async.DemoClusterOperations
     :ivar cluster: ClusterOperations operations
     :vartype cluster: azure.mgmt.kusto.aio.operations_async.ClusterOperations
     :ivar cluster_principal_assignment: ClusterPrincipalAssignmentOperations operations
@@ -62,6 +65,8 @@ class KustoManagementClient(object):
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 
+        self.demo_cluster = DemoClusterOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.cluster = ClusterOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.cluster_principal_assignment = ClusterPrincipalAssignmentOperations(

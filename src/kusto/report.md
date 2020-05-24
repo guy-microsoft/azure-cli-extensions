@@ -559,3 +559,47 @@ create a kusto database-principal-assignment.
 |**--role**|choice|Database principal role.|role|
 |**--tenant-id**|string|The tenant id of the principal|tenant_id|
 |**--principal-type**|choice|Principal type.|principal_type|
+### kusto demo-cluster create
+
+create a kusto demo-cluster.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The name of the resource group containing the Kusto cluster.|resource_group_name|
+|**--cluster-name**|string|The name of the Kusto cluster.|cluster_name|
+|**--location**|string|The geo-location where the resource lives|location|
+|**--sku**|object|The SKU of the cluster.|sku|
+|**--tags**|dictionary|Resource tags.|tags|
+|**--zones**|array|The availability zones of the cluster.|zones|
+|**--trusted-external-tenants**|array|The cluster's external tenants.|trusted_external_tenants|
+|**--optimized-autoscale**|object|Optimized auto scale definition.|optimized_autoscale|
+|**--enable-disk-encryption**|boolean|A boolean value that indicates if the cluster's disks are encrypted.|enable_disk_encryption|
+|**--enable-streaming-ingest**|boolean|A boolean value that indicates if the streaming ingest is enabled.|enable_streaming_ingest|
+|**--virtual-network-configuration**|object|Virtual network definition.|virtual_network_configuration|
+|**--key-vault-properties**|object|KeyVault properties for the cluster encryption.|key_vault_properties|
+|**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|
+|**--language-extensions-value**|array|The list of language extensions.|value|
+|**--identity-type**|sealed-choice|The identity type.|type_identity_type|
+|**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|
+### kusto demo-cluster update
+
+create a kusto demo-cluster.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The name of the resource group containing the Kusto cluster.|resource_group_name|
+|**--cluster-name**|string|The name of the Kusto cluster.|cluster_name|
+|**--location**|string|The geo-location where the resource lives|location|
+|**--sku**|object|The SKU of the cluster.|sku|
+|**--tags**|dictionary|Resource tags.|tags|
+|**--zones**|array|The availability zones of the cluster.|zones|
+|**--trusted-external-tenants**|array|The cluster's external tenants.|trusted_external_tenants|
+|**--optimized-autoscale**|object|Optimized auto scale definition.|optimized_autoscale|
+|**--enable-disk-encryption**|boolean|A boolean value that indicates if the cluster's disks are encrypted.|enable_disk_encryption|
+|**--enable-streaming-ingest**|boolean|A boolean value that indicates if the streaming ingest is enabled.|enable_streaming_ingest|
+|**--virtual-network-configuration**|object|Virtual network definition.|virtual_network_configuration|
+|**--key-vault-properties**|object|KeyVault properties for the cluster encryption.|key_vault_properties|
+|**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|
+|**--language-extensions-value**|array|The list of language extensions.|value|
+|**--identity-type**|sealed-choice|The identity type.|type_identity_type|
+|**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|

@@ -13,6 +13,16 @@ from azure.cli.core.commands import CliCommandType
 
 def load_command_table(self, _):
 
+    from azext_kusto.generated._client_factory import cf_demo_cluster
+    kusto_demo_cluster = CliCommandType(
+        operations_tmpl='azext_kusto.vendored_sdks.kusto.operations._demo_cluster_operations#DemoClusterOperations.{}',
+        client_factory=cf_demo_cluster)
+    with self.command_group('kusto demo-cluster', kusto_demo_cluster, client_factory=cf_demo_cluster,
+                            is_experimental=True) as g:
+        g.custom_command('create', 'kusto_demo_cluster_create', supports_no_wait=True)
+        g.custom_command('update', 'kusto_demo_cluster_update', supports_no_wait=True)
+        g.wait_command('wait')
+
     from azext_kusto.generated._client_factory import cf_cluster
     kusto_cluster = CliCommandType(
         operations_tmpl='azext_kusto.vendored_sdks.kusto.operations._cluster_operations#ClusterOperations.{}',

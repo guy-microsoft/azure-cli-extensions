@@ -34,6 +34,78 @@ from azext_kusto.action import (
 
 def load_arguments(self, _):
 
+    with self.argument_context('kusto demo-cluster create') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('cluster_name', help='The name of the Kusto cluster.')
+        c.argument('tags', tags_type)
+        c.argument('location', arg_type=get_location_type(self.cli_ctx),
+                   validator=get_default_location_from_resource_group)
+        c.argument('sku', action=AddSku, nargs='+', help='The SKU of the cluster. Expect value: KEY1=VALUE1 KEY2=VALUE2'
+                   ' ... , available KEYs are: name, capacity, tier.')
+        c.argument('zones', nargs='+', help='The availability zones of the cluster. Expected value: json-string/@json-f'
+                   'ile.')
+        c.argument('trusted_external_tenants', action=AddTrustedExternalTenants, nargs='+', help='The cluster\'s extern'
+                   'al tenants. Expect value: value=xx.')
+        c.argument('optimized_autoscale', action=AddOptimizedAutoscale, nargs='+', help='Optimized auto scale definitio'
+                   'n. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: version, is-enabled, minimum, ma'
+                   'ximum.')
+        c.argument('enable_disk_encryption', arg_type=get_three_state_flag(), help='A boolean value that indicates if t'
+                   'he cluster\'s disks are encrypted.')
+        c.argument('enable_streaming_ingest', arg_type=get_three_state_flag(), help='A boolean value that indicates if '
+                   'the streaming ingest is enabled.')
+        c.argument('virtual_network_configuration', action=AddVirtualNetworkConfiguration, nargs='+', help='Virtual net'
+                   'work definition. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: subnet-id, engine-'
+                   'public-ip-id, data-management-public-ip-id.')
+        c.argument('key_vault_properties', action=AddKeyVaultProperties, nargs='+', help='KeyVault properties for the c'
+                   'luster encryption. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: key-name, key-ve'
+                   'rsion, key-vault-uri.')
+        c.argument('enable_purge', arg_type=get_three_state_flag(), help='A boolean value that indicates if the purge o'
+                   'perations are enabled.')
+        c.argument('language_extensions_value', action=AddLanguageExtensionsValue, nargs='+', help='The list of languag'
+                   'e extensions. Expect value: language-extension-name=xx.')
+        c.argument('identity_type', arg_type=get_enum_type(['None', 'SystemAssigned']), help='The identity type.')
+        c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
+                   'd-identities'], help='The list of user identities associated with the Kusto cluster. The user ident'
+                   'ity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionI'
+                   'd}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{i'
+                   'dentityName}\'. Expected value: json-string/@json-file.'))
+
+    with self.argument_context('kusto demo-cluster update') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('cluster_name', help='The name of the Kusto cluster.')
+        c.argument('tags', tags_type)
+        c.argument('location', arg_type=get_location_type(self.cli_ctx),
+                   validator=get_default_location_from_resource_group)
+        c.argument('sku', action=AddSku, nargs='+', help='The SKU of the cluster. Expect value: KEY1=VALUE1 KEY2=VALUE2'
+                   ' ... , available KEYs are: name, capacity, tier.')
+        c.argument('zones', nargs='+', help='The availability zones of the cluster. Expected value: json-string/@json-f'
+                   'ile.')
+        c.argument('trusted_external_tenants', action=AddTrustedExternalTenants, nargs='+', help='The cluster\'s extern'
+                   'al tenants. Expect value: value=xx.')
+        c.argument('optimized_autoscale', action=AddOptimizedAutoscale, nargs='+', help='Optimized auto scale definitio'
+                   'n. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: version, is-enabled, minimum, ma'
+                   'ximum.')
+        c.argument('enable_disk_encryption', arg_type=get_three_state_flag(), help='A boolean value that indicates if t'
+                   'he cluster\'s disks are encrypted.')
+        c.argument('enable_streaming_ingest', arg_type=get_three_state_flag(), help='A boolean value that indicates if '
+                   'the streaming ingest is enabled.')
+        c.argument('virtual_network_configuration', action=AddVirtualNetworkConfiguration, nargs='+', help='Virtual net'
+                   'work definition. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: subnet-id, engine-'
+                   'public-ip-id, data-management-public-ip-id.')
+        c.argument('key_vault_properties', action=AddKeyVaultProperties, nargs='+', help='KeyVault properties for the c'
+                   'luster encryption. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: key-name, key-ve'
+                   'rsion, key-vault-uri.')
+        c.argument('enable_purge', arg_type=get_three_state_flag(), help='A boolean value that indicates if the purge o'
+                   'perations are enabled.')
+        c.argument('language_extensions_value', action=AddLanguageExtensionsValue, nargs='+', help='The list of languag'
+                   'e extensions. Expect value: language-extension-name=xx.')
+        c.argument('identity_type', arg_type=get_enum_type(['None', 'SystemAssigned']), help='The identity type.')
+        c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
+                   'd-identities'], help='The list of user identities associated with the Kusto cluster. The user ident'
+                   'ity dictionary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionI'
+                   'd}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{i'
+                   'dentityName}\'. Expected value: json-string/@json-file.'))
+
     with self.argument_context('kusto cluster list') as c:
         c.argument('resource_group_name', resource_group_name_type)
 

@@ -6,6 +6,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
+from ._demo_cluster_operations import DemoClusterOperations
 from ._cluster_operations import ClusterOperations
 from ._cluster_principal_assignment_operations import ClusterPrincipalAssignmentOperations
 from ._database_operations import DatabaseOperations
@@ -15,6 +16,7 @@ from ._data_connection_operations import DataConnectionOperations
 from ._operation_operations import OperationOperations
 
 __all__ = [
+    'DemoClusterOperations',
     'ClusterOperations',
     'ClusterPrincipalAssignmentOperations',
     'DatabaseOperations',

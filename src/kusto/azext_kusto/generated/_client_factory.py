@@ -15,6 +15,10 @@ def cf_kusto(cli_ctx, *_):
     return get_mgmt_service_client(cli_ctx, KustoManagementClient)
 
 
+def cf_demo_cluster(cli_ctx, *_):
+    return cf_kusto(cli_ctx).demo_cluster
+
+
 def cf_cluster(cli_ctx, *_):
     return cf_kusto(cli_ctx).cluster
 

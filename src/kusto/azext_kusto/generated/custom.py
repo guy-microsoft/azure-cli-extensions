@@ -14,6 +14,84 @@ import json
 from knack.util import CLIError
 
 
+def kusto_demo_cluster_create(cmd, client,
+                              resource_group_name,
+                              cluster_name,
+                              location,
+                              sku,
+                              tags=None,
+                              zones=None,
+                              trusted_external_tenants=None,
+                              optimized_autoscale=None,
+                              enable_disk_encryption=None,
+                              enable_streaming_ingest=None,
+                              virtual_network_configuration=None,
+                              key_vault_properties=None,
+                              enable_purge=None,
+                              language_extensions_value=None,
+                              identity_type=None,
+                              identity_user_assigned_identities=None):
+    if isinstance(zones, str):
+        zones = json.loads(zones)
+    if isinstance(identity_user_assigned_identities, str):
+        identity_user_assigned_identities = json.loads(identity_user_assigned_identities)
+    return client.begin_create_or_update(resource_group_name=resource_group_name,
+                                         cluster_name=cluster_name,
+                                         tags=tags,
+                                         location=location,
+                                         sku=sku,
+                                         zones=zones,
+                                         trusted_external_tenants=trusted_external_tenants,
+                                         optimized_autoscale=optimized_autoscale,
+                                         enable_disk_encryption=enable_disk_encryption,
+                                         enable_streaming_ingest=enable_streaming_ingest,
+                                         virtual_network_configuration=virtual_network_configuration,
+                                         key_vault_properties=key_vault_properties,
+                                         enable_purge=enable_purge,
+                                         value=language_extensions_value,
+                                         type=identity_type,
+                                         user_assigned_identities=identity_user_assigned_identities)
+
+
+def kusto_demo_cluster_update(cmd, client,
+                              resource_group_name,
+                              cluster_name,
+                              location,
+                              sku,
+                              tags=None,
+                              zones=None,
+                              trusted_external_tenants=None,
+                              optimized_autoscale=None,
+                              enable_disk_encryption=None,
+                              enable_streaming_ingest=None,
+                              virtual_network_configuration=None,
+                              key_vault_properties=None,
+                              enable_purge=None,
+                              language_extensions_value=None,
+                              identity_type=None,
+                              identity_user_assigned_identities=None):
+    if isinstance(zones, str):
+        zones = json.loads(zones)
+    if isinstance(identity_user_assigned_identities, str):
+        identity_user_assigned_identities = json.loads(identity_user_assigned_identities)
+    return client.begin_create_or_update(resource_group_name=resource_group_name,
+                                         cluster_name=cluster_name,
+                                         tags=tags,
+                                         location=location,
+                                         sku=sku,
+                                         zones=zones,
+                                         trusted_external_tenants=trusted_external_tenants,
+                                         optimized_autoscale=optimized_autoscale,
+                                         enable_disk_encryption=enable_disk_encryption,
+                                         enable_streaming_ingest=enable_streaming_ingest,
+                                         virtual_network_configuration=virtual_network_configuration,
+                                         key_vault_properties=key_vault_properties,
+                                         enable_purge=enable_purge,
+                                         value=language_extensions_value,
+                                         type=identity_type,
+                                         user_assigned_identities=identity_user_assigned_identities)
+
+
 def kusto_cluster_list(cmd, client,
                        resource_group_name=None):
     if resource_group_name is not None:

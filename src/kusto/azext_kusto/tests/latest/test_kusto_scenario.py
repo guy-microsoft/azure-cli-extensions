@@ -28,7 +28,7 @@ def setup(test, rg):
 # EXAMPLE: KustoClustersCreateOrUpdate
 @try_manual
 def step_kustoclusterscreateorupdate(test, rg):
-    test.cmd('az kusto cluster create '
+    test.cmd('az kusto demo-cluster create '
              '--cluster-name "{Clusters_3}" '
              '--identity-type "SystemAssigned" '
              '--location "westus" '
@@ -39,8 +39,7 @@ def step_kustoclusterscreateorupdate(test, rg):
              '--sku name="Standard_L8s" capacity=2 tier="Standard" '
              '--resource-group "{rg}"',
              checks=[])
-    test.cmd('az kusto cluster wait --created '
-             '--cluster-name "{Clusters_3}" '
+    test.cmd('az kusto demo-cluster wait --created '
              '--resource-group "{rg}"',
              checks=[])
 

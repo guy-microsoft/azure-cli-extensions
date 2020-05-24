@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from typing import Any, Optional
 
 from ._configuration import KustoManagementClientConfiguration
+from .operations import DemoClusterOperations
 from .operations import ClusterOperations
 from .operations import ClusterPrincipalAssignmentOperations
 from .operations import DatabaseOperations
@@ -29,6 +30,8 @@ from . import models
 class KustoManagementClient(object):
     """The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases.
 
+    :ivar demo_cluster: DemoClusterOperations operations
+    :vartype demo_cluster: azure.mgmt.kusto.operations.DemoClusterOperations
     :ivar cluster: ClusterOperations operations
     :vartype cluster: azure.mgmt.kusto.operations.ClusterOperations
     :ivar cluster_principal_assignment: ClusterPrincipalAssignmentOperations operations
@@ -67,6 +70,8 @@ class KustoManagementClient(object):
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 
+        self.demo_cluster = DemoClusterOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.cluster = ClusterOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.cluster_principal_assignment = ClusterPrincipalAssignmentOperations(
