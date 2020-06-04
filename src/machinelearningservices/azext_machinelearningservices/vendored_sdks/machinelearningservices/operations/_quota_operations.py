@@ -67,7 +67,7 @@ class QuotaOperations(object):
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
 
         _parameters = models.QuotaUpdateParameters(value=value)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -126,7 +126,7 @@ class QuotaOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListWorkspaceQuotas"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         def prepare_request(next_link=None):
             if not next_link:

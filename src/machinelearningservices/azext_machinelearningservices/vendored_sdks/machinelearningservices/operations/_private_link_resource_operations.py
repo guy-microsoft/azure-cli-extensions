@@ -64,7 +64,7 @@ class PrivateLinkResourceOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateLinkResourceListResult"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_by_workspace.metadata['url']

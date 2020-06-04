@@ -70,7 +70,7 @@ class MachineLearningComputeOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PaginatedComputeResourcesList"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -147,7 +147,7 @@ class MachineLearningComputeOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.get.metadata['url']
@@ -203,7 +203,7 @@ class MachineLearningComputeOperations(object):
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
 
         _parameters = models.ComputeResource(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, properties=properties)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -348,7 +348,7 @@ class MachineLearningComputeOperations(object):
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
 
         _parameters = models.ClusterUpdateParameters(scale_settings=scale_settings)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -459,7 +459,7 @@ class MachineLearningComputeOperations(object):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']
@@ -576,7 +576,7 @@ class MachineLearningComputeOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AmlComputeNodesInformation"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_node.metadata['url']
@@ -637,7 +637,7 @@ class MachineLearningComputeOperations(object):
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeSecrets"]
         error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_key.metadata['url']
