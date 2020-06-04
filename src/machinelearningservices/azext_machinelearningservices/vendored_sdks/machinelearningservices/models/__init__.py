@@ -72,6 +72,7 @@ try:
     from ._models_py3 import UsageName
     from ._models_py3 import UserAccountCredentials
     from ._models_py3 import VirtualMachine
+    from ._models_py3 import VirtualMachineImage
     from ._models_py3 import VirtualMachineSecrets
     from ._models_py3 import VirtualMachineSize
     from ._models_py3 import VirtualMachineSizeListResult
@@ -146,6 +147,7 @@ except (SyntaxError, ImportError):
     from ._models import UsageName  # type: ignore
     from ._models import UserAccountCredentials  # type: ignore
     from ._models import VirtualMachine  # type: ignore
+    from ._models import VirtualMachineImage  # type: ignore
     from ._models import VirtualMachineSecrets  # type: ignore
     from ._models import VirtualMachineSize  # type: ignore
     from ._models import VirtualMachineSizeListResult  # type: ignore
@@ -160,6 +162,7 @@ from ._azure_machine_learning_workspaces_enums import (
     ComputeType,
     EncryptionStatus,
     NodeState,
+    OsType,
     PrivateEndpointConnectionProvisioningState,
     PrivateEndpointServiceConnectionStatus,
     ProvisioningState,
@@ -238,6 +241,7 @@ __all__ = [
     'UsageName',
     'UserAccountCredentials',
     'VirtualMachine',
+    'VirtualMachineImage',
     'VirtualMachineSecrets',
     'VirtualMachineSize',
     'VirtualMachineSizeListResult',
@@ -250,6 +254,7 @@ __all__ = [
     'ComputeType',
     'EncryptionStatus',
     'NodeState',
+    'OsType',
     'PrivateEndpointConnectionProvisioningState',
     'PrivateEndpointServiceConnectionStatus',
     'ProvisioningState',
