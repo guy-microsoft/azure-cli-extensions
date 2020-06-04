@@ -220,9 +220,11 @@ astus" --resource-group "testrg123" --workspace-name "workspaces123"
                az machinelearningservices machine-learning-compute aks create --compute-name "compute123" --identity-ty\
 pe "SystemAssigned, UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-0000-00000\
 0000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{}}"\
- --location "eastus" --aks-properties "{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{\\"ma\
-xNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"},\\"vmPriority\\":\\"Dedicated\\",\\"\
-vmSize\\":\\"STANDARD_NC6\\"}" --resource-group "testrg123" --workspace-name "workspaces123"
+ --location "eastus" --aks-properties "{\\"osType\\":\\"Windows\\",\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\"\
+,\\"scaleSettings\\":{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"},\\"virtua\
+lMachineImage\\":{\\"id\\":\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/provid\
+ers/Microsoft.Compute/galleries/myImageGallery/images/myImageDefinition/versions/0.0.1\\"},\\"vmPriority\\":\\"Dedicate\
+d\\",\\"vmSize\\":\\"STANDARD_NC6\\"}" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute aks create --compute-name "compute123" --location "e\
@@ -261,9 +263,11 @@ ation "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
                az machinelearningservices machine-learning-compute aml-compute create --compute-name "compute123" --ide\
 ntity-type "SystemAssigned, UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-00\
 00-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\
-\\":{}}" --location "eastus" --aml-compute-properties "{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSe\
-ttings\\":{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"},\\"vmPriority\\":\\"\
-Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\"}" --resource-group "testrg123" --workspace-name "workspaces123"
+\\":{}}" --location "eastus" --aml-compute-properties "{\\"osType\\":\\"Windows\\",\\"remoteLoginPortPublicAccess\\":\\\
+"NotSpecified\\",\\"scaleSettings\\":{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT\
+5M\\"},\\"virtualMachineImage\\":{\\"id\\":\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myReso\
+urceGroup/providers/Microsoft.Compute/galleries/myImageGallery/images/myImageDefinition/versions/0.0.1\\"},\\"vmPriorit\
+y\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\"}" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute aml-compute create --compute-name "compute123" --loc\
@@ -340,9 +344,11 @@ e operation. If your intent is to create a new compute, do a GET first to verify
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
 3" --identity-type "SystemAssigned, UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000\
 -0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident\
-ity-name\\":{}}" --location "eastus" --data-lake-analytics-properties remoteLoginPortPublicAccess="NotSpecified" scaleS\
-ettings={"maxNodeCount":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} vmPriority="Dedicated" vmSize="STANDAR\
-D_NC6" --resource-group "testrg123" --workspace-name "workspaces123"
+ity-name\\":{}}" --location "eastus" --data-lake-analytics-properties osType="Windows" remoteLoginPortPublicAccess="Not\
+Specified" scaleSettings={"maxNodeCount":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} virtualMachineImage={\
+"id":"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/ga\
+lleries/myImageGallery/images/myImageDefinition/versions/0.0.1"} vmPriority="Dedicated" vmSize="STANDARD_NC6" --resourc\
+e-group "testrg123" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
@@ -381,9 +387,11 @@ tion "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --iden\
 tity-type "SystemAssigned, UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-000\
 0-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\
-\\":{}}" --location "eastus" --databricks-properties remoteLoginPortPublicAccess="NotSpecified" scaleSettings={"maxNode\
-Count":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} vmPriority="Dedicated" vmSize="STANDARD_NC6" --resource\
--group "testrg123" --workspace-name "workspaces123"
+\\":{}}" --location "eastus" --databricks-properties osType="Windows" remoteLoginPortPublicAccess="NotSpecified" scaleS\
+ettings={"maxNodeCount":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} virtualMachineImage={"id":"/subscripti\
+ons/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGa\
+llery/images/myImageDefinition/versions/0.0.1"} vmPriority="Dedicated" vmSize="STANDARD_NC6" --resource-group "testrg12\
+3" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --loca\
@@ -486,9 +494,11 @@ erable operation.
     examples:
       - name: Update a AmlCompute Compute
         text: |-
-               az machinelearningservices machine-learning-compute update --compute-name "compute123" --scale-settings \
-max-node-count=4 min-node-count=4 node-idle-time-before-scale-down="PT5M" --resource-group "testrg123" --workspace-name\
- "workspaces123"
+               az machinelearningservices machine-learning-compute update --compute-name "compute123" --identity-type "\
+UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGrou\
+ps/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{}}" --scale-settings ma\
+x-node-count=4 min-node-count=4 node-idle-time-before-scale-down="PT5M" --resource-group "testrg123" --workspace-name "\
+workspaces123"
 """
 
 helps['machinelearningservices machine-learning-compute delete'] = """

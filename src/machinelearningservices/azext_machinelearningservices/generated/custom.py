@@ -396,10 +396,16 @@ def machinelearningservices_machine_learning_compute_update(cmd, client,
                                                             resource_group_name,
                                                             workspace_name,
                                                             compute_name,
+                                                            identity_type=None,
+                                                            identity_user_assigned_identities=None,
                                                             scale_settings=None):
+    if isinstance(identity_user_assigned_identities, str):
+        identity_user_assigned_identities = json.loads(identity_user_assigned_identities)
     return client.begin_update(resource_group_name=resource_group_name,
                                workspace_name=workspace_name,
                                compute_name=compute_name,
+                               type=identity_type,
+                               user_assigned_identities=identity_user_assigned_identities,
                                scale_settings=scale_settings)
 
 

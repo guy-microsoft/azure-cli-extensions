@@ -552,11 +552,15 @@ class AmlComputeProperties(msrest.serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
+    :param os_type: Compute OS Type. Possible values include: "Linux", "Windows".
+    :type os_type: str or ~azure.mgmt.machinelearningservices.models.OsType
     :param vm_size: Virtual Machine Size.
     :type vm_size: str
     :param vm_priority: Virtual Machine priority. Possible values include: "Dedicated",
      "LowPriority".
     :type vm_priority: str or ~azure.mgmt.machinelearningservices.models.VmPriority
+    :param virtual_machine_image: Virtual Machine image for AML Compute - windows only.
+    :type virtual_machine_image: ~azure.mgmt.machinelearningservices.models.VirtualMachineImage
     :param scale_settings: Scale settings for AML Compute.
     :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
     :param user_account_credentials: Credentials for an administrator user account that will be
@@ -607,8 +611,10 @@ class AmlComputeProperties(msrest.serialization.Model):
     }
 
     _attribute_map = {
+        'os_type': {'key': 'osType', 'type': 'str'},
         'vm_size': {'key': 'vmSize', 'type': 'str'},
         'vm_priority': {'key': 'vmPriority', 'type': 'str'},
+        'virtual_machine_image': {'key': 'virtualMachineImage', 'type': 'VirtualMachineImage'},
         'scale_settings': {'key': 'scaleSettings', 'type': 'ScaleSettings'},
         'user_account_credentials': {'key': 'userAccountCredentials', 'type': 'UserAccountCredentials'},
         'subnet': {'key': 'subnet', 'type': 'ResourceId'},
@@ -624,8 +630,10 @@ class AmlComputeProperties(msrest.serialization.Model):
     def __init__(
         self,
         *,
+        os_type: Optional[Union[str, "OsType"]] = None,
         vm_size: Optional[str] = None,
         vm_priority: Optional[Union[str, "VmPriority"]] = None,
+        virtual_machine_image: Optional["VirtualMachineImage"] = None,
         scale_settings: Optional["ScaleSettings"] = None,
         user_account_credentials: Optional["UserAccountCredentials"] = None,
         subnet: Optional["ResourceId"] = None,
@@ -633,8 +641,10 @@ class AmlComputeProperties(msrest.serialization.Model):
         **kwargs
     ):
         super(AmlComputeProperties, self).__init__(**kwargs)
+        self.os_type = os_type
         self.vm_size = vm_size
         self.vm_priority = vm_priority
+        self.virtual_machine_image = virtual_machine_image
         self.scale_settings = scale_settings
         self.user_account_credentials = user_account_credentials
         self.subnet = subnet
@@ -681,21 +691,50 @@ class AmlUserFeature(msrest.serialization.Model):
 class ClusterUpdateParameters(msrest.serialization.Model):
     """AmlCompute update parameters.
 
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar principal_id: The principal ID of resource identity.
+    :vartype principal_id: str
+    :ivar tenant_id: The tenant ID of resource.
+    :vartype tenant_id: str
+    :param type: The identity type. Possible values include: "SystemAssigned", "UserAssigned",
+     "SystemAssigned, UserAssigned", "None".
+    :type type: str or ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :param user_assigned_identities: The list of user identities associated with resource. The user
+     identity dictionary key references will be ARM resource ids in the form:
+     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+    :type user_assigned_identities: dict[str,
+     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :param scale_settings: Desired scale settings for the amlCompute.
     :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
     """
 
+    _validation = {
+        'principal_id': {'readonly': True},
+        'tenant_id': {'readonly': True},
+    }
+
     _attribute_map = {
+        'principal_id': {'key': 'identity.principalId', 'type': 'str'},
+        'tenant_id': {'key': 'identity.tenantId', 'type': 'str'},
+        'type': {'key': 'identity.type', 'type': 'str'},
+        'user_assigned_identities': {'key': 'identity.userAssignedIdentities', 'type': '{ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties}'},
         'scale_settings': {'key': 'properties.scaleSettings', 'type': 'ScaleSettings'},
     }
 
     def __init__(
         self,
         *,
+        type: Optional[Union[str, "ResourceIdentityType"]] = None,
+        user_assigned_identities: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]] = None,
         scale_settings: Optional["ScaleSettings"] = None,
         **kwargs
     ):
         super(ClusterUpdateParameters, self).__init__(**kwargs)
+        self.principal_id = None
+        self.tenant_id = None
+        self.type = type
+        self.user_assigned_identities = user_assigned_identities
         self.scale_settings = scale_settings
 
 
@@ -2809,6 +2848,33 @@ class VirtualMachine(Compute):
         self.ssh_port = ssh_port
         self.address = address
         self.administrator_account = administrator_account
+
+
+class VirtualMachineImage(msrest.serialization.Model):
+    """Virtual Machine image for Windows AML Compute.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param id: Required. Virtual Machine image path.
+    :type id: str
+    """
+
+    _validation = {
+        'id': {'required': True},
+    }
+
+    _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,
+        **kwargs
+    ):
+        super(VirtualMachineImage, self).__init__(**kwargs)
+        self.id = id
 
 
 class VirtualMachineSecrets(ComputeSecrets):

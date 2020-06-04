@@ -300,6 +300,13 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
         c.argument('compute_name', help='Name of the Azure Machine Learning compute.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
+        c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
+                   'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
+                   'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
+                   'ceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityNa'
+                   'me}\'. Expected value: json-string/@json-file.'))
         c.argument('scale_settings', action=AddScaleSettings, nargs='+', help='Desired scale settings for the amlComput'
                    'e. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: max-node-count, min-node-count, '
                    'node-idle-time-before-scale-down.')
