@@ -25,7 +25,7 @@ class PrivateLinkResourceOperations:
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -53,16 +53,17 @@ class PrivateLinkResourceOperations:
         :param workspace_name: Name of Azure Machine Learning workspace.
         :type workspace_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: PrivateLinkResourceListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.PrivateLinkResourceListResult
+        :return: PrivateLinkResourceListResult, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.PrivateLinkResourceListResult
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateLinkResourceListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.list_by_workspace.metadata['url']
+        url = self.list_by_workspace.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -90,7 +91,7 @@ class PrivateLinkResourceOperations:
         deserialized = self._deserialize('PrivateLinkResourceListResult', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_by_workspace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateLinkResources'}
+    list_by_workspace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateLinkResources'}  # type: ignore

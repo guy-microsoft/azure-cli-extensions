@@ -6,10 +6,14 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
 
 from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
+
+if TYPE_CHECKING:
+    # pylint: disable=unused-import,ungrouped-imports
+    from azure.core.credentials_async import AsyncTokenCredential
 
 from ._configuration_async import AzureMachineLearningWorkspacesConfiguration
 from .operations_async import OperationOperations
@@ -29,28 +33,29 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
     """These APIs allow end users to operate on Azure Machine Learning Workspace resources.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.machinelearningservices.aio.operations_async.OperationOperations
+    :vartype operation: azure_machine_learning_workspaces.aio.operations_async.OperationOperations
     :ivar workspace: WorkspaceOperations operations
-    :vartype workspace: azure.mgmt.machinelearningservices.aio.operations_async.WorkspaceOperations
+    :vartype workspace: azure_machine_learning_workspaces.aio.operations_async.WorkspaceOperations
     :ivar workspace_feature: WorkspaceFeatureOperations operations
-    :vartype workspace_feature: azure.mgmt.machinelearningservices.aio.operations_async.WorkspaceFeatureOperations
+    :vartype workspace_feature: azure_machine_learning_workspaces.aio.operations_async.WorkspaceFeatureOperations
     :ivar usage: UsageOperations operations
-    :vartype usage: azure.mgmt.machinelearningservices.aio.operations_async.UsageOperations
+    :vartype usage: azure_machine_learning_workspaces.aio.operations_async.UsageOperations
     :ivar virtual_machine_size: VirtualMachineSizeOperations operations
-    :vartype virtual_machine_size: azure.mgmt.machinelearningservices.aio.operations_async.VirtualMachineSizeOperations
+    :vartype virtual_machine_size: azure_machine_learning_workspaces.aio.operations_async.VirtualMachineSizeOperations
     :ivar quota: QuotaOperations operations
-    :vartype quota: azure.mgmt.machinelearningservices.aio.operations_async.QuotaOperations
+    :vartype quota: azure_machine_learning_workspaces.aio.operations_async.QuotaOperations
     :ivar machine_learning_compute: MachineLearningComputeOperations operations
-    :vartype machine_learning_compute: azure.mgmt.machinelearningservices.aio.operations_async.MachineLearningComputeOperations
+    :vartype machine_learning_compute: azure_machine_learning_workspaces.aio.operations_async.MachineLearningComputeOperations
     :ivar private_endpoint_connection: PrivateEndpointConnectionOperations operations
-    :vartype private_endpoint_connection: azure.mgmt.machinelearningservices.aio.operations_async.PrivateEndpointConnectionOperations
+    :vartype private_endpoint_connection: azure_machine_learning_workspaces.aio.operations_async.PrivateEndpointConnectionOperations
     :ivar private_link_resource: PrivateLinkResourceOperations operations
-    :vartype private_link_resource: azure.mgmt.machinelearningservices.aio.operations_async.PrivateLinkResourceOperations
+    :vartype private_link_resource: azure_machine_learning_workspaces.aio.operations_async.PrivateLinkResourceOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: Azure subscription identifier.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

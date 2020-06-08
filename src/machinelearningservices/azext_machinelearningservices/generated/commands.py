@@ -27,7 +27,7 @@ def load_command_table(self, _):
         g.custom_command('delete', 'machinelearningservices_workspace_delete')
         g.custom_command('list-key', 'machinelearningservices_workspace_list_key')
         g.custom_command('resync-key', 'machinelearningservices_workspace_resync_key')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'machinelearningservices_workspace_show')
 
     from azext_machinelearningservices.generated._client_factory import cf_workspace_feature
     machinelearningservices_workspace_feature = CliCommandType(
@@ -95,7 +95,7 @@ def load_command_table(self, _):
         g.custom_command('delete', 'machinelearningservices_machine_learning_compute_delete', supports_no_wait=True)
         g.custom_command('list-key', 'machinelearningservices_machine_learning_compute_list_key')
         g.custom_command('list-node', 'machinelearningservices_machine_learning_compute_list_node')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'machinelearningservices_machine_learning_compute_show')
 
     from azext_machinelearningservices.generated._client_factory import cf_machinelearningservices
     machinelearningservices_ = CliCommandType(

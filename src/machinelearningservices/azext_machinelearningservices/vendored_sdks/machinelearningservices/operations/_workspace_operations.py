@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -32,7 +32,7 @@ class WorkspaceOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -61,16 +61,17 @@ class WorkspaceOperations(object):
         :param workspace_name: Name of Azure Machine Learning workspace.
         :type workspace_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Workspace or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.Workspace
+        :return: Workspace, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.Workspace
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Workspace"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -99,10 +100,10 @@ class WorkspaceOperations(object):
         deserialized = self._deserialize('Workspace', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def _create_or_update_initial(
         self,
@@ -112,7 +113,7 @@ class WorkspaceOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         sku=None,  # type: Optional["models.Sku"]
         type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         description=None,  # type: Optional[str]
         friendly_name=None,  # type: Optional[str]
         key_vault=None,  # type: Optional[str]
@@ -123,21 +124,22 @@ class WorkspaceOperations(object):
         hbi_workspace=False,  # type: Optional[bool]
         image_build_compute=None,  # type: Optional[str]
         allow_public_access_when_behind_vnet=False,  # type: Optional[bool]
-        shared_private_link_resources=None,  # type: Optional[List["SharedPrivateLinkResource"]]
+        shared_private_link_resources=None,  # type: Optional[List["models.SharedPrivateLinkResource"]]
         status=None,  # type: Optional[Union[str, "models.EncryptionStatus"]]
         key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Workspace"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Workspace"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.Workspace(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, description=description, friendly_name=friendly_name, key_vault=key_vault, application_insights=application_insights, container_registry=container_registry, storage_account=storage_account, discovery_url=discovery_url, hbi_workspace=hbi_workspace, image_build_compute=image_build_compute, allow_public_access_when_behind_vnet=allow_public_access_when_behind_vnet, shared_private_link_resources=shared_private_link_resources, status=status, key_vault_properties=key_vault_properties)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._create_or_update_initial.metadata['url']
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -176,10 +178,10 @@ class WorkspaceOperations(object):
             deserialized = self._deserialize('Workspace', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}
+    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def begin_create_or_update(
         self,
@@ -189,7 +191,7 @@ class WorkspaceOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         sku=None,  # type: Optional["models.Sku"]
         type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         description=None,  # type: Optional[str]
         friendly_name=None,  # type: Optional[str]
         key_vault=None,  # type: Optional[str]
@@ -200,12 +202,12 @@ class WorkspaceOperations(object):
         hbi_workspace=False,  # type: Optional[bool]
         image_build_compute=None,  # type: Optional[str]
         allow_public_access_when_behind_vnet=False,  # type: Optional[bool]
-        shared_private_link_resources=None,  # type: Optional[List["SharedPrivateLinkResource"]]
+        shared_private_link_resources=None,  # type: Optional[List["models.SharedPrivateLinkResource"]]
         status=None,  # type: Optional[Union[str, "models.EncryptionStatus"]]
         key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.Workspace"
+        # type: (...) -> LROPoller
         """Creates or updates a workspace with the specified parameters.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -217,13 +219,13 @@ class WorkspaceOperations(object):
         :param tags: Contains resource tags defined as key/value pairs.
         :type tags: dict[str, str]
         :param sku: The sku of the workspace.
-        :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+        :type sku: ~azure_machine_learning_workspaces.models.Sku
         :param type: The identity type.
-        :type type: str or ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+        :type type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
         :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-        :type user_assigned_identities: dict[str, ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+        :type user_assigned_identities: dict[str, ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
         :param description: The description of this workspace.
         :type description: str
         :param friendly_name: The friendly name for this workspace. This name in mutable.
@@ -253,22 +255,26 @@ class WorkspaceOperations(object):
         :type allow_public_access_when_behind_vnet: bool
         :param shared_private_link_resources: The list of shared private link resources in this
      workspace.
-        :type shared_private_link_resources: list[~azure.mgmt.machinelearningservices.models.SharedPrivateLinkResource]
+        :type shared_private_link_resources: list[~azure_machine_learning_workspaces.models.SharedPrivateLinkResource]
         :param status: Indicates whether or not the encryption is enabled for the workspace.
-        :type status: str or ~azure.mgmt.machinelearningservices.models.EncryptionStatus
+        :type status: str or ~azure_machine_learning_workspaces.models.EncryptionStatus
         :param key_vault_properties: Customer Key vault properties.
-        :type key_vault_properties: ~azure.mgmt.machinelearningservices.models.KeyVaultProperties
+        :type key_vault_properties: ~azure_machine_learning_workspaces.models.KeyVaultProperties
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns Workspace
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.machinelearningservices.models.Workspace]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either Workspace or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~azure_machine_learning_workspaces.models.Workspace]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Workspace"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._create_or_update_initial(
             resource_group_name=resource_group_name,
             workspace_name=workspace_name,
@@ -294,6 +300,9 @@ class WorkspaceOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('Workspace', pipeline_response)
 
@@ -301,15 +310,11 @@ class WorkspaceOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}
+    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def delete(
         self,
@@ -325,16 +330,17 @@ class WorkspaceOperations(object):
         :param workspace_name: Name of Azure Machine Learning workspace.
         :type workspace_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -360,9 +366,9 @@ class WorkspaceOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def update(
         self,
@@ -384,25 +390,26 @@ class WorkspaceOperations(object):
         :param tags: The resource tags for the machine learning workspace.
         :type tags: dict[str, str]
         :param sku: The sku of the workspace.
-        :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+        :type sku: ~azure_machine_learning_workspaces.models.Sku
         :param description: The description of this workspace.
         :type description: str
         :param friendly_name: The friendly name for this workspace.
         :type friendly_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Workspace or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.Workspace
+        :return: Workspace, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.Workspace
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Workspace"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.WorkspaceUpdateParameters(tags=tags, sku=sku, description=description, friendly_name=friendly_name)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.update.metadata['url']
+        url = self.update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -436,10 +443,10 @@ class WorkspaceOperations(object):
         deserialized = self._deserialize('Workspace', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def list_by_resource_group(
         self,
@@ -447,7 +454,7 @@ class WorkspaceOperations(object):
         skiptoken=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.WorkspaceListResult"
+        # type: (...) -> Iterable["models.WorkspaceListResult"]
         """Lists all the available machine learning workspaces under the specified resource group.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -455,32 +462,33 @@ class WorkspaceOperations(object):
         :param skiptoken: Continuation token for pagination.
         :type skiptoken: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkspaceListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.WorkspaceListResult
+        :return: An iterator like instance of either WorkspaceListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~azure_machine_learning_workspaces.models.WorkspaceListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkspaceListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_resource_group.metadata['url']
+                url = self.list_by_resource_group.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skiptoken is not None:
+                    query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if skiptoken is not None:
-                query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -512,7 +520,7 @@ class WorkspaceOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces'}
+    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces'}  # type: ignore
 
     def list_key(
         self,
@@ -528,16 +536,17 @@ class WorkspaceOperations(object):
         :param workspace_name: Name of Azure Machine Learning workspace.
         :type workspace_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ListWorkspaceKeysResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.ListWorkspaceKeysResult
+        :return: ListWorkspaceKeysResult, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.ListWorkspaceKeysResult
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListWorkspaceKeysResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.list_key.metadata['url']
+        url = self.list_key.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -566,10 +575,10 @@ class WorkspaceOperations(object):
         deserialized = self._deserialize('ListWorkspaceKeysResult', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listKeys'}
+    list_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listKeys'}  # type: ignore
 
     def resync_key(
         self,
@@ -585,16 +594,17 @@ class WorkspaceOperations(object):
         :param workspace_name: Name of Azure Machine Learning workspace.
         :type workspace_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.resync_key.metadata['url']
+        url = self.resync_key.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -620,46 +630,47 @@ class WorkspaceOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    resync_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/resyncKeys'}
+    resync_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/resyncKeys'}  # type: ignore
 
     def list_by_subscription(
         self,
         skiptoken=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.WorkspaceListResult"
+        # type: (...) -> Iterable["models.WorkspaceListResult"]
         """Lists all the available machine learning workspaces under the specified subscription.
 
         :param skiptoken: Continuation token for pagination.
         :type skiptoken: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkspaceListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.WorkspaceListResult
+        :return: An iterator like instance of either WorkspaceListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~azure_machine_learning_workspaces.models.WorkspaceListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkspaceListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_subscription.metadata['url']
+                url = self.list_by_subscription.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skiptoken is not None:
+                    query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if skiptoken is not None:
-                query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -691,4 +702,4 @@ class WorkspaceOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces'}
+    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/workspaces'}  # type: ignore

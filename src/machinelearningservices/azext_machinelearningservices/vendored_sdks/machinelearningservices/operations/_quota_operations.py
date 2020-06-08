@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class QuotaOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -48,7 +48,7 @@ class QuotaOperations(object):
     def update(
         self,
         location,  # type: str
-        value=None,  # type: Optional[List["QuotaBaseProperties"]]
+        value=None,  # type: Optional[List["models.QuotaBaseProperties"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.UpdateWorkspaceQuotasResult"
@@ -57,21 +57,22 @@ class QuotaOperations(object):
         :param location: The location for update quota is queried.
         :type location: str
         :param value: The list for update quota.
-        :type value: list[~azure.mgmt.machinelearningservices.models.QuotaBaseProperties]
+        :type value: list[~azure_machine_learning_workspaces.models.QuotaBaseProperties]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: UpdateWorkspaceQuotasResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.UpdateWorkspaceQuotasResult
+        :return: UpdateWorkspaceQuotasResult, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.UpdateWorkspaceQuotasResult
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.UpdateWorkspaceQuotasResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.QuotaUpdateParameters(value=value)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.update.metadata['url']
+        url = self.update.metadata['url']  # type: ignore
         path_format_arguments = {
             'location': self._serialize.url("location", location, 'str', pattern=r'^[-\w\._]+$'),
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
@@ -104,46 +105,47 @@ class QuotaOperations(object):
         deserialized = self._deserialize('UpdateWorkspaceQuotasResult', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    update.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/updateQuotas'}
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/updateQuotas'}  # type: ignore
 
     def list(
         self,
         location,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ListWorkspaceQuotas"
+        # type: (...) -> Iterable["models.ListWorkspaceQuotas"]
         """Gets the currently assigned Workspace Quotas based on VMFamily.
 
         :param location: The location for which resource usage is queried.
         :type location: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ListWorkspaceQuotas or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.ListWorkspaceQuotas
+        :return: An iterator like instance of either ListWorkspaceQuotas or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~azure_machine_learning_workspaces.models.ListWorkspaceQuotas]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListWorkspaceQuotas"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'location': self._serialize.url("location", location, 'str', pattern=r'^[-\w\._]+$'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -174,4 +176,4 @@ class QuotaOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/Quotas'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/Quotas'}  # type: ignore

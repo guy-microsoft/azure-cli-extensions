@@ -29,7 +29,7 @@ class PrivateEndpointConnectionOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -62,16 +62,17 @@ class PrivateEndpointConnectionOperations(object):
          with the workspace.
         :type private_endpoint_connection_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: PrivateEndpointConnection or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.PrivateEndpointConnection
+        :return: PrivateEndpointConnection, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.PrivateEndpointConnection
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateEndpointConnection"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -101,10 +102,10 @@ class PrivateEndpointConnectionOperations(object):
         deserialized = self._deserialize('PrivateEndpointConnection', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}  # type: ignore
 
     def put(
         self,
@@ -115,7 +116,7 @@ class PrivateEndpointConnectionOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         sku=None,  # type: Optional["models.Sku"]
         type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         private_endpoint=None,  # type: Optional["models.PrivateEndpoint"]
         private_link_service_connection_state=None,  # type: Optional["models.PrivateLinkServiceConnectionState"]
         **kwargs  # type: Any
@@ -135,32 +136,33 @@ class PrivateEndpointConnectionOperations(object):
         :param tags: Contains resource tags defined as key/value pairs.
         :type tags: dict[str, str]
         :param sku: The sku of the workspace.
-        :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+        :type sku: ~azure_machine_learning_workspaces.models.Sku
         :param type: The identity type.
-        :type type: str or ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+        :type type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
         :param user_assigned_identities: The list of user identities associated with resource. The user
          identity dictionary key references will be ARM resource ids in the form:
          '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-        :type user_assigned_identities: dict[str, ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+        :type user_assigned_identities: dict[str, ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
         :param private_endpoint: The resource of private end point.
-        :type private_endpoint: ~azure.mgmt.machinelearningservices.models.PrivateEndpoint
+        :type private_endpoint: ~azure_machine_learning_workspaces.models.PrivateEndpoint
         :param private_link_service_connection_state: A collection of information about the state of
          the connection between service consumer and provider.
-        :type private_link_service_connection_state: ~azure.mgmt.machinelearningservices.models.PrivateLinkServiceConnectionState
+        :type private_link_service_connection_state: ~azure_machine_learning_workspaces.models.PrivateLinkServiceConnectionState
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: PrivateEndpointConnection or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.PrivateEndpointConnection
+        :return: PrivateEndpointConnection, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.PrivateEndpointConnection
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateEndpointConnection"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _properties = models.PrivateEndpointConnection(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, private_endpoint=private_endpoint, private_link_service_connection_state=private_link_service_connection_state)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.put.metadata['url']
+        url = self.put.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -195,10 +197,10 @@ class PrivateEndpointConnectionOperations(object):
         deserialized = self._deserialize('PrivateEndpointConnection', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    put.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}
+    put.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}  # type: ignore
 
     def delete(
         self,
@@ -218,16 +220,17 @@ class PrivateEndpointConnectionOperations(object):
          with the workspace.
         :type private_endpoint_connection_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -254,6 +257,6 @@ class PrivateEndpointConnectionOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}'}  # type: ignore

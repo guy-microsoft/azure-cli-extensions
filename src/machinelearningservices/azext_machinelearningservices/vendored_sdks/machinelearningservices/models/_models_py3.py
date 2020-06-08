@@ -12,6 +12,8 @@ from typing import Dict, List, Optional, Union
 from azure.core.exceptions import HttpResponseError
 import msrest.serialization
 
+from ._azure_machine_learning_workspaces_enums import *
+
 
 class Compute(msrest.serialization.Model):
     """Machine Learning compute object.
@@ -26,14 +28,13 @@ class Compute(msrest.serialization.Model):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -44,7 +45,7 @@ class Compute(msrest.serialization.Model):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -84,7 +85,7 @@ class Compute(msrest.serialization.Model):
         **kwargs
     ):
         super(Compute, self).__init__(**kwargs)
-        self.compute_type = None
+        self.compute_type: Optional[str] = None
         self.compute_location = compute_location
         self.provisioning_state = None
         self.description = description
@@ -105,14 +106,13 @@ class Aks(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -123,12 +123,12 @@ class Aks(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
     :param properties: AKS properties.
-    :type properties: ~azure.mgmt.machinelearningservices.models.AksProperties
+    :type properties: ~azure_machine_learning_workspaces.models.AksProperties
     """
 
     _validation = {
@@ -163,7 +163,7 @@ class Aks(Compute):
         **kwargs
     ):
         super(Aks, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'AKS'
+        self.compute_type: str = 'AKS'
         self.properties = properties
 
 
@@ -178,7 +178,7 @@ class ComputeSecrets(msrest.serialization.Model):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     """
 
     _validation = {
@@ -198,7 +198,7 @@ class ComputeSecrets(msrest.serialization.Model):
         **kwargs
     ):
         super(ComputeSecrets, self).__init__(**kwargs)
-        self.compute_type = None
+        self.compute_type: Optional[str] = None
 
 
 class AksComputeSecrets(ComputeSecrets):
@@ -209,7 +209,7 @@ class AksComputeSecrets(ComputeSecrets):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param user_kube_config: Content of kubeconfig file that can be used to connect to the
      Kubernetes cluster.
     :type user_kube_config: str
@@ -240,7 +240,7 @@ class AksComputeSecrets(ComputeSecrets):
         **kwargs
     ):
         super(AksComputeSecrets, self).__init__(**kwargs)
-        self.compute_type = 'AKS'
+        self.compute_type: str = 'AKS'
         self.user_kube_config = user_kube_config
         self.admin_kube_config = admin_kube_config
         self.image_pull_secret_name = image_pull_secret_name
@@ -299,16 +299,16 @@ class AksProperties(msrest.serialization.Model):
     :param cluster_fqdn: Cluster full qualified domain name.
     :type cluster_fqdn: str
     :ivar system_services: System services.
-    :vartype system_services: list[~azure.mgmt.machinelearningservices.models.SystemService]
+    :vartype system_services: list[~azure_machine_learning_workspaces.models.SystemService]
     :param agent_count: Number of agents.
     :type agent_count: int
     :param agent_vm_size: Agent virtual machine size.
     :type agent_vm_size: str
     :param ssl_configuration: SSL configuration.
-    :type ssl_configuration: ~azure.mgmt.machinelearningservices.models.SslConfiguration
+    :type ssl_configuration: ~azure_machine_learning_workspaces.models.SslConfiguration
     :param aks_networking_configuration: AKS networking configuration for vnet.
     :type aks_networking_configuration:
-     ~azure.mgmt.machinelearningservices.models.AksNetworkingConfiguration
+     ~azure_machine_learning_workspaces.models.AksNetworkingConfiguration
     """
 
     _validation = {
@@ -354,14 +354,13 @@ class AmlCompute(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -372,12 +371,12 @@ class AmlCompute(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
     :param properties: AML Compute properties.
-    :type properties: ~azure.mgmt.machinelearningservices.models.AmlComputeProperties
+    :type properties: ~azure_machine_learning_workspaces.models.AmlComputeProperties
     """
 
     _validation = {
@@ -412,7 +411,7 @@ class AmlCompute(Compute):
         **kwargs
     ):
         super(AmlCompute, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'AmlCompute'
+        self.compute_type: str = 'AmlCompute'
         self.properties = properties
 
 
@@ -432,7 +431,7 @@ class AmlComputeNodeInformation(msrest.serialization.Model):
     :ivar node_state: State of the compute node. Values are idle, running, preparing, unusable,
      leaving and preempted. Possible values include: "idle", "running", "preparing", "unusable",
      "leaving", "preempted".
-    :vartype node_state: str or ~azure.mgmt.machinelearningservices.models.NodeState
+    :vartype node_state: str or ~azure_machine_learning_workspaces.models.NodeState
     :ivar run_id: ID of the Experiment running on the node, if any else null.
     :vartype run_id: str
     """
@@ -481,7 +480,7 @@ class ComputeNodesInformation(msrest.serialization.Model):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :ivar next_link: The continuation token.
     :vartype next_link: str
     """
@@ -505,7 +504,7 @@ class ComputeNodesInformation(msrest.serialization.Model):
         **kwargs
     ):
         super(ComputeNodesInformation, self).__init__(**kwargs)
-        self.compute_type = None
+        self.compute_type: Optional[str] = None
         self.next_link = None
 
 
@@ -519,11 +518,11 @@ class AmlComputeNodesInformation(ComputeNodesInformation):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :ivar next_link: The continuation token.
     :vartype next_link: str
     :ivar nodes: The collection of returned AmlCompute nodes details.
-    :vartype nodes: list[~azure.mgmt.machinelearningservices.models.AmlComputeNodeInformation]
+    :vartype nodes: list[~azure_machine_learning_workspaces.models.AmlComputeNodeInformation]
     """
 
     _validation = {
@@ -543,7 +542,7 @@ class AmlComputeNodesInformation(ComputeNodesInformation):
         **kwargs
     ):
         super(AmlComputeNodesInformation, self).__init__(**kwargs)
-        self.compute_type = 'AmlCompute'
+        self.compute_type: str = 'AmlCompute'
         self.nodes = None
 
 
@@ -556,15 +555,15 @@ class AmlComputeProperties(msrest.serialization.Model):
     :type vm_size: str
     :param vm_priority: Virtual Machine priority. Possible values include: "Dedicated",
      "LowPriority".
-    :type vm_priority: str or ~azure.mgmt.machinelearningservices.models.VmPriority
+    :type vm_priority: str or ~azure_machine_learning_workspaces.models.VmPriority
     :param scale_settings: Scale settings for AML Compute.
-    :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
+    :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
     :param user_account_credentials: Credentials for an administrator user account that will be
      created on each compute node.
     :type user_account_credentials:
-     ~azure.mgmt.machinelearningservices.models.UserAccountCredentials
+     ~azure_machine_learning_workspaces.models.UserAccountCredentials
     :param subnet: Virtual network subnet resource ID the compute nodes belong to.
-    :type subnet: ~azure.mgmt.machinelearningservices.models.ResourceId
+    :type subnet: ~azure_machine_learning_workspaces.models.ResourceId
     :param remote_login_port_public_access: State of the public SSH port. Possible values are:
      Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled -
      Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified -
@@ -573,19 +572,19 @@ class AmlComputeProperties(msrest.serialization.Model):
      creation it will be either enabled or disabled. Possible values include: "Enabled", "Disabled",
      "NotSpecified". Default value: "NotSpecified".
     :type remote_login_port_public_access: str or
-     ~azure.mgmt.machinelearningservices.models.RemoteLoginPortPublicAccess
+     ~azure_machine_learning_workspaces.models.RemoteLoginPortPublicAccess
     :ivar allocation_state: Allocation state of the compute. Possible values are: steady -
      Indicates that the compute is not resizing. There are no changes to the number of compute nodes
      in the compute in progress. A compute enters this state when it is created and when no
      operations are being performed on the compute to change the number of compute nodes. resizing -
      Indicates that the compute is resizing; that is, compute nodes are being added to or removed
      from the compute. Possible values include: "Steady", "Resizing".
-    :vartype allocation_state: str or ~azure.mgmt.machinelearningservices.models.AllocationState
+    :vartype allocation_state: str or ~azure_machine_learning_workspaces.models.AllocationState
     :ivar allocation_state_transition_time: The time at which the compute entered its current
      allocation state.
     :vartype allocation_state_transition_time: ~datetime.datetime
     :ivar errors: Collection of errors encountered by various compute nodes during node setup.
-    :vartype errors: list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+    :vartype errors: list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar current_node_count: The number of compute nodes currently assigned to the compute.
     :vartype current_node_count: int
     :ivar target_node_count: The target number of compute nodes for the compute. If the
@@ -594,7 +593,7 @@ class AmlComputeProperties(msrest.serialization.Model):
      the previous resize operation.
     :vartype target_node_count: int
     :ivar node_state_counts: Counts of various node states on the compute.
-    :vartype node_state_counts: ~azure.mgmt.machinelearningservices.models.NodeStateCounts
+    :vartype node_state_counts: ~azure_machine_learning_workspaces.models.NodeStateCounts
     """
 
     _validation = {
@@ -682,7 +681,7 @@ class ClusterUpdateParameters(msrest.serialization.Model):
     """AmlCompute update parameters.
 
     :param scale_settings: Desired scale settings for the amlCompute.
-    :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
+    :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
     """
 
     _attribute_map = {
@@ -745,20 +744,19 @@ class Resource(msrest.serialization.Model):
     :param tags: A set of tags. Contains resource tags defined as key/value pairs.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :ivar principal_id: The principal ID of resource identity.
     :vartype principal_id: str
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
      "UserAssigned", "SystemAssigned,UserAssigned", "None".
-    :type type_identity_type: str or
-     ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     """
 
     _validation = {
@@ -821,22 +819,21 @@ class ComputeResource(Resource):
     :param tags: A set of tags. Contains resource tags defined as key/value pairs.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :ivar principal_id: The principal ID of resource identity.
     :vartype principal_id: str
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
      "UserAssigned", "SystemAssigned,UserAssigned", "None".
-    :type type_identity_type: str or
-     ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :param properties: Compute properties.
-    :type properties: ~azure.mgmt.machinelearningservices.models.Compute
+    :type properties: ~azure_machine_learning_workspaces.models.Compute
     """
 
     _validation = {
@@ -886,14 +883,13 @@ class Databricks(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -904,12 +900,12 @@ class Databricks(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
-    :param properties:
-    :type properties: ~azure.mgmt.machinelearningservices.models.DatabricksProperties
+    :param databricks_access_token: Databricks access token.
+    :type databricks_access_token: str
     """
 
     _validation = {
@@ -931,7 +927,7 @@ class Databricks(Compute):
         'resource_id': {'key': 'resourceId', 'type': 'str'},
         'provisioning_errors': {'key': 'provisioningErrors', 'type': '[MachineLearningServiceError]'},
         'is_attached_compute': {'key': 'isAttachedCompute', 'type': 'bool'},
-        'properties': {'key': 'properties', 'type': 'DatabricksProperties'},
+        'databricks_access_token': {'key': 'properties.databricksAccessToken', 'type': 'str'},
     }
 
     def __init__(
@@ -940,12 +936,12 @@ class Databricks(Compute):
         compute_location: Optional[str] = None,
         description: Optional[str] = None,
         resource_id: Optional[str] = None,
-        properties: Optional["DatabricksProperties"] = None,
+        databricks_access_token: Optional[str] = None,
         **kwargs
     ):
         super(Databricks, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'Databricks'
-        self.properties = properties
+        self.compute_type: str = 'Databricks'
+        self.databricks_access_token = databricks_access_token
 
 
 class DatabricksComputeSecrets(ComputeSecrets):
@@ -956,7 +952,7 @@ class DatabricksComputeSecrets(ComputeSecrets):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param databricks_access_token: access token for databricks account.
     :type databricks_access_token: str
     """
@@ -977,28 +973,7 @@ class DatabricksComputeSecrets(ComputeSecrets):
         **kwargs
     ):
         super(DatabricksComputeSecrets, self).__init__(**kwargs)
-        self.compute_type = 'Databricks'
-        self.databricks_access_token = databricks_access_token
-
-
-class DatabricksProperties(msrest.serialization.Model):
-    """DatabricksProperties.
-
-    :param databricks_access_token: Databricks access token.
-    :type databricks_access_token: str
-    """
-
-    _attribute_map = {
-        'databricks_access_token': {'key': 'databricksAccessToken', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        databricks_access_token: Optional[str] = None,
-        **kwargs
-    ):
-        super(DatabricksProperties, self).__init__(**kwargs)
+        self.compute_type: str = 'Databricks'
         self.databricks_access_token = databricks_access_token
 
 
@@ -1012,14 +987,13 @@ class DataFactory(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -1030,7 +1004,7 @@ class DataFactory(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -1066,7 +1040,7 @@ class DataFactory(Compute):
         **kwargs
     ):
         super(DataFactory, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'DataFactory'
+        self.compute_type: str = 'DataFactory'
 
 
 class DataLakeAnalytics(Compute):
@@ -1079,14 +1053,13 @@ class DataLakeAnalytics(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -1097,12 +1070,12 @@ class DataLakeAnalytics(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
-    :param properties:
-    :type properties: ~azure.mgmt.machinelearningservices.models.DataLakeAnalyticsProperties
+    :param data_lake_store_account_name: DataLake Store Account Name.
+    :type data_lake_store_account_name: str
     """
 
     _validation = {
@@ -1124,7 +1097,7 @@ class DataLakeAnalytics(Compute):
         'resource_id': {'key': 'resourceId', 'type': 'str'},
         'provisioning_errors': {'key': 'provisioningErrors', 'type': '[MachineLearningServiceError]'},
         'is_attached_compute': {'key': 'isAttachedCompute', 'type': 'bool'},
-        'properties': {'key': 'properties', 'type': 'DataLakeAnalyticsProperties'},
+        'data_lake_store_account_name': {'key': 'properties.dataLakeStoreAccountName', 'type': 'str'},
     }
 
     def __init__(
@@ -1133,32 +1106,11 @@ class DataLakeAnalytics(Compute):
         compute_location: Optional[str] = None,
         description: Optional[str] = None,
         resource_id: Optional[str] = None,
-        properties: Optional["DataLakeAnalyticsProperties"] = None,
-        **kwargs
-    ):
-        super(DataLakeAnalytics, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'DataLakeAnalytics'
-        self.properties = properties
-
-
-class DataLakeAnalyticsProperties(msrest.serialization.Model):
-    """DataLakeAnalyticsProperties.
-
-    :param data_lake_store_account_name: DataLake Store Account Name.
-    :type data_lake_store_account_name: str
-    """
-
-    _attribute_map = {
-        'data_lake_store_account_name': {'key': 'dataLakeStoreAccountName', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
         data_lake_store_account_name: Optional[str] = None,
         **kwargs
     ):
-        super(DataLakeAnalyticsProperties, self).__init__(**kwargs)
+        super(DataLakeAnalytics, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
+        self.compute_type: str = 'DataLakeAnalytics'
         self.data_lake_store_account_name = data_lake_store_account_name
 
 
@@ -1205,7 +1157,7 @@ class ErrorResponse(msrest.serialization.Model):
     :ivar message: Error message.
     :vartype message: str
     :ivar details: An array of error detail objects.
-    :vartype details: list[~azure.mgmt.machinelearningservices.models.ErrorDetail]
+    :vartype details: list[~azure_machine_learning_workspaces.models.ErrorDetail]
     """
 
     _validation = {
@@ -1240,14 +1192,13 @@ class HdInsight(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -1258,7 +1209,7 @@ class HdInsight(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -1268,7 +1219,7 @@ class HdInsight(Compute):
     :type address: str
     :param administrator_account: Admin credentials for master node of the cluster.
     :type administrator_account:
-     ~azure.mgmt.machinelearningservices.models.VirtualMachineSshCredentials
+     ~azure_machine_learning_workspaces.models.VirtualMachineSshCredentials
     """
 
     _validation = {
@@ -1307,7 +1258,7 @@ class HdInsight(Compute):
         **kwargs
     ):
         super(HdInsight, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'HDInsight'
+        self.compute_type: str = 'HDInsight'
         self.ssh_port = ssh_port
         self.address = address
         self.administrator_account = administrator_account
@@ -1359,7 +1310,7 @@ class ListAmlUserFeatureResult(msrest.serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar value: The list of AML user facing features.
-    :vartype value: list[~azure.mgmt.machinelearningservices.models.AmlUserFeature]
+    :vartype value: list[~azure_machine_learning_workspaces.models.AmlUserFeature]
     :ivar next_link: The URI to fetch the next page of AML user features information. Call
      ListNext() with this to fetch the next page of AML user features information.
     :vartype next_link: str
@@ -1390,7 +1341,7 @@ class ListUsagesResult(msrest.serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar value: The list of AML resource usages.
-    :vartype value: list[~azure.mgmt.machinelearningservices.models.Usage]
+    :vartype value: list[~azure_machine_learning_workspaces.models.Usage]
     :ivar next_link: The URI to fetch the next page of AML resource usage information. Call
      ListNext() with this to fetch the next page of AML resource usage information.
     :vartype next_link: str
@@ -1428,7 +1379,7 @@ class ListWorkspaceKeysResult(msrest.serialization.Model):
     :vartype app_insights_instrumentation_key: str
     :ivar container_registry_credentials:
     :vartype container_registry_credentials:
-     ~azure.mgmt.machinelearningservices.models.RegistryListCredentialsResult
+     ~azure_machine_learning_workspaces.models.RegistryListCredentialsResult
     """
 
     _validation = {
@@ -1462,7 +1413,7 @@ class ListWorkspaceQuotas(msrest.serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar value: The list of Workspace Quotas by VM Family.
-    :vartype value: list[~azure.mgmt.machinelearningservices.models.ResourceQuota]
+    :vartype value: list[~azure_machine_learning_workspaces.models.ResourceQuota]
     :ivar next_link: The URI to fetch the next page of workspace quota information by VM Family.
      Call ListNext() with this to fetch the next page of Workspace Quota information.
     :vartype next_link: str
@@ -1493,7 +1444,7 @@ class MachineLearningServiceError(msrest.serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar error: The error response.
-    :vartype error: ~azure.mgmt.machinelearningservices.models.ErrorResponse
+    :vartype error: ~azure_machine_learning_workspaces.models.ErrorResponse
     """
 
     _validation = {
@@ -1568,7 +1519,7 @@ class Operation(msrest.serialization.Model):
     :param name: Operation name: {provider}/{resource}/{operation}.
     :type name: str
     :param display: Display name of operation.
-    :type display: ~azure.mgmt.machinelearningservices.models.OperationDisplay
+    :type display: ~azure_machine_learning_workspaces.models.OperationDisplay
     """
 
     _attribute_map = {
@@ -1629,7 +1580,7 @@ class OperationListResult(msrest.serialization.Model):
 
     :param value: List of AML workspace operations supported by the AML workspace resource
      provider.
-    :type value: list[~azure.mgmt.machinelearningservices.models.Operation]
+    :type value: list[~azure_machine_learning_workspaces.models.Operation]
     """
 
     _attribute_map = {
@@ -1650,7 +1601,7 @@ class PaginatedComputeResourcesList(msrest.serialization.Model):
     """Paginated list of Machine Learning compute objects wrapped in ARM resource envelope.
 
     :param value: An array of Machine Learning compute objects wrapped in ARM resource envelope.
-    :type value: list[~azure.mgmt.machinelearningservices.models.ComputeResource]
+    :type value: list[~azure_machine_learning_workspaces.models.ComputeResource]
     :param next_link: A continuation link (absolute URI) to the next page of results in the list.
     :type next_link: str
     """
@@ -1743,30 +1694,29 @@ class PrivateEndpointConnection(Resource):
     :param tags: A set of tags. Contains resource tags defined as key/value pairs.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :ivar principal_id: The principal ID of resource identity.
     :vartype principal_id: str
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
      "UserAssigned", "SystemAssigned,UserAssigned", "None".
-    :type type_identity_type: str or
-     ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :param private_endpoint: The resource of private end point.
-    :type private_endpoint: ~azure.mgmt.machinelearningservices.models.PrivateEndpoint
+    :type private_endpoint: ~azure_machine_learning_workspaces.models.PrivateEndpoint
     :param private_link_service_connection_state: A collection of information about the state of
      the connection between service consumer and provider.
     :type private_link_service_connection_state:
-     ~azure.mgmt.machinelearningservices.models.PrivateLinkServiceConnectionState
+     ~azure_machine_learning_workspaces.models.PrivateLinkServiceConnectionState
     :ivar provisioning_state: The provisioning state of the private endpoint connection resource.
      Possible values include: "Succeeded", "Creating", "Deleting", "Failed".
     :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.PrivateEndpointConnectionProvisioningState
+     ~azure_machine_learning_workspaces.models.PrivateEndpointConnectionProvisioningState
     """
 
     _validation = {
@@ -1828,20 +1778,19 @@ class PrivateLinkResource(Resource):
     :param tags: A set of tags. Contains resource tags defined as key/value pairs.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :ivar principal_id: The principal ID of resource identity.
     :vartype principal_id: str
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
      "UserAssigned", "SystemAssigned,UserAssigned", "None".
-    :type type_identity_type: str or
-     ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :ivar group_id: The private link resource group id.
     :vartype group_id: str
     :ivar required_members: The private link resource required member names.
@@ -1897,7 +1846,7 @@ class PrivateLinkResourceListResult(msrest.serialization.Model):
     """A list of private link resources.
 
     :param value: Array of private link resources.
-    :type value: list[~azure.mgmt.machinelearningservices.models.PrivateLinkResource]
+    :type value: list[~azure_machine_learning_workspaces.models.PrivateLinkResource]
     """
 
     _attribute_map = {
@@ -1921,7 +1870,7 @@ class PrivateLinkServiceConnectionState(msrest.serialization.Model):
      of the service. Possible values include: "Pending", "Approved", "Rejected", "Disconnected",
      "Timeout".
     :type status: str or
-     ~azure.mgmt.machinelearningservices.models.PrivateEndpointServiceConnectionStatus
+     ~azure_machine_learning_workspaces.models.PrivateEndpointServiceConnectionStatus
     :param description: The reason for approval/rejection of the connection.
     :type description: str
     :param actions_required: A message indicating if changes on the service provider require any
@@ -1995,7 +1944,7 @@ class QuotaUpdateParameters(msrest.serialization.Model):
     """Quota update parameters.
 
     :param value: The list for update quota.
-    :type value: list[~azure.mgmt.machinelearningservices.models.QuotaBaseProperties]
+    :type value: list[~azure_machine_learning_workspaces.models.QuotaBaseProperties]
     """
 
     _attribute_map = {
@@ -2022,7 +1971,7 @@ class RegistryListCredentialsResult(msrest.serialization.Model):
     :ivar username:
     :vartype username: str
     :param passwords:
-    :type passwords: list[~azure.mgmt.machinelearningservices.models.Password]
+    :type passwords: list[~azure_machine_learning_workspaces.models.Password]
     """
 
     _validation = {
@@ -2115,7 +2064,7 @@ class ResourceQuota(msrest.serialization.Model):
     :ivar type: Specifies the resource type.
     :vartype type: str
     :ivar name: Name of the resource.
-    :vartype name: ~azure.mgmt.machinelearningservices.models.ResourceName
+    :vartype name: ~azure_machine_learning_workspaces.models.ResourceName
     :ivar limit: The maximum permitted quota of the resource.
     :vartype limit: long
     :ivar unit: An enum describing the unit of quota measurement. Default value: "Count".
@@ -2162,7 +2111,7 @@ class ResourceSkuLocationInfo(msrest.serialization.Model):
     :ivar zones: List of availability zones where the SKU is supported.
     :vartype zones: list[str]
     :ivar zone_details: Details of capabilities available to a SKU in specific zones.
-    :vartype zone_details: list[~azure.mgmt.machinelearningservices.models.ResourceSkuZoneDetails]
+    :vartype zone_details: list[~azure_machine_learning_workspaces.models.ResourceSkuZoneDetails]
     """
 
     _validation = {
@@ -2196,7 +2145,7 @@ class ResourceSkuZoneDetails(msrest.serialization.Model):
     :vartype name: list[str]
     :ivar capabilities: A list of capabilities that are available for the SKU in the specified list
      of zones.
-    :vartype capabilities: list[~azure.mgmt.machinelearningservices.models.SkuCapability]
+    :vartype capabilities: list[~azure_machine_learning_workspaces.models.SkuCapability]
     """
 
     _validation = {
@@ -2230,7 +2179,7 @@ class Restriction(msrest.serialization.Model):
     :vartype values: list[str]
     :param reason_code: The reason for the restriction. Possible values include: "NotSpecified",
      "NotAvailableForRegion", "NotAvailableForSubscription".
-    :type reason_code: str or ~azure.mgmt.machinelearningservices.models.ReasonCode
+    :type reason_code: str or ~azure_machine_learning_workspaces.models.ReasonCode
     """
 
     _validation = {
@@ -2341,7 +2290,7 @@ class SharedPrivateLinkResource(msrest.serialization.Model):
      of the service. Possible values include: "Pending", "Approved", "Rejected", "Disconnected",
      "Timeout".
     :type status: str or
-     ~azure.mgmt.machinelearningservices.models.PrivateEndpointServiceConnectionStatus
+     ~azure_machine_learning_workspaces.models.PrivateEndpointServiceConnectionStatus
     """
 
     _attribute_map = {
@@ -2426,7 +2375,7 @@ class SkuListResult(msrest.serialization.Model):
     """List of skus with features.
 
     :param value:
-    :type value: list[~azure.mgmt.machinelearningservices.models.WorkspaceSku]
+    :type value: list[~azure_machine_learning_workspaces.models.WorkspaceSku]
     :param next_link: The URI to fetch the next page of Workspace Skus. Call ListNext() with this
      URI to fetch the next page of Workspace Skus.
     :type next_link: str
@@ -2454,7 +2403,7 @@ class SslConfiguration(msrest.serialization.Model):
 
     :param status: Enable or disable ssl for scoring. Possible values include: "Disabled",
      "Enabled".
-    :type status: str or ~azure.mgmt.machinelearningservices.models.SslConfigurationStatus
+    :type status: str or ~azure_machine_learning_workspaces.models.SslConfigurationStatus
     :param cert: Cert data.
     :type cert: str
     :param key: Key data.
@@ -2538,7 +2487,7 @@ class UpdateWorkspaceQuotas(msrest.serialization.Model):
      "Success", "Failure", "InvalidQuotaBelowClusterMinimum",
      "InvalidQuotaExceedsSubscriptionLimit", "InvalidVMFamilyName", "OperationNotSupportedForSku",
      "OperationNotEnabledForRegion".
-    :type status: str or ~azure.mgmt.machinelearningservices.models.Status
+    :type status: str or ~azure_machine_learning_workspaces.models.Status
     """
 
     _validation = {
@@ -2578,7 +2527,7 @@ class UpdateWorkspaceQuotasResult(msrest.serialization.Model):
     Variables are only populated by the server, and will be ignored when sending a request.
 
     :ivar value: The list of workspace quota update result.
-    :vartype value: list[~azure.mgmt.machinelearningservices.models.UpdateWorkspaceQuotas]
+    :vartype value: list[~azure_machine_learning_workspaces.models.UpdateWorkspaceQuotas]
     :ivar next_link: The URI to fetch the next page of workspace quota update result. Call
      ListNext() with this to fetch the next page of Workspace Quota update result.
     :vartype next_link: str
@@ -2619,7 +2568,7 @@ class Usage(msrest.serialization.Model):
     :ivar limit: The maximum permitted usage of the resource.
     :vartype limit: long
     :ivar name: The name of the type of usage.
-    :vartype name: ~azure.mgmt.machinelearningservices.models.UsageName
+    :vartype name: ~azure_machine_learning_workspaces.models.UsageName
     """
 
     _validation = {
@@ -2733,14 +2682,13 @@ class VirtualMachine(Compute):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param compute_location: Location for the underlying compute.
     :type compute_location: str
     :ivar provisioning_state: The provision state of the cluster. Valid values are Unknown,
      Updating, Provisioning, Succeeded, and Failed. Possible values include: "Unknown", "Updating",
      "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param description: The description of the Machine Learning compute.
     :type description: str
     :ivar created_on: The date and time when the compute was created.
@@ -2751,7 +2699,7 @@ class VirtualMachine(Compute):
     :type resource_id: str
     :ivar provisioning_errors: Errors during provisioning.
     :vartype provisioning_errors:
-     list[~azure.mgmt.machinelearningservices.models.MachineLearningServiceError]
+     list[~azure_machine_learning_workspaces.models.MachineLearningServiceError]
     :ivar is_attached_compute: Indicating whether the compute was provisioned by user and brought
      from outside if true, or machine learning service provisioned it if false.
     :vartype is_attached_compute: bool
@@ -2763,7 +2711,7 @@ class VirtualMachine(Compute):
     :type address: str
     :param administrator_account: Admin credentials for virtual machine.
     :type administrator_account:
-     ~azure.mgmt.machinelearningservices.models.VirtualMachineSshCredentials
+     ~azure_machine_learning_workspaces.models.VirtualMachineSshCredentials
     """
 
     _validation = {
@@ -2804,7 +2752,7 @@ class VirtualMachine(Compute):
         **kwargs
     ):
         super(VirtualMachine, self).__init__(compute_location=compute_location, description=description, resource_id=resource_id, **kwargs)
-        self.compute_type = 'VirtualMachine'
+        self.compute_type: str = 'VirtualMachine'
         self.virtual_machine_size = virtual_machine_size
         self.ssh_port = ssh_port
         self.address = address
@@ -2819,10 +2767,10 @@ class VirtualMachineSecrets(ComputeSecrets):
     :param compute_type: Required. The type of compute.Constant filled by server.  Possible values
      include: "AKS", "AmlCompute", "DataFactory", "VirtualMachine", "HDInsight", "Databricks",
      "DataLakeAnalytics".
-    :type compute_type: str or ~azure.mgmt.machinelearningservices.models.ComputeType
+    :type compute_type: str or ~azure_machine_learning_workspaces.models.ComputeType
     :param administrator_account: Admin credentials for virtual machine.
     :type administrator_account:
-     ~azure.mgmt.machinelearningservices.models.VirtualMachineSshCredentials
+     ~azure_machine_learning_workspaces.models.VirtualMachineSshCredentials
     """
 
     _validation = {
@@ -2841,7 +2789,7 @@ class VirtualMachineSecrets(ComputeSecrets):
         **kwargs
     ):
         super(VirtualMachineSecrets, self).__init__(**kwargs)
-        self.compute_type = 'VirtualMachine'
+        self.compute_type: str = 'VirtualMachine'
         self.administrator_account = administrator_account
 
 
@@ -2915,7 +2863,7 @@ class VirtualMachineSizeListResult(msrest.serialization.Model):
     """The List Virtual Machine size operation response.
 
     :param aml_compute: The list of virtual machine sizes supported by AmlCompute.
-    :type aml_compute: list[~azure.mgmt.machinelearningservices.models.VirtualMachineSize]
+    :type aml_compute: list[~azure_machine_learning_workspaces.models.VirtualMachineSize]
     """
 
     _attribute_map = {
@@ -2984,20 +2932,19 @@ class Workspace(Resource):
     :param tags: A set of tags. Contains resource tags defined as key/value pairs.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :ivar principal_id: The principal ID of resource identity.
     :vartype principal_id: str
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
      "UserAssigned", "SystemAssigned,UserAssigned", "None".
-    :type type_identity_type: str or
-     ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+    :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
     :type user_assigned_identities: dict[str,
-     ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :ivar workspace_id: The immutable id associated with this workspace.
     :vartype workspace_id: str
     :param description: The description of this workspace.
@@ -3024,8 +2971,7 @@ class Workspace(Resource):
     :ivar provisioning_state: The current deployment state of workspace resource. The
      provisioningState is to indicate states for resource provisioning. Possible values include:
      "Unknown", "Updating", "Creating", "Deleting", "Succeeded", "Failed", "Canceled".
-    :vartype provisioning_state: str or
-     ~azure.mgmt.machinelearningservices.models.ProvisioningState
+    :vartype provisioning_state: str or ~azure_machine_learning_workspaces.models.ProvisioningState
     :param hbi_workspace: The flag to signal HBI data in the workspace and reduce diagnostic data
      collected by the service.
     :type hbi_workspace: bool
@@ -3041,16 +2987,16 @@ class Workspace(Resource):
     :type allow_public_access_when_behind_vnet: bool
     :ivar private_endpoint_connections: The list of private endpoint connections in the workspace.
     :vartype private_endpoint_connections:
-     list[~azure.mgmt.machinelearningservices.models.PrivateEndpointConnection]
+     list[~azure_machine_learning_workspaces.models.PrivateEndpointConnection]
     :param shared_private_link_resources: The list of shared private link resources in this
      workspace.
     :type shared_private_link_resources:
-     list[~azure.mgmt.machinelearningservices.models.SharedPrivateLinkResource]
+     list[~azure_machine_learning_workspaces.models.SharedPrivateLinkResource]
     :param status: Indicates whether or not the encryption is enabled for the workspace. Possible
      values include: "Enabled", "Disabled".
-    :type status: str or ~azure.mgmt.machinelearningservices.models.EncryptionStatus
+    :type status: str or ~azure_machine_learning_workspaces.models.EncryptionStatus
     :param key_vault_properties: Customer Key vault properties.
-    :type key_vault_properties: ~azure.mgmt.machinelearningservices.models.KeyVaultProperties
+    :type key_vault_properties: ~azure_machine_learning_workspaces.models.KeyVaultProperties
     """
 
     _validation = {
@@ -3149,7 +3095,7 @@ class WorkspaceListResult(msrest.serialization.Model):
 
     :param value: The list of machine learning workspaces. Since this list may be incomplete, the
      nextLink field should be used to request the next list of machine learning workspaces.
-    :type value: list[~azure.mgmt.machinelearningservices.models.Workspace]
+    :type value: list[~azure_machine_learning_workspaces.models.Workspace]
     :param next_link: The URI that can be used to request the next list of machine learning
      workspaces.
     :type next_link: str
@@ -3182,8 +3128,7 @@ class WorkspaceSku(msrest.serialization.Model):
     :vartype locations: list[str]
     :ivar location_info: A list of locations and availability zones in those locations where the
      SKU is available.
-    :vartype location_info:
-     list[~azure.mgmt.machinelearningservices.models.ResourceSkuLocationInfo]
+    :vartype location_info: list[~azure_machine_learning_workspaces.models.ResourceSkuLocationInfo]
     :ivar tier: Sku Tier like Basic or Enterprise.
     :vartype tier: str
     :ivar resource_type:
@@ -3191,10 +3136,10 @@ class WorkspaceSku(msrest.serialization.Model):
     :ivar name:
     :vartype name: str
     :ivar capabilities: List of features/user capabilities associated with the sku.
-    :vartype capabilities: list[~azure.mgmt.machinelearningservices.models.SkuCapability]
+    :vartype capabilities: list[~azure_machine_learning_workspaces.models.SkuCapability]
     :param restrictions: The restrictions because of which SKU cannot be used. This is empty if
      there are no restrictions.
-    :type restrictions: list[~azure.mgmt.machinelearningservices.models.Restriction]
+    :type restrictions: list[~azure_machine_learning_workspaces.models.Restriction]
     """
 
     _validation = {
@@ -3238,7 +3183,7 @@ class WorkspaceUpdateParameters(msrest.serialization.Model):
     :param tags: A set of tags. The resource tags for the machine learning workspace.
     :type tags: dict[str, str]
     :param sku: The sku of the workspace.
-    :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+    :type sku: ~azure_machine_learning_workspaces.models.Sku
     :param description: The description of this workspace.
     :type description: str
     :param friendly_name: The friendly name for this workspace.

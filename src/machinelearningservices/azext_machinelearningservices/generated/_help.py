@@ -32,13 +32,41 @@ helps['machinelearningservices workspace show'] = """
     examples:
       - name: Get Workspace
         text: |-
-               az machinelearningservices workspace show --resource-group "workspace-1234" --workspace-name "testworksp\
-ace"
+               az machinelearningservices workspace show --resource-group "workspace-1234" --name "testworkspace"
 """
 
 helps['machinelearningservices workspace create'] = """
     type: command
     short-summary: Creates or updates a workspace with the specified parameters.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
+      - name: --shared-private-link-resources
+        short-summary: The list of shared private link resources in this workspace.
+        long-summary: |
+            Usage: --shared-private-link-resources name=XX private-link-resource-id=XX group-id=XX request-message=XX s\
+tatus=XX
+
+            name: Unique name of the private link.
+            private-link-resource-id: The resource id that private link links to.
+            group-id: The private link resource group id.
+            request-message: Request message.
+            status: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+
+            Multiple actions can be specified by using more than one --shared-private-link-resources argument.
+      - name: --encryption-key-vault-properties
+        short-summary: Customer Key vault properties.
+        long-summary: |
+            Usage: --encryption-key-vault-properties key-vault-arm-id=XX key-identifier=XX identity-client-id=XX
+
+            key-vault-arm-id: Required. The ArmId of the keyVault where the customer owned encryption key is present.
+            key-identifier: Required. Key vault uri to access the encryption key.
+            identity-client-id: For future use - The client id of the identity which will be used to access key vault.
     examples:
       - name: Create Workspace
         text: |-
@@ -54,17 +82,25 @@ tkv" --shared-private-link-resources name="testdbresource" private-link-resource
 3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateL\
 inkResources/Sql" group-id="Sql" request-message="Please approve" status="Approved" --storage-account "/subscriptions/0\
 0000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testSto\
-rageAccount" --sku name="Basic" tier="Basic" --resource-group "workspace-1234" --workspace-name "testworkspace"
+rageAccount" --sku name="Basic" tier="Basic" --resource-group "workspace-1234" --name "testworkspace"
 """
 
 helps['machinelearningservices workspace update'] = """
     type: command
     short-summary: Updates a machine learning workspace with the specified parameters.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Update Workspace
         text: |-
                az machinelearningservices workspace update --description "new description" --friendly-name "New friendl\
-y name" --sku name="Enterprise" tier="Enterprise" --resource-group "workspace-1234" --workspace-name "testworkspace"
+y name" --sku name="Enterprise" tier="Enterprise" --resource-group "workspace-1234" --name "testworkspace"
 """
 
 helps['machinelearningservices workspace delete'] = """
@@ -73,8 +109,7 @@ helps['machinelearningservices workspace delete'] = """
     examples:
       - name: Delete Workspace
         text: |-
-               az machinelearningservices workspace delete --resource-group "workspace-1234" --workspace-name "testwork\
-space"
+               az machinelearningservices workspace delete --resource-group "workspace-1234" --name "testworkspace"
 """
 
 helps['machinelearningservices workspace list-key'] = """
@@ -84,8 +119,7 @@ nsights and password for container registry
     examples:
       - name: List Workspace Keys
         text: |-
-               az machinelearningservices workspace list-key --resource-group "testrg123" --workspace-name "workspaces1\
-23"
+               az machinelearningservices workspace list-key --resource-group "testrg123" --name "workspaces123"
 """
 
 helps['machinelearningservices workspace resync-key'] = """
@@ -95,8 +129,18 @@ insights and password for container registry
     examples:
       - name: Resync Workspace Keys
         text: |-
-               az machinelearningservices workspace resync-key --resource-group "testrg123" --workspace-name "workspace\
-s123"
+               az machinelearningservices workspace resync-key --resource-group "testrg123" --name "workspaces123"
+"""
+
+helps['machinelearningservices workspace wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the machinelearningservices workspace is met.
+    examples:
+      - name: Pause executing next line of CLI script until the machinelearningservices workspace is successfully creat\
+ed.
+        text: |-
+               az machinelearningservices workspace wait --resource-group "workspace-1234" --name "testworkspace" --cre\
+ated
 """
 
 helps['machinelearningservices workspace-feature'] = """
@@ -160,6 +204,17 @@ helps['machinelearningservices quota list'] = """
 helps['machinelearningservices quota update'] = """
     type: command
     short-summary: Update quota for each VM family in workspace.
+    parameters:
+      - name: --value
+        short-summary: The list for update quota.
+        long-summary: |
+            Usage: --value id=XX type=XX limit=XX
+
+            id: Specifies the resource ID.
+            type: Specifies the resource type.
+            limit: The maximum permitted quota of the resource.
+
+            Multiple actions can be specified by using more than one --value argument.
     examples:
       - name: update quotas
         text: |-
@@ -210,6 +265,14 @@ helps['machinelearningservices machine-learning-compute aks create'] = """
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Create AKS Compute
         text: |-
@@ -251,6 +314,14 @@ helps['machinelearningservices machine-learning-compute aml-compute create'] = "
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Create AKS Compute
         text: |-
@@ -292,6 +363,14 @@ helps['machinelearningservices machine-learning-compute data-factory create'] = 
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Create AKS Compute
         text: |-
@@ -330,6 +409,14 @@ helps['machinelearningservices machine-learning-compute data-lake-analytics crea
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Create AKS Compute
         text: |-
@@ -340,9 +427,7 @@ e operation. If your intent is to create a new compute, do a GET first to verify
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
 3" --identity-type "SystemAssigned,UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-\
 0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identi\
-ty-name\\":{}}" --location "eastus" --data-lake-analytics-properties remoteLoginPortPublicAccess="NotSpecified" scaleSe\
-ttings={"maxNodeCount":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} vmPriority="Dedicated" vmSize="STANDARD\
-_NC6" --resource-group "testrg123" --workspace-name "workspaces123"
+ty-name\\":{}}" --location "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
@@ -350,16 +435,15 @@ _NC6" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Update a AKS Compute
         text: |-
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
-3" --location "eastus" --description "some compute" --data-lake-analytics-properties agentCount=4 --resource-id "/subsc\
-riptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClus\
-ters/compute123-56826-c9b00420020b2" --resource-group "testrg123" --workspace-name "workspaces123"
+3" --location "eastus" --description "some compute" --resource-id "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/\
+resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2" --resourc\
+e-group "testrg123" --workspace-name "workspaces123"
       - name: Update a AML Compute
         text: |-
                az machinelearningservices machine-learning-compute data-lake-analytics create --compute-name "compute12\
 3" --identity-type "SystemAssigned,UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-\
 0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identi\
-ty-name\\":{}}" --location "eastus" --data-lake-analytics-properties scaleSettings={"maxNodeCount":1,"minNodeCount":0,"\
-nodeIdleTimeBeforeScaleDown":"PT5M"} --resource-group "testrg123" --workspace-name "workspaces123"
+ty-name\\":{}}" --location "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
 """
 
 helps['machinelearningservices machine-learning-compute databricks'] = """
@@ -371,6 +455,14 @@ helps['machinelearningservices machine-learning-compute databricks create'] = ""
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
     examples:
       - name: Create AKS Compute
         text: |-
@@ -381,9 +473,7 @@ tion "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --iden\
 tity-type "SystemAssigned,UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-0000\
 -000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\\
-":{}}" --location "eastus" --databricks-properties remoteLoginPortPublicAccess="NotSpecified" scaleSettings={"maxNodeCo\
-unt":1,"minNodeCount":0,"nodeIdleTimeBeforeScaleDown":"PT5M"} vmPriority="Dedicated" vmSize="STANDARD_NC6" --resource-g\
-roup "testrg123" --workspace-name "workspaces123"
+":{}}" --location "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Create a DataFactory Compute
         text: |-
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --loca\
@@ -391,16 +481,15 @@ tion "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
       - name: Update a AKS Compute
         text: |-
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --loca\
-tion "eastus" --description "some compute" --databricks-properties agentCount=4 --resource-id "/subscriptions/34adfa4f-\
-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56\
-826-c9b00420020b2" --resource-group "testrg123" --workspace-name "workspaces123"
+tion "eastus" --description "some compute" --resource-id "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceg\
+roups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2" --resource-group "\
+testrg123" --workspace-name "workspaces123"
       - name: Update a AML Compute
         text: |-
                az machinelearningservices machine-learning-compute databricks create --compute-name "compute123" --iden\
 tity-type "SystemAssigned,UserAssigned" --identity-user-assigned-identities "{\\"/subscriptions/00000000-0000-0000-0000\
 -000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\\
-":{}}" --location "eastus" --databricks-properties scaleSettings={"maxNodeCount":1,"minNodeCount":0,"nodeIdleTimeBefore\
-ScaleDown":"PT5M"} --resource-group "testrg123" --workspace-name "workspaces123"
+":{}}" --location "eastus" --resource-group "testrg123" --workspace-name "workspaces123"
 """
 
 helps['machinelearningservices machine-learning-compute hd-insight'] = """
@@ -412,6 +501,23 @@ helps['machinelearningservices machine-learning-compute hd-insight create'] = ""
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
+      - name: --administrator-account
+        short-summary: Admin credentials for master node of the cluster
+        long-summary: |
+            Usage: --administrator-account username=XX password=XX public-key-data=XX private-key-data=XX
+
+            username: Username of admin account
+            password: Password of admin account
+            public-key-data: Public key data
+            private-key-data: Private key data
     examples:
       - name: Create AKS Compute
         text: |-
@@ -450,6 +556,23 @@ helps['machinelearningservices machine-learning-compute virtual-machine create']
     type: command
     short-summary: Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverabl\
 e operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
+      - name: --administrator-account
+        short-summary: Admin credentials for virtual machine
+        long-summary: |
+            Usage: --administrator-account username=XX password=XX public-key-data=XX private-key-data=XX
+
+            username: Username of admin account
+            password: Password of admin account
+            public-key-data: Public key data
+            private-key-data: Private key data
     examples:
       - name: Create AKS Compute
         text: |-
@@ -483,6 +606,15 @@ helps['machinelearningservices machine-learning-compute update'] = """
     type: command
     short-summary: Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecov\
 erable operation.
+    parameters:
+      - name: --scale-settings
+        short-summary: Desired scale settings for the amlCompute.
+        long-summary: |
+            Usage: --scale-settings max-node-count=XX min-node-count=XX node-idle-time-before-scale-down=XX
+
+            max-node-count: Required. Max number of nodes to use
+            min-node-count: Min number of nodes to use
+            node-idle-time-before-scale-down: Node Idle Time before scaling down amlCompute
     examples:
       - name: Update a AmlCompute Compute
         text: |-
@@ -521,6 +653,28 @@ helps['machinelearningservices machine-learning-compute list-node'] = """
 up "testrg123" --workspace-name "workspaces123"
 """
 
+helps['machinelearningservices machine-learning-compute wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the machinelearningservices machine-learning-c\
+ompute is met.
+    examples:
+      - name: Pause executing next line of CLI script until the machinelearningservices machine-learning-compute is suc\
+cessfully created.
+        text: |-
+               az machinelearningservices machine-learning-compute wait --compute-name "compute123" --resource-group "t\
+estrg123" --workspace-name "workspaces123" --created
+      - name: Pause executing next line of CLI script until the machinelearningservices machine-learning-compute is suc\
+cessfully updated.
+        text: |-
+               az machinelearningservices machine-learning-compute wait --compute-name "compute123" --resource-group "t\
+estrg123" --workspace-name "workspaces123" --updated
+      - name: Pause executing next line of CLI script until the machinelearningservices machine-learning-compute is suc\
+cessfully deleted.
+        text: |-
+               az machinelearningservices machine-learning-compute wait --compute-name "compute123" --resource-group "t\
+estrg123" --workspace-name "workspaces123" --deleted
+"""
+
 helps['machinelearningservices '] = """
     type: group
     short-summary: machinelearningservices 
@@ -546,8 +700,8 @@ helps['machinelearningservices private-endpoint-connection show'] = """
     examples:
       - name: WorkspaceGetPrivateEndpointConnection
         text: |-
-               az machinelearningservices private-endpoint-connection show --private-endpoint-connection-name "{private\
-EndpointConnectionName}" --resource-group "rg-1234" --workspace-name "testworkspace"
+               az machinelearningservices private-endpoint-connection show --name "{privateEndpointConnectionName}" --r\
+esource-group "rg-1234" --workspace-name "testworkspace"
 """
 
 helps['machinelearningservices private-endpoint-connection delete'] = """
@@ -556,19 +710,37 @@ helps['machinelearningservices private-endpoint-connection delete'] = """
     examples:
       - name: WorkspaceDeletePrivateEndpointConnection
         text: |-
-               az machinelearningservices private-endpoint-connection delete --private-endpoint-connection-name "{priva\
-teEndpointConnectionName}" --resource-group "rg-1234" --workspace-name "testworkspace"
+               az machinelearningservices private-endpoint-connection delete --name "{privateEndpointConnectionName}" -\
+-resource-group "rg-1234" --workspace-name "testworkspace"
 """
 
 helps['machinelearningservices private-endpoint-connection put'] = """
     type: command
     short-summary: Update the state of specified private endpoint connection associated with the workspace.
+    parameters:
+      - name: --sku
+        short-summary: The sku of the workspace.
+        long-summary: |
+            Usage: --sku name=XX tier=XX
+
+            name: Name of the sku
+            tier: Tier of the sku like Basic or Enterprise
+      - name: --private-link-service-connection-state
+        short-summary: A collection of information about the state of the connection between service consumer and provi\
+der.
+        long-summary: |
+            Usage: --private-link-service-connection-state status=XX description=XX actions-required=XX
+
+            status: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+            description: The reason for approval/rejection of the connection.
+            actions-required: A message indicating if changes on the service provider require any updates on the consum\
+er.
     examples:
       - name: WorkspacePutPrivateEndpointConnection
         text: |-
-               az machinelearningservices private-endpoint-connection put --private-endpoint-connection-name "{privateE\
-ndpointConnectionName}" --private-link-service-connection-state description="Auto-Approved" status="Approved" --resourc\
-e-group "rg-1234" --workspace-name "testworkspace"
+               az machinelearningservices private-endpoint-connection put --name "{privateEndpointConnectionName}" --pr\
+ivate-link-service-connection-state description="Auto-Approved" status="Approved" --resource-group "rg-1234" --workspac\
+e-name "testworkspace"
 """
 
 helps['machinelearningservices private-link-resource'] = """

@@ -9,11 +9,8 @@
 # --------------------------------------------------------------------------
 
 import os
-import unittest
-
-from azure_devtools.scenario_tests import AllowLargeResponse
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual
+from .. import try_manual, raise_if
 from azure.cli.testsdk import ResourceGroupPreparer
 from azure.cli.testsdk import StorageAccountPreparer
 
@@ -51,11 +48,11 @@ def step__workspaces_put_create_workspace(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6
              'rageAccounts/{sa}" '
              '--sku name="Basic" tier="Basic" '
              '--resource-group "{rg}" '
-             '--workspace-name "{Workspaces_3}"',
+             '--name "{Workspaces_3}"',
              checks=[])
     test.cmd('az machinelearningservices workspace wait --created '
              '--resource-group "{rg}" '
-             '--workspace-name "{Workspaces_3}"',
+             '--name "{Workspaces_3}"',
              checks=[])
 
 
@@ -64,7 +61,7 @@ def step__workspaces_put_create_workspace(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6
 def step__workspaces_get_get_workspace(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace show '
              '--resource-group "{rg}" '
-             '--workspace-name "{Workspaces_3}"',
+             '--name "{Workspaces_3}"',
              checks=[])
 
 
@@ -79,7 +76,8 @@ def step__workspaces_get_get_workspaces_by_resource_group(test, rg, rg_2, rg_3, 
 # EXAMPLE: /Workspaces/get/Get Workspaces by subscription
 @try_manual
 def step__workspaces_get_get_workspaces_by_subscription(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
-    test.cmd('az machinelearningservices workspace list',
+    test.cmd('az machinelearningservices workspace list '
+             '-g ""',
              checks=[])
 
 
@@ -88,7 +86,7 @@ def step__workspaces_get_get_workspaces_by_subscription(test, rg, rg_2, rg_3, rg
 def step__workspaces_post_list_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace list-key '
              '--resource-group "{rg_4}" '
-             '--workspace-name "{Workspaces_4}"',
+             '--name "{Workspaces_4}"',
              checks=[])
 
 
@@ -97,7 +95,7 @@ def step__workspaces_post_list_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, 
 def step__workspaces_post_resync_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace resync-key '
              '--resource-group "{rg_4}" '
-             '--workspace-name "{Workspaces_4}"',
+             '--name "{Workspaces_4}"',
              checks=[])
 
 
@@ -109,7 +107,7 @@ def step__workspaces_patch_update_workspace(test, rg, rg_2, rg_3, rg_4, rg_5, rg
              '--friendly-name "New friendly name" '
              '--sku name="Enterprise" tier="Enterprise" '
              '--resource-group "{rg}" '
-             '--workspace-name "{Workspaces_3}"',
+             '--name "{Workspaces_3}"',
              checks=[])
 
 
@@ -669,7 +667,7 @@ def step__machinelearningcompute_patch_update_a_amlcompute_compute(test, rg, rg_
 def step__privateendpointconnections_put_workspaceputprivateendpointconnection(test, rg, rg_2, rg_3, rg_4, rg_5,
                                                                                rg_6):
     test.cmd('az machinelearningservices private-endpoint-connection put '
-             '--private-endpoint-connection-name "{{privateEndpointConnectionName}}" '
+             '--name "{{privateEndpointConnectionName}}" '
              '--private-link-service-connection-state description="Auto-Approved" status="Approved" '
              '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_3}"',
@@ -681,7 +679,7 @@ def step__privateendpointconnections_put_workspaceputprivateendpointconnection(t
 def step__privateendpointconnections_get_workspacegetprivateendpointconnection(test, rg, rg_2, rg_3, rg_4, rg_5,
                                                                                rg_6):
     test.cmd('az machinelearningservices private-endpoint-connection show '
-             '--private-endpoint-connection-name "{{privateEndpointConnectionName}}" '
+             '--name "{{privateEndpointConnectionName}}" '
              '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
@@ -766,7 +764,7 @@ def step__machinelearningservices__get_list_skus(test, rg, rg_2, rg_3, rg_4, rg_
 def step__privateendpointconnections_delete_workspacedeleteprivateendpointconnection(test, rg, rg_2, rg_3, rg_4, rg_5,
                                                                                      rg_6):
     test.cmd('az machinelearningservices private-endpoint-connection delete '
-             '--private-endpoint-connection-name "{{privateEndpointConnectionName}}" '
+             '--name "{{privateEndpointConnectionName}}" '
              '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
@@ -777,7 +775,7 @@ def step__privateendpointconnections_delete_workspacedeleteprivateendpointconnec
 def step__workspaces_delete_delete_workspace(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace delete '
              '--resource-group "{rg}" '
-             '--workspace-name "{Workspaces_3}"',
+             '--name "{Workspaces_3}"',
              checks=[])
 
 
@@ -877,15 +875,16 @@ class AzureMachineLearningWorkspacesScenarioTest(ScenarioTest):
         })
 
         self.kwargs.update({
-            'Workspaces_5': 'Workspaces_5',
-            'PrivateLinkResources_2': 'PrivateLinkResources_2',
+            'Workspaces_5': 'default',
+            'PrivateLinkResources_2': 'default',
             'demo_workspace1': 'demo_workspace1',
-            'Workspaces_2': 'Workspaces_2',
-            'Workspaces_3': 'Workspaces_3',
-            'Workspaces_4': 'Workspaces_4',
+            'Workspaces_2': 'demo_workspace2',
+            'Workspaces_3': 'testworkspace',
+            'Workspaces_4': 'workspaces123',
             'StandardDSv2Family': 'StandardDSv2Family',
             '{privateEndpointConnectionName}': '{privateEndpointConnectionName}',
             'Sql': 'Sql',
         })
 
         call_scenario(self, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
+        raise_if()

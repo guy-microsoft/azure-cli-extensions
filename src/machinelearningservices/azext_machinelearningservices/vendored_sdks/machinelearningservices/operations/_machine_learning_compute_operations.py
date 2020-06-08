@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -32,7 +32,7 @@ class MachineLearningComputeOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -54,7 +54,7 @@ class MachineLearningComputeOperations(object):
         skiptoken=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.PaginatedComputeResourcesList"
+        # type: (...) -> Iterable["models.PaginatedComputeResourcesList"]
         """Gets computes in specified workspace.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -64,33 +64,34 @@ class MachineLearningComputeOperations(object):
         :param skiptoken: Continuation token for pagination.
         :type skiptoken: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: PaginatedComputeResourcesList or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.PaginatedComputeResourcesList
+        :return: An iterator like instance of either PaginatedComputeResourcesList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~azure_machine_learning_workspaces.models.PaginatedComputeResourcesList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PaginatedComputeResourcesList"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_workspace.metadata['url']
+                url = self.list_by_workspace.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'workspaceName': self._serialize.url("workspace_name", workspace_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skiptoken is not None:
+                    query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if skiptoken is not None:
-                query_parameters['$skiptoken'] = self._serialize.query("skiptoken", skiptoken, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -122,7 +123,7 @@ class MachineLearningComputeOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_workspace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes'}
+    list_by_workspace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes'}  # type: ignore
 
     def get(
         self,
@@ -141,16 +142,17 @@ class MachineLearningComputeOperations(object):
         :param compute_name: Name of the Azure Machine Learning compute.
         :type compute_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ComputeResource or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.ComputeResource
+        :return: ComputeResource, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.ComputeResource
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -180,10 +182,10 @@ class MachineLearningComputeOperations(object):
         deserialized = self._deserialize('ComputeResource', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def _create_or_update_initial(
         self,
@@ -194,20 +196,21 @@ class MachineLearningComputeOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         sku=None,  # type: Optional["models.Sku"]
         type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         properties=None,  # type: Optional["models.Compute"]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.ComputeResource"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.ComputeResource(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, properties=properties)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._create_or_update_initial.metadata['url']
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -249,10 +252,10 @@ class MachineLearningComputeOperations(object):
             deserialized = self._deserialize('ComputeResource', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, response_headers)
+            return cls(pipeline_response, deserialized, response_headers)
 
         return deserialized
-    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def begin_create_or_update(
         self,
@@ -263,11 +266,11 @@ class MachineLearningComputeOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         sku=None,  # type: Optional["models.Sku"]
         type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         properties=None,  # type: Optional["models.Compute"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ComputeResource"
+        # type: (...) -> LROPoller
         """Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -281,26 +284,30 @@ class MachineLearningComputeOperations(object):
         :param tags: Contains resource tags defined as key/value pairs.
         :type tags: dict[str, str]
         :param sku: The sku of the workspace.
-        :type sku: ~azure.mgmt.machinelearningservices.models.Sku
+        :type sku: ~azure_machine_learning_workspaces.models.Sku
         :param type: The identity type.
-        :type type: str or ~azure.mgmt.machinelearningservices.models.ResourceIdentityType
+        :type type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
         :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
      '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-        :type user_assigned_identities: dict[str, ~azure.mgmt.machinelearningservices.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+        :type user_assigned_identities: dict[str, ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
         :param properties: Compute properties.
-        :type properties: ~azure.mgmt.machinelearningservices.models.Compute
+        :type properties: ~azure_machine_learning_workspaces.models.Compute
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns ComputeResource
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.machinelearningservices.models.ComputeResource]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either ComputeResource or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~azure_machine_learning_workspaces.models.ComputeResource]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._create_or_update_initial(
             resource_group_name=resource_group_name,
             workspace_name=workspace_name,
@@ -315,6 +322,9 @@ class MachineLearningComputeOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             response_headers = {}
             response = pipeline_response.http_response
@@ -325,15 +335,11 @@ class MachineLearningComputeOperations(object):
                 return cls(pipeline_response, deserialized, response_headers)
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def _update_initial(
         self,
@@ -345,14 +351,15 @@ class MachineLearningComputeOperations(object):
     ):
         # type: (...) -> "models.ComputeResource"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.ClusterUpdateParameters(scale_settings=scale_settings)
         api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._update_initial.metadata['url']
+        url = self._update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -387,10 +394,10 @@ class MachineLearningComputeOperations(object):
         deserialized = self._deserialize('ComputeResource', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    _update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def begin_update(
         self,
@@ -400,7 +407,7 @@ class MachineLearningComputeOperations(object):
         scale_settings=None,  # type: Optional["models.ScaleSettings"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ComputeResource"
+        # type: (...) -> LROPoller
         """Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -410,18 +417,22 @@ class MachineLearningComputeOperations(object):
         :param compute_name: Name of the Azure Machine Learning compute.
         :type compute_name: str
         :param scale_settings: Desired scale settings for the amlCompute.
-        :type scale_settings: ~azure.mgmt.machinelearningservices.models.ScaleSettings
+        :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns ComputeResource
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.machinelearningservices.models.ComputeResource]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either ComputeResource or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~azure_machine_learning_workspaces.models.ComputeResource]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._update_initial(
             resource_group_name=resource_group_name,
             workspace_name=workspace_name,
@@ -431,6 +442,9 @@ class MachineLearningComputeOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('ComputeResource', pipeline_response)
 
@@ -438,15 +452,11 @@ class MachineLearningComputeOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    begin_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def _delete_initial(
         self,
@@ -458,11 +468,12 @@ class MachineLearningComputeOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self._delete_initial.metadata['url']
+        url = self._delete_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -495,9 +506,9 @@ class MachineLearningComputeOperations(object):
             response_headers['Location']=self._deserialize('str', response.headers.get('Location'))
 
         if cls:
-          return cls(pipeline_response, None, response_headers)
+            return cls(pipeline_response, None, response_headers)
 
-    _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def begin_delete(
         self,
@@ -507,7 +518,7 @@ class MachineLearningComputeOperations(object):
         underlying_resource_action,  # type: Union[str, "models.UnderlyingResourceAction"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> None
+        # type: (...) -> LROPoller
         """Deletes specified Machine Learning compute.
 
         :param resource_group_name: Name of the resource group in which workspace is located.
@@ -518,18 +529,22 @@ class MachineLearningComputeOperations(object):
         :type compute_name: str
         :param underlying_resource_action: Delete the underlying compute if 'Delete', or detach the
      underlying compute from workspace if 'Detach'.
-        :type underlying_resource_action: str or ~azure.mgmt.machinelearningservices.models.UnderlyingResourceAction
+        :type underlying_resource_action: str or ~azure_machine_learning_workspaces.models.UnderlyingResourceAction
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns None
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.LROPoller[None]
-
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
             workspace_name=workspace_name,
@@ -539,19 +554,18 @@ class MachineLearningComputeOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}
+    begin_delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}'}  # type: ignore
 
     def list_node(
         self,
@@ -570,16 +584,17 @@ class MachineLearningComputeOperations(object):
         :param compute_name: Name of the Azure Machine Learning compute.
         :type compute_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AmlComputeNodesInformation or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.AmlComputeNodesInformation
+        :return: AmlComputeNodesInformation, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.AmlComputeNodesInformation
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AmlComputeNodesInformation"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.list_node.metadata['url']
+        url = self.list_node.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -609,10 +624,10 @@ class MachineLearningComputeOperations(object):
         deserialized = self._deserialize('AmlComputeNodesInformation', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_node.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes'}
+    list_node.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes'}  # type: ignore
 
     def list_key(
         self,
@@ -631,16 +646,17 @@ class MachineLearningComputeOperations(object):
         :param compute_name: Name of the Azure Machine Learning compute.
         :type compute_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ComputeSecrets or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.ComputeSecrets
+        :return: ComputeSecrets, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.ComputeSecrets
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeSecrets"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.list_key.metadata['url']
+        url = self.list_key.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -670,7 +686,7 @@ class MachineLearningComputeOperations(object):
         deserialized = self._deserialize('ComputeSecrets', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys'}
+    list_key.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys'}  # type: ignore

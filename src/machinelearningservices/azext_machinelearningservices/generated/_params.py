@@ -24,11 +24,8 @@ from azext_machinelearningservices.action import (
     AddSharedPrivateLinkResources,
     AddEncryptionKeyVaultProperties,
     AddValue,
-    AddDataLakeAnalyticsProperties,
-    AddDatabricksProperties,
     AddAdministratorAccount,
     AddScaleSettings,
-    AddPrivateEndpoint,
     AddPrivateLinkServiceConnectionState
 )
 
@@ -41,16 +38,16 @@ def load_arguments(self, _):
 
     with self.argument_context('machinelearningservices workspace show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.',
+                   id_part='name')
 
     with self.argument_context('machinelearningservices workspace create') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -76,34 +73,39 @@ def load_arguments(self, _):
         c.argument('allow_public_access_when_behind_vnet', arg_type=get_three_state_flag(), help='The flag to indicate '
                    'whether to allow public access when behind VNet.')
         c.argument('shared_private_link_resources', action=AddSharedPrivateLinkResources, nargs='+', help='The list of '
-                   'shared private link resources in this workspace. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , availa'
-                   'ble KEYs are: name, private-link-resource-id, group-id, request-message, status.')
+                   'shared private link resources in this workspace.')
         c.argument('encryption_status', arg_type=get_enum_type(['Enabled', 'Disabled']), help='Indicates whether or not'
                    ' the encryption is enabled for the workspace.')
         c.argument('encryption_key_vault_properties', action=AddEncryptionKeyVaultProperties, nargs='+', help='Customer'
-                   ' Key vault properties. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: key-vault-ar'
-                   'm-id, key-identifier, identity-client-id.')
+                   ' Key vault properties.')
 
     with self.argument_context('machinelearningservices workspace update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.',
+                   id_part='name')
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('description', help='The description of this workspace.')
         c.argument('friendly_name', help='The friendly name for this workspace.')
 
     with self.argument_context('machinelearningservices workspace delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.',
+                   id_part='name')
 
     with self.argument_context('machinelearningservices workspace list-key') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.')
 
     with self.argument_context('machinelearningservices workspace resync-key') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.',
+                   id_part='name')
+
+    with self.argument_context('machinelearningservices workspace wait') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('workspace_name', options_list=['--name', '-n'], help='Name of Azure Machine Learning workspace.',
+                   id_part='name')
 
     with self.argument_context('machinelearningservices workspace-feature list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -123,9 +125,8 @@ def load_arguments(self, _):
 
     with self.argument_context('machinelearningservices quota update') as c:
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
-                   validator=get_default_location_from_resource_group)
-        c.argument('value', action=AddValue, nargs='+', help='The list for update quota. Expect value: KEY1=VALUE1 KEY2'
-                   '=VALUE2 ... , available KEYs are: id, type, limit.')
+                   validator=get_default_location_from_resource_group, id_part='name')
+        c.argument('value', action=AddValue, nargs='+', help='The list for update quota.')
 
     with self.argument_context('machinelearningservices machine-learning-compute list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -134,8 +135,8 @@ def load_arguments(self, _):
 
     with self.argument_context('machinelearningservices machine-learning-compute show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('compute_name', help='Name of the Azure Machine Learning compute.')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('compute_name', help='Name of the Azure Machine Learning compute.', id_part='child_name_1')
 
     with self.argument_context('machinelearningservices machine-learning-compute aks create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -144,8 +145,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -166,8 +166,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -188,8 +187,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -208,8 +206,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -220,8 +217,7 @@ def load_arguments(self, _):
         c.argument('compute_location', help='Location for the underlying compute')
         c.argument('description', help='The description of the Machine Learning compute.')
         c.argument('resource_id', help='ARM resource id of the underlying compute')
-        c.argument('data_lake_analytics_properties', action=AddDataLakeAnalyticsProperties, nargs='+', help=' Expect va'
-                   'lue: data-lake-store-account-name=xx.')
+        c.argument('data_lake_store_account_name', help='DataLake Store Account Name')
 
     with self.argument_context('machinelearningservices machine-learning-compute databricks create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -230,8 +226,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -242,8 +237,7 @@ def load_arguments(self, _):
         c.argument('compute_location', help='Location for the underlying compute')
         c.argument('description', help='The description of the Machine Learning compute.')
         c.argument('resource_id', help='ARM resource id of the underlying compute')
-        c.argument('databricks_properties', action=AddDatabricksProperties, nargs='+', help=' Expect value: databricks-'
-                   'access-token=xx.')
+        c.argument('databricks_access_token', help='Databricks access token')
 
     with self.argument_context('machinelearningservices machine-learning-compute hd-insight create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -252,8 +246,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -267,8 +260,7 @@ def load_arguments(self, _):
         c.argument('ssh_port', help='Port open for ssh connections on the master node of the cluster.')
         c.argument('address', help='Public IP address of the master node of the cluster.')
         c.argument('administrator_account', action=AddAdministratorAccount, nargs='+', help='Admin credentials for mast'
-                   'er node of the cluster Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: username, pa'
-                   'ssword, public-key-data, private-key-data.')
+                   'er node of the cluster')
 
     with self.argument_context('machinelearningservices machine-learning-compute virtual-machine create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -277,8 +269,7 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -293,21 +284,19 @@ def load_arguments(self, _):
         c.argument('ssh_port', help='Port open for ssh connections.')
         c.argument('address', help='Public IP address of the virtual machine.')
         c.argument('administrator_account', action=AddAdministratorAccount, nargs='+', help='Admin credentials for virt'
-                   'ual machine Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: username, password, pub'
-                   'lic-key-data, private-key-data.')
+                   'ual machine')
 
     with self.argument_context('machinelearningservices machine-learning-compute update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('compute_name', help='Name of the Azure Machine Learning compute.')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('compute_name', help='Name of the Azure Machine Learning compute.', id_part='child_name_1')
         c.argument('scale_settings', action=AddScaleSettings, nargs='+', help='Desired scale settings for the amlComput'
-                   'e. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: max-node-count, min-node-count, '
-                   'node-idle-time-before-scale-down.')
+                   'e.')
 
     with self.argument_context('machinelearningservices machine-learning-compute delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('compute_name', help='Name of the Azure Machine Learning compute.')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('compute_name', help='Name of the Azure Machine Learning compute.', id_part='child_name_1')
         c.argument('underlying_resource_action', arg_type=get_enum_type(['Delete', 'Detach']), help='Delete the underly'
                    'ing compute if \'Delete\', or detach the underlying compute from workspace if \'Detach\'.')
 
@@ -321,31 +310,35 @@ def load_arguments(self, _):
         c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
         c.argument('compute_name', help='Name of the Azure Machine Learning compute.')
 
+    with self.argument_context('machinelearningservices machine-learning-compute wait') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('compute_name', help='Name of the Azure Machine Learning compute.', id_part='child_name_1')
+
     with self.argument_context('machinelearningservices  list-sku') as c:
         pass
 
     with self.argument_context('machinelearningservices private-endpoint-connection show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('private_endpoint_connection_name', help='The name of the private endpoint connection associated wit'
-                   'h the workspace')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n'], help='The name of the private end'
+                   'point connection associated with the workspace', id_part='child_name_1')
 
     with self.argument_context('machinelearningservices private-endpoint-connection delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('private_endpoint_connection_name', help='The name of the private endpoint connection associated wit'
-                   'h the workspace')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n'], help='The name of the private end'
+                   'point connection associated with the workspace', id_part='child_name_1')
 
     with self.argument_context('machinelearningservices private-endpoint-connection put') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
-        c.argument('private_endpoint_connection_name', help='The name of the private endpoint connection associated wit'
-                   'h the workspace')
+        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n'], help='The name of the private end'
+                   'point connection associated with the workspace', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace. Expect value: KEY1=VALUE1 KEY2=VALU'
-                   'E2 ... , available KEYs are: name, tier.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
         c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
                    'ned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
@@ -353,12 +346,9 @@ def load_arguments(self, _):
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
                    'ceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityNa'
                    'me}\'. Expected value: json-string/@json-file.'))
-        c.argument('private_endpoint', action=AddPrivateEndpoint, nargs='+', help='The resource of private end point. E'
-                   'xpect value: KEY1=VALUE1 KEY2=VALUE2 ...')
         c.argument('private_link_service_connection_state', action=AddPrivateLinkServiceConnectionState, nargs='+',
                    help='A collection of information about the state of the connection between service consumer and pro'
-                   'vider. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: status, description, actions'
-                   '-required.')
+                   'vider.')
 
     with self.argument_context('machinelearningservices private-link-resource list') as c:
         c.argument('resource_group_name', resource_group_name_type)

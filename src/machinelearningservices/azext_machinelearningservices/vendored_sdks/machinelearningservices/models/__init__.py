@@ -24,10 +24,8 @@ try:
     from ._models_py3 import ComputeSecrets
     from ._models_py3 import DataFactory
     from ._models_py3 import DataLakeAnalytics
-    from ._models_py3 import DataLakeAnalyticsProperties
     from ._models_py3 import Databricks
     from ._models_py3 import DatabricksComputeSecrets
-    from ._models_py3 import DatabricksProperties
     from ._models_py3 import ErrorDetail
     from ._models_py3 import ErrorResponse
     from ._models_py3 import HdInsight
@@ -98,10 +96,8 @@ except (SyntaxError, ImportError):
     from ._models import ComputeSecrets  # type: ignore
     from ._models import DataFactory  # type: ignore
     from ._models import DataLakeAnalytics  # type: ignore
-    from ._models import DataLakeAnalyticsProperties  # type: ignore
     from ._models import Databricks  # type: ignore
     from ._models import DatabricksComputeSecrets  # type: ignore
-    from ._models import DatabricksProperties  # type: ignore
     from ._models import ErrorDetail  # type: ignore
     from ._models import ErrorResponse  # type: ignore
     from ._models import HdInsight  # type: ignore
@@ -190,10 +186,8 @@ __all__ = [
     'ComputeSecrets',
     'DataFactory',
     'DataLakeAnalytics',
-    'DataLakeAnalyticsProperties',
     'Databricks',
     'DatabricksComputeSecrets',
-    'DatabricksProperties',
     'ErrorDetail',
     'ErrorResponse',
     'HdInsight',

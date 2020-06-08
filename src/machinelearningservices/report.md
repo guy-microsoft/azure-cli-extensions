@@ -76,7 +76,7 @@ data-lake-analytics create a machinelearningservices machine-learning-compute.
 |**--compute-location**|string|Location for the underlying compute|data_lake_analytics_compute_location|
 |**--description**|string|The description of the Machine Learning compute.|data_lake_analytics_description|
 |**--resource-id**|string|ARM resource id of the underlying compute|data_lake_analytics_resource_id|
-|**--data-lake-analytics-properties**|object||data_lake_analytics_properties|
+|**--data-lake-store-account-name**|string|DataLake Store Account Name|data_lake_analytics_data_lake_store_account_name|
 ### machinelearningservices machine-learning-compute databricks create
 
 databricks create a machinelearningservices machine-learning-compute.
@@ -94,7 +94,7 @@ databricks create a machinelearningservices machine-learning-compute.
 |**--compute-location**|string|Location for the underlying compute|databricks_compute_location|
 |**--description**|string|The description of the Machine Learning compute.|databricks_description|
 |**--resource-id**|string|ARM resource id of the underlying compute|databricks_resource_id|
-|**--databricks-properties**|object||databricks_properties|
+|**--databricks-access-token**|string|Databricks access token|databricks_databricks_access_token|
 ### machinelearningservices machine-learning-compute delete
 
 delete a machinelearningservices machine-learning-compute.
@@ -215,7 +215,6 @@ put a machinelearningservices private-endpoint-connection.
 |**--sku**|object|The sku of the workspace.|sku|
 |**--identity-type**|sealed-choice|The identity type.|type_identity_type|
 |**--identity-user-assigned-identities**|dictionary|The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|
-|**--private-endpoint**|object|The resource of private end point.|private_endpoint|
 |**--private-link-service-connection-state**|object|A collection of information about the state of the connection between service consumer and provider.|private_link_service_connection_state|
 ### machinelearningservices private-endpoint-connection show
 

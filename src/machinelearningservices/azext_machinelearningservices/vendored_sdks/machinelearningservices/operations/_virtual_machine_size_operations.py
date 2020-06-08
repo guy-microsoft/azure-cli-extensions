@@ -29,7 +29,7 @@ class VirtualMachineSizeOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.machinelearningservices.models
+    :type models: ~azure_machine_learning_workspaces.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -55,16 +55,17 @@ class VirtualMachineSizeOperations(object):
         :param location: The location upon which virtual-machine-sizes is queried.
         :type location: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: VirtualMachineSizeListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.machinelearningservices.models.VirtualMachineSizeListResult
+        :return: VirtualMachineSizeListResult, or the result of cls(response)
+        :rtype: ~azure_machine_learning_workspaces.models.VirtualMachineSizeListResult
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.VirtualMachineSizeListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-04-01"
 
         # Construct URL
-        url = self.list.metadata['url']
+        url = self.list.metadata['url']  # type: ignore
         path_format_arguments = {
             'location': self._serialize.url("location", location, 'str', pattern=r'^[-\w\._]+$'),
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
@@ -91,7 +92,7 @@ class VirtualMachineSizeOperations(object):
         deserialized = self._deserialize('VirtualMachineSizeListResult', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/vmSizes'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/vmSizes'}  # type: ignore

@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import AzureMachineLearningWorkspacesConfiguration
 from .operations import OperationOperations
 from .operations import WorkspaceOperations
@@ -33,28 +35,29 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
     """These APIs allow end users to operate on Azure Machine Learning Workspace resources.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.machinelearningservices.operations.OperationOperations
+    :vartype operation: azure_machine_learning_workspaces.operations.OperationOperations
     :ivar workspace: WorkspaceOperations operations
-    :vartype workspace: azure.mgmt.machinelearningservices.operations.WorkspaceOperations
+    :vartype workspace: azure_machine_learning_workspaces.operations.WorkspaceOperations
     :ivar workspace_feature: WorkspaceFeatureOperations operations
-    :vartype workspace_feature: azure.mgmt.machinelearningservices.operations.WorkspaceFeatureOperations
+    :vartype workspace_feature: azure_machine_learning_workspaces.operations.WorkspaceFeatureOperations
     :ivar usage: UsageOperations operations
-    :vartype usage: azure.mgmt.machinelearningservices.operations.UsageOperations
+    :vartype usage: azure_machine_learning_workspaces.operations.UsageOperations
     :ivar virtual_machine_size: VirtualMachineSizeOperations operations
-    :vartype virtual_machine_size: azure.mgmt.machinelearningservices.operations.VirtualMachineSizeOperations
+    :vartype virtual_machine_size: azure_machine_learning_workspaces.operations.VirtualMachineSizeOperations
     :ivar quota: QuotaOperations operations
-    :vartype quota: azure.mgmt.machinelearningservices.operations.QuotaOperations
+    :vartype quota: azure_machine_learning_workspaces.operations.QuotaOperations
     :ivar machine_learning_compute: MachineLearningComputeOperations operations
-    :vartype machine_learning_compute: azure.mgmt.machinelearningservices.operations.MachineLearningComputeOperations
+    :vartype machine_learning_compute: azure_machine_learning_workspaces.operations.MachineLearningComputeOperations
     :ivar private_endpoint_connection: PrivateEndpointConnectionOperations operations
-    :vartype private_endpoint_connection: azure.mgmt.machinelearningservices.operations.PrivateEndpointConnectionOperations
+    :vartype private_endpoint_connection: azure_machine_learning_workspaces.operations.PrivateEndpointConnectionOperations
     :ivar private_link_resource: PrivateLinkResourceOperations operations
-    :vartype private_link_resource: azure.mgmt.machinelearningservices.operations.PrivateLinkResourceOperations
+    :vartype private_link_resource: azure_machine_learning_workspaces.operations.PrivateLinkResourceOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: Azure subscription identifier.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

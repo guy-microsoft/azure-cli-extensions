@@ -20,8 +20,8 @@ class AzureMachineLearningWorkspacesCommandsLoader(AzCommandsLoader):
         machinelearningservices_custom = CliCommandType(
             operations_tmpl='azext_machinelearningservices.custom#{}',
             client_factory=cf_machinelearningservices)
-        super(AzureMachineLearningWorkspacesCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                                           custom_command_type=machinelearningservices_custom)
+        parent = super(AzureMachineLearningWorkspacesCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=machinelearningservices_custom)
 
     def load_command_table(self, args):
         from azext_machinelearningservices.generated.commands import load_command_table
