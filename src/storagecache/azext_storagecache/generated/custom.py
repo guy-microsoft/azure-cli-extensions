@@ -129,6 +129,15 @@ def storagecache_cache_flush(client,
                        cache_name=cache_name)
 
 
+def storagecache_cache_force_gsi(client,
+                                 resource_group_name,
+                                 cache_name,
+                                 comment=None):
+    return client.force_gsi(resource_group_name=resource_group_name,
+                            cache_name=cache_name,
+                            comment=comment)
+
+
 def storagecache_cache_start(client,
                              resource_group_name,
                              cache_name,

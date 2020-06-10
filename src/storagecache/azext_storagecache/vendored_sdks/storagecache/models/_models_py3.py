@@ -641,6 +641,27 @@ class ErrorResponse(msrest.serialization.Model):
         self.message = message
 
 
+class ForceGsiProperties(msrest.serialization.Model):
+    """Force GSI Properties.
+
+    :param comment: The comment associated with the GSI.
+    :type comment: str
+    """
+
+    _attribute_map = {
+        'comment': {'key': 'comment', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        *,
+        comment: Optional[str] = None,
+        **kwargs
+    ):
+        super(ForceGsiProperties, self).__init__(**kwargs)
+        self.comment = comment
+
+
 class KeyVaultKeyReference(msrest.serialization.Model):
     """Describes a reference to Key Vault Key.
 

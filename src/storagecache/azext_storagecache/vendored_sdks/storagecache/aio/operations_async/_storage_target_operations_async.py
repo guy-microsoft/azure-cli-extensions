@@ -121,8 +121,8 @@ class StorageTargetOperations:
         cache_name: str,
         storage_target_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -143,7 +143,6 @@ class StorageTargetOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.delete(url, query_parameters, header_parameters)
@@ -154,20 +153,9 @@ class StorageTargetOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}'}  # type: ignore
 
     async def delete(
@@ -176,7 +164,7 @@ class StorageTargetOperations:
         cache_name: str,
         storage_target_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be deleted.
 
         :param resource_group_name: Target resource group.
@@ -191,12 +179,12 @@ class StorageTargetOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -213,11 +201,8 @@ class StorageTargetOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()

@@ -178,8 +178,8 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -199,7 +199,6 @@ class CacheOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.delete(url, query_parameters, header_parameters)
@@ -210,20 +209,9 @@ class CacheOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}'}  # type: ignore
 
     async def delete(
@@ -231,7 +219,7 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Schedules a Cache for deletion.
 
         :param resource_group_name: Target resource group.
@@ -244,12 +232,12 @@ class CacheOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -265,11 +253,8 @@ class CacheOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
@@ -609,8 +594,8 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -630,7 +615,6 @@ class CacheOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.post(url, query_parameters, header_parameters)
@@ -641,20 +625,9 @@ class CacheOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _flush_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/flush'}  # type: ignore
 
     async def flush(
@@ -662,7 +635,7 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors returned until the flush is complete.
 
         :param resource_group_name: Target resource group.
@@ -675,12 +648,12 @@ class CacheOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -696,11 +669,8 @@ class CacheOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
@@ -713,8 +683,8 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -734,7 +704,6 @@ class CacheOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.post(url, query_parameters, header_parameters)
@@ -745,20 +714,9 @@ class CacheOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _start_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/start'}  # type: ignore
 
     async def start(
@@ -766,7 +724,7 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Tells a Stopped state Cache to transition to Active state.
 
         :param resource_group_name: Target resource group.
@@ -779,12 +737,12 @@ class CacheOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -800,11 +758,8 @@ class CacheOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
@@ -817,8 +772,8 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -838,7 +793,6 @@ class CacheOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.post(url, query_parameters, header_parameters)
@@ -849,20 +803,9 @@ class CacheOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _stop_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stop'}  # type: ignore
 
     async def stop(
@@ -870,7 +813,7 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Tells an Active Cache to transition to Stopped state.
 
         :param resource_group_name: Target resource group.
@@ -883,12 +826,12 @@ class CacheOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -904,11 +847,8 @@ class CacheOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
@@ -916,13 +856,80 @@ class CacheOperations:
         return await async_poller(self._client, raw_result, get_long_running_output, polling_method)
     stop.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/stop'}  # type: ignore
 
+    async def force_gsi(
+        self,
+        resource_group_name: str,
+        cache_name: str,
+        comment: Optional[str] = None,
+        **kwargs
+    ) -> None:
+        """Forces a GSI to complete on the specified cache.
+
+        :param resource_group_name: Target resource group.
+        :type resource_group_name: str
+        :param cache_name: Name of Cache. Length of name must be not greater than 80 and chars must be
+         in list of [-0-9a-zA-Z_] char class.
+        :type cache_name: str
+        :param comment: The comment associated with the GSI.
+        :type comment: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: None, or the result of cls(response)
+        :rtype: None
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _comment = models.ForceGsiProperties(comment=comment)
+        api_version = "2020-03-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self.force_gsi.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'cacheName': self._serialize.url("cache_name", cache_name, 'str', pattern=r'^[-0-9a-zA-Z_]{1,80}$'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        if _comment is not None:
+            body_content = self._serialize.body(_comment, 'ForceGsiProperties')
+        else:
+            body_content = None
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [204]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
+
+        if cls:
+            return cls(pipeline_response, None, {})
+
+    force_gsi.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/forceGsi'}  # type: ignore
+
     async def _upgrade_firmware_initial(
         self,
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+    ) -> None:
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -942,7 +949,6 @@ class CacheOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.post(url, query_parameters, header_parameters)
@@ -953,20 +959,9 @@ class CacheOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 201:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _upgrade_firmware_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/upgrade'}  # type: ignore
 
     async def upgrade_firmware(
@@ -974,7 +969,7 @@ class CacheOperations:
         resource_group_name: str,
         cache_name: str,
         **kwargs
-    ) -> object:
+    ) -> None:
         """Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
 
         :param resource_group_name: Target resource group.
@@ -987,12 +982,12 @@ class CacheOperations:
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.AsyncPollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: object, or the result of cls(response)
-        :rtype: object
+        :return: None, or the result of cls(response)
+        :rtype: None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, AsyncPollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -1008,11 +1003,8 @@ class CacheOperations:
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()

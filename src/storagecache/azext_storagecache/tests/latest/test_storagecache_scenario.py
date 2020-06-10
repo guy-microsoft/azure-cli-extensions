@@ -81,6 +81,15 @@ def step__caches_post_caches_flush(test, rg):
              checks=[])
 
 
+# EXAMPLE: /Caches/post/Caches_ForceGsi
+@try_manual
+def step__caches_post_caches_forcegsi(test, rg):
+    test.cmd('az storagecache cache force-gsi '
+             '--cache-name "sc" '
+             '--resource-group "{rg}"',
+             checks=[])
+
+
 # EXAMPLE: /Caches/post/Caches_Start
 @try_manual
 def step__caches_post_caches_start(test, rg):
@@ -103,7 +112,7 @@ def step__caches_post_caches_stop(test, rg):
 @try_manual
 def step__caches_post_caches_upgradefirmware(test, rg):
     test.cmd('az storagecache cache upgrade-firmware '
-             '--cache-name "sc1" '
+             '--cache-name "sc" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -207,6 +216,7 @@ def call_scenario(test, rg):
     step__caches_get_caches_list(test, rg)
     step__caches_get_caches_listbyresourcegroup(test, rg)
     step__caches_post_caches_flush(test, rg)
+    step__caches_post_caches_forcegsi(test, rg)
     step__caches_post_caches_start(test, rg)
     step__caches_post_caches_stop(test, rg)
     step__caches_post_caches_upgradefirmware(test, rg)

@@ -42,6 +42,15 @@ flush a storagecache cache.
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|Target resource group.|resource_group_name|
 |**--cache-name**|string|Name of Cache. Length of name must be not greater than 80 and chars must be in list of [-0-9a-zA-Z_] char class.|cache_name|
+### storagecache cache force-gsi
+
+force-gsi a storagecache cache.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|Target resource group.|resource_group_name|
+|**--cache-name**|string|Name of Cache. Length of name must be not greater than 80 and chars must be in list of [-0-9a-zA-Z_] char class.|cache_name|
+|**--comment**|string|The comment associated with the GSI.|comment|
 ### storagecache cache list
 
 list a storagecache cache.

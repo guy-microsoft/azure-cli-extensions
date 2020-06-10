@@ -127,8 +127,8 @@ class StorageTargetOperations(object):
         storage_target_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> object
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        # type: (...) -> None
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-03-01"
@@ -149,7 +149,6 @@ class StorageTargetOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
 
         # Construct and send request
         request = self._client.delete(url, query_parameters, header_parameters)
@@ -160,20 +159,9 @@ class StorageTargetOperations(object):
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('object', pipeline_response)
-
-        if response.status_code == 204:
-            deserialized = self._deserialize('object', pipeline_response)
-
         if cls:
-            return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, None, {})
 
-        return deserialized
     _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}'}  # type: ignore
 
     def begin_delete(
@@ -198,12 +186,12 @@ class StorageTargetOperations(object):
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
         :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: An instance of LROPoller that returns either object or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[object]
+        :return: An instance of LROPoller that returns either None or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[None]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[object]
+        cls = kwargs.pop('cls', None)  # type: ClsType[None]
         lro_delay = kwargs.pop(
             'polling_interval',
             self._config.polling_interval
@@ -220,11 +208,8 @@ class StorageTargetOperations(object):
         kwargs.pop('content_type', None)
 
         def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('object', pipeline_response)
-
             if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
+                return cls(pipeline_response, None, {})
 
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()

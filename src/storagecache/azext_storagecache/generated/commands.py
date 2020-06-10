@@ -50,6 +50,7 @@ def load_command_table(self, _):
         g.custom_command('update', 'storagecache_cache_update')
         g.custom_command('delete', 'storagecache_cache_delete', supports_no_wait=True)
         g.custom_command('flush', 'storagecache_cache_flush', supports_no_wait=True)
+        g.custom_command('force-gsi', 'storagecache_cache_force_gsi')
         g.custom_command('start', 'storagecache_cache_start', supports_no_wait=True)
         g.custom_command('stop', 'storagecache_cache_stop', supports_no_wait=True)
         g.custom_command('upgrade-firmware', 'storagecache_cache_upgrade_firmware', supports_no_wait=True)

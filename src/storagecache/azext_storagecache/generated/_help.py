@@ -144,6 +144,15 @@ rrors returned until the flush is complete.
                az storagecache cache flush --cache-name "sc" --resource-group "scgroup"
 """
 
+helps['storagecache cache force-gsi'] = """
+    type: command
+    short-summary: Forces a GSI to complete on the specified cache.
+    examples:
+      - name: Caches_ForceGsi
+        text: |-
+               az storagecache cache force-gsi --cache-name "sc" --resource-group "scgroup"
+"""
+
 helps['storagecache cache start'] = """
     type: command
     short-summary: Tells a Stopped state Cache to transition to Active state.
@@ -168,7 +177,7 @@ helps['storagecache cache upgrade-firmware'] = """
     examples:
       - name: Caches_UpgradeFirmware
         text: |-
-               az storagecache cache upgrade-firmware --cache-name "sc1" --resource-group "scgroup"
+               az storagecache cache upgrade-firmware --cache-name "sc" --resource-group "scgroup"
 """
 
 helps['storagecache cache wait'] = """

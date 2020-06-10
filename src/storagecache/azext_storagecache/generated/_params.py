@@ -102,6 +102,12 @@ def load_arguments(self, _):
         c.argument('cache_name', help='Name of Cache. Length of name must be not greater than 80 and chars must be in l'
                    'ist of [-0-9a-zA-Z_] char class.')
 
+    with self.argument_context('storagecache cache force-gsi') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('cache_name', help='Name of Cache. Length of name must be not greater than 80 and chars must be in l'
+                   'ist of [-0-9a-zA-Z_] char class.')
+        c.argument('comment', help='The comment associated with the GSI.')
+
     with self.argument_context('storagecache cache start') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('cache_name', help='Name of Cache. Length of name must be not greater than 80 and chars must be in l'
