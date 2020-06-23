@@ -26,17 +26,18 @@ def load_command_table(self, _):
         g.custom_command('book-shipment-pick-up', 'databox_job_book_shipment_pick_up')
         g.custom_command('cancel', 'databox_job_cancel')
         g.custom_command('list-credentials', 'databox_job_list_credentials')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'databox_job_show')
 
     from azext_databox.generated._client_factory import cf_service
     databox_service = CliCommandType(
         operations_tmpl='azext_databox.vendored_sdks.databox.operations._service_operations#ServiceOperations.{}',
         client_factory=cf_service)
     with self.command_group('databox service', databox_service, client_factory=cf_service, is_experimental=True) as g:
-        g.custom_command('list-available-sku', 'databox_service_list_available_sku')
         g.custom_command('list-available-sku-by-resource-group',
                          'databox_service_list_available_sku_by_resource_group')
         g.custom_command('region-configuration', 'databox_service_region_configuration')
+        g.custom_command('region-configuration-by-resource-group', 'databox_service_region_configuration_by_resource_gr'
+                         'oup')
         g.custom_command('validate-address', 'databox_service_validate_address')
         g.custom_command('validate-input', 'databox_service_validate_input')
         g.custom_command('validate-input-by-resource-group', 'databox_service_validate_input_by_resource_group')

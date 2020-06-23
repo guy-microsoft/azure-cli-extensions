@@ -33,9 +33,9 @@ class ClassDiscriminator(str, Enum):
     """Indicates the type of job details.
     """
 
-    data_box = "DataBox"  #: Databox orders.
-    data_box_disk = "DataBoxDisk"  #: DataboxDisk orders.
-    data_box_heavy = "DataBoxHeavy"  #: DataboxHeavy orders.
+    data_box = "DataBox"  #: Data Box orders.
+    data_box_disk = "DataBoxDisk"  #: Data Box Disk orders.
+    data_box_heavy = "DataBoxHeavy"  #: Data Box Heavy orders.
 
 class CopyStatus(str, Enum):
     """The Status of the copy
@@ -53,12 +53,19 @@ class CopyStatus(str, Enum):
     storage_account_not_accessible = "StorageAccountNotAccessible"  #: Data copy failed. Storage Account was not accessible during copy.
     unsupported_data = "UnsupportedData"  #: Data copy failed. The Device data content is not supported.
 
-class DataDestinationType(str, Enum):
-    """Data Destination Type.
+class DataAccountType(str, Enum):
+    """Type of the account.
     """
 
     storage_account = "StorageAccount"  #: Storage Accounts .
     managed_disk = "ManagedDisk"  #: Azure Managed disk storage.
+
+class FilterFileType(str, Enum):
+    """Type of the filter file.
+    """
+
+    azure_blob = "AzureBlob"  #: Filter file is of the type Azureblobs.
+    azure_file = "AzureFile"  #: Filter file is of the type AzureFiles.
 
 class JobDeliveryType(str, Enum):
     """Delivery type of Job.
@@ -66,6 +73,20 @@ class JobDeliveryType(str, Enum):
 
     non_scheduled = "NonScheduled"  #: Non Scheduled job.
     scheduled = "Scheduled"  #: Scheduled job.
+
+class KekType(str, Enum):
+    """Type of encryption key used for key encryption.
+    """
+
+    microsoft_managed = "MicrosoftManaged"  #: Key encryption key is managed by Microsoft.
+    customer_managed = "CustomerManaged"  #: Key encryption key is managed by the Customer.
+
+class LogCollectionLevel(str, Enum):
+    """Level of the logs to be collected.
+    """
+
+    error = "Error"  #: Only Errors will be collected in the logs.
+    verbose = "Verbose"  #: Verbose logging (includes Errors, CRC, size information and others).
 
 class NotificationStageName(str, Enum):
     """Name of the stage.
@@ -75,7 +96,7 @@ class NotificationStageName(str, Enum):
     dispatched = "Dispatched"  #: Notification at device dispatched stage.
     delivered = "Delivered"  #: Notification at device delivered stage.
     picked_up = "PickedUp"  #: Notification at device picked up from user stage.
-    at_azure_dc = "AtAzureDC"  #: Notification at device received at azure datacenter stage.
+    at_azure_dc = "AtAzureDC"  #: Notification at device received at Azure datacenter stage.
     data_copy = "DataCopy"  #: Notification at data copy started stage.
 
 class OverallValidationStatus(str, Enum):
@@ -107,12 +128,13 @@ class SkuDisabledReason(str, Enum):
     feature = "Feature"  #: Required features are not enabled for the SKU.
     offer_type = "OfferType"  #: Subscription does not have required offer types for the SKU.
     no_subscription_info = "NoSubscriptionInfo"  #: Subscription has not registered to Microsoft.DataBox and Service does not have the subscription notification.
+    customer_unregistered = "CustomerUnregistered"  #: Customer unregistered from the subscription.
 
 class SkuName(str, Enum):
 
-    data_box = "DataBox"  #: Databox.
-    data_box_disk = "DataBoxDisk"  #: DataboxDisk.
-    data_box_heavy = "DataBoxHeavy"  #: DataboxHeavy.
+    data_box = "DataBox"  #: Data Box.
+    data_box_disk = "DataBoxDisk"  #: Data Box Disk.
+    data_box_heavy = "DataBoxHeavy"  #: Data Box Heavy.
 
 class StageName(str, Enum):
     """Name of the stage which is in progress.
@@ -122,14 +144,14 @@ class StageName(str, Enum):
     device_prepared = "DevicePrepared"  #: A device has been prepared for the order.
     dispatched = "Dispatched"  #: Device has been dispatched to the user of the order.
     delivered = "Delivered"  #: Device has been delivered to the user of the order.
-    picked_up = "PickedUp"  #: Device has been picked up from user and in transit to azure datacenter.
-    at_azure_dc = "AtAzureDC"  #: Device has been received at azure datacenter from the user.
-    data_copy = "DataCopy"  #: Data copy from the device at azure datacenter.
+    picked_up = "PickedUp"  #: Device has been picked up from user and in transit to Azure datacenter.
+    at_azure_dc = "AtAzureDC"  #: Device has been received at Azure datacenter from the user.
+    data_copy = "DataCopy"  #: Data copy from the device at Azure datacenter.
     completed = "Completed"  #: Order has completed.
     completed_with_errors = "CompletedWithErrors"  #: Order has completed with errors.
     cancelled = "Cancelled"  #: Order has been cancelled.
     failed_issue_reported_at_customer = "Failed_IssueReportedAtCustomer"  #: Order has failed due to issue reported by user.
-    failed_issue_detected_at_azure_dc = "Failed_IssueDetectedAtAzureDC"  #: Order has failed due to issue detected at azure datacenter.
+    failed_issue_detected_at_azure_dc = "Failed_IssueDetectedAtAzureDC"  #: Order has failed due to issue detected at Azure datacenter.
     aborted = "Aborted"  #: Order has been aborted.
     completed_with_warnings = "CompletedWithWarnings"  #: Order has completed with warnings.
     ready_to_dispatch_from_azure_dc = "ReadyToDispatchFromAzureDC"  #: Device is ready to be handed to customer from Azure DC.
@@ -146,6 +168,22 @@ class StageStatus(str, Enum):
     cancelled = "Cancelled"  #: Stage has been cancelled.
     cancelling = "Cancelling"  #: Stage is cancelling.
     succeeded_with_errors = "SucceededWithErrors"  #: Stage has succeeded with errors.
+    waiting_for_customer_action = "WaitingForCustomerAction"  #: Stage is stuck until customer takes some action.
+    succeeded_with_warnings = "SucceededWithWarnings"  #: Stage has succeeded with warnings.
+
+class TransferConfigurationType(str, Enum):
+    """Type of the configuration for transfer.
+    """
+
+    transfer_all = "TransferAll"  #: Transfer all the data.
+    transfer_using_filter = "TransferUsingFilter"  #: Transfer using filter.
+
+class TransferType(str, Enum):
+    """Type of the transfer.
+    """
+
+    import_to_azure = "ImportToAzure"  #: Import data to azure.
+    export_from_azure = "ExportFromAzure"  #: Export data from azure.
 
 class TransportShipmentTypes(str, Enum):
     """Transport Shipment Type supported for given region.
@@ -159,11 +197,11 @@ class ValidationInputDiscriminator(str, Enum):
     """
 
     validate_address = "ValidateAddress"  #: Identify request and response of address validation.
-    validate_data_destination_details = "ValidateDataDestinationDetails"  #: Identify request and response of data destination details validation.
     validate_subscription_is_allowed_to_create_job = "ValidateSubscriptionIsAllowedToCreateJob"  #: Identify request and response for validation of subscription permission to create job.
     validate_preferences = "ValidatePreferences"  #: Identify request and response of preference validation.
     validate_create_order_limit = "ValidateCreateOrderLimit"  #: Identify request and response of create order limit for subscription validation.
-    validate_sku_availability = "ValidateSkuAvailability"  #: Identify request and response of active job limit for sku availability.
+    validate_sku_availability = "ValidateSkuAvailability"  #: Identify request and response of active job limit for sku availibility.
+    validate_data_transfer_details = "ValidateDataTransferDetails"  #: Identify request and response of data transfer details validation.
 
 class ValidationStatus(str, Enum):
     """Create order limit validation status.

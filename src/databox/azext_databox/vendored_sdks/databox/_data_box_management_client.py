@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import DataBoxManagementClientConfiguration
 from .operations import OperationOperations
 from .operations import JobOperations
@@ -26,16 +28,17 @@ class DataBoxManagementClient(object):
     """DataBoxManagementClient.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.databox.operations.OperationOperations
+    :vartype operation: data_box_management_client.operations.OperationOperations
     :ivar job: JobOperations operations
-    :vartype job: azure.mgmt.databox.operations.JobOperations
+    :vartype job: data_box_management_client.operations.JobOperations
     :ivar service: ServiceOperations operations
-    :vartype service: azure.mgmt.databox.operations.ServiceOperations
+    :vartype service: data_box_management_client.operations.ServiceOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The Subscription Id.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

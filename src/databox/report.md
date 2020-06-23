@@ -30,10 +30,12 @@ create a databox job.
 |**--job-name**|string|The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore only|job_name|
 |**--location**|string|The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.). The region of a resource cannot be changed once it is created, but if an identical region is specified on update the request will succeed.|location|
 |**--sku**|object|The sku type.|sku|
+|**--transfer-type**|sealed-choice|Type of the data transfer.|transfer_type|
 |**--tags**|dictionary|The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).|tags|
+|**--identity-type**|string|Identity type|type|
 |**--details**|object|Details of a job run. This field will only be sent for expand details filter.|details|
 |**--delivery-type**|sealed-choice|Delivery type of Job.|delivery_type|
-|**--delivery-info**|object|Delivery Info of Job.|delivery_info|
+|**--delivery-info-scheduled-date-time**|date-time|Scheduled date time.|scheduled_date_time|
 ### databox job delete
 
 delete a databox job.
@@ -77,17 +79,8 @@ update a databox job.
 |**--job-name**|string|The name of the job Resource within the specified resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore only|job_name|
 |**--if-match**|string|Defines the If-Match condition. The patch will be performed only if the ETag of the job on the server matches this value.|if_match|
 |**--tags**|dictionary|The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).|tags|
+|**--identity-type**|string|Identity type|type|
 |**--details**|object|Details of a job to be updated.|details|
-|**--destination-account-details**|array|Destination account details.|destination_account_details|
-### databox service list-available-sku
-
-list-available-sku a databox service.
-
-|Option|Type|Description|Path (SDK)|Path (swagger)|
-|------|----|-----------|----------|--------------|
-|**--location**|string|The location of the resource|location|
-|**--country**|string|ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements|country|
-|**--sku-names**|array|Sku Names to filter for available skus|sku_names|
 ### databox service list-available-sku-by-resource-group
 
 list-available-sku-by-resource-group a databox service.
@@ -96,6 +89,7 @@ list-available-sku-by-resource-group a databox service.
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The Resource Group Name|resource_group_name|
 |**--location**|string|The location of the resource|location|
+|**--transfer-type**|sealed-choice|Type of the transfer.|transfer_type|
 |**--country**|string|ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements|country|
 |**--sku-names**|array|Sku Names to filter for available skus|sku_names|
 ### databox service region-configuration
@@ -108,7 +102,19 @@ region-configuration a databox service.
 |**--data-box-schedule-availability-request**|object|Request body to get the availability for scheduling data box orders orders.|data_box_schedule_availability_request|
 |**--disk-schedule-availability-request**|object|Request body to get the availability for scheduling disk orders.|disk_schedule_availability_request|
 |**--heavy-schedule-availability-request**|object|Request body to get the availability for scheduling heavy orders.|heavy_schedule_availability_request|
-|**--transport-availability-request**|object|Request body to get the transport availability for given sku.|transport_availability_request|
+|**--transport-availability-request-sku-name**|sealed-choice|Type of the device.|sku_name|
+### databox service region-configuration-by-resource-group
+
+region-configuration-by-resource-group a databox service.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The Resource Group Name|resource_group_name|
+|**--location**|string|The location of the resource|location|
+|**--data-box-schedule-availability-request**|object|Request body to get the availability for scheduling data box orders orders.|data_box_schedule_availability_request|
+|**--disk-schedule-availability-request**|object|Request body to get the availability for scheduling disk orders.|disk_schedule_availability_request|
+|**--heavy-schedule-availability-request**|object|Request body to get the availability for scheduling heavy orders.|heavy_schedule_availability_request|
+|**--transport-availability-request-sku-name**|sealed-choice|Type of the device.|sku_name|
 ### databox service validate-address
 
 validate-address a databox service.
@@ -119,7 +125,7 @@ validate-address a databox service.
 |**--validation-type**|sealed-choice|Identifies the type of validation request.|validation_type|
 |**--shipping-address**|object|Shipping address of the customer.|shipping_address|
 |**--device-type**|sealed-choice|Device type to be used for the job.|device_type|
-|**--transport-preferences**|object|Preferences related to the shipment logistics of the sku.|transport_preferences|
+|**--transport-preferences-preferred-shipment-type**|sealed-choice|Indicates Shipment Logistics type that the customer preferred.|preferred_shipment_type|
 ### databox service validate-input
 
 validate-input a databox service.

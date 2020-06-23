@@ -7,13 +7,10 @@
 # --------------------------------------------------------------------------
 
 from ._data_box_management_client import DataBoxManagementClient
-from ._version import VERSION
-
-__version__ = VERSION
 __all__ = ['DataBoxManagementClient']
 
 try:
-    from .patch import patch_sdk
+    from ._patch import patch_sdk
     patch_sdk()
 except ImportError:
     pass

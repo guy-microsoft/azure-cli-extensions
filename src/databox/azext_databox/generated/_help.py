@@ -32,52 +32,44 @@ helps['databox job show'] = """
     examples:
       - name: JobsGet
         text: |-
-               az databox job show --expand "details" --job-name "SdkJob3971" --resource-group "SdkRg4981"
-      - name: JobsGet1
-        text: |-
-               az databox job show --expand "details" --job-name "SdkJob3970" --resource-group "SdkRg4981"
-      - name: JobsGet2
-        text: |-
-               az databox job show --expand "details" --job-name "SdkJob3971" --resource-group "SdkRg4981"
-      - name: JobsGet3
-        text: |-
-               az databox job show --expand "details" --job-name "SdkJob3971" --resource-group "SdkRg4981"
-      - name: JobsGet4
-        text: |-
-               az databox job show --expand "details" --job-name "SdkJob3971" --resource-group "SdkRg4981"
-      - name: JobsGet5
-        text: |-
-               az databox job show --expand "details" --job-name "SdkJob3971" --resource-group "SdkRg4981"
+               az databox job show --expand "details" --name "SdkJob8558" --resource-group "SdkRg2508"
 """
 
 helps['databox job create'] = """
     type: command
     short-summary: Creates a new job with the specified parameters. Existing job cannot be updated with this API and sh\
 ould instead be updated with the Update job API.
+    parameters:
+      - name: --sku
+        short-summary: The sku type.
+        long-summary: |
+            Usage: --sku name=XX display-name=XX family=XX
+
+            name: Required. The sku name.
+            display-name: The display name of the sku.
+            family: The sku family.
     examples:
       - name: JobsCreate
         text: |-
-               az databox job create --job-name "SdkJob3971" --location "westus" --details "{\\"contactDetails\\":{\\"c\
-ontactName\\":\\"Public SDK Test\\",\\"emailList\\":[\\"testing@microsoft.com\\"],\\"phone\\":\\"1234567890\\",\\"phone\
-Extension\\":\\"1234\\"},\\"destinationAccountDetails\\":[{\\"dataDestinationType\\":\\"StorageAccount\\",\\"storageAcc\
-ountId\\":\\"/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/\
-storageAccounts/databoxbvttestaccount\\"}],\\"jobDetailsType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"addressType\\":\
-\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\
-\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\
-\\"}}" --sku name="DataBox" --resource-group "SdkRg4981"
+               az databox job create --name "SdkJob3971" --location "westus" --transfer-type "ImportToAzure" --details \
+"{\\"contactDetails\\":{\\"contactName\\":\\"Public SDK Test\\",\\"emailList\\":[\\"testing@microsoft.com\\"],\\"phone\
+\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"},\\"jobDetailsType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"addr\
+essType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"\
+postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\"\
+:\\"Unit 1\\"}}" --sku name="DataBox" --resource-group "SdkRg4981"
 """
 
 helps['databox job update'] = """
     type: command
     short-summary: Updates the properties of an existing job.
     examples:
-      - name: JobsPatch
+      - name: JobsUpdate
         text: |-
-               az databox job update --job-name "SdkJob3971" --details "{\\"contactDetails\\":{\\"contactName\\":\\"Upd\
-ate Job\\",\\"emailList\\":[\\"testing@microsoft.com\\"],\\"phone\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"},\
-\\"shippingAddress\\":{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\
-\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNS\
-END ST\\",\\"streetAddress2\\":\\"Unit 1\\"}}" --resource-group "SdkRg4981"
+               az databox job update --name "SdkJob8558" --details "{\\"contactDetails\\":{\\"contactName\\":\\"Update \
+Job\\",\\"emailList\\":[\\"testing@microsoft.com\\"],\\"phone\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"},\\"s\
+hippingAddress\\":{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\
+\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND \
+ST\\",\\"streetAddress2\\":\\"Unit 1\\"}}" --resource-group "SdkRg2508"
 """
 
 helps['databox job delete'] = """
@@ -86,26 +78,26 @@ helps['databox job delete'] = """
     examples:
       - name: JobsDelete
         text: |-
-               az databox job delete --job-name "SdkJob3971" --resource-group "SdkRg4981"
+               az databox job delete --name "SdkJob3971" --resource-group "SdkRg4981"
 """
 
 helps['databox job book-shipment-pick-up'] = """
     type: command
     short-summary: Book shipment pick up.
     examples:
-      - name: BookShipmentPickupPost
+      - name: JobsBookShipmentPickUp
         text: |-
-               az databox job book-shipment-pick-up --job-name "TJ-636646322037905056" --resource-group "bvttoolrg6" --\
-end-time "2019-09-22T18:30:00Z" --shipment-location "Front desk" --start-time "2019-09-20T18:30:00Z"
+               az databox job book-shipment-pick-up --name "sdktest5497" --resource-group "SdkRg2508" --end-time "2018-\
+04-17T18:30:00Z" --shipment-location "Front desk" --start-time "2018-04-15T18:30:00Z"
 """
 
 helps['databox job cancel'] = """
     type: command
     short-summary: CancelJob.
     examples:
-      - name: JobsCancelPost
+      - name: JobsCancel
         text: |-
-               az databox job cancel --reason "CancelTest" --job-name "SdkJob3971" --resource-group "SdkRg4981"
+               az databox job cancel --reason "CancelTest" --name "SdkJob8558" --resource-group "SdkRg2508"
 """
 
 helps['databox job list-credentials'] = """
@@ -114,7 +106,22 @@ helps['databox job list-credentials'] = """
     examples:
       - name: JobsListCredentials
         text: |-
-               az databox job list-credentials --job-name "TJ-636646322037905056" --resource-group "bvttoolrg6"
+               az databox job list-credentials --name "sdktest5497" --resource-group "SdkRg2508"
+"""
+
+helps['databox job wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the databox job is met.
+    examples:
+      - name: Pause executing next line of CLI script until the databox job is successfully created.
+        text: |-
+               az databox job wait --expand "details" --name "SdkJob8558" --resource-group "SdkRg2508" --created
+      - name: Pause executing next line of CLI script until the databox job is successfully updated.
+        text: |-
+               az databox job wait --expand "details" --name "SdkJob8558" --resource-group "SdkRg2508" --updated
+      - name: Pause executing next line of CLI script until the databox job is successfully deleted.
+        text: |-
+               az databox job wait --expand "details" --name "SdkJob8558" --resource-group "SdkRg2508" --deleted
 """
 
 helps['databox service'] = """
@@ -122,29 +129,51 @@ helps['databox service'] = """
     short-summary: databox service
 """
 
-helps['databox service list-available-sku'] = """
-    type: command
-    short-summary: This method provides the list of available skus for the given subscription and location.
-    examples:
-      - name: AvailableSkusPost
-        text: |-
-               az databox service list-available-sku --country "US" --location "westus" --location "westus"
-"""
-
 helps['databox service list-available-sku-by-resource-group'] = """
     type: command
     short-summary: This method provides the list of available skus for the given subscription, resource group and locat\
 ion.
     examples:
-      - name: AvailableSkusByResourceGroup
+      - name: ServiceListAvailableSkusByResourceGroup
         text: |-
-               az databox service list-available-sku-by-resource-group --country "US" --location "westus" --location "w\
-estus" --resource-group "SdkRg9836"
+               az databox service list-available-sku-by-resource-group --country "US" --location "westus" --transfer-ty\
+pe "ImportToAzure" --location "westus" --resource-group "SdkRg9836"
 """
 
 helps['databox service region-configuration'] = """
     type: command
-    short-summary: This API provides configuration details specific to given region/location.
+    short-summary: This API provides configuration details specific to given region/location at Subscription level.
+    parameters:
+      - name: --data-box-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling data box orders orders.
+        long-summary: |
+            Usage: --data-box-schedule-availability-request storage-location=XX sku-name=XX country=XX
+
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
+      - name: --disk-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling disk orders.
+        long-summary: |
+            Usage: --disk-schedule-availability-request expected-data-size-in-terabytes=XX storage-location=XX sku-name\
+=XX country=XX
+
+            expected-data-size-in-terabytes: Required. The expected size of the data, which needs to be transferred in \
+this job, in tera bytes.
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
+      - name: --heavy-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling heavy orders.
+        long-summary: |
+            Usage: --heavy-schedule-availability-request storage-location=XX sku-name=XX country=XX
+
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
     examples:
       - name: ServiceRegionConfiguration
         text: |-
@@ -152,46 +181,116 @@ helps['databox service region-configuration'] = """
 \\":\\"DataBox\\",\\"storageLocation\\":\\"westus\\"}"
 """
 
+helps['databox service region-configuration-by-resource-group'] = """
+    type: command
+    short-summary: This API provides configuration details specific to given region/location at Resource group level.
+    parameters:
+      - name: --data-box-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling data box orders orders.
+        long-summary: |
+            Usage: --data-box-schedule-availability-request storage-location=XX sku-name=XX country=XX
+
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
+      - name: --disk-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling disk orders.
+        long-summary: |
+            Usage: --disk-schedule-availability-request expected-data-size-in-terabytes=XX storage-location=XX sku-name\
+=XX country=XX
+
+            expected-data-size-in-terabytes: Required. The expected size of the data, which needs to be transferred in \
+this job, in tera bytes.
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
+      - name: --heavy-schedule-availability-request
+        short-summary: Request body to get the availability for scheduling heavy orders.
+        long-summary: |
+            Usage: --heavy-schedule-availability-request storage-location=XX sku-name=XX country=XX
+
+            storage-location: Required. Location for data transfer. For locations check: https://management.azure.com/s\
+ubscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
+            sku-name: Required. Sku Name for which the order is to be scheduled.
+            country: Country in which storage location should be supported.
+    examples:
+      - name: ServiceRegionConfigurationByResourceGroup
+        text: |-
+               az databox service region-configuration-by-resource-group --location "westus" --schedule-availability-re\
+quest "{\\"skuName\\":\\"DataBox\\",\\"storageLocation\\":\\"westus\\"}" --resource-group "SdkRg4981"
+"""
+
 helps['databox service validate-address'] = """
     type: command
-    short-summary: [DEPRECATED NOTICE: This operation will soon be removed] This method validates the customer shipping\
- address and provide alternate addresses if any.
+    short-summary: [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shippin\
+g address and provide alternate addresses if any.
+    parameters:
+      - name: --shipping-address
+        short-summary: Shipping address of the customer.
+        long-summary: |
+            Usage: --shipping-address street-address1=XX street-address2=XX street-address3=XX city=XX state-or-provinc\
+e=XX country=XX postal-code=XX zip-extended-code=XX company-name=XX address-type=XX
+
+            street-address1: Required. Street Address line 1.
+            street-address2: Street Address line 2.
+            street-address3: Street Address line 3.
+            city: Name of the City.
+            state-or-province: Name of the State or Province.
+            country: Required. Name of the Country.
+            postal-code: Required. Postal code.
+            zip-extended-code: Extended Zip Code.
+            company-name: Name of the company.
+            address-type: Type of address.
     examples:
-      - name: ValidateAddressPost
+      - name: ServiceValidateAddress
         text: |-
-               az databox service validate-address --location "westus" --device-type "DataBox" --shipping-address addre\
-ss-type="Commercial" city="San Francisco" company-name="Microsoft" country="US" postal-code="94107" state-or-province="\
-CA" street-address1="16 TOWNSEND ST" street-address2="Unit 1" --validation-type "ValidateAddress"
+               az databox service validate-address --device-type "DataBox" --location "westus" --device-type "DataBox" \
+--shipping-address city="San Francisco" country="US" postal-code="94107" state-or-province="CA" street-address1="16 TOW\
+NSEND ST" street-address2="Unit 1" --validation-type "ValidateAddress" --validation-type "ValidateAddress"
 """
 
 helps['databox service validate-input'] = """
     type: command
     short-summary: This method does all necessary pre-job creation validation under subscription.
+    parameters:
+      - name: --create-job-validations
+        short-summary: It does all pre-job creation validations.
+        long-summary: |
+            Usage: --create-job-validations individual-request-details=XX
+
+            individual-request-details: Required. List of request details contain validationType and its request as key\
+ and value respectively.
     examples:
       - name: ServiceValidateInputs
         text: |-
                az databox service validate-input --location "westus" --validation-request "{\\"individualRequestDetails\
-\\":[{\\"destinationAccountDetails\\":[{\\"dataDestinationType\\":\\"StorageAccount\\",\\"storageAccountId\\":\\"/subsc\
-riptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/dat\
-aboxbvttestaccount\\"}],\\"location\\":\\"westus\\",\\"validationType\\":\\"ValidateDataDestinationDetails\\"},{\\"devi\
-ceType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"com\
-panyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"stree\
-tAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"},\\"validationType\\":\\"ValidateAddress\\"}],\\"va\
-lidationCategory\\":\\"JobCreationValidation\\"}"
+\\":[{\\"deviceType\\":\\"DataBox\\",\\"transferType\\":\\"ImportToAzure\\",\\"validationType\\":\\"ValidateDataTransfe\
+rDetails\\"},{\\"deviceType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"Sa\
+n Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\
+\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"},\\"validationType\\":\\"Valid\
+ateAddress\\"}],\\"validationCategory\\":\\"JobCreationValidation\\"}"
 """
 
 helps['databox service validate-input-by-resource-group'] = """
     type: command
     short-summary: This method does all necessary pre-job creation validation under resource group.
+    parameters:
+      - name: --create-job-validations
+        short-summary: It does all pre-job creation validations.
+        long-summary: |
+            Usage: --create-job-validations individual-request-details=XX
+
+            individual-request-details: Required. List of request details contain validationType and its request as key\
+ and value respectively.
     examples:
       - name: ServiceValidateInputsByResourceGroup
         text: |-
                az databox service validate-input-by-resource-group --location "westus" --resource-group "SdkRg9836" --v\
-alidation-request "{\\"individualRequestDetails\\":[{\\"destinationAccountDetails\\":[{\\"dataDestinationType\\":\\"Sto\
-rageAccount\\",\\"storageAccountId\\":\\"/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/\
-providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount\\"}],\\"location\\":\\"westus\\",\\"validationType\\"\
-:\\"ValidateDataDestinationDetails\\"},{\\"deviceType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"addressType\\":\\"Comm\
-ercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"9\
-4107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"},\\"\
-validationType\\":\\"ValidateAddress\\"}],\\"validationCategory\\":\\"JobCreationValidation\\"}"
+alidation-request "{\\"individualRequestDetails\\":[{\\"deviceType\\":\\"DataBox\\",\\"transferType\\":\\"ImportToAzure\
+\\",\\"validationType\\":\\"ValidateDataTransferDetails\\"},{\\"deviceType\\":\\"DataBox\\",\\"shippingAddress\\":{\\"a\
+ddressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\
+\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\
+\\":\\"Unit 1\\"},\\"validationType\\":\\"ValidateAddress\\"}],\\"validationCategory\\":\\"JobCreationValidation\\"}"
 """

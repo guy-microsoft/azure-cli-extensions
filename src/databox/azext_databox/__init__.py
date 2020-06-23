@@ -20,8 +20,8 @@ class DataBoxManagementClientCommandsLoader(AzCommandsLoader):
         databox_custom = CliCommandType(
             operations_tmpl='azext_databox.custom#{}',
             client_factory=cf_databox)
-        super(DataBoxManagementClientCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                                    custom_command_type=databox_custom)
+        parent = super(DataBoxManagementClientCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=databox_custom)
 
     def load_command_table(self, args):
         from azext_databox.generated.commands import load_command_table

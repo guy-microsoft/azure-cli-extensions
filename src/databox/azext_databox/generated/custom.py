@@ -12,18 +12,19 @@
 
 import json
 from knack.util import CLIError
+from azure.cli.core.util import sdk_no_wait
 
 
-def databox_job_list(cmd, client,
+def databox_job_list(client,
                      resource_group_name=None,
                      skip_token=None):
-    if resource_group_name is not None:
+    if resource_group_name:
         return client.list_by_resource_group(resource_group_name=resource_group_name,
                                              skip_token=skip_token)
     return client.list(skip_token=skip_token)
 
 
-def databox_job_show(cmd, client,
+def databox_job_show(client,
                      resource_group_name,
                      job_name,
                      expand=None):
@@ -32,52 +33,65 @@ def databox_job_show(cmd, client,
                       expand=expand)
 
 
-def databox_job_create(cmd, client,
+def databox_job_create(client,
                        resource_group_name,
                        job_name,
                        location,
                        sku,
+                       transfer_type,
                        tags=None,
+                       identity_type=None,
                        details=None,
                        delivery_type=None,
-                       delivery_info=None):
+                       delivery_info_scheduled_date_time=None,
+                       no_wait=False):
     if isinstance(details, str):
         details = json.loads(details)
-    return client.begin_create(resource_group_name=resource_group_name,
-                               job_name=job_name,
-                               location=location,
-                               tags=tags,
-                               sku=sku,
-                               details=details,
-                               delivery_type=delivery_type,
-                               delivery_info=delivery_info)
+    return sdk_no_wait(no_wait,
+                       client.begin_create,
+                       resource_group_name=resource_group_name,
+                       job_name=job_name,
+                       location=location,
+                       tags=tags,
+                       sku=sku,
+                       type=identity_type,
+                       transfer_type=transfer_type,
+                       details=details,
+                       delivery_type=delivery_type,
+                       scheduled_date_time=delivery_info_scheduled_date_time)
 
 
-def databox_job_update(cmd, client,
+def databox_job_update(client,
                        resource_group_name,
                        job_name,
                        if_match=None,
                        tags=None,
+                       identity_type=None,
                        details=None,
-                       destination_account_details=None):
+                       no_wait=False):
     if isinstance(details, str):
         details = json.loads(details)
-    return client.begin_update(resource_group_name=resource_group_name,
-                               job_name=job_name,
-                               if_match=if_match,
-                               tags=tags,
-                               details=details,
-                               destination_account_details=destination_account_details)
+    return sdk_no_wait(no_wait,
+                       client.begin_update,
+                       resource_group_name=resource_group_name,
+                       job_name=job_name,
+                       if_match=if_match,
+                       tags=tags,
+                       type=identity_type,
+                       details=details)
 
 
-def databox_job_delete(cmd, client,
+def databox_job_delete(client,
                        resource_group_name,
-                       job_name):
-    return client.begin_delete(resource_group_name=resource_group_name,
-                               job_name=job_name)
+                       job_name,
+                       no_wait=False):
+    return sdk_no_wait(no_wait,
+                       client.begin_delete,
+                       resource_group_name=resource_group_name,
+                       job_name=job_name)
 
 
-def databox_job_book_shipment_pick_up(cmd, client,
+def databox_job_book_shipment_pick_up(client,
                                       resource_group_name,
                                       job_name,
                                       start_time,
@@ -90,7 +104,7 @@ def databox_job_book_shipment_pick_up(cmd, client,
                                         shipment_location=shipment_location)
 
 
-def databox_job_cancel(cmd, client,
+def databox_job_cancel(client,
                        resource_group_name,
                        job_name,
                        reason):
@@ -99,45 +113,33 @@ def databox_job_cancel(cmd, client,
                          reason=reason)
 
 
-def databox_job_list_credentials(cmd, client,
+def databox_job_list_credentials(client,
                                  resource_group_name,
                                  job_name):
     return client.list_credentials(resource_group_name=resource_group_name,
                                    job_name=job_name)
 
 
-def databox_service_list_available_sku(cmd, client,
-                                       country,
-                                       location=None,
-                                       sku_names=None):
-    if isinstance(sku_names, str):
-        sku_names = json.loads(sku_names)
-    return client.list_available_sku(location=location,
-                                     country=country,
-                                     available_sku_request_location=location,
-                                     sku_names=sku_names)
-
-
-def databox_service_list_available_sku_by_resource_group(cmd, client,
+def databox_service_list_available_sku_by_resource_group(client,
                                                          resource_group_name,
+                                                         transfer_type,
                                                          country,
                                                          location=None,
                                                          sku_names=None):
-    if isinstance(sku_names, str):
-        sku_names = json.loads(sku_names)
     return client.list_available_sku_by_resource_group(resource_group_name=resource_group_name,
                                                        location=location,
+                                                       transfer_type=transfer_type,
                                                        country=country,
                                                        available_sku_request_location=location,
                                                        sku_names=sku_names)
 
 
-def databox_service_region_configuration(cmd, client,
+def databox_service_region_configuration(client,
                                          location,
                                          data_box_schedule_availability_request=None,
                                          disk_schedule_availability_request=None,
                                          heavy_schedule_availability_request=None,
-                                         transport_availability_request=None):
+                                         transport_availability_request_sku_name=None):
     all_schedule_availability_request = []
     if data_box_schedule_availability_request is not None:
         all_schedule_availability_request.append(data_box_schedule_availability_request)
@@ -148,25 +150,56 @@ def databox_service_region_configuration(cmd, client,
     if len(all_schedule_availability_request) > 1:
         raise CLIError('at most one of  data_box_schedule_availability_request, disk_schedule_availability_request, hea'
                        'vy_schedule_availability_request is needed for schedule_availability_request!')
+    if len(all_schedule_availability_request) != 1:
+        raise CLIError('schedule_availability_request is required. but none of data_box_schedule_availability_request, '
+                       'disk_schedule_availability_request, heavy_schedule_availability_request is provided!')
     schedule_availability_request = all_schedule_availability_request[0] if len(all_schedule_availability_request) == 1 else None
     return client.region_configuration(location=location,
-                                       schedule_availability_request=schedule_availability_request)
+                                       schedule_availability_request=schedule_availability_request,
+                                       sku_name=transport_availability_request_sku_name)
 
 
-def databox_service_validate_address(cmd, client,
+def databox_service_region_configuration_by_resource_group(client,
+                                                           resource_group_name,
+                                                           location,
+                                                           data_box_schedule_availability_request=None,
+                                                           disk_schedule_availability_request=None,
+                                                           heavy_schedule_availability_request=None,
+                                                           transport_availability_request_sku_name=None):
+    all_schedule_availability_request = []
+    if data_box_schedule_availability_request is not None:
+        all_schedule_availability_request.append(data_box_schedule_availability_request)
+    if disk_schedule_availability_request is not None:
+        all_schedule_availability_request.append(disk_schedule_availability_request)
+    if heavy_schedule_availability_request is not None:
+        all_schedule_availability_request.append(heavy_schedule_availability_request)
+    if len(all_schedule_availability_request) > 1:
+        raise CLIError('at most one of  data_box_schedule_availability_request, disk_schedule_availability_request, hea'
+                       'vy_schedule_availability_request is needed for schedule_availability_request!')
+    if len(all_schedule_availability_request) != 1:
+        raise CLIError('schedule_availability_request is required. but none of data_box_schedule_availability_request, '
+                       'disk_schedule_availability_request, heavy_schedule_availability_request is provided!')
+    schedule_availability_request = all_schedule_availability_request[0] if len(all_schedule_availability_request) == 1 else None
+    return client.region_configuration_by_resource_group(resource_group_name=resource_group_name,
+                                                         location=location,
+                                                         schedule_availability_request=schedule_availability_request,
+                                                         sku_name=transport_availability_request_sku_name)
+
+
+def databox_service_validate_address(client,
                                      location,
                                      validation_type,
                                      shipping_address,
                                      device_type,
-                                     transport_preferences=None):
+                                     transport_preferences_preferred_shipment_type=None):
     return client.validate_address(location=location,
                                    validation_type=validation_type,
                                    shipping_address=shipping_address,
                                    device_type=device_type,
-                                   transport_preferences=transport_preferences)
+                                   preferred_shipment_type=transport_preferences_preferred_shipment_type)
 
 
-def databox_service_validate_input(cmd, client,
+def databox_service_validate_input(client,
                                    location,
                                    create_job_validations=None):
     all_validation_request = []
@@ -181,7 +214,7 @@ def databox_service_validate_input(cmd, client,
                                  validation_request=validation_request)
 
 
-def databox_service_validate_input_by_resource_group(cmd, client,
+def databox_service_validate_input_by_resource_group(client,
                                                      resource_group_name,
                                                      location,
                                                      create_job_validations=None):

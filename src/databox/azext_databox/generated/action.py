@@ -19,7 +19,6 @@ class AddSku(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.sku = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -41,61 +40,10 @@ class AddSku(argparse.Action):
         return d
 
 
-class AddDeliveryInfo(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.delivery_info = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'scheduled-date-time':
-                d['scheduled_date_time'] = v[0]
-        return d
-
-
-class AddDestinationAccountDetails(argparse._AppendAction):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        super(AddDestinationAccountDetails, self).__call__(parser, namespace, action, option_string)
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'data-destination-type':
-                d['data_destination_type'] = v[0]
-            elif kl == 'account-id':
-                d['account_id'] = v[0]
-            elif kl == 'share-password':
-                d['share_password'] = v[0]
-        return d
-
-
 class AddDataBoxScheduleAvailabilityRequest(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.data_box_schedule_availability_request = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -111,6 +59,8 @@ class AddDataBoxScheduleAvailabilityRequest(argparse.Action):
             v = properties[k]
             if kl == 'storage-location':
                 d['storage_location'] = v[0]
+            elif kl == 'country':
+                d['country'] = v[0]
         d['sku_name'] = 'DataBox'
         return d
 
@@ -119,7 +69,6 @@ class AddDiskScheduleAvailabilityRequest(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.disk_schedule_availability_request = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -137,6 +86,8 @@ class AddDiskScheduleAvailabilityRequest(argparse.Action):
                 d['expected_data_size_in_terabytes'] = v[0]
             elif kl == 'storage-location':
                 d['storage_location'] = v[0]
+            elif kl == 'country':
+                d['country'] = v[0]
         d['sku_name'] = 'DataBoxDisk'
         return d
 
@@ -145,7 +96,6 @@ class AddHeavyScheduleAvailabilityRequest(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.heavy_schedule_availability_request = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -161,6 +111,8 @@ class AddHeavyScheduleAvailabilityRequest(argparse.Action):
             v = properties[k]
             if kl == 'storage-location':
                 d['storage_location'] = v[0]
+            elif kl == 'country':
+                d['country'] = v[0]
         d['sku_name'] = 'DataBoxHeavy'
         return d
 
@@ -169,7 +121,6 @@ class AddShippingAddress(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.shipping_address = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -206,35 +157,11 @@ class AddShippingAddress(argparse.Action):
         return d
 
 
-class AddTransportPreferences(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.transport_preferences = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'preferred-shipment-type':
-                d['preferred_shipment_type'] = v[0]
-        return d
-
-
 class AddCreateJobValidations(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.create_job_validations = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -244,6 +171,7 @@ class AddCreateJobValidations(argparse.Action):
         except ValueError:
             raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
         d = {}
+        d['validation_category'] = "JobCreationValidation"
         for k in properties:
             kl = k.lower()
             v = properties[k]

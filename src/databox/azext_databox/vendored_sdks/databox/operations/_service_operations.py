@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class ServiceOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.databox.models
+    :type models: ~data_box_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -45,108 +45,25 @@ class ServiceOperations(object):
         self._deserialize = deserializer
         self._config = config
 
-    def list_available_sku(
-        self,
-        location,  # type: str
-        country,  # type: str
-        available_sku_request_location,  # type: str
-        sku_names=None,  # type: Optional[List[Union[str, "SkuName"]]]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.AvailableSkusResult"
-        """This method provides the list of available skus for the given subscription and location.
-
-        :param location: The location of the resource.
-        :type location: str
-        :param country: ISO country code. Country for hardware shipment. For codes check:
-     https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
-        :type country: str
-        :param available_sku_request_location: Location for data transfer. For locations check:
-     https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-        :type available_sku_request_location: str
-        :param sku_names: Sku Names to filter for available skus.
-        :type sku_names: list[str or ~azure.mgmt.databox.models.SkuName]
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AvailableSkusResult or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.AvailableSkusResult
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.AvailableSkusResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        _available_sku_request = models.AvailableSkuRequest(country=country, location=available_sku_request_location, sku_names=sku_names)
-        api_version = "2019-09-01"
-        content_type = "application/json"
-        transfer_type = "ImportToAzure"
-
-        def prepare_request(next_link=None):
-            if not next_link:
-                # Construct URL
-                url = self.list_available_sku.metadata['url']
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-                    'location': self._serialize.url("location", location, 'str'),
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-            else:
-                url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            body_content_kwargs = {}  # type: Dict[str, Any]
-            body_content = self._serialize.body(_available_sku_request, 'AvailableSkuRequest')
-            body_content_kwargs['content'] = body_content
-            request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('AvailableSkusResult', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return deserialized.next_link or None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list_available_sku.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/availableSkus'}
-
     def list_available_sku_by_resource_group(
         self,
         resource_group_name,  # type: str
         location,  # type: str
+        transfer_type,  # type: Union[str, "models.TransferType"]
         country,  # type: str
         available_sku_request_location,  # type: str
-        sku_names=None,  # type: Optional[List[Union[str, "SkuName"]]]
+        sku_names=None,  # type: Optional[List[Union[str, "models.SkuName"]]]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.AvailableSkusResult"
+        # type: (...) -> Iterable["models.AvailableSkusResult"]
         """This method provides the list of available skus for the given subscription, resource group and location.
 
         :param resource_group_name: The Resource Group Name.
         :type resource_group_name: str
         :param location: The location of the resource.
         :type location: str
+        :param transfer_type: Type of the transfer.
+        :type transfer_type: str or ~data_box_management_client.models.TransferType
         :param country: ISO country code. Country for hardware shipment. For codes check:
      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements.
         :type country: str
@@ -154,36 +71,36 @@ class ServiceOperations(object):
      https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
         :type available_sku_request_location: str
         :param sku_names: Sku Names to filter for available skus.
-        :type sku_names: list[str or ~azure.mgmt.databox.models.SkuName]
+        :type sku_names: list[str or ~data_box_management_client.models.SkuName]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AvailableSkusResult or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.AvailableSkusResult
+        :return: An iterator like instance of either AvailableSkusResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_box_management_client.models.AvailableSkusResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AvailableSkusResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        _available_sku_request = models.AvailableSkuRequest(country=country, location=available_sku_request_location, sku_names=sku_names)
-        api_version = "2019-09-01"
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        _available_sku_request = models.AvailableSkuRequest(transfer_type=transfer_type, country=country, location=available_sku_request_location, sku_names=sku_names)
+        api_version = "2020-04-01"
         content_type = "application/json"
-        transfer_type = "ImportToAzure"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_available_sku_by_resource_group.metadata['url']
+                url = self.list_available_sku_by_resource_group.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'location': self._serialize.url("location", location, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
@@ -219,7 +136,147 @@ class ServiceOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_available_sku_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus'}
+    list_available_sku_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus'}  # type: ignore
+
+    def region_configuration(
+        self,
+        location,  # type: str
+        schedule_availability_request,  # type: "models.ScheduleAvailabilityRequest"
+        sku_name=None,  # type: Optional[Union[str, "models.SkuName"]]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.RegionConfigurationResponse"
+        """This API provides configuration details specific to given region/location at Subscription level.
+
+        :param location: The location of the resource.
+        :type location: str
+        :param schedule_availability_request: Request body to get the availability for scheduling
+         orders.
+        :type schedule_availability_request: ~data_box_management_client.models.ScheduleAvailabilityRequest
+        :param sku_name: Type of the device.
+        :type sku_name: str or ~data_box_management_client.models.SkuName
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: RegionConfigurationResponse, or the result of cls(response)
+        :rtype: ~data_box_management_client.models.RegionConfigurationResponse
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.RegionConfigurationResponse"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _region_configuration_request = models.RegionConfigurationRequest(schedule_availability_request=schedule_availability_request, sku_name=sku_name)
+        api_version = "2020-04-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self.region_configuration.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'location': self._serialize.url("location", location, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_region_configuration_request, 'RegionConfigurationRequest')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('RegionConfigurationResponse', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    region_configuration.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration'}  # type: ignore
+
+    def region_configuration_by_resource_group(
+        self,
+        resource_group_name,  # type: str
+        location,  # type: str
+        schedule_availability_request,  # type: "models.ScheduleAvailabilityRequest"
+        sku_name=None,  # type: Optional[Union[str, "models.SkuName"]]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.RegionConfigurationResponse"
+        """This API provides configuration details specific to given region/location at Resource group level.
+
+        :param resource_group_name: The Resource Group Name.
+        :type resource_group_name: str
+        :param location: The location of the resource.
+        :type location: str
+        :param schedule_availability_request: Request body to get the availability for scheduling
+         orders.
+        :type schedule_availability_request: ~data_box_management_client.models.ScheduleAvailabilityRequest
+        :param sku_name: Type of the device.
+        :type sku_name: str or ~data_box_management_client.models.SkuName
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: RegionConfigurationResponse, or the result of cls(response)
+        :rtype: ~data_box_management_client.models.RegionConfigurationResponse
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.RegionConfigurationResponse"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _region_configuration_request = models.RegionConfigurationRequest(schedule_availability_request=schedule_availability_request, sku_name=sku_name)
+        api_version = "2020-04-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self.region_configuration_by_resource_group.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'location': self._serialize.url("location", location, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_region_configuration_request, 'RegionConfigurationRequest')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('RegionConfigurationResponse', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    region_configuration_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration'}  # type: ignore
 
     def validate_address(
         self,
@@ -227,36 +284,37 @@ class ServiceOperations(object):
         validation_type,  # type: Union[str, "models.ValidationInputDiscriminator"]
         shipping_address,  # type: "models.ShippingAddress"
         device_type,  # type: Union[str, "models.SkuName"]
-        transport_preferences=None,  # type: Optional["models.TransportPreferences"]
+        preferred_shipment_type=None,  # type: Optional[Union[str, "models.TransportShipmentTypes"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.AddressValidationOutput"
-        """[DEPRECATED NOTICE: This operation will soon be removed] This method validates the customer shipping address and provide alternate addresses if any.
+        """[DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and provide alternate addresses if any.
 
         :param location: The location of the resource.
         :type location: str
         :param validation_type: Identifies the type of validation request.
-        :type validation_type: str or ~azure.mgmt.databox.models.ValidationInputDiscriminator
+        :type validation_type: str or ~data_box_management_client.models.ValidationInputDiscriminator
         :param shipping_address: Shipping address of the customer.
-        :type shipping_address: ~azure.mgmt.databox.models.ShippingAddress
+        :type shipping_address: ~data_box_management_client.models.ShippingAddress
         :param device_type: Device type to be used for the job.
-        :type device_type: str or ~azure.mgmt.databox.models.SkuName
-        :param transport_preferences: Preferences related to the shipment logistics of the sku.
-        :type transport_preferences: ~azure.mgmt.databox.models.TransportPreferences
+        :type device_type: str or ~data_box_management_client.models.SkuName
+        :param preferred_shipment_type: Indicates Shipment Logistics type that the customer preferred.
+        :type preferred_shipment_type: str or ~data_box_management_client.models.TransportShipmentTypes
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AddressValidationOutput or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.AddressValidationOutput
+        :return: AddressValidationOutput, or the result of cls(response)
+        :rtype: ~data_box_management_client.models.AddressValidationOutput
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AddressValidationOutput"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
-        _validate_address = models.ValidateAddress(validation_type=validation_type, shipping_address=shipping_address, device_type=device_type, transport_preferences=transport_preferences)
-        api_version = "2019-09-01"
+        _validate_address = models.ValidateAddress(validation_type=validation_type, shipping_address=shipping_address, device_type=device_type, preferred_shipment_type=preferred_shipment_type)
+        api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.validate_address.metadata['url']
+        url = self.validate_address.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'location': self._serialize.url("location", location, 'str'),
@@ -288,10 +346,72 @@ class ServiceOperations(object):
         deserialized = self._deserialize('AddressValidationOutput', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    validate_address.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateAddress'}
+    validate_address.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateAddress'}  # type: ignore
+
+    def validate_input(
+        self,
+        location,  # type: str
+        validation_request,  # type: "models.ValidationRequest"
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.ValidationResponse"
+        """This method does all necessary pre-job creation validation under subscription.
+
+        :param location: The location of the resource.
+        :type location: str
+        :param validation_request: Inputs of the customer.
+        :type validation_request: ~data_box_management_client.models.ValidationRequest
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: ValidationResponse, or the result of cls(response)
+        :rtype: ~data_box_management_client.models.ValidationResponse
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ValidationResponse"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2020-04-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self.validate_input.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'location': self._serialize.url("location", location, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(validation_request, 'ValidationRequest')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('ValidationResponse', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    validate_input.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateInputs'}  # type: ignore
 
     def validate_input_by_resource_group(
         self,
@@ -308,19 +428,20 @@ class ServiceOperations(object):
         :param location: The location of the resource.
         :type location: str
         :param validation_request: Inputs of the customer.
-        :type validation_request: ~azure.mgmt.databox.models.ValidationRequest
+        :type validation_request: ~data_box_management_client.models.ValidationRequest
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ValidationResponse or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.ValidationResponse
+        :return: ValidationResponse, or the result of cls(response)
+        :rtype: ~data_box_management_client.models.ValidationResponse
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ValidationResponse"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2019-09-01"
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2020-04-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.validate_input_by_resource_group.metadata['url']
+        url = self.validate_input_by_resource_group.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -353,136 +474,7 @@ class ServiceOperations(object):
         deserialized = self._deserialize('ValidationResponse', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    validate_input_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/validateInputs'}
-
-    def validate_input(
-        self,
-        location,  # type: str
-        validation_request,  # type: "models.ValidationRequest"
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.ValidationResponse"
-        """This method does all necessary pre-job creation validation under subscription.
-
-        :param location: The location of the resource.
-        :type location: str
-        :param validation_request: Inputs of the customer.
-        :type validation_request: ~azure.mgmt.databox.models.ValidationRequest
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ValidationResponse or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.ValidationResponse
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ValidationResponse"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-        api_version = "2019-09-01"
-        content_type = kwargs.pop("content_type", "application/json")
-
-        # Construct URL
-        url = self.validate_input.metadata['url']
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-            'location': self._serialize.url("location", location, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(validation_request, 'ValidationRequest')
-        body_content_kwargs['content'] = body_content
-        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('ValidationResponse', pipeline_response)
-
-        if cls:
-          return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    validate_input.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/validateInputs'}
-
-    def region_configuration(
-        self,
-        location,  # type: str
-        schedule_availability_request=None,  # type: Optional["models.ScheduleAvailabilityRequest"]
-        transport_availability_request=None,  # type: Optional["models.TransportAvailabilityRequest"]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.RegionConfigurationResponse"
-        """This API provides configuration details specific to given region/location.
-
-        :param location: The location of the resource.
-        :type location: str
-        :param schedule_availability_request: Request body to get the availability for scheduling
-         orders.
-        :type schedule_availability_request: ~azure.mgmt.databox.models.ScheduleAvailabilityRequest
-        :param transport_availability_request: Request body to get the transport availability for given
-         sku.
-        :type transport_availability_request: ~azure.mgmt.databox.models.TransportAvailabilityRequest
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: RegionConfigurationResponse or the result of cls(response)
-        :rtype: ~azure.mgmt.databox.models.RegionConfigurationResponse
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.RegionConfigurationResponse"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
-
-        _region_configuration_request = models.RegionConfigurationRequest(schedule_availability_request=schedule_availability_request, transport_availability_request=transport_availability_request)
-        api_version = "2019-09-01"
-        content_type = kwargs.pop("content_type", "application/json")
-
-        # Construct URL
-        url = self.region_configuration.metadata['url']
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-            'location': self._serialize.url("location", location, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_region_configuration_request, 'RegionConfigurationRequest')
-        body_content_kwargs['content'] = body_content
-        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('RegionConfigurationResponse', pipeline_response)
-
-        if cls:
-          return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    region_configuration.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/regionConfiguration'}
+    validate_input_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/validateInputs'}  # type: ignore

@@ -9,199 +9,159 @@
 # --------------------------------------------------------------------------
 
 import os
-import unittest
-
-from azure_devtools.scenario_tests import AllowLargeResponse
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual
+from .. import try_manual, raise_if
 from azure.cli.testsdk import ResourceGroupPreparer
-from azure.cli.testsdk import StorageAccountPreparer
 
 
 TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))
 
 
 @try_manual
-def setup(test, rg, rg_2, rg_3, rg_4):
+def setup(test, rg, rg_2, rg_3):
     pass
 
 
 # EXAMPLE: JobsCreate
 @try_manual
-def step_jobscreate(test, rg, rg_2, rg_3, rg_4):
+def step_jobscreate(test, rg, rg_2, rg_3):
     test.cmd('az databox job create '
-             '--job-name "{SdkJob3971}" '
+             '--name "{SdkJob3971}" '
              '--location "westus" '
+             '--transfer-type "ImportToAzure" '
              '--details "{{\\"contactDetails\\":{{\\"contactName\\":\\"Public SDK Test\\",\\"emailList\\":[\\"testing@m'
-             'icrosoft.com\\"],\\"phone\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"}},\\"destinationAccountDeta'
-             'ils\\":[{{\\"dataDestinationType\\":\\"StorageAccount\\",\\"storageAccountId\\":\\"/subscriptions/{subscr'
-             'iption_id}/resourcegroups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}\\"}}],\\"jobDetailsType\\'
-             '":\\"DataBox\\",\\"shippingAddress\\":{{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\"'
-             ',\\"companyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince'
-             '\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}}}}" '
+             'icrosoft.com\\"],\\"phone\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"}},\\"jobDetailsType\\":\\"D'
+             'ataBox\\",\\"shippingAddress\\":{{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"co'
+             'mpanyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\'
+             '"CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}}}}" '
              '--sku name="DataBox" '
-             '--resource-group "{rg_2}"',
+             '--resource-group "{rg}"',
              checks=[])
 
 
 # EXAMPLE: JobsGet5
 @try_manual
-def step_jobsget5(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job show '
-             '--expand "details" '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobsget5(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsGet4
 @try_manual
-def step_jobsget4(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job show '
-             '--expand "details" '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobsget4(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsGet3
 @try_manual
-def step_jobsget3(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job show '
-             '--expand "details" '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobsget3(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsGet2
 @try_manual
-def step_jobsget2(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job show '
-             '--expand "details" '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobsget2(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsGet1
 @try_manual
-def step_jobsget1(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job show '
-             '--expand "details" '
-             '--job-name "{Jobs_2}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobsget1(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsGet
 @try_manual
-def step_jobsget(test, rg, rg_2, rg_3, rg_4):
+def step_jobsget(test, rg, rg_2, rg_3):
     test.cmd('az databox job show '
              '--expand "details" '
-             '--job-name "{SdkJob3971}" '
+             '--name "{Jobs_2}" '
              '--resource-group "{rg_2}"',
              checks=[])
 
 
 # EXAMPLE: JobsListByResourceGroup
 @try_manual
-def step_jobslistbyresourcegroup(test, rg, rg_2, rg_3, rg_4):
+def step_jobslistbyresourcegroup(test, rg, rg_2, rg_3):
     test.cmd('az databox job list '
-             '--resource-group "{rg_2}"',
+             '--resource-group "{rg}"',
              checks=[])
 
 
 # EXAMPLE: JobsList
 @try_manual
-def step_jobslist(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job list',
+def step_jobslist(test, rg, rg_2, rg_3):
+    test.cmd('az databox job list '
+             '-g ""',
              checks=[])
 
 
 # EXAMPLE: OperationsGet
 @try_manual
-def step_operationsget(test, rg, rg_2, rg_3, rg_4):
+def step_operationsget(test, rg, rg_2, rg_3):
     # EXAMPLE NOT FOUND!
     pass
 
 
 # EXAMPLE: ServiceValidateInputsByResourceGroup
 @try_manual
-def step_servicevalidateinputsbyresourcegroup(test, rg, rg_2, rg_3, rg_4):
+def step_servicevalidateinputsbyresourcegroup(test, rg, rg_2, rg_3):
     test.cmd('az databox service validate-input-by-resource-group '
              '--location "westus" '
              '--resource-group "{rg_3}" '
-             '--validation-request "{{\\"individualRequestDetails\\":[{{\\"destinationAccountDetails\\":[{{\\"dataDesti'
-             'nationType\\":\\"StorageAccount\\",\\"storageAccountId\\":\\"/subscriptions/{subscription_id}/resourcegro'
-             'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}\\"}}],\\"location\\":\\"westus\\",\\"validation'
-             'Type\\":\\"ValidateDataDestinationDetails\\"}},{{\\"deviceType\\":\\"DataBox\\",\\"shippingAddress\\":{{'
-             '\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"co'
-             'untry\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 '
-             'TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}},\\"validationType\\":\\"ValidateAddress\\"}}],\\"valid'
-             'ationCategory\\":\\"JobCreationValidation\\"}}"',
+             '--validation-request "{{\\"individualRequestDetails\\":[{{\\"deviceType\\":\\"DataBox\\",\\"transferType'
+             '\\":\\"ImportToAzure\\",\\"validationType\\":\\"ValidateDataTransferDetails\\"}},{{\\"deviceType\\":\\"Da'
+             'taBox\\",\\"shippingAddress\\":{{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"com'
+             'panyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"'
+             'CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}},\\"validationType\\":'
+             '\\"ValidateAddress\\"}}],\\"validationCategory\\":\\"JobCreationValidation\\"}}"',
              checks=[])
 
 
 # EXAMPLE: AvailableSkusByResourceGroup
 @try_manual
-def step_availableskusbyresourcegroup(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox service list-available-sku-by-resource-group '
-             '--country "US" '
-             '--location "westus" '
-             '--location "westus" '
-             '--resource-group "{rg_3}"',
-             checks=[])
+def step_availableskusbyresourcegroup(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: BookShipmentPickupPost
 @try_manual
-def step_bookshipmentpickuppost(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job book-shipment-pick-up '
-             '--job-name "{Jobs_3}" '
-             '--resource-group "{rg_4}" '
-             '--end-time "2019-09-22T18:30:00Z" '
-             '--shipment-location "Front desk" '
-             '--start-time "2019-09-20T18:30:00Z"',
-             checks=[])
+def step_bookshipmentpickuppost(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsListCredentials
 @try_manual
-def step_jobslistcredentials(test, rg, rg_2, rg_3, rg_4):
+def step_jobslistcredentials(test, rg, rg_2, rg_3):
     test.cmd('az databox job list-credentials '
-             '--job-name "{Jobs_3}" '
-             '--resource-group "{rg_4}"',
+             '--name "{Jobs_3}" '
+             '--resource-group "{rg_2}"',
              checks=[])
 
 
 # EXAMPLE: JobsCancelPost
 @try_manual
-def step_jobscancelpost(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job cancel '
-             '--reason "CancelTest" '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobscancelpost(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsPatch
 @try_manual
-def step_jobspatch(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox job update '
-             '--job-name "{SdkJob3971}" '
-             '--details "{{\\"contactDetails\\":{{\\"contactName\\":\\"Update Job\\",\\"emailList\\":[\\"testing@micros'
-             'oft.com\\"],\\"phone\\":\\"1234567890\\",\\"phoneExtension\\":\\"1234\\"}},\\"shippingAddress\\":{{\\"add'
-             'ressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"country'
-             '\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 TOWNS'
-             'END ST\\",\\"streetAddress2\\":\\"Unit 1\\"}}}}" '
-             '--resource-group "{rg_2}"',
-             checks=[])
+def step_jobspatch(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: ServiceRegionConfiguration
 @try_manual
-def step_serviceregionconfiguration(test, rg, rg_2, rg_3, rg_4):
+def step_serviceregionconfiguration(test, rg, rg_2, rg_3):
     test.cmd('az databox service region-configuration '
              '--location "westus" '
              '--schedule-availability-request "{{\\"skuName\\":\\"DataBox\\",\\"storageLocation\\":\\"westus\\"}}"',
@@ -210,102 +170,86 @@ def step_serviceregionconfiguration(test, rg, rg_2, rg_3, rg_4):
 
 # EXAMPLE: ValidateAddressPost
 @try_manual
-def step_validateaddresspost(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox service validate-address '
-             '--location "westus" '
-             '--device-type "DataBox" '
-             '--shipping-address address-type="Commercial" city="San Francisco" company-name="Microsoft" country="US" p'
-             'ostal-code="94107" state-or-province="CA" street-address1="16 TOWNSEND ST" street-address2="Unit 1" '
-             '--validation-type "ValidateAddress"',
-             checks=[])
+def step_validateaddresspost(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: ServiceValidateInputs
 @try_manual
-def step_servicevalidateinputs(test, rg, rg_2, rg_3, rg_4):
+def step_servicevalidateinputs(test, rg, rg_2, rg_3):
     test.cmd('az databox service validate-input '
              '--location "westus" '
-             '--validation-request "{{\\"individualRequestDetails\\":[{{\\"destinationAccountDetails\\":[{{\\"dataDesti'
-             'nationType\\":\\"StorageAccount\\",\\"storageAccountId\\":\\"/subscriptions/{subscription_id}/resourcegro'
-             'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}\\"}}],\\"location\\":\\"westus\\",\\"validation'
-             'Type\\":\\"ValidateDataDestinationDetails\\"}},{{\\"deviceType\\":\\"DataBox\\",\\"shippingAddress\\":{{'
-             '\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"companyName\\":\\"Microsoft\\",\\"co'
-             'untry\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"CA\\",\\"streetAddress1\\":\\"16 '
-             'TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}},\\"validationType\\":\\"ValidateAddress\\"}}],\\"valid'
-             'ationCategory\\":\\"JobCreationValidation\\"}}"',
+             '--validation-request "{{\\"individualRequestDetails\\":[{{\\"deviceType\\":\\"DataBox\\",\\"transferType'
+             '\\":\\"ImportToAzure\\",\\"validationType\\":\\"ValidateDataTransferDetails\\"}},{{\\"deviceType\\":\\"Da'
+             'taBox\\",\\"shippingAddress\\":{{\\"addressType\\":\\"Commercial\\",\\"city\\":\\"San Francisco\\",\\"com'
+             'panyName\\":\\"Microsoft\\",\\"country\\":\\"US\\",\\"postalCode\\":\\"94107\\",\\"stateOrProvince\\":\\"'
+             'CA\\",\\"streetAddress1\\":\\"16 TOWNSEND ST\\",\\"streetAddress2\\":\\"Unit 1\\"}},\\"validationType\\":'
+             '\\"ValidateAddress\\"}}],\\"validationCategory\\":\\"JobCreationValidation\\"}}"',
              checks=[])
 
 
 # EXAMPLE: AvailableSkusPost
 @try_manual
-def step_availableskuspost(test, rg, rg_2, rg_3, rg_4):
-    test.cmd('az databox service list-available-sku '
-             '--country "US" '
-             '--location "westus" '
-             '--location "westus"',
-             checks=[])
+def step_availableskuspost(test, rg, rg_2, rg_3):
+    # EXAMPLE NOT FOUND!
+    pass
 
 
 # EXAMPLE: JobsDelete
 @try_manual
-def step_jobsdelete(test, rg, rg_2, rg_3, rg_4):
+def step_jobsdelete(test, rg, rg_2, rg_3):
     test.cmd('az databox job delete '
-             '--job-name "{SdkJob3971}" '
-             '--resource-group "{rg_2}"',
+             '--name "{SdkJob3971}" '
+             '--resource-group "{rg}"',
              checks=[])
 
 
 @try_manual
-def cleanup(test, rg, rg_2, rg_3, rg_4):
+def cleanup(test, rg, rg_2, rg_3):
     pass
 
 
 @try_manual
-def call_scenario(test, rg, rg_2, rg_3, rg_4):
-    setup(test, rg, rg_2, rg_3, rg_4)
-    step_jobscreate(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget5(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget4(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget3(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget2(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget1(test, rg, rg_2, rg_3, rg_4)
-    step_jobsget(test, rg, rg_2, rg_3, rg_4)
-    step_jobslistbyresourcegroup(test, rg, rg_2, rg_3, rg_4)
-    step_jobslist(test, rg, rg_2, rg_3, rg_4)
-    step_operationsget(test, rg, rg_2, rg_3, rg_4)
-    step_servicevalidateinputsbyresourcegroup(test, rg, rg_2, rg_3, rg_4)
-    step_availableskusbyresourcegroup(test, rg, rg_2, rg_3, rg_4)
-    step_bookshipmentpickuppost(test, rg, rg_2, rg_3, rg_4)
-    step_jobslistcredentials(test, rg, rg_2, rg_3, rg_4)
-    step_jobscancelpost(test, rg, rg_2, rg_3, rg_4)
-    step_jobspatch(test, rg, rg_2, rg_3, rg_4)
-    step_serviceregionconfiguration(test, rg, rg_2, rg_3, rg_4)
-    step_validateaddresspost(test, rg, rg_2, rg_3, rg_4)
-    step_servicevalidateinputs(test, rg, rg_2, rg_3, rg_4)
-    step_availableskuspost(test, rg, rg_2, rg_3, rg_4)
-    step_jobsdelete(test, rg, rg_2, rg_3, rg_4)
-    cleanup(test, rg, rg_2, rg_3, rg_4)
+def call_scenario(test, rg, rg_2, rg_3):
+    setup(test, rg, rg_2, rg_3)
+    step_jobscreate(test, rg, rg_2, rg_3)
+    step_jobsget5(test, rg, rg_2, rg_3)
+    step_jobsget4(test, rg, rg_2, rg_3)
+    step_jobsget3(test, rg, rg_2, rg_3)
+    step_jobsget2(test, rg, rg_2, rg_3)
+    step_jobsget1(test, rg, rg_2, rg_3)
+    step_jobsget(test, rg, rg_2, rg_3)
+    step_jobslistbyresourcegroup(test, rg, rg_2, rg_3)
+    step_jobslist(test, rg, rg_2, rg_3)
+    step_operationsget(test, rg, rg_2, rg_3)
+    step_servicevalidateinputsbyresourcegroup(test, rg, rg_2, rg_3)
+    step_availableskusbyresourcegroup(test, rg, rg_2, rg_3)
+    step_bookshipmentpickuppost(test, rg, rg_2, rg_3)
+    step_jobslistcredentials(test, rg, rg_2, rg_3)
+    step_jobscancelpost(test, rg, rg_2, rg_3)
+    step_jobspatch(test, rg, rg_2, rg_3)
+    step_serviceregionconfiguration(test, rg, rg_2, rg_3)
+    step_validateaddresspost(test, rg, rg_2, rg_3)
+    step_servicevalidateinputs(test, rg, rg_2, rg_3)
+    step_availableskuspost(test, rg, rg_2, rg_3)
+    step_jobsdelete(test, rg, rg_2, rg_3)
+    cleanup(test, rg, rg_2, rg_3)
 
 
 @try_manual
 class DataBoxManagementClientScenarioTest(ScenarioTest):
 
-    @ResourceGroupPreparer(name_prefix='clitestdatabox_databoxbvt'[:7], key='rg', parameter_name='rg')
-    @ResourceGroupPreparer(name_prefix='clitestdatabox_SdkRg4981'[:7], key='rg_2', parameter_name='rg_2')
+    @ResourceGroupPreparer(name_prefix='clitestdatabox_SdkRg4981'[:7], key='rg', parameter_name='rg')
+    @ResourceGroupPreparer(name_prefix='clitestdatabox_SdkRg2508'[:7], key='rg_2', parameter_name='rg_2')
     @ResourceGroupPreparer(name_prefix='clitestdatabox_SdkRg9836'[:7], key='rg_3', parameter_name='rg_3')
-    @ResourceGroupPreparer(name_prefix='clitestdatabox_bvttoolrg6'[:7], key='rg_4', parameter_name='rg_4')
-    @StorageAccountPreparer(name_prefix='clitestdatabox_databoxbvttestaccount'[:7], key='sa',
-                            resource_group_parameter_name='rg')
-    def test_databox(self, rg, rg_2, rg_3, rg_4):
-
-        self.kwargs.update({
-            'subscription_id': self.get_subscription_id()
-        })
+    def test_databox(self, rg, rg_2, rg_3):
 
         self.kwargs.update({
             'SdkJob3971': 'SdkJob3971',
-            'Jobs_2': 'Jobs_2',
-            'Jobs_3': 'Jobs_3',
+            'Jobs_2': 'SdkJob8558',
+            'Jobs_3': 'sdktest5497',
         })
 
-        call_scenario(self, rg, rg_2, rg_3, rg_4)
+        call_scenario(self, rg, rg_2, rg_3)
+        raise_if()
