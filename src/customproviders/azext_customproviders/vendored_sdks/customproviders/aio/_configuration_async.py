@@ -11,12 +11,11 @@ from typing import Any, TYPE_CHECKING
 from azure.core.configuration import Configuration
 from azure.core.pipeline import policies
 
-from .._version import VERSION
-
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from azure.core.credentials import TokenCredential
+    from azure.core.credentials_async import AsyncTokenCredential
 
+VERSION = "unknown"
 
 class CustomprovidersConfiguration(Configuration):
     """Configuration for Customproviders.
@@ -46,7 +45,8 @@ class CustomprovidersConfiguration(Configuration):
         self.subscription_id = subscription_id
         self.api_version = "2018-09-01-preview"
         self.credential_scopes = ['https://management.azure.com/.default']
-        kwargs.setdefault('sdk_moniker', 'mgmt-customproviders/{}'.format(VERSION))
+        self.credential_scopes.extend(kwargs.pop('credential_scopes', []))
+        kwargs.setdefault('sdk_moniker', 'customproviders/{}'.format(VERSION))
         self._configure(**kwargs)
 
     def _configure(

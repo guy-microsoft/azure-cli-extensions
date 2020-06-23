@@ -20,8 +20,8 @@ class CustomprovidersCommandsLoader(AzCommandsLoader):
         customproviders_custom = CliCommandType(
             operations_tmpl='azext_customproviders.custom#{}',
             client_factory=cf_customproviders)
-        super(CustomprovidersCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                            custom_command_type=customproviders_custom)
+        parent = super(CustomprovidersCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=customproviders_custom)
 
     def load_command_table(self, args):
         from azext_customproviders.generated.commands import load_command_table

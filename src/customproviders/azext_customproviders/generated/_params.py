@@ -10,7 +10,6 @@
 # pylint: disable=too-many-lines
 # pylint: disable=too-many-statements
 
-from knack.arguments import CLIArgumentType
 from azure.cli.core.commands.parameters import (
     tags_type,
     resource_group_name_type,
@@ -31,7 +30,7 @@ def load_arguments(self, _):
 
     with self.argument_context('customproviders custom-resource-provider show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('resource_provider_name', help='The name of the resource provider.')
+        c.argument('resource_provider_name', help='The name of the resource provider.', id_part='name')
 
     with self.argument_context('customproviders custom-resource-provider create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -40,31 +39,34 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('actions', action=AddActions, nargs='+', help='A list of actions that the custom resource provider i'
-                   'mplements. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: name, endpoint.')
+                   'mplements.')
         c.argument('resource_types', action=AddResourceTypes, nargs='+', help='A list of resource types that the custom'
-                   ' resource provider implements. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: rout'
-                   'ing-type, name, endpoint.')
+                   ' resource provider implements.')
         c.argument('validations', action=AddValidations, nargs='+', help='A list of validations to run on the custom re'
-                   'source provider\'s requests. Expect value: specification=xx.')
+                   'source provider\'s requests.')
 
     with self.argument_context('customproviders custom-resource-provider update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('resource_provider_name', help='The name of the resource provider.')
+        c.argument('resource_provider_name', help='The name of the resource provider.', id_part='name')
         c.argument('tags', tags_type)
 
     with self.argument_context('customproviders custom-resource-provider delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('resource_provider_name', help='The name of the resource provider.')
+        c.argument('resource_provider_name', help='The name of the resource provider.', id_part='name')
+
+    with self.argument_context('customproviders custom-resource-provider wait') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('resource_provider_name', help='The name of the resource provider.', id_part='name')
 
     with self.argument_context('customproviders association show') as c:
         c.argument('scope', help='The scope of the association.')
-        c.argument('association_name', help='The name of the association.')
+        c.argument('association_name', options_list=['--name', '-n'], help='The name of the association.')
 
     with self.argument_context('customproviders association create') as c:
         c.argument('scope', help='The scope of the association. The scope can be any valid REST resource instance. For '
                    'example, use \'/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Micr'
                    'osoft.Compute/virtualMachines/{vm-name}\' for a virtual machine resource.')
-        c.argument('association_name', help='The name of the association.')
+        c.argument('association_name', options_list=['--name', '-n'], help='The name of the association.')
         c.argument('target_resource_id',
                    help='The REST resource instance of the target resource for this association.')
 
@@ -72,13 +74,17 @@ def load_arguments(self, _):
         c.argument('scope', help='The scope of the association. The scope can be any valid REST resource instance. For '
                    'example, use \'/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Micr'
                    'osoft.Compute/virtualMachines/{vm-name}\' for a virtual machine resource.')
-        c.argument('association_name', help='The name of the association.')
+        c.argument('association_name', options_list=['--name', '-n'], help='The name of the association.')
         c.argument('target_resource_id',
                    help='The REST resource instance of the target resource for this association.')
 
     with self.argument_context('customproviders association delete') as c:
         c.argument('scope', help='The scope of the association.')
-        c.argument('association_name', help='The name of the association.')
+        c.argument('association_name', options_list=['--name', '-n'], help='The name of the association.')
 
     with self.argument_context('customproviders association list-all') as c:
         c.argument('scope', help='The scope of the association.')
+
+    with self.argument_context('customproviders association wait') as c:
+        c.argument('scope', help='The scope of the association.')
+        c.argument('association_name', options_list=['--name', '-n'], help='The name of the association.')

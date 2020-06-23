@@ -11,6 +11,8 @@ from typing import Dict, List, Optional, Union
 from azure.core.exceptions import HttpResponseError
 import msrest.serialization
 
+from ._customproviders_enums import *
+
 
 class Association(msrest.serialization.Model):
     """The resource definition of this association.
@@ -28,7 +30,7 @@ class Association(msrest.serialization.Model):
     :type target_resource_id: str
     :ivar provisioning_state: The provisioning state of the association. Possible values include:
      "Accepted", "Deleting", "Running", "Succeeded", "Failed".
-    :vartype provisioning_state: str or ~azure.mgmt.customproviders.models.ProvisioningState
+    :vartype provisioning_state: str or ~customproviders.models.ProvisioningState
     """
 
     _validation = {
@@ -64,7 +66,7 @@ class AssociationsList(msrest.serialization.Model):
     """List of associations.
 
     :param value: The array of associations.
-    :type value: list[~azure.mgmt.customproviders.models.Association]
+    :type value: list[~customproviders.models.Association]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
@@ -234,15 +236,14 @@ class CustomRPManifest(Resource):
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
     :param actions: A list of actions that the custom resource provider implements.
-    :type actions: list[~azure.mgmt.customproviders.models.CustomRPActionRouteDefinition]
+    :type actions: list[~customproviders.models.CustomRPActionRouteDefinition]
     :param resource_types: A list of resource types that the custom resource provider implements.
-    :type resource_types:
-     list[~azure.mgmt.customproviders.models.CustomRPResourceTypeRouteDefinition]
+    :type resource_types: list[~customproviders.models.CustomRPResourceTypeRouteDefinition]
     :param validations: A list of validations to run on the custom resource provider's requests.
-    :type validations: list[~azure.mgmt.customproviders.models.CustomRPValidations]
+    :type validations: list[~customproviders.models.CustomRPValidations]
     :ivar provisioning_state: The provisioning state of the resource provider. Possible values
      include: "Accepted", "Deleting", "Running", "Succeeded", "Failed".
-    :vartype provisioning_state: str or ~azure.mgmt.customproviders.models.ProvisioningState
+    :vartype provisioning_state: str or ~customproviders.models.ProvisioningState
     """
 
     _validation = {
@@ -297,7 +298,7 @@ class CustomRPResourceTypeRouteDefinition(CustomRPRouteDefinition):
     :type endpoint: str
     :param routing_type: The routing types that are supported for resource requests. Possible
      values include: "Proxy", "Proxy,Cache".
-    :type routing_type: str or ~azure.mgmt.customproviders.models.ResourceTypeRouting
+    :type routing_type: str or ~customproviders.models.ResourceTypeRouting
     """
 
     _validation = {
@@ -370,7 +371,7 @@ class ErrorDefinition(msrest.serialization.Model):
     :ivar message: Description of the error.
     :vartype message: str
     :ivar details: Internal error details.
-    :vartype details: list[~azure.mgmt.customproviders.models.ErrorDefinition]
+    :vartype details: list[~customproviders.models.ErrorDefinition]
     """
 
     _validation = {
@@ -399,7 +400,7 @@ class ErrorResponse(msrest.serialization.Model):
     """Error response.
 
     :param error: The error details.
-    :type error: ~azure.mgmt.customproviders.models.ErrorDefinition
+    :type error: ~customproviders.models.ErrorDefinition
     """
 
     _attribute_map = {
@@ -420,7 +421,7 @@ class ListByCustomRPManifest(msrest.serialization.Model):
     """List of custom resource providers.
 
     :param value: The array of custom resource provider manifests.
-    :type value: list[~azure.mgmt.customproviders.models.CustomRPManifest]
+    :type value: list[~customproviders.models.CustomRPManifest]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
@@ -448,7 +449,7 @@ class ResourceProviderOperation(msrest.serialization.Model):
     :param name: Operation name, in format of {provider}/{resource}/{operation}.
     :type name: str
     :param display: Display metadata associated with the operation.
-    :type display: ~azure.mgmt.customproviders.models.ResourceProviderOperationDisplay
+    :type display: ~customproviders.models.ResourceProviderOperationDisplay
     """
 
     _attribute_map = {
@@ -508,7 +509,7 @@ class ResourceProviderOperationList(msrest.serialization.Model):
     """Results of the request to list operations.
 
     :param value: List of operations supported by this resource provider.
-    :type value: list[~azure.mgmt.customproviders.models.ResourceProviderOperation]
+    :type value: list[~customproviders.models.ResourceProviderOperation]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """

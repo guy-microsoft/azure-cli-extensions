@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -32,7 +32,7 @@ class AssociationOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.customproviders.models
+    :type models: ~customproviders.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -56,14 +56,15 @@ class AssociationOperations(object):
     ):
         # type: (...) -> "models.Association"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Association"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _association = models.Association(target_resource_id=target_resource_id)
         api_version = "2018-09-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._create_or_update_initial.metadata['url']
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
             'associationName': self._serialize.url("association_name", association_name, 'str'),
@@ -101,10 +102,10 @@ class AssociationOperations(object):
             deserialized = self._deserialize('Association', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _create_or_update_initial.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}
+    _create_or_update_initial.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}  # type: ignore
 
     def begin_create_or_update(
         self,
@@ -113,7 +114,7 @@ class AssociationOperations(object):
         target_resource_id=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.Association"
+        # type: (...) -> LROPoller
         """Create or update an association.
 
         :param scope: The scope of the association. The scope can be any valid REST resource instance.
@@ -129,13 +130,17 @@ class AssociationOperations(object):
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns Association
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.customproviders.models.Association]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either Association or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~customproviders.models.Association]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Association"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._create_or_update_initial(
             scope=scope,
             association_name=association_name,
@@ -144,6 +149,9 @@ class AssociationOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('Association', pipeline_response)
 
@@ -151,15 +159,11 @@ class AssociationOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_create_or_update.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}
+    begin_create_or_update.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}  # type: ignore
 
     def _delete_initial(
         self,
@@ -169,11 +173,12 @@ class AssociationOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         # Construct URL
-        url = self._delete_initial.metadata['url']
+        url = self._delete_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
             'associationName': self._serialize.url("association_name", association_name, 'str'),
@@ -198,9 +203,9 @@ class AssociationOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    _delete_initial.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}
+    _delete_initial.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}  # type: ignore
 
     def begin_delete(
         self,
@@ -208,7 +213,7 @@ class AssociationOperations(object):
         association_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> None
+        # type: (...) -> LROPoller
         """Delete an association.
 
         :param scope: The scope of the association.
@@ -219,13 +224,17 @@ class AssociationOperations(object):
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns None
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.LROPoller[None]
-
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._delete_initial(
             scope=scope,
             association_name=association_name,
@@ -233,19 +242,18 @@ class AssociationOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_delete.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}
+    begin_delete.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}  # type: ignore
 
     def get(
         self,
@@ -261,16 +269,17 @@ class AssociationOperations(object):
         :param association_name: The name of the association.
         :type association_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Association or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.Association
+        :return: Association, or the result of cls(response)
+        :rtype: ~customproviders.models.Association
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Association"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
             'associationName': self._serialize.url("association_name", association_name, 'str'),
@@ -298,45 +307,46 @@ class AssociationOperations(object):
         deserialized = self._deserialize('Association', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}
+    get.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}'}  # type: ignore
 
     def list_all(
         self,
         scope,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.AssociationsList"
+        # type: (...) -> Iterable["models.AssociationsList"]
         """Gets all association for the given scope.
 
         :param scope: The scope of the association.
         :type scope: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AssociationsList or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.AssociationsList
+        :return: An iterator like instance of either AssociationsList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~customproviders.models.AssociationsList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AssociationsList"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_all.metadata['url']
+                url = self.list_all.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -368,4 +378,4 @@ class AssociationOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_all.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations'}
+    list_all.metadata = {'url': '/{scope}/providers/Microsoft.CustomProviders/associations'}  # type: ignore

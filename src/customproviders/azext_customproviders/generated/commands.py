@@ -25,7 +25,7 @@ def load_command_table(self, _):
         g.custom_command('create', 'customproviders_custom_resource_provider_create', supports_no_wait=True)
         g.custom_command('update', 'customproviders_custom_resource_provider_update')
         g.custom_command('delete', 'customproviders_custom_resource_provider_delete', supports_no_wait=True)
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'customproviders_custom_resource_provider_show')
 
     from azext_customproviders.generated._client_factory import cf_association
     customproviders_association = CliCommandType(
@@ -39,4 +39,4 @@ def load_command_table(self, _):
         g.custom_command('update', 'customproviders_association_update', supports_no_wait=True)
         g.custom_command('delete', 'customproviders_association_delete', supports_no_wait=True)
         g.custom_command('list-all', 'customproviders_association_list_all')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'customproviders_association_show')

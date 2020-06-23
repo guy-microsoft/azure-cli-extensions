@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import CustomprovidersConfiguration
 from .operations import OperationOperations
 from .operations import CustomResourceProviderOperations
@@ -26,16 +28,17 @@ class Customproviders(object):
     """Allows extension of ARM control plane with custom resource providers.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.customproviders.operations.OperationOperations
+    :vartype operation: customproviders.operations.OperationOperations
     :ivar custom_resource_provider: CustomResourceProviderOperations operations
-    :vartype custom_resource_provider: azure.mgmt.customproviders.operations.CustomResourceProviderOperations
+    :vartype custom_resource_provider: customproviders.operations.CustomResourceProviderOperations
     :ivar association: AssociationOperations operations
-    :vartype association: azure.mgmt.customproviders.operations.AssociationOperations
+    :vartype association: customproviders.operations.AssociationOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

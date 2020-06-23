@@ -7,13 +7,10 @@
 # --------------------------------------------------------------------------
 
 from ._customproviders import Customproviders
-from ._version import VERSION
-
-__version__ = VERSION
 __all__ = ['Customproviders']
 
 try:
-    from .patch import patch_sdk
+    from ._patch import patch_sdk
     patch_sdk()
 except ImportError:
     pass

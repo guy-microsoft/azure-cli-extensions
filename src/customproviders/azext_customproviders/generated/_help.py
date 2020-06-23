@@ -39,6 +39,43 @@ rp"
 helps['customproviders custom-resource-provider create'] = """
     type: command
     short-summary: Creates or updates the custom resource provider.
+    parameters:
+      - name: --actions
+        short-summary: A list of actions that the custom resource provider implements.
+        long-summary: |
+            Usage: --actions name=XX endpoint=XX
+
+            name: Required. The name of the route definition. This becomes the name for the ARM extension (e.g. '/subsc\
+riptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{res\
+ourceProviderName}/{name}')
+            endpoint: Required. The route definition endpoint URI that the custom resource provider will proxy requests\
+ to. This can be in the form of a flat URI (e.g. 'https://testendpoint/') or can specify to route via a path (e.g. 'htt\
+ps://testendpoint/{requestPath}')
+
+            Multiple actions can be specified by using more than one --actions argument.
+      - name: --resource-types
+        short-summary: A list of resource types that the custom resource provider implements.
+        long-summary: |
+            Usage: --resource-types routing-type=XX name=XX endpoint=XX
+
+            routing-type: The routing types that are supported for resource requests.
+            name: Required. The name of the route definition. This becomes the name for the ARM extension (e.g. '/subsc\
+riptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{res\
+ourceProviderName}/{name}')
+            endpoint: Required. The route definition endpoint URI that the custom resource provider will proxy requests\
+ to. This can be in the form of a flat URI (e.g. 'https://testendpoint/') or can specify to route via a path (e.g. 'htt\
+ps://testendpoint/{requestPath}')
+
+            Multiple actions can be specified by using more than one --resource-types argument.
+      - name: --validations
+        short-summary: A list of validations to run on the custom resource provider's requests.
+        long-summary: |
+            Usage: --validations specification=XX
+
+            specification: Required. A link to the validation specification. The specification must be hosted on raw.gi\
+thubusercontent.com.
+
+            Multiple actions can be specified by using more than one --validations argument.
     examples:
       - name: Create or update the custom resource provider
         text: |-
@@ -68,6 +105,23 @@ helps['customproviders custom-resource-provider delete'] = """
 ewrp"
 """
 
+helps['customproviders custom-resource-provider wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the customproviders custom-resource-provider i\
+s met.
+    examples:
+      - name: Pause executing next line of CLI script until the customproviders custom-resource-provider is successfull\
+y created.
+        text: |-
+               az customproviders custom-resource-provider wait --resource-group "testRG" --resource-provider-name "new\
+rp" --created
+      - name: Pause executing next line of CLI script until the customproviders custom-resource-provider is successfull\
+y deleted.
+        text: |-
+               az customproviders custom-resource-provider wait --resource-group "testRG" --resource-provider-name "new\
+rp" --deleted
+"""
+
 helps['customproviders association'] = """
     type: group
     short-summary: customproviders association
@@ -79,7 +133,7 @@ helps['customproviders association show'] = """
     examples:
       - name: Get an association
         text: |-
-               az customproviders association show --association-name "associationName" --scope "scope"
+               az customproviders association show --name "associationName" --scope "scope"
 """
 
 helps['customproviders association create'] = """
@@ -89,8 +143,8 @@ helps['customproviders association create'] = """
       - name: Create or update an association
         text: |-
                az customproviders association create --target-resource-id "/subscriptions/00000000-0000-0000-0000-00000\
-0000000/resourceGroups/appRG/providers/Microsoft.Solutions/applications/applicationName" --association-name "associatio\
-nName" --scope "scope"
+0000000/resourceGroups/appRG/providers/Microsoft.Solutions/applications/applicationName" --name "associationName" --sco\
+pe "scope"
 """
 
 helps['customproviders association update'] = """
@@ -100,8 +154,8 @@ helps['customproviders association update'] = """
       - name: Create or update an association
         text: |-
                az customproviders association update --target-resource-id "/subscriptions/00000000-0000-0000-0000-00000\
-0000000/resourceGroups/appRG/providers/Microsoft.Solutions/applications/applicationName" --association-name "associatio\
-nName" --scope "scope"
+0000000/resourceGroups/appRG/providers/Microsoft.Solutions/applications/applicationName" --name "associationName" --sco\
+pe "scope"
 """
 
 helps['customproviders association delete'] = """
@@ -110,7 +164,7 @@ helps['customproviders association delete'] = """
     examples:
       - name: Delete an association
         text: |-
-               az customproviders association delete --association-name "associationName" --scope "scope"
+               az customproviders association delete --name "associationName" --scope "scope"
 """
 
 helps['customproviders association list-all'] = """
@@ -120,4 +174,16 @@ helps['customproviders association list-all'] = """
       - name: Get all associations
         text: |-
                az customproviders association list-all --scope "scope"
+"""
+
+helps['customproviders association wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the customproviders association is met.
+    examples:
+      - name: Pause executing next line of CLI script until the customproviders association is successfully created.
+        text: |-
+               az customproviders association wait --name "associationName" --scope "scope" --created
+      - name: Pause executing next line of CLI script until the customproviders association is successfully deleted.
+        text: |-
+               az customproviders association wait --name "associationName" --scope "scope" --deleted
 """

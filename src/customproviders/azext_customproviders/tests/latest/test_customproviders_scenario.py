@@ -9,11 +9,8 @@
 # --------------------------------------------------------------------------
 
 import os
-import unittest
-
-from azure_devtools.scenario_tests import AllowLargeResponse
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual
+from .. import try_manual, raise_if
 from azure.cli.testsdk import ResourceGroupPreparer
 
 
@@ -31,11 +28,11 @@ def step__associations_put_create_or_update_an_association(test, rg, rg_2):
     test.cmd('az customproviders association create '
              '--target-resource-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Solutions/'
              'applications/applicationName" '
-             '--association-name "{associationName}" '
+             '--name "{associationName}" '
              '--scope "scope"',
              checks=[])
     test.cmd('az customproviders association wait --created '
-             '--association-name "{associationName}"',
+             '--name "{associationName}"',
              checks=[])
 
 
@@ -51,7 +48,7 @@ def step__associations_get_get_all_associations(test, rg, rg_2):
 @try_manual
 def step__associations_get_get_an_association(test, rg, rg_2):
     test.cmd('az customproviders association show '
-             '--association-name "{associationName}" '
+             '--name "{associationName}" '
              '--scope "scope"',
              checks=[])
 
@@ -65,9 +62,6 @@ def step__customresourceprovider_put_create_or_update_the_custom_resource_provid
              '--actions name="TestAction" endpoint="https://mytestendpoint/" routing-type="Proxy" '
              '--resource-types name="TestResource" endpoint="https://mytestendpoint2/" routing-type="Proxy,Cache" '
              '--resource-provider-name "newrp"',
-             checks=[])
-    test.cmd('az customproviders custom-resource-provider wait --created '
-             '--resource-group "{rg_2}"',
              checks=[])
 
 
@@ -91,7 +85,8 @@ def step__customresourceprovider_get_list_all_custom_resource_providers_on_the_r
 # EXAMPLE: /CustomResourceProvider/get/List all custom resource providers on the subscription
 @try_manual
 def step__customresourceprovider_get_list_all_custom_resource_providers_on_the_subscription(test, rg, rg_2):
-    test.cmd('az customproviders custom-resource-provider list',
+    test.cmd('az customproviders custom-resource-provider list '
+             '-g ""',
              checks=[])
 
 
@@ -108,7 +103,7 @@ def step__customresourceprovider_patch_update_a_custom_resource_provider(test, r
 @try_manual
 def step__associations_delete_delete_an_association(test, rg, rg_2):
     test.cmd('az customproviders association delete '
-             '--association-name "{associationName}" '
+             '--name "{associationName}" '
              '--scope "scope"',
              checks=[])
 
@@ -159,3 +154,4 @@ class CustomprovidersScenarioTest(ScenarioTest):
         })
 
         call_scenario(self, rg, rg_2)
+        raise_if()

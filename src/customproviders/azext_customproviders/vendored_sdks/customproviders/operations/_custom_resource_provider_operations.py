@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -32,7 +32,7 @@ class CustomResourceProviderOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.customproviders.models
+    :type models: ~customproviders.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -53,21 +53,22 @@ class CustomResourceProviderOperations(object):
         resource_provider_name,  # type: str
         location,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        actions=None,  # type: Optional[List["CustomRPActionRouteDefinition"]]
-        resource_types=None,  # type: Optional[List["CustomRPResourceTypeRouteDefinition"]]
-        validations=None,  # type: Optional[List["CustomRPValidations"]]
+        actions=None,  # type: Optional[List["models.CustomRPActionRouteDefinition"]]
+        resource_types=None,  # type: Optional[List["models.CustomRPResourceTypeRouteDefinition"]]
+        validations=None,  # type: Optional[List["models.CustomRPValidations"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.CustomRPManifest"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.CustomRPManifest"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _resource_provider = models.CustomRPManifest(location=location, tags=tags, actions=actions, resource_types=resource_types, validations=validations)
         api_version = "2018-09-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._create_or_update_initial.metadata['url']
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -106,10 +107,10 @@ class CustomResourceProviderOperations(object):
             deserialized = self._deserialize('CustomRPManifest', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def begin_create_or_update(
         self,
@@ -117,12 +118,12 @@ class CustomResourceProviderOperations(object):
         resource_provider_name,  # type: str
         location,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        actions=None,  # type: Optional[List["CustomRPActionRouteDefinition"]]
-        resource_types=None,  # type: Optional[List["CustomRPResourceTypeRouteDefinition"]]
-        validations=None,  # type: Optional[List["CustomRPValidations"]]
+        actions=None,  # type: Optional[List["models.CustomRPActionRouteDefinition"]]
+        resource_types=None,  # type: Optional[List["models.CustomRPResourceTypeRouteDefinition"]]
+        validations=None,  # type: Optional[List["models.CustomRPValidations"]]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.CustomRPManifest"
+        # type: (...) -> LROPoller
         """Creates or updates the custom resource provider.
 
         :param resource_group_name: The name of the resource group.
@@ -134,22 +135,26 @@ class CustomResourceProviderOperations(object):
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :param actions: A list of actions that the custom resource provider implements.
-        :type actions: list[~azure.mgmt.customproviders.models.CustomRPActionRouteDefinition]
+        :type actions: list[~customproviders.models.CustomRPActionRouteDefinition]
         :param resource_types: A list of resource types that the custom resource provider implements.
-        :type resource_types: list[~azure.mgmt.customproviders.models.CustomRPResourceTypeRouteDefinition]
+        :type resource_types: list[~customproviders.models.CustomRPResourceTypeRouteDefinition]
         :param validations: A list of validations to run on the custom resource provider's requests.
-        :type validations: list[~azure.mgmt.customproviders.models.CustomRPValidations]
+        :type validations: list[~customproviders.models.CustomRPValidations]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns CustomRPManifest
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.customproviders.models.CustomRPManifest]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either CustomRPManifest or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~customproviders.models.CustomRPManifest]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.CustomRPManifest"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._create_or_update_initial(
             resource_group_name=resource_group_name,
             resource_provider_name=resource_provider_name,
@@ -162,6 +167,9 @@ class CustomResourceProviderOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('CustomRPManifest', pipeline_response)
 
@@ -169,15 +177,11 @@ class CustomResourceProviderOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def _delete_initial(
         self,
@@ -187,11 +191,12 @@ class CustomResourceProviderOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         # Construct URL
-        url = self._delete_initial.metadata['url']
+        url = self._delete_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -217,9 +222,9 @@ class CustomResourceProviderOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def begin_delete(
         self,
@@ -227,7 +232,7 @@ class CustomResourceProviderOperations(object):
         resource_provider_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> None
+        # type: (...) -> LROPoller
         """Deletes the custom resource provider.
 
         :param resource_group_name: The name of the resource group.
@@ -238,13 +243,17 @@ class CustomResourceProviderOperations(object):
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns None
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either None or the result of cls(response)
         :rtype: ~azure.core.polling.LROPoller[None]
-
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._delete_initial(
             resource_group_name=resource_group_name,
             resource_provider_name=resource_provider_name,
@@ -252,19 +261,18 @@ class CustomResourceProviderOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    begin_delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def get(
         self,
@@ -280,16 +288,17 @@ class CustomResourceProviderOperations(object):
         :param resource_provider_name: The name of the resource provider.
         :type resource_provider_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: CustomRPManifest or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.CustomRPManifest
+        :return: CustomRPManifest, or the result of cls(response)
+        :rtype: ~customproviders.models.CustomRPManifest
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.CustomRPManifest"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -318,10 +327,10 @@ class CustomResourceProviderOperations(object):
         deserialized = self._deserialize('CustomRPManifest', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def update(
         self,
@@ -340,19 +349,20 @@ class CustomResourceProviderOperations(object):
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: CustomRPManifest or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.CustomRPManifest
+        :return: CustomRPManifest, or the result of cls(response)
+        :rtype: ~customproviders.models.CustomRPManifest
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.CustomRPManifest"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _patchable_resource = models.ResourceProvidersUpdate(tags=tags)
         api_version = "2018-09-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.update.metadata['url']
+        url = self.update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -386,46 +396,47 @@ class CustomResourceProviderOperations(object):
         deserialized = self._deserialize('CustomRPManifest', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders/{resourceProviderName}'}  # type: ignore
 
     def list_by_resource_group(
         self,
         resource_group_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ListByCustomRPManifest"
+        # type: (...) -> Iterable["models.ListByCustomRPManifest"]
         """Gets all the custom resource providers within a resource group.
 
         :param resource_group_name: The name of the resource group.
         :type resource_group_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ListByCustomRPManifest or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.ListByCustomRPManifest
+        :return: An iterator like instance of either ListByCustomRPManifest or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~customproviders.models.ListByCustomRPManifest]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListByCustomRPManifest"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_resource_group.metadata['url']
+                url = self.list_by_resource_group.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -457,39 +468,40 @@ class CustomResourceProviderOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders'}
+    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomProviders/resourceProviders'}  # type: ignore
 
     def list_by_subscription(
         self,
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ListByCustomRPManifest"
+        # type: (...) -> Iterable["models.ListByCustomRPManifest"]
         """Gets all the custom resource providers within a subscription.
 
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ListByCustomRPManifest or the result of cls(response)
-        :rtype: ~azure.mgmt.customproviders.models.ListByCustomRPManifest
+        :return: An iterator like instance of either ListByCustomRPManifest or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~customproviders.models.ListByCustomRPManifest]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListByCustomRPManifest"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-09-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_subscription.metadata['url']
+                url = self.list_by_subscription.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -521,4 +533,4 @@ class CustomResourceProviderOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.CustomProviders/resourceProviders'}
+    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.CustomProviders/resourceProviders'}  # type: ignore
