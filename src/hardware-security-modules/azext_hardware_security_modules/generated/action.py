@@ -14,32 +14,10 @@ from knack.util import CLIError
 from collections import defaultdict
 
 
-class AddSku(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.sku = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-        return d
-
-
 class AddNetworkProfileSubnet(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.network_profile_subnet = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -62,7 +40,6 @@ class AddNetworkProfileNetworkInterfaces(argparse._AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         super(AddNetworkProfileNetworkInterfaces, self).__call__(parser, namespace, action, option_string)
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:

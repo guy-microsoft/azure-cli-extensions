@@ -9,7 +9,6 @@ create a hardware-security-modules dedicated-hsm.
 |**--resource-group-name**|string|The name of the Resource Group to which the resource belongs.|resource_group_name|
 |**--name**|string|Name of the dedicated Hsm|name|
 |**--location**|string|The supported Azure location where the dedicated HSM should be created.|location|
-|**--sku**|object|SKU details|sku|
 |**--zones**|array|The Dedicated Hsm zones.|zones|
 |**--tags**|dictionary|Resource tags|tags|
 |**--stamp-id**|string|This field will be used when RP does not support Availability zones.|stamp_id|

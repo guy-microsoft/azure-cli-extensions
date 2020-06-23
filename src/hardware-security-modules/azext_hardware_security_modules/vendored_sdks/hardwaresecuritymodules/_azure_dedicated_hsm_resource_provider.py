@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import AzureDedicatedHSMResourceProviderConfiguration
 from .operations import OperationOperations
 from .operations import DedicatedHsmOperations
@@ -25,14 +27,15 @@ class AzureDedicatedHSMResourceProvider(object):
     """The Azure management API provides a RESTful set of web services that interact with Azure Dedicated HSM RP.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.hardwaresecuritymodules.operations.OperationOperations
+    :vartype operation: azure_dedicated_hsm_resource_provider.operations.OperationOperations
     :ivar dedicated_hsm: DedicatedHsmOperations operations
-    :vartype dedicated_hsm: azure.mgmt.hardwaresecuritymodules.operations.DedicatedHsmOperations
+    :vartype dedicated_hsm: azure_dedicated_hsm_resource_provider.operations.DedicatedHsmOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

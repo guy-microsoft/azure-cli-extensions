@@ -20,8 +20,8 @@ class AzureDedicatedHSMResourceProviderCommandsLoader(AzCommandsLoader):
         hardware_security_modules_custom = CliCommandType(
             operations_tmpl='azext_hardware_security_modules.custom#{}',
             client_factory=cf_hardware_security_modules)
-        super(AzureDedicatedHSMResourceProviderCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                                              custom_command_type=hardware_security_modules_custom)
+        parent = super(AzureDedicatedHSMResourceProviderCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=hardware_security_modules_custom)
 
     def load_command_table(self, args):
         from azext_hardware_security_modules.generated.commands import load_command_table

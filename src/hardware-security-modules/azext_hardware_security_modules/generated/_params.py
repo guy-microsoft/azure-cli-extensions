@@ -10,7 +10,6 @@
 # pylint: disable=too-many-lines
 # pylint: disable=too-many-statements
 
-from knack.arguments import CLIArgumentType
 from azure.cli.core.commands.parameters import (
     tags_type,
     resource_group_name_type,
@@ -18,7 +17,6 @@ from azure.cli.core.commands.parameters import (
 )
 from azure.cli.core.commands.validators import get_default_location_from_resource_group
 from azext_hardware_security_modules.action import (
-    AddSku,
     AddNetworkProfileSubnet,
     AddNetworkProfileNetworkInterfaces
 )
@@ -32,28 +30,30 @@ def load_arguments(self, _):
 
     with self.argument_context('hardware-security-modules dedicated-hsm show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('name', help='The name of the dedicated HSM.')
+        c.argument('name', help='The name of the dedicated HSM.', id_part='name')
 
     with self.argument_context('hardware-security-modules dedicated-hsm create') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('name', help='Name of the dedicated Hsm')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
-        c.argument('sku', action=AddSku, nargs='+', help='SKU details Expect value: KEY1=VALUE1 KEY2=VALUE2 ...')
-        c.argument('zones', nargs='+', help='The Dedicated Hsm zones. Expected value: json-string/@json-file.')
+        c.argument('zones', nargs='+', help='The Dedicated Hsm zones.')
         c.argument('tags', tags_type)
         c.argument('stamp_id', help='This field will be used when RP does not support Availability zones.')
         c.argument('network_profile_subnet', action=AddNetworkProfileSubnet, nargs='+', help='Specifies the identifier '
-                   'of the subnet. Expect value: id=xx.')
+                   'of the subnet.')
         c.argument('network_profile_network_interfaces', action=AddNetworkProfileNetworkInterfaces, nargs='+', help='Sp'
-                   'ecifies the list of resource Ids for the network interfaces associated with the dedicated HSM. Expe'
-                   'ct value: private-ip-address=xx.')
+                   'ecifies the list of resource Ids for the network interfaces associated with the dedicated HSM.')
 
     with self.argument_context('hardware-security-modules dedicated-hsm update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('name', help='Name of the dedicated HSM')
+        c.argument('name', help='Name of the dedicated HSM', id_part='name')
         c.argument('tags', tags_type)
 
     with self.argument_context('hardware-security-modules dedicated-hsm delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('name', help='The name of the dedicated HSM to delete')
+        c.argument('name', help='The name of the dedicated HSM to delete', id_part='name')
+
+    with self.argument_context('hardware-security-modules dedicated-hsm wait') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('name', help='The name of the dedicated HSM.', id_part='name')

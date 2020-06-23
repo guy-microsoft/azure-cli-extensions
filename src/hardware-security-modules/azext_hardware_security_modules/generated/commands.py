@@ -25,4 +25,4 @@ def load_command_table(self, _):
         g.custom_command('create', 'hardware_security_modules_dedicated_hsm_create', supports_no_wait=True)
         g.custom_command('update', 'hardware_security_modules_dedicated_hsm_update', supports_no_wait=True)
         g.custom_command('delete', 'hardware_security_modules_dedicated_hsm_delete', supports_no_wait=True)
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'hardware_security_modules_dedicated_hsm_show')

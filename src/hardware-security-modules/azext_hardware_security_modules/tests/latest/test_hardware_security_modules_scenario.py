@@ -9,11 +9,8 @@
 # --------------------------------------------------------------------------
 
 import os
-import unittest
-
-from azure_devtools.scenario_tests import AllowLargeResponse
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual
+from .. import try_manual, raise_if
 from azure.cli.testsdk import ResourceGroupPreparer
 from .preparers import VirtualNetworkPreparer
 
@@ -35,12 +32,8 @@ def step__dedicatedhsm_put_create_a_new_or_update_an_existing_dedicated_hsm(test
              '--network-profile-network-interfaces private-ip-address="1.0.0.1" '
              '--network-profile-subnet id="/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Net'
              'work/virtualNetworks/{vn}/subnets/default" '
-             '--stamp-id "stamp01" '
-             '--sku name="SafeNet Luna Network HSM A790" '
+             '--stamp-id "stamp1" '
              '--tags Dept="hsm" Environment="dogfood" '
-             '--resource-group "{rg}"',
-             checks=[])
-    test.cmd('az hardware-security-modules dedicated-hsm wait --created '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -65,7 +58,8 @@ def step__dedicatedhsm_get_list_dedicated_hsm_devices_in_a_resource_group(test, 
 # EXAMPLE: /DedicatedHsm/get/List dedicated HSM devices in a subscription
 @try_manual
 def step__dedicatedhsm_get_list_dedicated_hsm_devices_in_a_subscription(test, rg):
-    test.cmd('az hardware-security-modules dedicated-hsm list',
+    test.cmd('az hardware-security-modules dedicated-hsm list '
+             '-g ""',
              checks=[])
 
 
@@ -119,3 +113,4 @@ class AzureDedicatedHSMResourceProviderScenarioTest(ScenarioTest):
         })
 
         call_scenario(self, rg)
+        raise_if()

@@ -6,10 +6,14 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
 
 from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
+
+if TYPE_CHECKING:
+    # pylint: disable=unused-import,ungrouped-imports
+    from azure.core.credentials_async import AsyncTokenCredential
 
 from ._configuration_async import AzureDedicatedHSMResourceProviderConfiguration
 from .operations_async import OperationOperations
@@ -21,14 +25,15 @@ class AzureDedicatedHSMResourceProvider(object):
     """The Azure management API provides a RESTful set of web services that interact with Azure Dedicated HSM RP.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.hardwaresecuritymodules.aio.operations_async.OperationOperations
+    :vartype operation: azure_dedicated_hsm_resource_provider.aio.operations_async.OperationOperations
     :ivar dedicated_hsm: DedicatedHsmOperations operations
-    :vartype dedicated_hsm: azure.mgmt.hardwaresecuritymodules.aio.operations_async.DedicatedHsmOperations
+    :vartype dedicated_hsm: azure_dedicated_hsm_resource_provider.aio.operations_async.DedicatedHsmOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(
