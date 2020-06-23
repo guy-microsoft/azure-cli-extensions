@@ -80,7 +80,7 @@ create a kusto cluster.
 |**--virtual-network-configuration**|object|Virtual network definition.|virtual_network_configuration|
 |**--key-vault-properties**|object|KeyVault properties for the cluster encryption.|key_vault_properties|
 |**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|
-|**--language-extensions-value**|array|The list of language extensions.|value|
+|**--enable-double-encryption**|boolean|A boolean value that indicates if double encryption is enabled.|enable_double_encryption|
 |**--identity-type**|sealed-choice|The identity type.|type_identity_type|
 |**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|
 ### kusto cluster delete
@@ -191,7 +191,7 @@ update a kusto cluster.
 |**--virtual-network-configuration**|object|Virtual network definition.|virtual_network_configuration|
 |**--key-vault-properties**|object|KeyVault properties for the cluster encryption.|key_vault_properties|
 |**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|
-|**--language-extensions-value**|array|The list of language extensions.|value|
+|**--enable-double-encryption**|boolean|A boolean value that indicates if double encryption is enabled.|enable_double_encryption|
 |**--identity-type**|sealed-choice|The identity type.|type_identity_type|
 |**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|
 ### kusto cluster-principal-assignment create
@@ -272,6 +272,9 @@ event-grid create a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
+|**--ignore-first-record**|boolean|A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file|event_grid_ignore_first_record|
+|**--blob-storage-event-type**|choice|The name of blob storage event type to process.|event_grid_blob_storage_event_type|
 ### kusto data-connection event-grid data-connection-validation
 
 event-grid data-connection-validation a kusto data-connection.
@@ -288,6 +291,28 @@ event-grid data-connection-validation a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
+|**--ignore-first-record**|boolean|A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file|event_grid_ignore_first_record|
+|**--blob-storage-event-type**|choice|The name of blob storage event type to process.|event_grid_blob_storage_event_type|
+### kusto data-connection event-grid data-connection-validation-async
+
+event-grid data-connection-validation-async a kusto data-connection.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The name of the resource group containing the Kusto cluster.|resource_group_name|
+|**--cluster-name**|string|The name of the Kusto cluster.|cluster_name|
+|**--database-name**|string|The name of the database in the Kusto cluster.|database_name|
+|**--data-connection-name**|string|The name of the data connection.|data_connection_name|
+|**--location**|string|Resource location.|event_grid_location|
+|**--storage-account-resource-id**|string|The resource ID of the storage account where the data resides.|event_grid_storage_account_resource_id|
+|**--event-hub-resource-id**|string|The resource ID where the event grid is configured to send events.|event_grid_event_hub_resource_id|
+|**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
+|**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
+|**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
+|**--ignore-first-record**|boolean|A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file|event_grid_ignore_first_record|
+|**--blob-storage-event-type**|choice|The name of blob storage event type to process.|event_grid_blob_storage_event_type|
 ### kusto data-connection event-grid update
 
 event-grid update a kusto data-connection.
@@ -304,6 +329,9 @@ event-grid update a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
+|**--ignore-first-record**|boolean|A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file|event_grid_ignore_first_record|
+|**--blob-storage-event-type**|choice|The name of blob storage event type to process.|event_grid_blob_storage_event_type|
 ### kusto data-connection event-hub create
 
 event-hub create a kusto data-connection.
@@ -321,6 +349,7 @@ event-hub create a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection event-hub data-connection-validation
 
 event-hub data-connection-validation a kusto data-connection.
@@ -338,6 +367,25 @@ event-hub data-connection-validation a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
+### kusto data-connection event-hub data-connection-validation-async
+
+event-hub data-connection-validation-async a kusto data-connection.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The name of the resource group containing the Kusto cluster.|resource_group_name|
+|**--cluster-name**|string|The name of the Kusto cluster.|cluster_name|
+|**--database-name**|string|The name of the database in the Kusto cluster.|database_name|
+|**--data-connection-name**|string|The name of the data connection.|data_connection_name|
+|**--location**|string|Resource location.|event_hub_location|
+|**--event-hub-resource-id**|string|The resource ID of the event hub to be used to create a data connection.|event_hub_event_hub_resource_id|
+|**--consumer-group**|string|The event hub consumer group.|event_hub_consumer_group|
+|**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_hub_table_name|
+|**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
+|**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection event-hub update
 
 event-hub update a kusto data-connection.
@@ -355,6 +403,7 @@ event-hub update a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection iot-hub create
 
 iot-hub create a kusto data-connection.
@@ -372,6 +421,7 @@ iot-hub create a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection iot-hub data-connection-validation
 
 iot-hub data-connection-validation a kusto data-connection.
@@ -389,6 +439,25 @@ iot-hub data-connection-validation a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
+### kusto data-connection iot-hub data-connection-validation-async
+
+iot-hub data-connection-validation-async a kusto data-connection.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The name of the resource group containing the Kusto cluster.|resource_group_name|
+|**--cluster-name**|string|The name of the Kusto cluster.|cluster_name|
+|**--database-name**|string|The name of the database in the Kusto cluster.|database_name|
+|**--data-connection-name**|string|The name of the data connection.|data_connection_name|
+|**--location**|string|Resource location.|iot_hub_location|
+|**--iot-hub-resource-id**|string|The resource ID of the Iot hub to be used to create a data connection.|iot_hub_iot_hub_resource_id|
+|**--consumer-group**|string|The iot hub consumer group.|iot_hub_consumer_group|
+|**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|iot_hub_table_name|
+|**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
+|**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection iot-hub update
 
 iot-hub update a kusto data-connection.
@@ -406,6 +475,7 @@ iot-hub update a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection list
 
 list a kusto data-connection.

@@ -19,7 +19,6 @@ class AddSku(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.sku = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -46,7 +45,6 @@ class AddTrustedExternalTenants(argparse._AppendAction):
         action = self.get_action(values, option_string)
         super(AddTrustedExternalTenants, self).__call__(parser, namespace, action, option_string)
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -68,7 +66,6 @@ class AddOptimizedAutoscale(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.optimized_autoscale = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -98,7 +95,6 @@ class AddVirtualNetworkConfiguration(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.virtual_network_configuration = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -125,7 +121,6 @@ class AddKeyVaultProperties(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.key_vault_properties = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -147,11 +142,10 @@ class AddKeyVaultProperties(argparse.Action):
         return d
 
 
-class AddLanguageExtensionsValue(argparse._AppendAction):
+class AddClustersValue(argparse._AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
-        super(AddLanguageExtensionsValue, self).__call__(parser, namespace, action, option_string)
-
+        super(AddClustersValue, self).__call__(parser, namespace, action, option_string)
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -174,7 +168,6 @@ class AddReadWriteDatabase(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.read_write_database = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -203,7 +196,6 @@ class AddReadOnlyFollowingDatabase(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.read_only_following_database = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -224,11 +216,10 @@ class AddReadOnlyFollowingDatabase(argparse.Action):
         return d
 
 
-class AddValue(argparse._AppendAction):
+class AddDatabasesValue(argparse._AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
-        super(AddValue, self).__call__(parser, namespace, action, option_string)
-
+        super(AddDatabasesValue, self).__call__(parser, namespace, action, option_string)
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
