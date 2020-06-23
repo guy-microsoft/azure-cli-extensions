@@ -205,6 +205,89 @@ class DedicatedHsmListResult(msrest.serialization.Model):
         self.next_link = kwargs.get('next_link', None)
 
 
+class DedicatedHsmOperation(msrest.serialization.Model):
+    """REST API operation.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :param name: The name of the Dedicated HSM Resource Provider Operation.
+    :type name: str
+    :ivar is_data_action: Gets or sets a value indicating whether it is a data plane action.
+    :vartype is_data_action: str
+    :param display:
+    :type display: ~azure.mgmt.hardwaresecuritymodules.models.DedicatedHsmOperationDisplay
+    """
+
+    _validation = {
+        'is_data_action': {'readonly': True},
+    }
+
+    _attribute_map = {
+        'name': {'key': 'name', 'type': 'str'},
+        'is_data_action': {'key': 'isDataAction', 'type': 'str'},
+        'display': {'key': 'display', 'type': 'DedicatedHsmOperationDisplay'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DedicatedHsmOperation, self).__init__(**kwargs)
+        self.name = kwargs.get('name', None)
+        self.is_data_action = None
+        self.display = kwargs.get('display', None)
+
+
+class DedicatedHsmOperationDisplay(msrest.serialization.Model):
+    """DedicatedHsmOperationDisplay.
+
+    :param provider: The Resource Provider of the operation.
+    :type provider: str
+    :param resource: Resource on which the operation is performed.
+    :type resource: str
+    :param operation: Operation type: Read, write, delete, etc.
+    :type operation: str
+    :param description: The object that represents the operation.
+    :type description: str
+    """
+
+    _attribute_map = {
+        'provider': {'key': 'provider', 'type': 'str'},
+        'resource': {'key': 'resource', 'type': 'str'},
+        'operation': {'key': 'operation', 'type': 'str'},
+        'description': {'key': 'description', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DedicatedHsmOperationDisplay, self).__init__(**kwargs)
+        self.provider = kwargs.get('provider', None)
+        self.resource = kwargs.get('resource', None)
+        self.operation = kwargs.get('operation', None)
+        self.description = kwargs.get('description', None)
+
+
+class DedicatedHsmOperationListResult(msrest.serialization.Model):
+    """Result of the request to list Dedicated HSM Provider operations. It contains a list of operations.
+
+    :param value: List of Dedicated HSM Resource Provider operations.
+    :type value: list[~azure.mgmt.hardwaresecuritymodules.models.DedicatedHsmOperation]
+    """
+
+    _attribute_map = {
+        'value': {'key': 'value', 'type': '[DedicatedHsmOperation]'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DedicatedHsmOperationListResult, self).__init__(**kwargs)
+        self.value = kwargs.get('value', None)
+
+
 class DedicatedHsmPatchParameters(msrest.serialization.Model):
     """Patchable properties of the dedicated HSM.
 

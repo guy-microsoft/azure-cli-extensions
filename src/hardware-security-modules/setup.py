@@ -36,7 +36,7 @@ with open('HISTORY.rst', 'r', encoding='utf-8') as f:
     HISTORY = f.read()
 
 setup(
-    name='hardware-security-modules',
+    name='hardware_security_modules',
     version=VERSION,
     description='Microsoft Azure Command-Line Tools AzureDedicatedHSMResourceProvider Extension',
     # TODO: Update author and email, if applicable

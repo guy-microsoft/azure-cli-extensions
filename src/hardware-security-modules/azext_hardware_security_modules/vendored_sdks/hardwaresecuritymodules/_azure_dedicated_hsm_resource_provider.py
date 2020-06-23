@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from typing import Any, Optional
 
 from ._configuration import AzureDedicatedHSMResourceProviderConfiguration
+from .operations import OperationOperations
 from .operations import DedicatedHsmOperations
 from . import models
 
@@ -23,6 +24,8 @@ from . import models
 class AzureDedicatedHSMResourceProvider(object):
     """The Azure management API provides a RESTful set of web services that interact with Azure Dedicated HSM RP.
 
+    :ivar operation: OperationOperations operations
+    :vartype operation: azure.mgmt.hardwaresecuritymodules.operations.OperationOperations
     :ivar dedicated_hsm: DedicatedHsmOperations operations
     :vartype dedicated_hsm: azure.mgmt.hardwaresecuritymodules.operations.DedicatedHsmOperations
     :param credential: Credential needed for the client to connect to Azure.
@@ -49,6 +52,8 @@ class AzureDedicatedHSMResourceProvider(object):
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 
+        self.operation = OperationOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.dedicated_hsm = DedicatedHsmOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
