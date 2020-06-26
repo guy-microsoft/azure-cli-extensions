@@ -38,15 +38,6 @@ def load_command_table(self, _):
                             client_factory=cf_workspace_feature, is_experimental=True) as g:
         g.custom_command('list', 'machinelearningservices_workspace_feature_list')
 
-    from azext_machinelearningservices.generated._client_factory import cf_notebook
-    machinelearningservices_notebook = CliCommandType(
-        operations_tmpl='azext_machinelearningservices.vendored_sdks.machinelearningservices.operations._notebook_opera'
-        'tions#NotebookOperations.{}',
-        client_factory=cf_notebook)
-    with self.command_group('machinelearningservices notebook', machinelearningservices_notebook,
-                            client_factory=cf_notebook, is_experimental=True) as g:
-        g.custom_command('prepare', 'machinelearningservices_notebook_prepare')
-
     from azext_machinelearningservices.generated._client_factory import cf_usage
     machinelearningservices_usage = CliCommandType(
         operations_tmpl='azext_machinelearningservices.vendored_sdks.machinelearningservices.operations._usage_operatio'

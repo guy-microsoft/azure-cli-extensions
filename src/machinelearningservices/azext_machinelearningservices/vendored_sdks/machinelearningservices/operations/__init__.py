@@ -9,7 +9,6 @@
 from ._operation_operations import OperationOperations
 from ._workspace_operations import WorkspaceOperations
 from ._workspace_feature_operations import WorkspaceFeatureOperations
-from ._notebook_operations import NotebookOperations
 from ._usage_operations import UsageOperations
 from ._virtual_machine_size_operations import VirtualMachineSizeOperations
 from ._quota_operations import QuotaOperations
@@ -22,7 +21,6 @@ __all__ = [
     'OperationOperations',
     'WorkspaceOperations',
     'WorkspaceFeatureOperations',
-    'NotebookOperations',
     'UsageOperations',
     'VirtualMachineSizeOperations',
     'QuotaOperations',

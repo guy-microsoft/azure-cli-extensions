@@ -23,10 +23,6 @@ def cf_workspace_feature(cli_ctx, *_):
     return cf_machinelearningservices(cli_ctx).workspace_feature
 
 
-def cf_notebook(cli_ctx, *_):
-    return cf_machinelearningservices(cli_ctx).notebook
-
-
 def cf_usage(cli_ctx, *_):
     return cf_machinelearningservices(cli_ctx).usage
 

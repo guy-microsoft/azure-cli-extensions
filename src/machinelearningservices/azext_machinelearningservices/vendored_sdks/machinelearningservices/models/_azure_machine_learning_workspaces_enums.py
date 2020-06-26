@@ -50,6 +50,13 @@ class NodeState(str, Enum):
     leaving = "leaving"
     preempted = "preempted"
 
+class OsType(str, Enum):
+    """Compute OS Type
+    """
+
+    linux = "Linux"
+    windows = "Windows"
+
 class PrivateEndpointConnectionProvisioningState(str, Enum):
     """The current provisioning state.
     """
@@ -109,7 +116,7 @@ class ResourceIdentityType(str, Enum):
 
     system_assigned = "SystemAssigned"
     user_assigned = "UserAssigned"
-    system_assigned_user_assigned = "SystemAssigned,UserAssigned"
+    system_assigned_user_assigned = "SystemAssigned, UserAssigned"
     none = "None"
 
 class SslConfigurationStatus(str, Enum):
@@ -137,9 +144,24 @@ class UnderlyingResourceAction(str, Enum):
     delete = "Delete"
     detach = "Detach"
 
+class VmPriceOsType(str, Enum):
+    """Operating system type used by the VM.
+    """
+
+    linux = "Linux"
+    windows = "Windows"
+
 class VmPriority(str, Enum):
     """Virtual Machine priority
     """
 
     dedicated = "Dedicated"
     low_priority = "LowPriority"
+
+class VmTier(str, Enum):
+    """The type of the VM.
+    """
+
+    standard = "Standard"
+    low_priority = "LowPriority"
+    spot = "Spot"

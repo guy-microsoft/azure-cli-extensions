@@ -21,7 +21,6 @@ from ._configuration import AzureMachineLearningWorkspacesConfiguration
 from .operations import OperationOperations
 from .operations import WorkspaceOperations
 from .operations import WorkspaceFeatureOperations
-from .operations import NotebookOperations
 from .operations import UsageOperations
 from .operations import VirtualMachineSizeOperations
 from .operations import QuotaOperations
@@ -41,8 +40,6 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
     :vartype workspace: azure_machine_learning_workspaces.operations.WorkspaceOperations
     :ivar workspace_feature: WorkspaceFeatureOperations operations
     :vartype workspace_feature: azure_machine_learning_workspaces.operations.WorkspaceFeatureOperations
-    :ivar notebook: NotebookOperations operations
-    :vartype notebook: azure_machine_learning_workspaces.operations.NotebookOperations
     :ivar usage: UsageOperations operations
     :vartype usage: azure_machine_learning_workspaces.operations.UsageOperations
     :ivar virtual_machine_size: VirtualMachineSizeOperations operations
@@ -85,8 +82,6 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
         self.workspace = WorkspaceOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.workspace_feature = WorkspaceFeatureOperations(
-            self._client, self._config, self._serialize, self._deserialize)
-        self.notebook = NotebookOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.usage = UsageOperations(
             self._client, self._config, self._serialize, self._deserialize)

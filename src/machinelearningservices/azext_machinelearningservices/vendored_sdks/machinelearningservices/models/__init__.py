@@ -28,6 +28,8 @@ try:
     from ._models_py3 import DatabricksComputeSecrets
     from ._models_py3 import ErrorDetail
     from ._models_py3 import ErrorResponse
+    from ._models_py3 import EstimatedVmPrice
+    from ._models_py3 import EstimatedVmPrices
     from ._models_py3 import HdInsight
     from ._models_py3 import KeyVaultProperties
     from ._models_py3 import ListAmlUserFeatureResult
@@ -36,9 +38,6 @@ try:
     from ._models_py3 import ListWorkspaceQuotas
     from ._models_py3 import MachineLearningServiceError
     from ._models_py3 import NodeStateCounts
-    from ._models_py3 import NotebookListCredentialsResult
-    from ._models_py3 import NotebookPreparationError
-    from ._models_py3 import NotebookResourceInfo
     from ._models_py3 import Operation
     from ._models_py3 import OperationDisplay
     from ._models_py3 import OperationListResult
@@ -73,6 +72,7 @@ try:
     from ._models_py3 import UsageName
     from ._models_py3 import UserAccountCredentials
     from ._models_py3 import VirtualMachine
+    from ._models_py3 import VirtualMachineImage
     from ._models_py3 import VirtualMachineSecrets
     from ._models_py3 import VirtualMachineSize
     from ._models_py3 import VirtualMachineSizeListResult
@@ -103,6 +103,8 @@ except (SyntaxError, ImportError):
     from ._models import DatabricksComputeSecrets  # type: ignore
     from ._models import ErrorDetail  # type: ignore
     from ._models import ErrorResponse  # type: ignore
+    from ._models import EstimatedVmPrice  # type: ignore
+    from ._models import EstimatedVmPrices  # type: ignore
     from ._models import HdInsight  # type: ignore
     from ._models import KeyVaultProperties  # type: ignore
     from ._models import ListAmlUserFeatureResult  # type: ignore
@@ -111,9 +113,6 @@ except (SyntaxError, ImportError):
     from ._models import ListWorkspaceQuotas  # type: ignore
     from ._models import MachineLearningServiceError  # type: ignore
     from ._models import NodeStateCounts  # type: ignore
-    from ._models import NotebookListCredentialsResult  # type: ignore
-    from ._models import NotebookPreparationError  # type: ignore
-    from ._models import NotebookResourceInfo  # type: ignore
     from ._models import Operation  # type: ignore
     from ._models import OperationDisplay  # type: ignore
     from ._models import OperationListResult  # type: ignore
@@ -148,6 +147,7 @@ except (SyntaxError, ImportError):
     from ._models import UsageName  # type: ignore
     from ._models import UserAccountCredentials  # type: ignore
     from ._models import VirtualMachine  # type: ignore
+    from ._models import VirtualMachineImage  # type: ignore
     from ._models import VirtualMachineSecrets  # type: ignore
     from ._models import VirtualMachineSize  # type: ignore
     from ._models import VirtualMachineSizeListResult  # type: ignore
@@ -162,6 +162,7 @@ from ._azure_machine_learning_workspaces_enums import (
     ComputeType,
     EncryptionStatus,
     NodeState,
+    OsType,
     PrivateEndpointConnectionProvisioningState,
     PrivateEndpointServiceConnectionStatus,
     ProvisioningState,
@@ -171,7 +172,9 @@ from ._azure_machine_learning_workspaces_enums import (
     SslConfigurationStatus,
     Status,
     UnderlyingResourceAction,
+    VmPriceOsType,
     VmPriority,
+    VmTier,
 )
 
 __all__ = [
@@ -196,6 +199,8 @@ __all__ = [
     'DatabricksComputeSecrets',
     'ErrorDetail',
     'ErrorResponse',
+    'EstimatedVmPrice',
+    'EstimatedVmPrices',
     'HdInsight',
     'KeyVaultProperties',
     'ListAmlUserFeatureResult',
@@ -204,9 +209,6 @@ __all__ = [
     'ListWorkspaceQuotas',
     'MachineLearningServiceError',
     'NodeStateCounts',
-    'NotebookListCredentialsResult',
-    'NotebookPreparationError',
-    'NotebookResourceInfo',
     'Operation',
     'OperationDisplay',
     'OperationListResult',
@@ -241,6 +243,7 @@ __all__ = [
     'UsageName',
     'UserAccountCredentials',
     'VirtualMachine',
+    'VirtualMachineImage',
     'VirtualMachineSecrets',
     'VirtualMachineSize',
     'VirtualMachineSizeListResult',
@@ -253,6 +256,7 @@ __all__ = [
     'ComputeType',
     'EncryptionStatus',
     'NodeState',
+    'OsType',
     'PrivateEndpointConnectionProvisioningState',
     'PrivateEndpointServiceConnectionStatus',
     'ProvisioningState',
@@ -262,5 +266,7 @@ __all__ = [
     'SslConfigurationStatus',
     'Status',
     'UnderlyingResourceAction',
+    'VmPriceOsType',
     'VmPriority',
+    'VmTier',
 ]

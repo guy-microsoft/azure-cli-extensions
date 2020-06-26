@@ -124,13 +124,6 @@ def machinelearningservices_workspace_feature_list(client,
                        workspace_name=workspace_name)
 
 
-def machinelearningservices_notebook_prepare(client,
-                                             resource_group_name,
-                                             workspace_name):
-    return client.begin_prepare(resource_group_name=resource_group_name,
-                                workspace_name=workspace_name)
-
-
 def machinelearningservices_usage_list(client,
                                        location):
     return client.list(location=location)
@@ -432,13 +425,19 @@ def machinelearningservices_machine_learning_compute_update(client,
                                                             resource_group_name,
                                                             workspace_name,
                                                             compute_name,
+                                                            identity_type=None,
+                                                            identity_user_assigned_identities=None,
                                                             scale_settings=None,
                                                             no_wait=False):
+    if isinstance(identity_user_assigned_identities, str):
+        identity_user_assigned_identities = json.loads(identity_user_assigned_identities)
     return sdk_no_wait(no_wait,
                        client.begin_update,
                        resource_group_name=resource_group_name,
                        workspace_name=workspace_name,
                        compute_name=compute_name,
+                       type=identity_type,
+                       user_assigned_identities=identity_user_assigned_identities,
                        scale_settings=scale_settings)
 
 

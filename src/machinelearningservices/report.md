@@ -170,6 +170,8 @@ update a machinelearningservices machine-learning-compute.
 |**--resource-group-name**|string|Name of the resource group in which workspace is located.|resource_group_name|
 |**--workspace-name**|string|Name of Azure Machine Learning workspace.|workspace_name|
 |**--compute-name**|string|Name of the Azure Machine Learning compute.|compute_name|
+|**--identity-type**|sealed-choice|The identity type.|type_identity_type|
+|**--identity-user-assigned-identities**|dictionary|The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|
 |**--scale-settings**|object|Desired scale settings for the amlCompute.|scale_settings|
 ### machinelearningservices machine-learning-compute virtual-machine create
 
@@ -192,14 +194,6 @@ virtual-machine create a machinelearningservices machine-learning-compute.
 |**--ssh-port**|integer|Port open for ssh connections.|virtual_machine_ssh_port|
 |**--address**|string|Public IP address of the virtual machine.|virtual_machine_address|
 |**--administrator-account**|object|Admin credentials for virtual machine|virtual_machine_administrator_account|
-### machinelearningservices notebook prepare
-
-prepare a machinelearningservices notebook.
-
-|Option|Type|Description|Path (SDK)|Path (swagger)|
-|------|----|-----------|----------|--------------|
-|**--resource-group-name**|string|Name of the resource group in which workspace is located.|resource_group_name|
-|**--workspace-name**|string|Name of Azure Machine Learning workspace.|workspace_name|
 ### machinelearningservices private-endpoint-connection delete
 
 delete a machinelearningservices private-endpoint-connection.
