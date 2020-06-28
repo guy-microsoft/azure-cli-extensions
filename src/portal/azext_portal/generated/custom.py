@@ -12,21 +12,21 @@
 import json
 
 
-def portal_dashboard_list(cmd, client,
+def portal_dashboard_list(client,
                           resource_group_name=None):
-    if resource_group_name is not None:
+    if resource_group_name:
         return client.list_by_resource_group(resource_group_name=resource_group_name)
     return client.list_by_subscription()
 
 
-def portal_dashboard_show(cmd, client,
+def portal_dashboard_show(client,
                           resource_group_name,
                           dashboard_name):
     return client.get(resource_group_name=resource_group_name,
                       dashboard_name=dashboard_name)
 
 
-def portal_dashboard_create(cmd, client,
+def portal_dashboard_create(client,
                             resource_group_name,
                             dashboard_name,
                             location,
@@ -45,7 +45,7 @@ def portal_dashboard_create(cmd, client,
                                    metadata=metadata)
 
 
-def portal_dashboard_update(cmd, client,
+def portal_dashboard_update(client,
                             resource_group_name,
                             dashboard_name,
                             tags=None,
@@ -62,7 +62,7 @@ def portal_dashboard_update(cmd, client,
                          metadata=metadata)
 
 
-def portal_dashboard_delete(cmd, client,
+def portal_dashboard_delete(client,
                             resource_group_name,
                             dashboard_name):
     return client.delete(resource_group_name=resource_group_name,

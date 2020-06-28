@@ -6,10 +6,14 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
 
 from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
+
+if TYPE_CHECKING:
+    # pylint: disable=unused-import,ungrouped-imports
+    from azure.core.credentials_async import AsyncTokenCredential
 
 from ._configuration_async import PortalConfiguration
 from .operations_async import OperationOperations
@@ -21,14 +25,15 @@ class Portal(object):
     """Allows creation and deletion of Azure Shared Dashboards.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.portal.aio.operations_async.OperationOperations
+    :vartype operation: portal.aio.operations_async.OperationOperations
     :ivar dashboard: DashboardOperations operations
-    :vartype dashboard: azure.mgmt.portal.aio.operations_async.DashboardOperations
+    :vartype dashboard: portal.aio.operations_async.DashboardOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

@@ -20,8 +20,8 @@ class PortalCommandsLoader(AzCommandsLoader):
         portal_custom = CliCommandType(
             operations_tmpl='azext_portal.custom#{}',
             client_factory=cf_portal)
-        super(PortalCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                   custom_command_type=portal_custom)
+        parent = super(PortalCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=portal_custom)
 
     def load_command_table(self, args):
         from azext_portal.generated.commands import load_command_table

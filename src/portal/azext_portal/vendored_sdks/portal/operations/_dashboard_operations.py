@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class DashboardOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.portal.models
+    :type models: ~portal.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -51,7 +51,7 @@ class DashboardOperations(object):
         dashboard_name,  # type: str
         location,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        lenses=None,  # type: Optional[Dict[str, "DashboardLens"]]
+        lenses=None,  # type: Optional[Dict[str, "models.DashboardLens"]]
         metadata=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
@@ -67,23 +67,24 @@ class DashboardOperations(object):
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :param lenses: The dashboard lenses.
-        :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
+        :type lenses: dict[str, ~portal.models.DashboardLens]
         :param metadata: The dashboard metadata.
         :type metadata: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Dashboard or the result of cls(response)
-        :rtype: ~azure.mgmt.portal.models.Dashboard or ~azure.mgmt.portal.models.Dashboard
+        :return: Dashboard, or the result of cls(response)
+        :rtype: ~portal.models.Dashboard
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _dashboard = models.Dashboard(location=location, tags=tags, lenses=lenses, metadata=metadata)
         api_version = "2019-01-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.create_or_update.metadata['url']
+        url = self.create_or_update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -122,10 +123,10 @@ class DashboardOperations(object):
             deserialized = self._deserialize('Dashboard', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}
+    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}  # type: ignore
 
     def delete(
         self,
@@ -141,16 +142,17 @@ class DashboardOperations(object):
         :param dashboard_name: The name of the dashboard.
         :type dashboard_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-01-01-preview"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -176,9 +178,9 @@ class DashboardOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}  # type: ignore
 
     def get(
         self,
@@ -194,16 +196,17 @@ class DashboardOperations(object):
         :param dashboard_name: The name of the dashboard.
         :type dashboard_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Dashboard or the result of cls(response)
-        :rtype: ~azure.mgmt.portal.models.Dashboard
+        :return: Dashboard, or the result of cls(response)
+        :rtype: ~portal.models.Dashboard
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-01-01-preview"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -232,17 +235,17 @@ class DashboardOperations(object):
         deserialized = self._deserialize('Dashboard', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}  # type: ignore
 
     def update(
         self,
         resource_group_name,  # type: str
         dashboard_name,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        lenses=None,  # type: Optional[Dict[str, "DashboardLens"]]
+        lenses=None,  # type: Optional[Dict[str, "models.DashboardLens"]]
         metadata=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
@@ -256,23 +259,24 @@ class DashboardOperations(object):
         :param tags: Resource tags.
         :type tags: dict[str, str]
         :param lenses: The dashboard lenses.
-        :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
+        :type lenses: dict[str, ~portal.models.DashboardLens]
         :param metadata: The dashboard metadata.
         :type metadata: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Dashboard or the result of cls(response)
-        :rtype: ~azure.mgmt.portal.models.Dashboard
+        :return: Dashboard, or the result of cls(response)
+        :rtype: ~portal.models.Dashboard
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Dashboard"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _dashboard = models.PatchableDashboard(tags=tags, lenses=lenses, metadata=metadata)
         api_version = "2019-01-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.update.metadata['url']
+        url = self.update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -306,46 +310,47 @@ class DashboardOperations(object):
         deserialized = self._deserialize('Dashboard', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}
+    update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards/{dashboardName}'}  # type: ignore
 
     def list_by_resource_group(
         self,
         resource_group_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.DashboardListResult"
+        # type: (...) -> Iterable["models.DashboardListResult"]
         """Gets all the Dashboards within a resource group.
 
         :param resource_group_name: The name of the resource group.
         :type resource_group_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: DashboardListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.portal.models.DashboardListResult
+        :return: An iterator like instance of either DashboardListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~portal.models.DashboardListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DashboardListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-01-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_resource_group.metadata['url']
+                url = self.list_by_resource_group.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -377,39 +382,40 @@ class DashboardOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards'}
+    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Portal/dashboards'}  # type: ignore
 
     def list_by_subscription(
         self,
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.DashboardListResult"
+        # type: (...) -> Iterable["models.DashboardListResult"]
         """Gets all the dashboards within a subscription.
 
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: DashboardListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.portal.models.DashboardListResult
+        :return: An iterator like instance of either DashboardListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~portal.models.DashboardListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DashboardListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-01-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_subscription.metadata['url']
+                url = self.list_by_subscription.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -441,4 +447,4 @@ class DashboardOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Portal/dashboards'}
+    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Portal/dashboards'}  # type: ignore

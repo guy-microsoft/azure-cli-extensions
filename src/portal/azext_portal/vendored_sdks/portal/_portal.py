@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import PortalConfiguration
 from .operations import OperationOperations
 from .operations import DashboardOperations
@@ -25,14 +27,15 @@ class Portal(object):
     """Allows creation and deletion of Azure Shared Dashboards.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.portal.operations.OperationOperations
+    :vartype operation: portal.operations.OperationOperations
     :ivar dashboard: DashboardOperations operations
-    :vartype dashboard: azure.mgmt.portal.operations.DashboardOperations
+    :vartype dashboard: portal.operations.DashboardOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

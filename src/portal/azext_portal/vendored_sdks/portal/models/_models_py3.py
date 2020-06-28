@@ -30,7 +30,7 @@ class Dashboard(msrest.serialization.Model):
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
     :param lenses: The dashboard lenses.
-    :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
+    :type lenses: dict[str, ~portal.models.DashboardLens]
     :param metadata: The dashboard metadata.
     :type metadata: dict[str, object]
     """
@@ -79,7 +79,7 @@ class DashboardLens(msrest.serialization.Model):
     :param order: Required. The lens order.
     :type order: int
     :param parts: Required. The dashboard parts.
-    :type parts: dict[str, ~azure.mgmt.portal.models.DashboardParts]
+    :type parts: dict[str, ~portal.models.DashboardParts]
     :param metadata: The dashboard len's metadata.
     :type metadata: dict[str, object]
     """
@@ -113,7 +113,7 @@ class DashboardListResult(msrest.serialization.Model):
     """List of dashboards.
 
     :param value: The array of custom resource provider manifests.
-    :type value: list[~azure.mgmt.portal.models.Dashboard]
+    :type value: list[~portal.models.Dashboard]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
@@ -141,7 +141,7 @@ class DashboardParts(msrest.serialization.Model):
     All required parameters must be populated in order to send to Azure.
 
     :param position: Required. The dashboard's part position.
-    :type position: ~azure.mgmt.portal.models.DashboardPartsPosition
+    :type position: ~portal.models.DashboardPartsPosition
     :param metadata: The dashboard part's metadata.
     :type metadata: dict[str, object]
     """
@@ -227,7 +227,7 @@ class ErrorDefinition(msrest.serialization.Model):
     :ivar message: Description of the error.
     :vartype message: str
     :ivar details: Internal error details.
-    :vartype details: list[~azure.mgmt.portal.models.ErrorDefinition]
+    :vartype details: list[~portal.models.ErrorDefinition]
     """
 
     _validation = {
@@ -256,7 +256,7 @@ class ErrorResponse(msrest.serialization.Model):
     """Error response.
 
     :param error: The error details.
-    :type error: ~azure.mgmt.portal.models.ErrorDefinition
+    :type error: ~portal.models.ErrorDefinition
     """
 
     _attribute_map = {
@@ -279,7 +279,7 @@ class PatchableDashboard(msrest.serialization.Model):
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
     :param lenses: The dashboard lenses.
-    :type lenses: dict[str, ~azure.mgmt.portal.models.DashboardLens]
+    :type lenses: dict[str, ~portal.models.DashboardLens]
     :param metadata: The dashboard metadata.
     :type metadata: dict[str, object]
     """
@@ -312,7 +312,7 @@ class ResourceProviderOperation(msrest.serialization.Model):
     :param is_data_action: Indicates whether the operation applies to data-plane.
     :type is_data_action: str
     :param display: Display metadata associated with the operation.
-    :type display: ~azure.mgmt.portal.models.ResourceProviderOperationDisplay
+    :type display: ~portal.models.ResourceProviderOperationDisplay
     """
 
     _attribute_map = {
@@ -375,7 +375,7 @@ class ResourceProviderOperationList(msrest.serialization.Model):
     """Results of the request to list operations.
 
     :param value: List of operations supported by this resource provider.
-    :type value: list[~azure.mgmt.portal.models.ResourceProviderOperation]
+    :type value: list[~portal.models.ResourceProviderOperation]
     :param next_link: The URL to use for getting the next set of results.
     :type next_link: str
     """
