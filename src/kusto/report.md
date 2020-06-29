@@ -272,6 +272,7 @@ event-grid create a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
 ### kusto data-connection event-grid data-connection-validation
 
 event-grid data-connection-validation a kusto data-connection.
@@ -288,6 +289,7 @@ event-grid data-connection-validation a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
 ### kusto data-connection event-grid update
 
 event-grid update a kusto data-connection.
@@ -304,6 +306,7 @@ event-grid update a kusto data-connection.
 |**--consumer-group**|string|The event hub consumer group.|event_grid_consumer_group|
 |**--table-name**|string|The table where the data should be ingested. Optionally the table information can be added to each message.|event_grid_table_name|
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_grid_mapping_rule_name|
+|**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_grid_data_format|
 ### kusto data-connection event-hub create
 
 event-hub create a kusto data-connection.
@@ -321,6 +324,7 @@ event-hub create a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection event-hub data-connection-validation
 
 event-hub data-connection-validation a kusto data-connection.
@@ -338,6 +342,7 @@ event-hub data-connection-validation a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection event-hub update
 
 event-hub update a kusto data-connection.
@@ -355,6 +360,7 @@ event-hub update a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|event_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|event_hub_data_format|
 |**--event-system-properties**|array|System properties of the event hub|event_hub_event_system_properties|
+|**--compression**|choice|The event hub messages compression type|event_hub_compression|
 ### kusto data-connection iot-hub create
 
 iot-hub create a kusto data-connection.
@@ -372,6 +378,7 @@ iot-hub create a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection iot-hub data-connection-validation
 
 iot-hub data-connection-validation a kusto data-connection.
@@ -389,6 +396,7 @@ iot-hub data-connection-validation a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection iot-hub update
 
 iot-hub update a kusto data-connection.
@@ -406,6 +414,7 @@ iot-hub update a kusto data-connection.
 |**--mapping-rule-name**|string|The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.|iot_hub_mapping_rule_name|
 |**--data-format**|choice|The data format of the message. Optionally the data format can be added to each message.|iot_hub_data_format|
 |**--event-system-properties**|array|System properties of the iot hub|iot_hub_event_system_properties|
+|**--shared-access-policy-name**|string|The name of the share access policy|iot_hub_shared_access_policy_name|
 ### kusto data-connection list
 
 list a kusto data-connection.

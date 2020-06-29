@@ -21,7 +21,7 @@ class AzureSkuName(str, Enum):
     """
 
     standard_ds13_v2_1_tb_ps = "Standard_DS13_v2+1TB_PS"
-    standard_ds13_v2_tb_ps = "Standard_DS13_v2+2TB_PS"
+    standard_ds13_v2_2_tb_ps = "Standard_DS13_v2+2TB_PS"
     standard_ds14_v2_3_tb_ps = "Standard_DS14_v2+3TB_PS"
     standard_ds14_v2_4_tb_ps = "Standard_DS14_v2+4TB_PS"
     standard_d13_v2 = "Standard_D13_v2"
@@ -39,7 +39,7 @@ class AzureSkuName(str, Enum):
     standard_e8_as_v4_1_tb_ps = "Standard_E8as_v4+1TB_PS"
     standard_e8_as_v4_2_tb_ps = "Standard_E8as_v4+2TB_PS"
     standard_e16_as_v4_3_tb_ps = "Standard_E16as_v4+3TB_PS"
-    standard_e16_as_v4_tb_ps = "Standard_E16as_v4+4TB_PS"
+    standard_e16_as_v4_4_tb_ps = "Standard_E16as_v4+4TB_PS"
     dev_no_sla_standard_e2_a_v4 = "Dev(No SLA)_Standard_E2a_v4"
 
 class AzureSkuTier(str, Enum):
