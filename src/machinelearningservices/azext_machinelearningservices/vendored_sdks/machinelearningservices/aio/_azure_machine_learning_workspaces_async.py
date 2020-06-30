@@ -19,7 +19,6 @@ from ._configuration_async import AzureMachineLearningWorkspacesConfiguration
 from .operations_async import OperationOperations
 from .operations_async import WorkspaceOperations
 from .operations_async import WorkspaceFeatureOperations
-from .operations_async import NotebookOperations
 from .operations_async import UsageOperations
 from .operations_async import VirtualMachineSizeOperations
 from .operations_async import QuotaOperations
@@ -39,8 +38,6 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
     :vartype workspace: azure_machine_learning_workspaces.aio.operations_async.WorkspaceOperations
     :ivar workspace_feature: WorkspaceFeatureOperations operations
     :vartype workspace_feature: azure_machine_learning_workspaces.aio.operations_async.WorkspaceFeatureOperations
-    :ivar notebook: NotebookOperations operations
-    :vartype notebook: azure_machine_learning_workspaces.aio.operations_async.NotebookOperations
     :ivar usage: UsageOperations operations
     :vartype usage: azure_machine_learning_workspaces.aio.operations_async.UsageOperations
     :ivar virtual_machine_size: VirtualMachineSizeOperations operations
@@ -82,8 +79,6 @@ class AzureMachineLearningWorkspaces(AzureMachineLearningWorkspacesOperationsMix
         self.workspace = WorkspaceOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.workspace_feature = WorkspaceFeatureOperations(
-            self._client, self._config, self._serialize, self._deserialize)
-        self.notebook = NotebookOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.usage = UsageOperations(
             self._client, self._config, self._serialize, self._deserialize)

@@ -69,7 +69,7 @@ class PrivateEndpointConnectionOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateEndpointConnection"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -158,7 +158,7 @@ class PrivateEndpointConnectionOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _properties = models.PrivateEndpointConnection(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, private_endpoint=private_endpoint, private_link_service_connection_state=private_link_service_connection_state)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -227,7 +227,7 @@ class PrivateEndpointConnectionOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.delete.metadata['url']  # type: ignore

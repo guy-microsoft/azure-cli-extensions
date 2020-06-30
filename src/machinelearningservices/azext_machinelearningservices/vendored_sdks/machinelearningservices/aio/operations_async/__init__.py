@@ -9,7 +9,6 @@
 from ._operation_operations_async import OperationOperations
 from ._workspace_operations_async import WorkspaceOperations
 from ._workspace_feature_operations_async import WorkspaceFeatureOperations
-from ._notebook_operations_async import NotebookOperations
 from ._usage_operations_async import UsageOperations
 from ._virtual_machine_size_operations_async import VirtualMachineSizeOperations
 from ._quota_operations_async import QuotaOperations
@@ -22,7 +21,6 @@ __all__ = [
     'OperationOperations',
     'WorkspaceOperations',
     'WorkspaceFeatureOperations',
-    'NotebookOperations',
     'UsageOperations',
     'VirtualMachineSizeOperations',
     'QuotaOperations',

@@ -85,7 +85,7 @@ def step__workspaces_get_get_workspaces_by_subscription(test, rg, rg_2, rg_3, rg
 @try_manual
 def step__workspaces_post_list_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace list-key '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--name "{Workspaces_4}"',
              checks=[])
 
@@ -94,7 +94,7 @@ def step__workspaces_post_list_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, 
 @try_manual
 def step__workspaces_post_resync_workspace_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace resync-key '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--name "{Workspaces_4}"',
              checks=[])
 
@@ -117,7 +117,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -128,7 +128,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -139,7 +139,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -150,7 +150,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -161,7 +161,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -172,7 +172,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -183,7 +183,7 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -193,14 +193,17 @@ def step__machinelearningcompute_put_create_aks_compute(test, rg, rg_2, rg_3, rg
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -210,14 +213,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -227,14 +233,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -244,14 +253,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -261,14 +273,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -278,14 +293,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -295,14 +313,17 @@ def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_create_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
-             '--aks-properties "{{\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNode'
-             'Count\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"vmPriority\\":\\"Dedica'
-             'ted\\",\\"vmSize\\":\\"STANDARD_NC6\\"}}" '
-             '--resource-group "{rg_4}" '
+             '--aks-properties "{{\\"enableNodePublicIp\\":true,\\"isolatedNetwork\\":false,\\"osType\\":\\"Windows\\",'
+             '\\"remoteLoginPortPublicAccess\\":\\"NotSpecified\\",\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNod'
+             'eCount\\":0,\\"nodeIdleTimeBeforeScaleDown\\":\\"PT5M\\"}},\\"virtualMachineImage\\":{{\\"id\\":\\"/subsc'
+             'riptions/{subscription_id}/resourceGroups/{rg_4}/providers/Microsoft.Compute/galleries/myImageGallery/ima'
+             'ges/myImageDefinition/versions/0.0.1\\"}},\\"vmPriority\\":\\"Dedicated\\",\\"vmSize\\":\\"STANDARD_NC6\\'
+             '"}}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -313,7 +334,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -324,7 +345,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -335,7 +356,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -346,7 +367,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -357,7 +378,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -368,7 +389,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -379,7 +400,7 @@ def step__machinelearningcompute_put_create_a_datafactory_compute(test, rg, rg_2
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
              '--location "eastus" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -392,9 +413,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -407,9 +428,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -422,9 +443,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -437,9 +458,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -452,9 +473,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -467,9 +488,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -482,9 +503,9 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
              '--location "eastus" '
              '--description "some compute" '
              '--aks-properties "{{\\"agentCount\\":4}}" '
-             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_4}/providers/Microsoft.ContainerServic'
+             '--resource-id "/subscriptions/{subscription_id}/resourcegroups/{rg_5}/providers/Microsoft.ContainerServic'
              'e/managedClusters/compute123-56826-c9b00420020b2" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -494,13 +515,13 @@ def step__machinelearningcompute_put_update_a_aks_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -510,13 +531,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -526,13 +547,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -542,13 +563,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -558,13 +579,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -574,13 +595,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -590,13 +611,13 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute aks create '
              '--compute-name "compute123" '
-             '--identity-type "SystemAssigned,UserAssigned" '
+             '--identity-type "SystemAssigned, UserAssigned" '
              '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
              'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--location "eastus" '
              '--aks-properties "{{\\"scaleSettings\\":{{\\"maxNodeCount\\":1,\\"minNodeCount\\":0,\\"nodeIdleTimeBefore'
              'ScaleDown\\":\\"PT5M\\"}}}}" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -605,7 +626,7 @@ def step__machinelearningcompute_put_update_a_aml_compute(test, rg, rg_2, rg_3, 
 @try_manual
 def step__machinelearningcompute_get_get_computes(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute list '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -615,7 +636,7 @@ def step__machinelearningcompute_get_get_computes(test, rg, rg_2, rg_3, rg_4, rg
 def step__machinelearningcompute_get_get_a_aks_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute show '
              '--compute-name "compute123" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -625,7 +646,7 @@ def step__machinelearningcompute_get_get_a_aks_compute(test, rg, rg_2, rg_3, rg_
 def step__machinelearningcompute_get_get_a_aml_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute show '
              '--compute-name "compute123" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -636,7 +657,7 @@ def step__machinelearningcompute_post_get_compute_nodes_information_for_a_comput
                                                                                   rg_6):
     test.cmd('az machinelearningservices machine-learning-compute list-node '
              '--compute-name "compute123" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -646,7 +667,7 @@ def step__machinelearningcompute_post_get_compute_nodes_information_for_a_comput
 def step__machinelearningcompute_post_list_aks_compute_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute list-key '
              '--compute-name "compute123" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -656,17 +677,11 @@ def step__machinelearningcompute_post_list_aks_compute_keys(test, rg, rg_2, rg_3
 def step__machinelearningcompute_patch_update_a_amlcompute_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute update '
              '--compute-name "compute123" '
+             '--identity-type "UserAssigned" '
+             '--identity-user-assigned-identities "{{\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGro'
+             'ups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name\\":{{}}}}" '
              '--scale-settings max-node-count=4 min-node-count=4 node-idle-time-before-scale-down="PT5M" '
-             '--resource-group "{rg_4}" '
-             '--workspace-name "{Workspaces_4}"',
-             checks=[])
-
-
-# EXAMPLE: /Notebooks/post/Prepare Notebook
-@try_manual
-def step__notebooks_post_prepare_notebook(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
-    test.cmd('az machinelearningservices notebook prepare '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
 
@@ -678,7 +693,7 @@ def step__privateendpointconnections_put_workspaceputprivateendpointconnection(t
     test.cmd('az machinelearningservices private-endpoint-connection put '
              '--name "{{privateEndpointConnectionName}}" '
              '--private-link-service-connection-state description="Auto-Approved" status="Approved" '
-             '--resource-group "{rg_5}" '
+             '--resource-group "{rg_6}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
 
@@ -689,7 +704,7 @@ def step__privateendpointconnections_get_workspacegetprivateendpointconnection(t
                                                                                rg_6):
     test.cmd('az machinelearningservices private-endpoint-connection show '
              '--name "{{privateEndpointConnectionName}}" '
-             '--resource-group "{rg_5}" '
+             '--resource-group "{rg_6}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
 
@@ -706,7 +721,7 @@ def step__quotas_get_list_workspace_quotas_by_vmfamily(test, rg, rg_2, rg_3, rg_
 @try_manual
 def step__privatelinkresources_get_workspacelistprivatelinkresources(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices private-link-resource list '
-             '--resource-group "{rg_5}" '
+             '--resource-group "{rg_6}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
 
@@ -729,7 +744,7 @@ def step__quotas_post_update_quotas(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
 @try_manual
 def step__workspacefeatures_get_list_workspace_features(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices workspace-feature list '
-             '--resource-group "{rg_6}" '
+             '--resource-group "{rg_4}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
 
@@ -755,7 +770,7 @@ def step__virtualmachinesizes_get_list_vm_sizes(test, rg, rg_2, rg_3, rg_4, rg_5
 def step__machinelearningcompute_delete_delete_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
     test.cmd('az machinelearningservices machine-learning-compute delete '
              '--compute-name "compute123" '
-             '--resource-group "{rg_4}" '
+             '--resource-group "{rg_5}" '
              '--underlying-resource-action "Delete" '
              '--workspace-name "{Workspaces_4}"',
              checks=[])
@@ -774,7 +789,7 @@ def step__privateendpointconnections_delete_workspacedeleteprivateendpointconnec
                                                                                      rg_6):
     test.cmd('az machinelearningservices private-endpoint-connection delete '
              '--name "{{privateEndpointConnectionName}}" '
-             '--resource-group "{rg_5}" '
+             '--resource-group "{rg_6}" '
              '--workspace-name "{Workspaces_3}"',
              checks=[])
 
@@ -845,7 +860,6 @@ def call_scenario(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6):
                                                                                   rg_6)
     step__machinelearningcompute_post_list_aks_compute_keys(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
     step__machinelearningcompute_patch_update_a_amlcompute_compute(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
-    step__notebooks_post_prepare_notebook(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
     step__privateendpointconnections_put_workspaceputprivateendpointconnection(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
     step__privateendpointconnections_get_workspacegetprivateendpointconnection(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
     step__quotas_get_list_workspace_quotas_by_vmfamily(test, rg, rg_2, rg_3, rg_4, rg_5, rg_6)
@@ -870,11 +884,11 @@ class AzureMachineLearningWorkspacesScenarioTest(ScenarioTest):
     @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_accountcrud-1234'[:7], key='rg_2',
                            parameter_name='rg_2')
     @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_rg'[:7], key='rg_3', parameter_name='rg_3')
-    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_testrg123'[:7], key='rg_4', parameter_name='rg_4'
+    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_myResourceGroup'[:7], key='rg_4',
+                           parameter_name='rg_4')
+    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_testrg123'[:7], key='rg_5', parameter_name='rg_5'
                            '')
-    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_rg-1234'[:7], key='rg_5',
-                           parameter_name='rg_5')
-    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_myResourceGroup'[:7], key='rg_6',
+    @ResourceGroupPreparer(name_prefix='clitestmachinelearningservices_rg-1234'[:7], key='rg_6',
                            parameter_name='rg_6')
     @StorageAccountPreparer(name_prefix='clitestmachinelearningservices_testStorageAccount'[:7], key='sa',
                             resource_group_parameter_name='rg_2')

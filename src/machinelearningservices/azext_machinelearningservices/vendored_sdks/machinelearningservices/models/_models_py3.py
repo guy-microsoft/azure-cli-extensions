@@ -551,11 +551,17 @@ class AmlComputeProperties(msrest.serialization.Model):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
+    :param os_type: Compute OS Type. Possible values include: "Linux", "Windows".
+    :type os_type: str or ~azure_machine_learning_workspaces.models.OsType
     :param vm_size: Virtual Machine Size.
     :type vm_size: str
     :param vm_priority: Virtual Machine priority. Possible values include: "Dedicated",
      "LowPriority".
     :type vm_priority: str or ~azure_machine_learning_workspaces.models.VmPriority
+    :param virtual_machine_image: Virtual Machine image for AML Compute - windows only.
+    :type virtual_machine_image: ~azure_machine_learning_workspaces.models.VirtualMachineImage
+    :param isolated_network: Network is isolated or not.
+    :type isolated_network: bool
     :param scale_settings: Scale settings for AML Compute.
     :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
     :param user_account_credentials: Credentials for an administrator user account that will be
@@ -594,6 +600,11 @@ class AmlComputeProperties(msrest.serialization.Model):
     :vartype target_node_count: int
     :ivar node_state_counts: Counts of various node states on the compute.
     :vartype node_state_counts: ~azure_machine_learning_workspaces.models.NodeStateCounts
+    :param enable_node_public_ip: Enable or disable node public IP address provisioning. Possible
+     values are: Possible values are: true - Indicates that the compute nodes will have public IPs
+     provisioned. false - Indicates that the compute nodes will have a private endpoint and no
+     public IPs.
+    :type enable_node_public_ip: bool
     """
 
     _validation = {
@@ -606,8 +617,11 @@ class AmlComputeProperties(msrest.serialization.Model):
     }
 
     _attribute_map = {
+        'os_type': {'key': 'osType', 'type': 'str'},
         'vm_size': {'key': 'vmSize', 'type': 'str'},
         'vm_priority': {'key': 'vmPriority', 'type': 'str'},
+        'virtual_machine_image': {'key': 'virtualMachineImage', 'type': 'VirtualMachineImage'},
+        'isolated_network': {'key': 'isolatedNetwork', 'type': 'bool'},
         'scale_settings': {'key': 'scaleSettings', 'type': 'ScaleSettings'},
         'user_account_credentials': {'key': 'userAccountCredentials', 'type': 'UserAccountCredentials'},
         'subnet': {'key': 'subnet', 'type': 'ResourceId'},
@@ -618,22 +632,30 @@ class AmlComputeProperties(msrest.serialization.Model):
         'current_node_count': {'key': 'currentNodeCount', 'type': 'int'},
         'target_node_count': {'key': 'targetNodeCount', 'type': 'int'},
         'node_state_counts': {'key': 'nodeStateCounts', 'type': 'NodeStateCounts'},
+        'enable_node_public_ip': {'key': 'enableNodePublicIp', 'type': 'bool'},
     }
 
     def __init__(
         self,
         *,
+        os_type: Optional[Union[str, "OsType"]] = None,
         vm_size: Optional[str] = None,
         vm_priority: Optional[Union[str, "VmPriority"]] = None,
+        virtual_machine_image: Optional["VirtualMachineImage"] = None,
+        isolated_network: Optional[bool] = None,
         scale_settings: Optional["ScaleSettings"] = None,
         user_account_credentials: Optional["UserAccountCredentials"] = None,
         subnet: Optional["ResourceId"] = None,
         remote_login_port_public_access: Optional[Union[str, "RemoteLoginPortPublicAccess"]] = "NotSpecified",
+        enable_node_public_ip: Optional[bool] = True,
         **kwargs
     ):
         super(AmlComputeProperties, self).__init__(**kwargs)
+        self.os_type = os_type
         self.vm_size = vm_size
         self.vm_priority = vm_priority
+        self.virtual_machine_image = virtual_machine_image
+        self.isolated_network = isolated_network
         self.scale_settings = scale_settings
         self.user_account_credentials = user_account_credentials
         self.subnet = subnet
@@ -644,6 +666,7 @@ class AmlComputeProperties(msrest.serialization.Model):
         self.current_node_count = None
         self.target_node_count = None
         self.node_state_counts = None
+        self.enable_node_public_ip = enable_node_public_ip
 
 
 class AmlUserFeature(msrest.serialization.Model):
@@ -680,21 +703,50 @@ class AmlUserFeature(msrest.serialization.Model):
 class ClusterUpdateParameters(msrest.serialization.Model):
     """AmlCompute update parameters.
 
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar principal_id: The principal ID of resource identity.
+    :vartype principal_id: str
+    :ivar tenant_id: The tenant ID of resource.
+    :vartype tenant_id: str
+    :param type: The identity type. Possible values include: "SystemAssigned", "UserAssigned",
+     "SystemAssigned, UserAssigned", "None".
+    :type type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
+    :param user_assigned_identities: The list of user identities associated with resource. The user
+     identity dictionary key references will be ARM resource ids in the form:
+     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+    :type user_assigned_identities: dict[str,
+     ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
     :param scale_settings: Desired scale settings for the amlCompute.
     :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
     """
 
+    _validation = {
+        'principal_id': {'readonly': True},
+        'tenant_id': {'readonly': True},
+    }
+
     _attribute_map = {
+        'principal_id': {'key': 'identity.principalId', 'type': 'str'},
+        'tenant_id': {'key': 'identity.tenantId', 'type': 'str'},
+        'type': {'key': 'identity.type', 'type': 'str'},
+        'user_assigned_identities': {'key': 'identity.userAssignedIdentities', 'type': '{ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties}'},
         'scale_settings': {'key': 'properties.scaleSettings', 'type': 'ScaleSettings'},
     }
 
     def __init__(
         self,
         *,
+        type: Optional[Union[str, "ResourceIdentityType"]] = None,
+        user_assigned_identities: Optional[Dict[str, "ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]] = None,
         scale_settings: Optional["ScaleSettings"] = None,
         **kwargs
     ):
         super(ClusterUpdateParameters, self).__init__(**kwargs)
+        self.principal_id = None
+        self.tenant_id = None
+        self.type = type
+        self.user_assigned_identities = user_assigned_identities
         self.scale_settings = scale_settings
 
 
@@ -750,7 +802,7 @@ class Resource(msrest.serialization.Model):
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
-     "UserAssigned", "SystemAssigned,UserAssigned", "None".
+     "UserAssigned", "SystemAssigned, UserAssigned", "None".
     :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
@@ -825,7 +877,7 @@ class ComputeResource(Resource):
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
-     "UserAssigned", "SystemAssigned,UserAssigned", "None".
+     "UserAssigned", "SystemAssigned, UserAssigned", "None".
     :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
@@ -1182,6 +1234,90 @@ class ErrorResponse(msrest.serialization.Model):
         self.details = None
 
 
+class EstimatedVmPrice(msrest.serialization.Model):
+    """The estimated price info for using a VM of a particular OS type, tier, etc.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param retail_price: Required. The price charged for using the VM.
+    :type retail_price: float
+    :param os_type: Required. Operating system type used by the VM. Possible values include:
+     "Linux", "Windows".
+    :type os_type: str or ~azure_machine_learning_workspaces.models.VmPriceOsType
+    :param vm_tier: Required. The type of the VM. Possible values include: "Standard",
+     "LowPriority", "Spot".
+    :type vm_tier: str or ~azure_machine_learning_workspaces.models.VmTier
+    """
+
+    _validation = {
+        'retail_price': {'required': True},
+        'os_type': {'required': True},
+        'vm_tier': {'required': True},
+    }
+
+    _attribute_map = {
+        'retail_price': {'key': 'retailPrice', 'type': 'float'},
+        'os_type': {'key': 'osType', 'type': 'str'},
+        'vm_tier': {'key': 'vmTier', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        *,
+        retail_price: float,
+        os_type: Union[str, "VmPriceOsType"],
+        vm_tier: Union[str, "VmTier"],
+        **kwargs
+    ):
+        super(EstimatedVmPrice, self).__init__(**kwargs)
+        self.retail_price = retail_price
+        self.os_type = os_type
+        self.vm_tier = vm_tier
+
+
+class EstimatedVmPrices(msrest.serialization.Model):
+    """The estimated price info for using a VM.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :ivar billing_currency: Required. Three lettered code specifying the currency of the VM price.
+     Example: USD. Default value: "USD".
+    :vartype billing_currency: str
+    :ivar unit_of_measure: Required. The unit of time measurement for the specified VM price.
+     Example: OneHour. Default value: "OneHour".
+    :vartype unit_of_measure: str
+    :param values: Required. The list of estimated prices for using a VM of a particular OS type,
+     tier, etc.
+    :type values: list[~azure_machine_learning_workspaces.models.EstimatedVmPrice]
+    """
+
+    _validation = {
+        'billing_currency': {'required': True, 'constant': True},
+        'unit_of_measure': {'required': True, 'constant': True},
+        'values': {'required': True},
+    }
+
+    _attribute_map = {
+        'billing_currency': {'key': 'billingCurrency', 'type': 'str'},
+        'unit_of_measure': {'key': 'unitOfMeasure', 'type': 'str'},
+        'values': {'key': 'values', 'type': '[EstimatedVmPrice]'},
+    }
+
+    billing_currency = "USD"
+    unit_of_measure = "OneHour"
+
+    def __init__(
+        self,
+        *,
+        values: List["EstimatedVmPrice"],
+        **kwargs
+    ):
+        super(EstimatedVmPrices, self).__init__(**kwargs)
+        self.values = values
+
+
 class HdInsight(Compute):
     """A HDInsight compute.
 
@@ -1380,9 +1516,6 @@ class ListWorkspaceKeysResult(msrest.serialization.Model):
     :ivar container_registry_credentials:
     :vartype container_registry_credentials:
      ~azure_machine_learning_workspaces.models.RegistryListCredentialsResult
-    :param notebook_access_keys:
-    :type notebook_access_keys:
-     ~azure_machine_learning_workspaces.models.NotebookListCredentialsResult
     """
 
     _validation = {
@@ -1397,13 +1530,10 @@ class ListWorkspaceKeysResult(msrest.serialization.Model):
         'user_storage_resource_id': {'key': 'userStorageResourceId', 'type': 'str'},
         'app_insights_instrumentation_key': {'key': 'appInsightsInstrumentationKey', 'type': 'str'},
         'container_registry_credentials': {'key': 'containerRegistryCredentials', 'type': 'RegistryListCredentialsResult'},
-        'notebook_access_keys': {'key': 'notebookAccessKeys', 'type': 'NotebookListCredentialsResult'},
     }
 
     def __init__(
         self,
-        *,
-        notebook_access_keys: Optional["NotebookListCredentialsResult"] = None,
         **kwargs
     ):
         super(ListWorkspaceKeysResult, self).__init__(**kwargs)
@@ -1411,7 +1541,6 @@ class ListWorkspaceKeysResult(msrest.serialization.Model):
         self.user_storage_resource_id = None
         self.app_insights_instrumentation_key = None
         self.container_registry_credentials = None
-        self.notebook_access_keys = notebook_access_keys
 
 
 class ListWorkspaceQuotas(msrest.serialization.Model):
@@ -1518,90 +1647,6 @@ class NodeStateCounts(msrest.serialization.Model):
         self.unusable_node_count = None
         self.leaving_node_count = None
         self.preempted_node_count = None
-
-
-class NotebookListCredentialsResult(msrest.serialization.Model):
-    """NotebookListCredentialsResult.
-
-    :param primary_access_key:
-    :type primary_access_key: str
-    :param secondary_access_key:
-    :type secondary_access_key: str
-    """
-
-    _attribute_map = {
-        'primary_access_key': {'key': 'primaryAccessKey', 'type': 'str'},
-        'secondary_access_key': {'key': 'secondaryAccessKey', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        primary_access_key: Optional[str] = None,
-        secondary_access_key: Optional[str] = None,
-        **kwargs
-    ):
-        super(NotebookListCredentialsResult, self).__init__(**kwargs)
-        self.primary_access_key = primary_access_key
-        self.secondary_access_key = secondary_access_key
-
-
-class NotebookPreparationError(msrest.serialization.Model):
-    """NotebookPreparationError.
-
-    :param error_message:
-    :type error_message: str
-    :param status_code:
-    :type status_code: int
-    """
-
-    _attribute_map = {
-        'error_message': {'key': 'errorMessage', 'type': 'str'},
-        'status_code': {'key': 'statusCode', 'type': 'int'},
-    }
-
-    def __init__(
-        self,
-        *,
-        error_message: Optional[str] = None,
-        status_code: Optional[int] = None,
-        **kwargs
-    ):
-        super(NotebookPreparationError, self).__init__(**kwargs)
-        self.error_message = error_message
-        self.status_code = status_code
-
-
-class NotebookResourceInfo(msrest.serialization.Model):
-    """NotebookResourceInfo.
-
-    :param fqdn:
-    :type fqdn: str
-    :param resource_id: the data plane resourceId that used to initialize notebook component.
-    :type resource_id: str
-    :param notebook_preparation_error: The error that occurs when preparing notebook.
-    :type notebook_preparation_error:
-     ~azure_machine_learning_workspaces.models.NotebookPreparationError
-    """
-
-    _attribute_map = {
-        'fqdn': {'key': 'fqdn', 'type': 'str'},
-        'resource_id': {'key': 'resourceId', 'type': 'str'},
-        'notebook_preparation_error': {'key': 'notebookPreparationError', 'type': 'NotebookPreparationError'},
-    }
-
-    def __init__(
-        self,
-        *,
-        fqdn: Optional[str] = None,
-        resource_id: Optional[str] = None,
-        notebook_preparation_error: Optional["NotebookPreparationError"] = None,
-        **kwargs
-    ):
-        super(NotebookResourceInfo, self).__init__(**kwargs)
-        self.fqdn = fqdn
-        self.resource_id = resource_id
-        self.notebook_preparation_error = notebook_preparation_error
 
 
 class Operation(msrest.serialization.Model):
@@ -1791,7 +1836,7 @@ class PrivateEndpointConnection(Resource):
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
-     "UserAssigned", "SystemAssigned,UserAssigned", "None".
+     "UserAssigned", "SystemAssigned, UserAssigned", "None".
     :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
@@ -1875,7 +1920,7 @@ class PrivateLinkResource(Resource):
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
-     "UserAssigned", "SystemAssigned,UserAssigned", "None".
+     "UserAssigned", "SystemAssigned, UserAssigned", "None".
     :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
@@ -2850,6 +2895,33 @@ class VirtualMachine(Compute):
         self.administrator_account = administrator_account
 
 
+class VirtualMachineImage(msrest.serialization.Model):
+    """Virtual Machine image for Windows AML Compute.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param id: Required. Virtual Machine image path.
+    :type id: str
+    """
+
+    _validation = {
+        'id': {'required': True},
+    }
+
+    _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str,
+        **kwargs
+    ):
+        super(VirtualMachineImage, self).__init__(**kwargs)
+        self.id = id
+
+
 class VirtualMachineSecrets(ComputeSecrets):
     """Secrets related to a Machine Learning compute based on AKS.
 
@@ -2908,6 +2980,8 @@ class VirtualMachineSize(msrest.serialization.Model):
     :vartype low_priority_capable: bool
     :ivar premium_io: Specifies if the virtual machine size supports premium IO.
     :vartype premium_io: bool
+    :param estimated_vm_prices: The estimated price information for using a VM.
+    :type estimated_vm_prices: ~azure_machine_learning_workspaces.models.EstimatedVmPrices
     """
 
     _validation = {
@@ -2932,10 +3006,13 @@ class VirtualMachineSize(msrest.serialization.Model):
         'memory_gb': {'key': 'memoryGB', 'type': 'float'},
         'low_priority_capable': {'key': 'lowPriorityCapable', 'type': 'bool'},
         'premium_io': {'key': 'premiumIO', 'type': 'bool'},
+        'estimated_vm_prices': {'key': 'estimatedVMPrices', 'type': 'EstimatedVmPrices'},
     }
 
     def __init__(
         self,
+        *,
+        estimated_vm_prices: Optional["EstimatedVmPrices"] = None,
         **kwargs
     ):
         super(VirtualMachineSize, self).__init__(**kwargs)
@@ -2948,6 +3025,7 @@ class VirtualMachineSize(msrest.serialization.Model):
         self.memory_gb = None
         self.low_priority_capable = None
         self.premium_io = None
+        self.estimated_vm_prices = estimated_vm_prices
 
 
 class VirtualMachineSizeListResult(msrest.serialization.Model):
@@ -3029,7 +3107,7 @@ class Workspace(Resource):
     :ivar tenant_id: The tenant ID of resource.
     :vartype tenant_id: str
     :param type_identity_type: The identity type. Possible values include: "SystemAssigned",
-     "UserAssigned", "SystemAssigned,UserAssigned", "None".
+     "UserAssigned", "SystemAssigned, UserAssigned", "None".
     :type type_identity_type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
     :param user_assigned_identities: The list of user identities associated with resource. The user
      identity dictionary key references will be ARM resource ids in the form:
@@ -3083,8 +3161,6 @@ class Workspace(Resource):
      workspace.
     :type shared_private_link_resources:
      list[~azure_machine_learning_workspaces.models.SharedPrivateLinkResource]
-    :ivar notebook_info: The notebook info of Azure ML workspace.
-    :vartype notebook_info: ~azure_machine_learning_workspaces.models.NotebookResourceInfo
     :param status: Indicates whether or not the encryption is enabled for the workspace. Possible
      values include: "Enabled", "Disabled".
     :type status: str or ~azure_machine_learning_workspaces.models.EncryptionStatus
@@ -3104,7 +3180,6 @@ class Workspace(Resource):
         'service_provisioned_resource_group': {'readonly': True},
         'private_link_count': {'readonly': True},
         'private_endpoint_connections': {'readonly': True},
-        'notebook_info': {'readonly': True},
     }
 
     _attribute_map = {
@@ -3135,7 +3210,6 @@ class Workspace(Resource):
         'allow_public_access_when_behind_vnet': {'key': 'properties.allowPublicAccessWhenBehindVnet', 'type': 'bool'},
         'private_endpoint_connections': {'key': 'properties.privateEndpointConnections', 'type': '[PrivateEndpointConnection]'},
         'shared_private_link_resources': {'key': 'properties.sharedPrivateLinkResources', 'type': '[SharedPrivateLinkResource]'},
-        'notebook_info': {'key': 'properties.notebookInfo', 'type': 'NotebookResourceInfo'},
         'status': {'key': 'properties.encryption.status', 'type': 'str'},
         'key_vault_properties': {'key': 'properties.encryption.keyVaultProperties', 'type': 'KeyVaultProperties'},
     }
@@ -3181,7 +3255,6 @@ class Workspace(Resource):
         self.allow_public_access_when_behind_vnet = allow_public_access_when_behind_vnet
         self.private_endpoint_connections = None
         self.shared_private_link_resources = shared_private_link_resources
-        self.notebook_info = None
         self.status = status
         self.key_vault_properties = key_vault_properties
 

@@ -48,8 +48,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -111,10 +111,6 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('workspace_name', help='Name of Azure Machine Learning workspace.')
 
-    with self.argument_context('machinelearningservices notebook prepare') as c:
-        c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
-
     with self.argument_context('machinelearningservices usage list') as c:
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
@@ -150,8 +146,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -171,8 +167,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -192,8 +188,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -211,8 +207,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -231,8 +227,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -251,8 +247,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -274,8 +270,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
@@ -294,6 +290,13 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('workspace_name', help='Name of Azure Machine Learning workspace.', id_part='name')
         c.argument('compute_name', help='Name of the Azure Machine Learning compute.', id_part='child_name_1')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
+        c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
+                   'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
+                   'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'
+                   'ceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityNa'
+                   'me}\'. Expected value: json-string/@json-file.'))
         c.argument('scale_settings', action=AddScaleSettings, nargs='+', help='Desired scale settings for the amlComput'
                    'e.')
 
@@ -343,8 +346,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('sku', action=AddSku, nargs='+', help='The sku of the workspace.')
-        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned,UserAssig'
-                   'ned', 'None']), help='The identity type.')
+        c.argument('identity_type', arg_type=get_enum_type(['SystemAssigned', 'UserAssigned', 'SystemAssigned, UserAssi'
+                   'gned', 'None']), help='The identity type.')
         c.argument('identity_user_assigned_identities', arg_type=CLIArgumentType(options_list=['--identity-user-assigne'
                    'd-identities'], help='The list of user identities associated with resource. The user identity dicti'
                    'onary key references will be ARM resource ids in the form: \'/subscriptions/{subscriptionId}/resour'

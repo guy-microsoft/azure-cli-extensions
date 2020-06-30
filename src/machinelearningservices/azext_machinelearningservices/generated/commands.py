@@ -24,7 +24,7 @@ def load_command_table(self, _):
         g.custom_show_command('show', 'machinelearningservices_workspace_show')
         g.custom_command('create', 'machinelearningservices_workspace_create', supports_no_wait=True)
         g.custom_command('update', 'machinelearningservices_workspace_update')
-        g.custom_command('delete', 'machinelearningservices_workspace_delete', supports_no_wait=True)
+        g.custom_command('delete', 'machinelearningservices_workspace_delete')
         g.custom_command('list-key', 'machinelearningservices_workspace_list_key')
         g.custom_command('resync-key', 'machinelearningservices_workspace_resync_key')
         g.custom_wait_command('wait', 'machinelearningservices_workspace_show')
@@ -37,15 +37,6 @@ def load_command_table(self, _):
     with self.command_group('machinelearningservices workspace-feature', machinelearningservices_workspace_feature,
                             client_factory=cf_workspace_feature, is_experimental=True) as g:
         g.custom_command('list', 'machinelearningservices_workspace_feature_list')
-
-    from azext_machinelearningservices.generated._client_factory import cf_notebook
-    machinelearningservices_notebook = CliCommandType(
-        operations_tmpl='azext_machinelearningservices.vendored_sdks.machinelearningservices.operations._notebook_opera'
-        'tions#NotebookOperations.{}',
-        client_factory=cf_notebook)
-    with self.command_group('machinelearningservices notebook', machinelearningservices_notebook,
-                            client_factory=cf_notebook, is_experimental=True) as g:
-        g.custom_command('prepare', 'machinelearningservices_notebook_prepare')
 
     from azext_machinelearningservices.generated._client_factory import cf_usage
     machinelearningservices_usage = CliCommandType(

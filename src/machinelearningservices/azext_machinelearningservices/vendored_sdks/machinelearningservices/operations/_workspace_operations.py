@@ -68,7 +68,7 @@ class WorkspaceOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Workspace"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -135,7 +135,7 @@ class WorkspaceOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.Workspace(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, description=description, friendly_name=friendly_name, key_vault=key_vault, application_insights=application_insights, container_registry=container_registry, storage_account=storage_account, discovery_url=discovery_url, hbi_workspace=hbi_workspace, image_build_compute=image_build_compute, allow_public_access_when_behind_vnet=allow_public_access_when_behind_vnet, shared_private_link_resources=shared_private_link_resources, status=status, key_vault_properties=key_vault_properties)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -316,20 +316,31 @@ class WorkspaceOperations(object):
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
     begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
-    def _delete_initial(
+    def delete(
         self,
         resource_group_name,  # type: str
         workspace_name,  # type: str
         **kwargs  # type: Any
     ):
         # type: (...) -> None
+        """Deletes a machine learning workspace.
+
+        :param resource_group_name: Name of the resource group in which workspace is located.
+        :type resource_group_name: str
+        :param workspace_name: Name of Azure Machine Learning workspace.
+        :type workspace_name: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: None, or the result of cls(response)
+        :rtype: None
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
-        url = self._delete_initial.metadata['url']  # type: ignore
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -349,7 +360,7 @@ class WorkspaceOperations(object):
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
-        if response.status_code not in [200, 202, 204]:
+        if response.status_code not in [200, 204]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize(models.MachineLearningServiceError, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
@@ -357,55 +368,7 @@ class WorkspaceOperations(object):
         if cls:
             return cls(pipeline_response, None, {})
 
-    _delete_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
-
-    def begin_delete(
-        self,
-        resource_group_name,  # type: str
-        workspace_name,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> LROPoller
-        """Deletes a machine learning workspace.
-
-        :param resource_group_name: Name of the resource group in which workspace is located.
-        :type resource_group_name: str
-        :param workspace_name: Name of Azure Machine Learning workspace.
-        :type workspace_name: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword polling: True for ARMPolling, False for no polling, or a
-         polling object for personal polling strategy
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: An instance of LROPoller that returns either None or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[None]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        lro_delay = kwargs.pop(
-            'polling_interval',
-            self._config.polling_interval
-        )
-        raw_result = self._delete_initial(
-            resource_group_name=resource_group_name,
-            workspace_name=workspace_name,
-            cls=lambda x,y,z: x,
-            **kwargs
-        )
-
-        kwargs.pop('error_map', None)
-        kwargs.pop('content_type', None)
-
-        def get_long_running_output(pipeline_response):
-            if cls:
-                return cls(pipeline_response, None, {})
-
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
-        elif polling is False: polling_method = NoPolling()
-        else: polling_method = polling
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}'}  # type: ignore
 
     def update(
         self,
@@ -442,7 +405,7 @@ class WorkspaceOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.WorkspaceUpdateParameters(tags=tags, sku=sku, description=description, friendly_name=friendly_name)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -506,7 +469,7 @@ class WorkspaceOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkspaceListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -580,7 +543,7 @@ class WorkspaceOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListWorkspaceKeysResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_key.metadata['url']  # type: ignore
@@ -638,7 +601,7 @@ class WorkspaceOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.resync_key.metadata['url']  # type: ignore
@@ -689,7 +652,7 @@ class WorkspaceOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkspaceListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         def prepare_request(next_link=None):
             if not next_link:

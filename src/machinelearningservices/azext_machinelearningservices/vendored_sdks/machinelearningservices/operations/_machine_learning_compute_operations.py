@@ -71,7 +71,7 @@ class MachineLearningComputeOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.PaginatedComputeResourcesList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -149,7 +149,7 @@ class MachineLearningComputeOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeResource"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -206,7 +206,7 @@ class MachineLearningComputeOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.ComputeResource(location=location, tags=tags, sku=sku, type_identity_type=type, user_assigned_identities=user_assigned_identities, properties=properties)
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -346,6 +346,8 @@ class MachineLearningComputeOperations(object):
         resource_group_name,  # type: str
         workspace_name,  # type: str
         compute_name,  # type: str
+        type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         scale_settings=None,  # type: Optional["models.ScaleSettings"]
         **kwargs  # type: Any
     ):
@@ -354,8 +356,8 @@ class MachineLearningComputeOperations(object):
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _parameters = models.ClusterUpdateParameters(scale_settings=scale_settings)
-        api_version = "2020-04-01"
+        _parameters = models.ClusterUpdateParameters(type=type, user_assigned_identities=user_assigned_identities, scale_settings=scale_settings)
+        api_version = "2020-05-15-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -404,6 +406,8 @@ class MachineLearningComputeOperations(object):
         resource_group_name,  # type: str
         workspace_name,  # type: str
         compute_name,  # type: str
+        type=None,  # type: Optional[Union[str, "models.ResourceIdentityType"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
         scale_settings=None,  # type: Optional["models.ScaleSettings"]
         **kwargs  # type: Any
     ):
@@ -416,6 +420,12 @@ class MachineLearningComputeOperations(object):
         :type workspace_name: str
         :param compute_name: Name of the Azure Machine Learning compute.
         :type compute_name: str
+        :param type: The identity type.
+        :type type: str or ~azure_machine_learning_workspaces.models.ResourceIdentityType
+        :param user_assigned_identities: The list of user identities associated with resource. The user
+     identity dictionary key references will be ARM resource ids in the form:
+     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+        :type user_assigned_identities: dict[str, ~azure_machine_learning_workspaces.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
         :param scale_settings: Desired scale settings for the amlCompute.
         :type scale_settings: ~azure_machine_learning_workspaces.models.ScaleSettings
         :keyword callable cls: A custom type or function that will be passed the direct response
@@ -437,6 +447,8 @@ class MachineLearningComputeOperations(object):
             resource_group_name=resource_group_name,
             workspace_name=workspace_name,
             compute_name=compute_name,
+            type=type,
+            user_assigned_identities=user_assigned_identities,
             scale_settings=scale_settings,
             cls=lambda x,y,z: x,
             **kwargs
@@ -470,7 +482,7 @@ class MachineLearningComputeOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore
@@ -591,7 +603,7 @@ class MachineLearningComputeOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AmlComputeNodesInformation"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_node.metadata['url']  # type: ignore
@@ -653,7 +665,7 @@ class MachineLearningComputeOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ComputeSecrets"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-04-01"
+        api_version = "2020-05-15-preview"
 
         # Construct URL
         url = self.list_key.metadata['url']  # type: ignore
