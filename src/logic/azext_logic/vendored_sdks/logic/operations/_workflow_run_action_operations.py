@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class WorkflowRunActionOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -54,7 +54,7 @@ class WorkflowRunActionOperations(object):
         filter=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.WorkflowRunActionListResult"
+        # type: (...) -> Iterable["models.WorkflowRunActionListResult"]
         """Gets a list of workflow run actions.
 
         :param resource_group_name: The resource group name.
@@ -68,18 +68,19 @@ class WorkflowRunActionOperations(object):
         :param filter: The filter to apply on the operation. Options for filters include: Status.
         :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkflowRunActionListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.WorkflowRunActionListResult
+        :return: An iterator like instance of either WorkflowRunActionListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.WorkflowRunActionListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkflowRunActionListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -87,17 +88,17 @@ class WorkflowRunActionOperations(object):
                     'runName': self._serialize.url("run_name", run_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if top is not None:
+                    query_parameters['$top'] = self._serialize.query("top", top, 'int')
+                if filter is not None:
+                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if top is not None:
-                query_parameters['$top'] = self._serialize.query("top", top, 'int')
-            if filter is not None:
-                query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -129,7 +130,7 @@ class WorkflowRunActionOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions'}  # type: ignore
 
     def get(
         self,
@@ -151,16 +152,17 @@ class WorkflowRunActionOperations(object):
         :param action_name: The workflow action name.
         :type action_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkflowRunAction or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.WorkflowRunAction
+        :return: WorkflowRunAction, or the result of cls(response)
+        :rtype: ~logic_management_client.models.WorkflowRunAction
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkflowRunAction"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -191,10 +193,10 @@ class WorkflowRunActionOperations(object):
         deserialized = self._deserialize('WorkflowRunAction', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}'}  # type: ignore
 
     def list_expression_trace(
         self,
@@ -204,7 +206,7 @@ class WorkflowRunActionOperations(object):
         action_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.ExpressionTraces"
+        # type: (...) -> Iterable["models.ExpressionTraces"]
         """Lists a workflow run expression trace.
 
         :param resource_group_name: The resource group name.
@@ -216,18 +218,19 @@ class WorkflowRunActionOperations(object):
         :param action_name: The workflow action name.
         :type action_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ExpressionTraces or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.ExpressionTraces
+        :return: An iterator like instance of either ExpressionTraces or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.ExpressionTraces]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ExpressionTraces"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_expression_trace.metadata['url']
+                url = self.list_expression_trace.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -236,13 +239,13 @@ class WorkflowRunActionOperations(object):
                     'actionName': self._serialize.url("action_name", action_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -274,4 +277,4 @@ class WorkflowRunActionOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_expression_trace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces'}
+    list_expression_trace.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/listExpressionTraces'}  # type: ignore

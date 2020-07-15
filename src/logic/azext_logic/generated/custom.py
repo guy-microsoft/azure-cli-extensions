@@ -10,13 +10,14 @@
 # pylint: disable=too-many-lines
 
 import json
+from azure.cli.core.util import sdk_no_wait
 
 
-def logic_workflow_list(cmd, client,
+def logic_workflow_list(client,
                         resource_group_name=None,
                         top=None,
                         filter=None):
-    if resource_group_name is not None:
+    if resource_group_name:
         return client.list_by_resource_group(resource_group_name=resource_group_name,
                                              top=top,
                                              filter=filter)
@@ -24,23 +25,23 @@ def logic_workflow_list(cmd, client,
                                        filter=filter)
 
 
-def logic_workflow_show(cmd, client,
+def logic_workflow_show(client,
                         resource_group_name,
                         workflow_name):
     return client.get(resource_group_name=resource_group_name,
                       workflow_name=workflow_name)
 
 
-def logic_workflow_create(cmd, client,
+def logic_workflow_create(client,
                           resource_group_name,
                           workflow_name,
                           location=None,
                           tags=None,
                           state=None,
-                          integration_account=None,
-                          integration_service_environment=None,
                           definition=None,
                           parameters=None,
+                          integration_service_environment_id=None,
+                          integration_account_id=None,
                           access_control_triggers=None,
                           access_control_contents=None,
                           access_control_actions=None,
@@ -64,10 +65,10 @@ def logic_workflow_create(cmd, client,
                                    location=location,
                                    tags=tags,
                                    state=state,
-                                   integration_account=integration_account,
-                                   integration_service_environment=integration_service_environment,
                                    definition=definition,
                                    parameters=parameters,
+                                   id=integration_service_environment_id,
+                                   resource_reference_id=integration_account_id,
                                    triggers=access_control_triggers,
                                    contents=access_control_contents,
                                    actions=access_control_actions,
@@ -76,35 +77,35 @@ def logic_workflow_create(cmd, client,
                                    connector=endpoints_configuration_connector)
 
 
-def logic_workflow_update(cmd, client,
+def logic_workflow_update(client,
                           resource_group_name,
                           workflow_name):
     return client.update(resource_group_name=resource_group_name,
                          workflow_name=workflow_name)
 
 
-def logic_workflow_delete(cmd, client,
+def logic_workflow_delete(client,
                           resource_group_name,
                           workflow_name):
     return client.delete(resource_group_name=resource_group_name,
                          workflow_name=workflow_name)
 
 
-def logic_workflow_disable(cmd, client,
+def logic_workflow_disable(client,
                            resource_group_name,
                            workflow_name):
     return client.disable(resource_group_name=resource_group_name,
                           workflow_name=workflow_name)
 
 
-def logic_workflow_enable(cmd, client,
+def logic_workflow_enable(client,
                           resource_group_name,
                           workflow_name):
     return client.enable(resource_group_name=resource_group_name,
                          workflow_name=workflow_name)
 
 
-def logic_workflow_generate_upgraded_definition(cmd, client,
+def logic_workflow_generate_upgraded_definition(client,
                                                 resource_group_name,
                                                 workflow_name,
                                                 target_schema_version=None):
@@ -113,7 +114,7 @@ def logic_workflow_generate_upgraded_definition(cmd, client,
                                                target_schema_version=target_schema_version)
 
 
-def logic_workflow_list_callback_url(cmd, client,
+def logic_workflow_list_callback_url(client,
                                      resource_group_name,
                                      workflow_name,
                                      not_after=None,
@@ -124,25 +125,26 @@ def logic_workflow_list_callback_url(cmd, client,
                                     key_type=key_type)
 
 
-def logic_workflow_list_swagger(cmd, client,
+def logic_workflow_list_swagger(client,
                                 resource_group_name,
                                 workflow_name):
     return client.list_swagger(resource_group_name=resource_group_name,
                                workflow_name=workflow_name)
 
 
-def logic_workflow_move(cmd, client,
+def logic_workflow_move(client,
                         resource_group_name,
                         workflow_name,
-                        id_=None,
-                        name=None):
-    return client.begin_move(resource_group_name=resource_group_name,
-                             workflow_name=workflow_name,
-                             id=id_,
-                             name=name)
+                        id_properties_integration_service_environment_id=None,
+                        no_wait=False):
+    return sdk_no_wait(no_wait,
+                       client.begin_move,
+                       resource_group_name=resource_group_name,
+                       workflow_name=workflow_name,
+                       id=id_properties_integration_service_environment_id)
 
 
-def logic_workflow_regenerate_access_key(cmd, client,
+def logic_workflow_regenerate_access_key(client,
                                          resource_group_name,
                                          workflow_name,
                                          key_type=None):
@@ -151,16 +153,16 @@ def logic_workflow_regenerate_access_key(cmd, client,
                                         key_type=key_type)
 
 
-def logic_workflow_validate_by_location(cmd, client,
+def logic_workflow_validate_by_location(client,
                                         resource_group_name,
                                         location,
                                         workflow_name,
                                         tags=None,
                                         state=None,
-                                        integration_account=None,
-                                        integration_service_environment=None,
                                         definition=None,
                                         parameters=None,
+                                        integration_service_environment_id=None,
+                                        integration_account_id=None,
                                         access_control_triggers=None,
                                         access_control_contents=None,
                                         access_control_actions=None,
@@ -185,10 +187,10 @@ def logic_workflow_validate_by_location(cmd, client,
                                        resource_location=location,
                                        tags=tags,
                                        state=state,
-                                       integration_account=integration_account,
-                                       integration_service_environment=integration_service_environment,
                                        definition=definition,
                                        parameters=parameters,
+                                       id=integration_service_environment_id,
+                                       resource_reference_id=integration_account_id,
                                        triggers=access_control_triggers,
                                        contents=access_control_contents,
                                        actions=access_control_actions,
@@ -197,16 +199,16 @@ def logic_workflow_validate_by_location(cmd, client,
                                        connector=endpoints_configuration_connector)
 
 
-def logic_workflow_validate_by_resource_group(cmd, client,
+def logic_workflow_validate_by_resource_group(client,
                                               resource_group_name,
                                               workflow_name,
                                               location=None,
                                               tags=None,
                                               state=None,
-                                              integration_account=None,
-                                              integration_service_environment=None,
                                               definition=None,
                                               parameters=None,
+                                              integration_service_environment_id=None,
+                                              integration_account_id=None,
                                               access_control_triggers=None,
                                               access_control_contents=None,
                                               access_control_actions=None,
@@ -230,10 +232,10 @@ def logic_workflow_validate_by_resource_group(cmd, client,
                                              location=location,
                                              tags=tags,
                                              state=state,
-                                             integration_account=integration_account,
-                                             integration_service_environment=integration_service_environment,
                                              definition=definition,
                                              parameters=parameters,
+                                             id=integration_service_environment_id,
+                                             resource_reference_id=integration_account_id,
                                              triggers=access_control_triggers,
                                              contents=access_control_contents,
                                              actions=access_control_actions,
@@ -242,7 +244,7 @@ def logic_workflow_validate_by_resource_group(cmd, client,
                                              connector=endpoints_configuration_connector)
 
 
-def logic_workflow_version_list(cmd, client,
+def logic_workflow_version_list(client,
                                 resource_group_name,
                                 workflow_name,
                                 top=None):
@@ -251,7 +253,7 @@ def logic_workflow_version_list(cmd, client,
                        top=top)
 
 
-def logic_workflow_version_show(cmd, client,
+def logic_workflow_version_show(client,
                                 resource_group_name,
                                 workflow_name,
                                 version_id):
@@ -260,7 +262,7 @@ def logic_workflow_version_show(cmd, client,
                       version_id=version_id)
 
 
-def logic_workflow_trigger_list(cmd, client,
+def logic_workflow_trigger_list(client,
                                 resource_group_name,
                                 workflow_name,
                                 top=None,
@@ -271,20 +273,25 @@ def logic_workflow_trigger_list(cmd, client,
                        filter=filter)
 
 
-def logic_workflow_trigger_show(cmd, client,
+def logic_workflow_trigger_show(client,
                                 resource_group_name,
                                 workflow_name,
                                 trigger_name):
-    if resource_group_name is not None and workflow_name is not None and trigger_name is not None:
-        return client.get(resource_group_name=resource_group_name,
-                          workflow_name=workflow_name,
-                          trigger_name=trigger_name)
+    return client.get(resource_group_name=resource_group_name,
+                      workflow_name=workflow_name,
+                      trigger_name=trigger_name)
+
+
+def logic_workflow_trigger_get_schema_json(client,
+                                           resource_group_name,
+                                           workflow_name,
+                                           trigger_name):
     return client.get_schema_json(resource_group_name=resource_group_name,
                                   workflow_name=workflow_name,
                                   trigger_name=trigger_name)
 
 
-def logic_workflow_trigger_list_callback_url(cmd, client,
+def logic_workflow_trigger_list_callback_url(client,
                                              resource_group_name,
                                              workflow_name,
                                              trigger_name):
@@ -293,7 +300,7 @@ def logic_workflow_trigger_list_callback_url(cmd, client,
                                     trigger_name=trigger_name)
 
 
-def logic_workflow_trigger_reset(cmd, client,
+def logic_workflow_trigger_reset(client,
                                  resource_group_name,
                                  workflow_name,
                                  trigger_name):
@@ -302,7 +309,7 @@ def logic_workflow_trigger_reset(cmd, client,
                         trigger_name=trigger_name)
 
 
-def logic_workflow_trigger_run(cmd, client,
+def logic_workflow_trigger_run(client,
                                resource_group_name,
                                workflow_name,
                                trigger_name):
@@ -311,7 +318,7 @@ def logic_workflow_trigger_run(cmd, client,
                       trigger_name=trigger_name)
 
 
-def logic_workflow_trigger_set_state(cmd, client,
+def logic_workflow_trigger_set_state(client,
                                      resource_group_name,
                                      workflow_name,
                                      trigger_name,
@@ -322,7 +329,7 @@ def logic_workflow_trigger_set_state(cmd, client,
                             source=source)
 
 
-def logic_workflow_version_trigger_list_callback_url(cmd, client,
+def logic_workflow_version_trigger_list_callback_url(client,
                                                      resource_group_name,
                                                      workflow_name,
                                                      version_id,
@@ -337,7 +344,7 @@ def logic_workflow_version_trigger_list_callback_url(cmd, client,
                                     key_type=key_type)
 
 
-def logic_workflow_trigger_history_list(cmd, client,
+def logic_workflow_trigger_history_list(client,
                                         resource_group_name,
                                         workflow_name,
                                         trigger_name,
@@ -350,7 +357,7 @@ def logic_workflow_trigger_history_list(cmd, client,
                        filter=filter)
 
 
-def logic_workflow_trigger_history_show(cmd, client,
+def logic_workflow_trigger_history_show(client,
                                         resource_group_name,
                                         workflow_name,
                                         trigger_name,
@@ -361,7 +368,7 @@ def logic_workflow_trigger_history_show(cmd, client,
                       history_name=history_name)
 
 
-def logic_workflow_trigger_history_resubmit(cmd, client,
+def logic_workflow_trigger_history_resubmit(client,
                                             resource_group_name,
                                             workflow_name,
                                             trigger_name,
@@ -372,7 +379,7 @@ def logic_workflow_trigger_history_resubmit(cmd, client,
                            history_name=history_name)
 
 
-def logic_workflow_run_list(cmd, client,
+def logic_workflow_run_list(client,
                             resource_group_name,
                             workflow_name,
                             top=None,
@@ -383,7 +390,7 @@ def logic_workflow_run_list(cmd, client,
                        filter=filter)
 
 
-def logic_workflow_run_show(cmd, client,
+def logic_workflow_run_show(client,
                             resource_group_name,
                             workflow_name,
                             run_name):
@@ -392,7 +399,7 @@ def logic_workflow_run_show(cmd, client,
                       run_name=run_name)
 
 
-def logic_workflow_run_cancel(cmd, client,
+def logic_workflow_run_cancel(client,
                               resource_group_name,
                               workflow_name,
                               run_name):
@@ -401,7 +408,7 @@ def logic_workflow_run_cancel(cmd, client,
                          run_name=run_name)
 
 
-def logic_workflow_run_action_list(cmd, client,
+def logic_workflow_run_action_list(client,
                                    resource_group_name,
                                    workflow_name,
                                    run_name,
@@ -414,7 +421,7 @@ def logic_workflow_run_action_list(cmd, client,
                        filter=filter)
 
 
-def logic_workflow_run_action_show(cmd, client,
+def logic_workflow_run_action_show(client,
                                    resource_group_name,
                                    workflow_name,
                                    run_name,
@@ -425,7 +432,7 @@ def logic_workflow_run_action_show(cmd, client,
                       action_name=action_name)
 
 
-def logic_workflow_run_action_list_expression_trace(cmd, client,
+def logic_workflow_run_action_list_expression_trace(client,
                                                     resource_group_name,
                                                     workflow_name,
                                                     run_name,
@@ -436,7 +443,7 @@ def logic_workflow_run_action_list_expression_trace(cmd, client,
                                         action_name=action_name)
 
 
-def logic_workflow_run_action_repetition_list(cmd, client,
+def logic_workflow_run_action_repetition_list(client,
                                               resource_group_name,
                                               workflow_name,
                                               run_name,
@@ -447,7 +454,7 @@ def logic_workflow_run_action_repetition_list(cmd, client,
                        action_name=action_name)
 
 
-def logic_workflow_run_action_repetition_show(cmd, client,
+def logic_workflow_run_action_repetition_show(client,
                                               resource_group_name,
                                               workflow_name,
                                               run_name,
@@ -460,7 +467,7 @@ def logic_workflow_run_action_repetition_show(cmd, client,
                       repetition_name=repetition_name)
 
 
-def logic_workflow_run_action_repetition_list_expression_trace(cmd, client,
+def logic_workflow_run_action_repetition_list_expression_trace(client,
                                                                resource_group_name,
                                                                workflow_name,
                                                                run_name,
@@ -473,7 +480,7 @@ def logic_workflow_run_action_repetition_list_expression_trace(cmd, client,
                                         repetition_name=repetition_name)
 
 
-def logic_workflow_run_action_repetition_request_history_list(cmd, client,
+def logic_workflow_run_action_repetition_request_history_list(client,
                                                               resource_group_name,
                                                               workflow_name,
                                                               run_name,
@@ -486,7 +493,7 @@ def logic_workflow_run_action_repetition_request_history_list(cmd, client,
                        repetition_name=repetition_name)
 
 
-def logic_workflow_run_action_repetition_request_history_show(cmd, client,
+def logic_workflow_run_action_repetition_request_history_show(client,
                                                               resource_group_name,
                                                               workflow_name,
                                                               run_name,
@@ -501,7 +508,7 @@ def logic_workflow_run_action_repetition_request_history_show(cmd, client,
                       request_history_name=request_history_name)
 
 
-def logic_workflow_run_action_request_history_list(cmd, client,
+def logic_workflow_run_action_request_history_list(client,
                                                    resource_group_name,
                                                    workflow_name,
                                                    run_name,
@@ -512,7 +519,7 @@ def logic_workflow_run_action_request_history_list(cmd, client,
                        action_name=action_name)
 
 
-def logic_workflow_run_action_request_history_show(cmd, client,
+def logic_workflow_run_action_request_history_show(client,
                                                    resource_group_name,
                                                    workflow_name,
                                                    run_name,
@@ -525,7 +532,7 @@ def logic_workflow_run_action_request_history_show(cmd, client,
                       request_history_name=request_history_name)
 
 
-def logic_workflow_run_action_scope_repetition_list(cmd, client,
+def logic_workflow_run_action_scope_repetition_list(client,
                                                     resource_group_name,
                                                     workflow_name,
                                                     run_name,
@@ -536,7 +543,7 @@ def logic_workflow_run_action_scope_repetition_list(cmd, client,
                        action_name=action_name)
 
 
-def logic_workflow_run_action_scope_repetition_show(cmd, client,
+def logic_workflow_run_action_scope_repetition_show(client,
                                                     resource_group_name,
                                                     workflow_name,
                                                     run_name,
@@ -549,7 +556,7 @@ def logic_workflow_run_action_scope_repetition_show(cmd, client,
                       repetition_name=repetition_name)
 
 
-def logic_workflow_run_operation_show(cmd, client,
+def logic_workflow_run_operation_show(client,
                                       resource_group_name,
                                       workflow_name,
                                       run_name,
@@ -560,28 +567,28 @@ def logic_workflow_run_operation_show(cmd, client,
                       operation_id=operation_id)
 
 
-def logic_integration_account_list(cmd, client,
+def logic_integration_account_list(client,
                                    resource_group_name=None,
                                    top=None):
-    if resource_group_name is not None:
+    if resource_group_name:
         return client.list_by_resource_group(resource_group_name=resource_group_name,
                                              top=top)
     return client.list_by_subscription(top=top)
 
 
-def logic_integration_account_show(cmd, client,
+def logic_integration_account_show(client,
                                    resource_group_name,
                                    integration_account_name):
     return client.get(resource_group_name=resource_group_name,
                       integration_account_name=integration_account_name)
 
 
-def logic_integration_account_create(cmd, client,
+def logic_integration_account_create(client,
                                      resource_group_name,
                                      integration_account_name,
                                      location=None,
                                      tags=None,
-                                     sku=None,
+                                     sku_name=None,
                                      integration_service_environment=None,
                                      state=None):
     if isinstance(integration_service_environment, str):
@@ -590,17 +597,17 @@ def logic_integration_account_create(cmd, client,
                                    integration_account_name=integration_account_name,
                                    location=location,
                                    tags=tags,
-                                   sku=sku,
+                                   name=sku_name,
                                    integration_service_environment=integration_service_environment,
                                    state=state)
 
 
-def logic_integration_account_update(cmd, client,
+def logic_integration_account_update(client,
                                      resource_group_name,
                                      integration_account_name,
                                      location=None,
                                      tags=None,
-                                     sku=None,
+                                     sku_name=None,
                                      integration_service_environment=None,
                                      state=None):
     if isinstance(integration_service_environment, str):
@@ -609,19 +616,19 @@ def logic_integration_account_update(cmd, client,
                          integration_account_name=integration_account_name,
                          location=location,
                          tags=tags,
-                         sku=sku,
+                         name=sku_name,
                          integration_service_environment=integration_service_environment,
                          state=state)
 
 
-def logic_integration_account_delete(cmd, client,
+def logic_integration_account_delete(client,
                                      resource_group_name,
                                      integration_account_name):
     return client.delete(resource_group_name=resource_group_name,
                          integration_account_name=integration_account_name)
 
 
-def logic_integration_account_list_callback_url(cmd, client,
+def logic_integration_account_list_callback_url(client,
                                                 resource_group_name,
                                                 integration_account_name,
                                                 not_after=None,
@@ -632,18 +639,18 @@ def logic_integration_account_list_callback_url(cmd, client,
                                     key_type=key_type)
 
 
-def logic_integration_account_list_key_vault_key(cmd, client,
+def logic_integration_account_list_key_vault_key(client,
                                                  resource_group_name,
                                                  integration_account_name,
-                                                 key_vault,
-                                                 skip_token=None):
+                                                 skip_token=None,
+                                                 key_vault_id=None):
     return client.list_key_vault_key(resource_group_name=resource_group_name,
                                      integration_account_name=integration_account_name,
-                                     key_vault=key_vault,
-                                     skip_token=skip_token)
+                                     skip_token=skip_token,
+                                     id=key_vault_id)
 
 
-def logic_integration_account_log_tracking_event(cmd, client,
+def logic_integration_account_log_tracking_event(client,
                                                  resource_group_name,
                                                  integration_account_name,
                                                  source_type,
@@ -658,7 +665,7 @@ def logic_integration_account_log_tracking_event(cmd, client,
                                      events=events)
 
 
-def logic_integration_account_regenerate_access_key(cmd, client,
+def logic_integration_account_regenerate_access_key(client,
                                                     resource_group_name,
                                                     integration_account_name,
                                                     key_type=None):
@@ -667,14 +674,14 @@ def logic_integration_account_regenerate_access_key(cmd, client,
                                         key_type=key_type)
 
 
-def logic_integration_account_assembly_list(cmd, client,
+def logic_integration_account_assembly_list(client,
                                             resource_group_name,
                                             integration_account_name):
     return client.list(resource_group_name=resource_group_name,
                        integration_account_name=integration_account_name)
 
 
-def logic_integration_account_assembly_show(cmd, client,
+def logic_integration_account_assembly_show(client,
                                             resource_group_name,
                                             integration_account_name,
                                             assembly_artifact_name):
@@ -683,7 +690,7 @@ def logic_integration_account_assembly_show(cmd, client,
                       assembly_artifact_name=assembly_artifact_name)
 
 
-def logic_integration_account_assembly_create(cmd, client,
+def logic_integration_account_assembly_create(client,
                                               resource_group_name,
                                               integration_account_name,
                                               assembly_artifact_name,
@@ -698,7 +705,7 @@ def logic_integration_account_assembly_create(cmd, client,
                                    properties=properties)
 
 
-def logic_integration_account_assembly_update(cmd, client,
+def logic_integration_account_assembly_update(client,
                                               resource_group_name,
                                               integration_account_name,
                                               assembly_artifact_name,
@@ -713,7 +720,7 @@ def logic_integration_account_assembly_update(cmd, client,
                                    properties=properties)
 
 
-def logic_integration_account_assembly_delete(cmd, client,
+def logic_integration_account_assembly_delete(client,
                                               resource_group_name,
                                               integration_account_name,
                                               assembly_artifact_name):
@@ -722,7 +729,7 @@ def logic_integration_account_assembly_delete(cmd, client,
                          assembly_artifact_name=assembly_artifact_name)
 
 
-def logic_integration_account_assembly_list_content_callback_url(cmd, client,
+def logic_integration_account_assembly_list_content_callback_url(client,
                                                                  resource_group_name,
                                                                  integration_account_name,
                                                                  assembly_artifact_name):
@@ -731,14 +738,14 @@ def logic_integration_account_assembly_list_content_callback_url(cmd, client,
                                             assembly_artifact_name=assembly_artifact_name)
 
 
-def logic_integration_account_batch_configuration_list(cmd, client,
+def logic_integration_account_batch_configuration_list(client,
                                                        resource_group_name,
                                                        integration_account_name):
     return client.list(resource_group_name=resource_group_name,
                        integration_account_name=integration_account_name)
 
 
-def logic_integration_account_batch_configuration_show(cmd, client,
+def logic_integration_account_batch_configuration_show(client,
                                                        resource_group_name,
                                                        integration_account_name,
                                                        batch_configuration_name):
@@ -747,69 +754,101 @@ def logic_integration_account_batch_configuration_show(cmd, client,
                       batch_configuration_name=batch_configuration_name)
 
 
-def logic_integration_account_batch_configuration_create(cmd, client,
+def logic_integration_account_batch_configuration_create(client,
                                                          resource_group_name,
                                                          integration_account_name,
                                                          batch_configuration_name,
                                                          batch_group_name,
-                                                         release_criteria,
                                                          location=None,
                                                          tags=None,
-                                                         properties_created_time=None,
-                                                         properties_changed_time=None,
-                                                         metadata=None,
                                                          created_time=None,
-                                                         changed_time=None):
+                                                         changed_time=None,
+                                                         metadata=None,
+                                                         release_criteria_message_count=None,
+                                                         release_criteria_batch_size=None,
+                                                         release_criteria_recurrence_frequency=None,
+                                                         release_criteria_recurrence_interval=None,
+                                                         release_criteria_recurrence_start_time=None,
+                                                         release_criteria_recurrence_end_time=None,
+                                                         release_criteria_recurrence_time_zone=None,
+                                                         release_criteria_recurrence_schedule_minutes=None,
+                                                         release_criteria_recurrence_schedule_hours=None,
+                                                         release_criteria_recurrence_schedule_week_days=None,
+                                                         release_criteria_recurrence_schedule_month_days=None,
+                                                         release_criteria_recurrence_schedule_monthly_occurrences=None):
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
-    if isinstance(release_criteria, str):
-        release_criteria = json.loads(release_criteria)
     return client.create_or_update(resource_group_name=resource_group_name,
                                    integration_account_name=integration_account_name,
                                    batch_configuration_name=batch_configuration_name,
                                    location=location,
                                    tags=tags,
-                                   created_time=properties_created_time,
-                                   changed_time=properties_changed_time,
+                                   created_time=created_time,
+                                   changed_time=changed_time,
                                    metadata=metadata,
                                    batch_group_name=batch_group_name,
-                                   release_criteria=release_criteria,
-                                   batch_configuration_properties_created_time=created_time,
-                                   batch_configuration_properties_changed_time=changed_time)
+                                   message_count=release_criteria_message_count,
+                                   batch_size=release_criteria_batch_size,
+                                   frequency=release_criteria_recurrence_frequency,
+                                   interval=release_criteria_recurrence_interval,
+                                   start_time=release_criteria_recurrence_start_time,
+                                   end_time=release_criteria_recurrence_end_time,
+                                   time_zone=release_criteria_recurrence_time_zone,
+                                   minutes=release_criteria_recurrence_schedule_minutes,
+                                   hours=release_criteria_recurrence_schedule_hours,
+                                   week_days=release_criteria_recurrence_schedule_week_days,
+                                   month_days=release_criteria_recurrence_schedule_month_days,
+                                   monthly_occurrences=release_criteria_recurrence_schedule_monthly_occurrences)
 
 
-def logic_integration_account_batch_configuration_update(cmd, client,
+def logic_integration_account_batch_configuration_update(client,
                                                          resource_group_name,
                                                          integration_account_name,
                                                          batch_configuration_name,
                                                          batch_group_name,
-                                                         release_criteria,
                                                          location=None,
                                                          tags=None,
-                                                         properties_created_time=None,
-                                                         properties_changed_time=None,
-                                                         metadata=None,
                                                          created_time=None,
-                                                         changed_time=None):
+                                                         changed_time=None,
+                                                         metadata=None,
+                                                         release_criteria_message_count=None,
+                                                         release_criteria_batch_size=None,
+                                                         release_criteria_recurrence_frequency=None,
+                                                         release_criteria_recurrence_interval=None,
+                                                         release_criteria_recurrence_start_time=None,
+                                                         release_criteria_recurrence_end_time=None,
+                                                         release_criteria_recurrence_time_zone=None,
+                                                         release_criteria_recurrence_schedule_minutes=None,
+                                                         release_criteria_recurrence_schedule_hours=None,
+                                                         release_criteria_recurrence_schedule_week_days=None,
+                                                         release_criteria_recurrence_schedule_month_days=None,
+                                                         release_criteria_recurrence_schedule_monthly_occurrences=None):
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
-    if isinstance(release_criteria, str):
-        release_criteria = json.loads(release_criteria)
     return client.create_or_update(resource_group_name=resource_group_name,
                                    integration_account_name=integration_account_name,
                                    batch_configuration_name=batch_configuration_name,
                                    location=location,
                                    tags=tags,
-                                   created_time=properties_created_time,
-                                   changed_time=properties_changed_time,
+                                   created_time=created_time,
+                                   changed_time=changed_time,
                                    metadata=metadata,
                                    batch_group_name=batch_group_name,
-                                   release_criteria=release_criteria,
-                                   batch_configuration_properties_created_time=created_time,
-                                   batch_configuration_properties_changed_time=changed_time)
+                                   message_count=release_criteria_message_count,
+                                   batch_size=release_criteria_batch_size,
+                                   frequency=release_criteria_recurrence_frequency,
+                                   interval=release_criteria_recurrence_interval,
+                                   start_time=release_criteria_recurrence_start_time,
+                                   end_time=release_criteria_recurrence_end_time,
+                                   time_zone=release_criteria_recurrence_time_zone,
+                                   minutes=release_criteria_recurrence_schedule_minutes,
+                                   hours=release_criteria_recurrence_schedule_hours,
+                                   week_days=release_criteria_recurrence_schedule_week_days,
+                                   month_days=release_criteria_recurrence_schedule_month_days,
+                                   monthly_occurrences=release_criteria_recurrence_schedule_monthly_occurrences)
 
 
-def logic_integration_account_batch_configuration_delete(cmd, client,
+def logic_integration_account_batch_configuration_delete(client,
                                                          resource_group_name,
                                                          integration_account_name,
                                                          batch_configuration_name):
@@ -818,7 +857,7 @@ def logic_integration_account_batch_configuration_delete(cmd, client,
                          batch_configuration_name=batch_configuration_name)
 
 
-def logic_integration_account_schema_list(cmd, client,
+def logic_integration_account_schema_list(client,
                                           resource_group_name,
                                           integration_account_name,
                                           top=None,
@@ -829,7 +868,7 @@ def logic_integration_account_schema_list(cmd, client,
                        filter=filter)
 
 
-def logic_integration_account_schema_show(cmd, client,
+def logic_integration_account_schema_show(client,
                                           resource_group_name,
                                           integration_account_name,
                                           schema_name):
@@ -838,7 +877,7 @@ def logic_integration_account_schema_show(cmd, client,
                       schema_name=schema_name)
 
 
-def logic_integration_account_schema_create(cmd, client,
+def logic_integration_account_schema_create(client,
                                             resource_group_name,
                                             integration_account_name,
                                             schema_name,
@@ -867,7 +906,7 @@ def logic_integration_account_schema_create(cmd, client,
                                    content_type_parameter=properties_content_type)
 
 
-def logic_integration_account_schema_update(cmd, client,
+def logic_integration_account_schema_update(client,
                                             resource_group_name,
                                             integration_account_name,
                                             schema_name,
@@ -896,7 +935,7 @@ def logic_integration_account_schema_update(cmd, client,
                                    content_type_parameter=properties_content_type)
 
 
-def logic_integration_account_schema_delete(cmd, client,
+def logic_integration_account_schema_delete(client,
                                             resource_group_name,
                                             integration_account_name,
                                             schema_name):
@@ -905,7 +944,7 @@ def logic_integration_account_schema_delete(cmd, client,
                          schema_name=schema_name)
 
 
-def logic_integration_account_schema_list_content_callback_url(cmd, client,
+def logic_integration_account_schema_list_content_callback_url(client,
                                                                resource_group_name,
                                                                integration_account_name,
                                                                schema_name,
@@ -918,7 +957,7 @@ def logic_integration_account_schema_list_content_callback_url(cmd, client,
                                             key_type=key_type)
 
 
-def logic_integration_account_map_list(cmd, client,
+def logic_integration_account_map_list(client,
                                        resource_group_name,
                                        integration_account_name,
                                        top=None,
@@ -929,7 +968,7 @@ def logic_integration_account_map_list(cmd, client,
                        filter=filter)
 
 
-def logic_integration_account_map_show(cmd, client,
+def logic_integration_account_map_show(client,
                                        resource_group_name,
                                        integration_account_name,
                                        map_name):
@@ -938,7 +977,7 @@ def logic_integration_account_map_show(cmd, client,
                       map_name=map_name)
 
 
-def logic_integration_account_map_create(cmd, client,
+def logic_integration_account_map_create(client,
                                          resource_group_name,
                                          integration_account_name,
                                          map_name,
@@ -946,9 +985,9 @@ def logic_integration_account_map_create(cmd, client,
                                          properties_content_type,
                                          location=None,
                                          tags=None,
-                                         parameters_schema=None,
                                          content=None,
-                                         metadata=None):
+                                         metadata=None,
+                                         parameters_schema_ref=None):
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
     return client.create_or_update(resource_group_name=resource_group_name,
@@ -957,13 +996,13 @@ def logic_integration_account_map_create(cmd, client,
                                    location=location,
                                    tags=tags,
                                    map_type=map_type,
-                                   parameters_schema=parameters_schema,
                                    content=content,
                                    content_type_parameter=properties_content_type,
-                                   metadata=metadata)
+                                   metadata=metadata,
+                                   ref=parameters_schema_ref)
 
 
-def logic_integration_account_map_update(cmd, client,
+def logic_integration_account_map_update(client,
                                          resource_group_name,
                                          integration_account_name,
                                          map_name,
@@ -971,9 +1010,9 @@ def logic_integration_account_map_update(cmd, client,
                                          properties_content_type,
                                          location=None,
                                          tags=None,
-                                         parameters_schema=None,
                                          content=None,
-                                         metadata=None):
+                                         metadata=None,
+                                         parameters_schema_ref=None):
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
     return client.create_or_update(resource_group_name=resource_group_name,
@@ -982,13 +1021,13 @@ def logic_integration_account_map_update(cmd, client,
                                    location=location,
                                    tags=tags,
                                    map_type=map_type,
-                                   parameters_schema=parameters_schema,
                                    content=content,
                                    content_type_parameter=properties_content_type,
-                                   metadata=metadata)
+                                   metadata=metadata,
+                                   ref=parameters_schema_ref)
 
 
-def logic_integration_account_map_delete(cmd, client,
+def logic_integration_account_map_delete(client,
                                          resource_group_name,
                                          integration_account_name,
                                          map_name):
@@ -997,7 +1036,7 @@ def logic_integration_account_map_delete(cmd, client,
                          map_name=map_name)
 
 
-def logic_integration_account_map_list_content_callback_url(cmd, client,
+def logic_integration_account_map_list_content_callback_url(client,
                                                             resource_group_name,
                                                             integration_account_name,
                                                             map_name,
@@ -1010,7 +1049,7 @@ def logic_integration_account_map_list_content_callback_url(cmd, client,
                                             key_type=key_type)
 
 
-def logic_integration_account_partner_list(cmd, client,
+def logic_integration_account_partner_list(client,
                                            resource_group_name,
                                            integration_account_name,
                                            top=None,
@@ -1021,7 +1060,7 @@ def logic_integration_account_partner_list(cmd, client,
                        filter=filter)
 
 
-def logic_integration_account_partner_show(cmd, client,
+def logic_integration_account_partner_show(client,
                                            resource_group_name,
                                            integration_account_name,
                                            partner_name):
@@ -1030,7 +1069,7 @@ def logic_integration_account_partner_show(cmd, client,
                       partner_name=partner_name)
 
 
-def logic_integration_account_partner_create(cmd, client,
+def logic_integration_account_partner_create(client,
                                              resource_group_name,
                                              integration_account_name,
                                              partner_name,
@@ -1051,7 +1090,7 @@ def logic_integration_account_partner_create(cmd, client,
                                    business_identities=content_b2b_business_identities)
 
 
-def logic_integration_account_partner_update(cmd, client,
+def logic_integration_account_partner_update(client,
                                              resource_group_name,
                                              integration_account_name,
                                              partner_name,
@@ -1072,7 +1111,7 @@ def logic_integration_account_partner_update(cmd, client,
                                    business_identities=content_b2b_business_identities)
 
 
-def logic_integration_account_partner_delete(cmd, client,
+def logic_integration_account_partner_delete(client,
                                              resource_group_name,
                                              integration_account_name,
                                              partner_name):
@@ -1081,7 +1120,7 @@ def logic_integration_account_partner_delete(cmd, client,
                          partner_name=partner_name)
 
 
-def logic_integration_account_partner_list_content_callback_url(cmd, client,
+def logic_integration_account_partner_list_content_callback_url(client,
                                                                 resource_group_name,
                                                                 integration_account_name,
                                                                 partner_name,
@@ -1094,7 +1133,7 @@ def logic_integration_account_partner_list_content_callback_url(cmd, client,
                                             key_type=key_type)
 
 
-def logic_integration_account_agreement_list(cmd, client,
+def logic_integration_account_agreement_list(client,
                                              resource_group_name,
                                              integration_account_name,
                                              top=None,
@@ -1105,7 +1144,7 @@ def logic_integration_account_agreement_list(cmd, client,
                        filter=filter)
 
 
-def logic_integration_account_agreement_show(cmd, client,
+def logic_integration_account_agreement_show(client,
                                              resource_group_name,
                                              integration_account_name,
                                              agreement_name):
@@ -1114,7 +1153,7 @@ def logic_integration_account_agreement_show(cmd, client,
                       agreement_name=agreement_name)
 
 
-def logic_integration_account_agreement_create(cmd, client,
+def logic_integration_account_agreement_create(client,
                                                resource_group_name,
                                                integration_account_name,
                                                agreement_name,
@@ -1145,7 +1184,7 @@ def logic_integration_account_agreement_create(cmd, client,
                                    content=content)
 
 
-def logic_integration_account_agreement_update(cmd, client,
+def logic_integration_account_agreement_update(client,
                                                resource_group_name,
                                                integration_account_name,
                                                agreement_name,
@@ -1176,7 +1215,7 @@ def logic_integration_account_agreement_update(cmd, client,
                                    content=content)
 
 
-def logic_integration_account_agreement_delete(cmd, client,
+def logic_integration_account_agreement_delete(client,
                                                resource_group_name,
                                                integration_account_name,
                                                agreement_name):
@@ -1185,7 +1224,7 @@ def logic_integration_account_agreement_delete(cmd, client,
                          agreement_name=agreement_name)
 
 
-def logic_integration_account_agreement_list_content_callback_url(cmd, client,
+def logic_integration_account_agreement_list_content_callback_url(client,
                                                                   resource_group_name,
                                                                   integration_account_name,
                                                                   agreement_name,
@@ -1198,7 +1237,7 @@ def logic_integration_account_agreement_list_content_callback_url(cmd, client,
                                             key_type=key_type)
 
 
-def logic_integration_account_certificate_list(cmd, client,
+def logic_integration_account_certificate_list(client,
                                                resource_group_name,
                                                integration_account_name,
                                                top=None):
@@ -1207,7 +1246,7 @@ def logic_integration_account_certificate_list(cmd, client,
                        top=top)
 
 
-def logic_integration_account_certificate_show(cmd, client,
+def logic_integration_account_certificate_show(client,
                                                resource_group_name,
                                                integration_account_name,
                                                certificate_name):
@@ -1216,7 +1255,7 @@ def logic_integration_account_certificate_show(cmd, client,
                       certificate_name=certificate_name)
 
 
-def logic_integration_account_certificate_create(cmd, client,
+def logic_integration_account_certificate_create(client,
                                                  resource_group_name,
                                                  integration_account_name,
                                                  certificate_name,
@@ -1241,7 +1280,7 @@ def logic_integration_account_certificate_create(cmd, client,
                                    key_version=key_key_version)
 
 
-def logic_integration_account_certificate_update(cmd, client,
+def logic_integration_account_certificate_update(client,
                                                  resource_group_name,
                                                  integration_account_name,
                                                  certificate_name,
@@ -1266,7 +1305,7 @@ def logic_integration_account_certificate_update(cmd, client,
                                    key_version=key_key_version)
 
 
-def logic_integration_account_certificate_delete(cmd, client,
+def logic_integration_account_certificate_delete(client,
                                                  resource_group_name,
                                                  integration_account_name,
                                                  certificate_name):
@@ -1275,7 +1314,7 @@ def logic_integration_account_certificate_delete(cmd, client,
                          certificate_name=certificate_name)
 
 
-def logic_integration_account_session_list(cmd, client,
+def logic_integration_account_session_list(client,
                                            resource_group_name,
                                            integration_account_name,
                                            top=None,
@@ -1286,7 +1325,7 @@ def logic_integration_account_session_list(cmd, client,
                        filter=filter)
 
 
-def logic_integration_account_session_show(cmd, client,
+def logic_integration_account_session_show(client,
                                            resource_group_name,
                                            integration_account_name,
                                            session_name):
@@ -1295,7 +1334,7 @@ def logic_integration_account_session_show(cmd, client,
                       session_name=session_name)
 
 
-def logic_integration_account_session_create(cmd, client,
+def logic_integration_account_session_create(client,
                                              resource_group_name,
                                              integration_account_name,
                                              session_name,
@@ -1312,7 +1351,7 @@ def logic_integration_account_session_create(cmd, client,
                                    content=content)
 
 
-def logic_integration_account_session_update(cmd, client,
+def logic_integration_account_session_update(client,
                                              resource_group_name,
                                              integration_account_name,
                                              session_name,
@@ -1329,7 +1368,7 @@ def logic_integration_account_session_update(cmd, client,
                                    content=content)
 
 
-def logic_integration_account_session_delete(cmd, client,
+def logic_integration_account_session_delete(client,
                                              resource_group_name,
                                              integration_account_name,
                                              session_name):
@@ -1338,7 +1377,7 @@ def logic_integration_account_session_delete(cmd, client,
                          session_name=session_name)
 
 
-def logic_integration_service_environment_list(cmd, client,
+def logic_integration_service_environment_list(client,
                                                resource_group=None,
                                                top=None):
     if resource_group is not None:
@@ -1347,14 +1386,14 @@ def logic_integration_service_environment_list(cmd, client,
     return client.list_by_subscription(top=top)
 
 
-def logic_integration_service_environment_show(cmd, client,
+def logic_integration_service_environment_show(client,
                                                resource_group,
                                                integration_service_environment_name):
     return client.get(resource_group=resource_group,
                       integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_create(cmd, client,
+def logic_integration_service_environment_create(client,
                                                  resource_group,
                                                  integration_service_environment_name,
                                                  location=None,
@@ -1364,24 +1403,27 @@ def logic_integration_service_environment_create(cmd, client,
                                                  state=None,
                                                  integration_service_environment_id=None,
                                                  endpoints_configuration=None,
-                                                 network_configuration=None):
+                                                 network_configuration=None,
+                                                 no_wait=False):
     if isinstance(endpoints_configuration, str):
         endpoints_configuration = json.loads(endpoints_configuration)
     if isinstance(network_configuration, str):
         network_configuration = json.loads(network_configuration)
-    return client.begin_create_or_update(resource_group=resource_group,
-                                         integration_service_environment_name=integration_service_environment_name,
-                                         location=location,
-                                         tags=tags,
-                                         sku=sku,
-                                         provisioning_state=provisioning_state,
-                                         state=state,
-                                         integration_service_environment_id=integration_service_environment_id,
-                                         endpoints_configuration=endpoints_configuration,
-                                         network_configuration=network_configuration)
+    return sdk_no_wait(no_wait,
+                       client.begin_create_or_update,
+                       resource_group=resource_group,
+                       integration_service_environment_name=integration_service_environment_name,
+                       location=location,
+                       tags=tags,
+                       sku=sku,
+                       provisioning_state=provisioning_state,
+                       state=state,
+                       integration_service_environment_id=integration_service_environment_id,
+                       endpoints_configuration=endpoints_configuration,
+                       network_configuration=network_configuration)
 
 
-def logic_integration_service_environment_update(cmd, client,
+def logic_integration_service_environment_update(client,
                                                  resource_group,
                                                  integration_service_environment_name,
                                                  location=None,
@@ -1391,59 +1433,62 @@ def logic_integration_service_environment_update(cmd, client,
                                                  state=None,
                                                  integration_service_environment_id=None,
                                                  endpoints_configuration=None,
-                                                 network_configuration=None):
+                                                 network_configuration=None,
+                                                 no_wait=False):
     if isinstance(endpoints_configuration, str):
         endpoints_configuration = json.loads(endpoints_configuration)
     if isinstance(network_configuration, str):
         network_configuration = json.loads(network_configuration)
-    return client.begin_update(resource_group=resource_group,
-                               integration_service_environment_name=integration_service_environment_name,
-                               location=location,
-                               tags=tags,
-                               sku=sku,
-                               provisioning_state=provisioning_state,
-                               state=state,
-                               integration_service_environment_id=integration_service_environment_id,
-                               endpoints_configuration=endpoints_configuration,
-                               network_configuration=network_configuration)
+    return sdk_no_wait(no_wait,
+                       client.begin_update,
+                       resource_group=resource_group,
+                       integration_service_environment_name=integration_service_environment_name,
+                       location=location,
+                       tags=tags,
+                       sku=sku,
+                       provisioning_state=provisioning_state,
+                       state=state,
+                       integration_service_environment_id=integration_service_environment_id,
+                       endpoints_configuration=endpoints_configuration,
+                       network_configuration=network_configuration)
 
 
-def logic_integration_service_environment_delete(cmd, client,
+def logic_integration_service_environment_delete(client,
                                                  resource_group,
                                                  integration_service_environment_name):
     return client.delete(resource_group=resource_group,
                          integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_restart(cmd, client,
+def logic_integration_service_environment_restart(client,
                                                   resource_group,
                                                   integration_service_environment_name):
     return client.restart(resource_group=resource_group,
                           integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_sku_list(cmd, client,
+def logic_integration_service_environment_sku_list(client,
                                                    resource_group,
                                                    integration_service_environment_name):
     return client.list(resource_group=resource_group,
                        integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_network_health_show(cmd, client,
+def logic_integration_service_environment_network_health_show(client,
                                                               resource_group,
                                                               integration_service_environment_name):
     return client.get(resource_group=resource_group,
                       integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_managed_api_list(cmd, client,
+def logic_integration_service_environment_managed_api_list(client,
                                                            resource_group,
                                                            integration_service_environment_name):
     return client.list(resource_group=resource_group,
                        integration_service_environment_name=integration_service_environment_name)
 
 
-def logic_integration_service_environment_managed_api_show(cmd, client,
+def logic_integration_service_environment_managed_api_show(client,
                                                            resource_group,
                                                            integration_service_environment_name,
                                                            api_name):
@@ -1452,25 +1497,31 @@ def logic_integration_service_environment_managed_api_show(cmd, client,
                       api_name=api_name)
 
 
-def logic_integration_service_environment_managed_api_delete(cmd, client,
+def logic_integration_service_environment_managed_api_delete(client,
                                                              resource_group,
                                                              integration_service_environment_name,
-                                                             api_name):
-    return client.begin_delete(resource_group=resource_group,
-                               integration_service_environment_name=integration_service_environment_name,
-                               api_name=api_name)
+                                                             api_name,
+                                                             no_wait=False):
+    return sdk_no_wait(no_wait,
+                       client.begin_delete,
+                       resource_group=resource_group,
+                       integration_service_environment_name=integration_service_environment_name,
+                       api_name=api_name)
 
 
-def logic_integration_service_environment_managed_api_put(cmd, client,
+def logic_integration_service_environment_managed_api_put(client,
                                                           resource_group,
                                                           integration_service_environment_name,
-                                                          api_name):
-    return client.begin_put(resource_group=resource_group,
-                            integration_service_environment_name=integration_service_environment_name,
-                            api_name=api_name)
+                                                          api_name,
+                                                          no_wait=False):
+    return sdk_no_wait(no_wait,
+                       client.begin_put,
+                       resource_group=resource_group,
+                       integration_service_environment_name=integration_service_environment_name,
+                       api_name=api_name)
 
 
-def logic_integration_service_environment_managed_api_operation_list(cmd, client,
+def logic_integration_service_environment_managed_api_operation_list(client,
                                                                      resource_group,
                                                                      integration_service_environment_name,
                                                                      api_name):

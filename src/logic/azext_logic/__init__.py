@@ -20,8 +20,8 @@ class LogicManagementClientCommandsLoader(AzCommandsLoader):
         logic_custom = CliCommandType(
             operations_tmpl='azext_logic.custom#{}',
             client_factory=cf_logic)
-        super(LogicManagementClientCommandsLoader, self).__init__(cli_ctx=cli_ctx,
-                                                                  custom_command_type=logic_custom)
+        parent = super(LogicManagementClientCommandsLoader, self)
+        parent.__init__(cli_ctx=cli_ctx, custom_command_type=logic_custom)
 
     def load_command_table(self, args):
         from azext_logic.generated.commands import load_command_table

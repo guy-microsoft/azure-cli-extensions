@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -54,7 +54,7 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
         repetition_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.RequestHistoryListResult"
+        # type: (...) -> Iterable["models.RequestHistoryListResult"]
         """List a workflow run repetition request history.
 
         :param resource_group_name: The resource group name.
@@ -68,18 +68,19 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
         :param repetition_name: The workflow repetition.
         :type repetition_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: RequestHistoryListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.RequestHistoryListResult
+        :return: An iterator like instance of either RequestHistoryListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.RequestHistoryListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.RequestHistoryListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -89,13 +90,13 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
                     'repetitionName': self._serialize.url("repetition_name", repetition_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -127,7 +128,7 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories'}  # type: ignore
 
     def get(
         self,
@@ -155,16 +156,17 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
         :param request_history_name: The request history name.
         :type request_history_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: RequestHistory or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.RequestHistory
+        :return: RequestHistory, or the result of cls(response)
+        :rtype: ~logic_management_client.models.RequestHistory
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.RequestHistory"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -197,7 +199,7 @@ class WorkflowRunActionRepetitionRequestHistoryOperations(object):
         deserialized = self._deserialize('RequestHistory', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}'}  # type: ignore

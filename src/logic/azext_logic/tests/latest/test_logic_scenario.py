@@ -10,11 +10,8 @@
 # pylint: disable=line-too-long
 
 import os
-import unittest
-
-from azure_devtools.scenario_tests import AllowLargeResponse
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual
+from .. import try_manual, raise_if
 from azure.cli.testsdk import ResourceGroupPreparer
 from .preparers import VirtualNetworkPreparer
 
@@ -32,8 +29,8 @@ def setup(test, rg, rg_2, rg_3):
 def step__integrationaccounts_put_create_or_update_an_integration_account(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account create '
              '--location "westus" '
-             '--sku name="Standard" '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--sku-name "Standard" '
+             '--name "{IntegrationAccounts_2}" '
              '--resource-group "{rg_2}"',
              checks=[])
 
@@ -42,7 +39,7 @@ def step__integrationaccounts_put_create_or_update_an_integration_account(test, 
 @try_manual
 def step__integrationaccounts_get_get_integration_account_by_name(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account show '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--name "{IntegrationAccounts_2}" '
              '--resource-group "{rg_2}"',
              checks=[])
 
@@ -58,7 +55,8 @@ def step__integrationaccounts_get_list_integration_accounts_by_resource_group_na
 # EXAMPLE: /IntegrationAccounts/get/List integration accounts by subscription
 @try_manual
 def step__integrationaccounts_get_list_integration_accounts_by_subscription(test, rg, rg_2, rg_3):
-    test.cmd('az logic integration-account list',
+    test.cmd('az logic integration-account list '
+             '-g ""',
              checks=[])
 
 
@@ -66,8 +64,8 @@ def step__integrationaccounts_get_list_integration_accounts_by_subscription(test
 @try_manual
 def step__integrationaccounts_post_get_integration_account_callback_url(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account list-key-vault-key '
-             '--integration-account-name "{IntegrationAccounts_2}" '
-             '--key-vault id="subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/provi'
+             '--name "{IntegrationAccounts_2}" '
+             '--key-vault-id "subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/provi'
              'ders/Microsoft.KeyVault/vaults/testKeyVault" '
              '--skip-token "testSkipToken" '
              '--resource-group "{rg_2}"',
@@ -78,7 +76,7 @@ def step__integrationaccounts_post_get_integration_account_callback_url(test, rg
 @try_manual
 def step__integrationaccounts_post_list_integrationaccount_callback_url(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account list-callback-url '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--name "{IntegrationAccounts_2}" '
              '--key-type "Primary" '
              '--not-after "2017-03-05T08:00:00Z" '
              '--resource-group "{rg_2}"',
@@ -89,7 +87,7 @@ def step__integrationaccounts_post_list_integrationaccount_callback_url(test, rg
 @try_manual
 def step__integrationaccounts_post_log_a_tracked_event(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account log-tracking-event '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--name "{IntegrationAccounts_2}" '
              '--events "[{{\\"error\\":{{\\"code\\":\\"NotFound\\",\\"message\\":\\"Some error occurred\\"}},\\"eventLe'
              'vel\\":\\"Informational\\",\\"eventTime\\":\\"2016-08-05T01:54:49.505567Z\\",\\"record\\":{{\\"agreementP'
              'roperties\\":{{\\"agreementName\\":\\"testAgreement\\",\\"as2From\\":\\"testas2from\\",\\"as2To\\":\\"tes'
@@ -108,7 +106,7 @@ def step__integrationaccounts_post_log_a_tracked_event(test, rg, rg_2, rg_3):
 @try_manual
 def step__integrationaccounts_post_regenerate_access_key(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account regenerate-access-key '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--name "{IntegrationAccounts_2}" '
              '--key-type "Primary" '
              '--resource-group "{rg_2}"',
              checks=[])
@@ -119,8 +117,8 @@ def step__integrationaccounts_post_regenerate_access_key(test, rg, rg_2, rg_3):
 def step__integrationaccounts_patch_patch_an_integration_account(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account update '
              '--location "westus" '
-             '--sku name="Standard" '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--sku-name "Standard" '
+             '--name "{IntegrationAccounts_2}" '
              '--resource-group "{rg_2}"',
              checks=[])
 
@@ -261,9 +259,12 @@ def step__integrationaccountbatchconfigurations_put_create_or_update_a_batch_con
     test.cmd('az logic integration-account-batch-configuration create '
              '--location "westus" '
              '--batch-group-name "DEFAULT" '
-             '--release-criteria "{{\\"batchSize\\":234567,\\"messageCount\\":10,\\"recurrence\\":{{\\"frequency\\":\\"'
-             'Minute\\",\\"interval\\":1,\\"startTime\\":\\"2017-03-24T11:43:00\\",\\"timeZone\\":\\"India Standard Tim'
-             'e\\"}}}}" '
+             '--release-criteria-batch-size 234567 '
+             '--release-criteria-message-count 10 '
+             '--release-criteria-recurrence-frequency "Minute" '
+             '--release-criteria-recurrence-interval 1 '
+             '--release-criteria-recurrence-start-time "2017-03-24T11:43:00" '
+             '--release-criteria-recurrence-time-zone "India Standard Time" '
              '--batch-configuration-name "testBatchConfiguration" '
              '--integration-account-name "{IntegrationAccounts_2}" '
              '--resource-group "{rg_2}"',
@@ -624,11 +625,11 @@ def step__integrationserviceenvironments_put_create_or_update_an_integration_ser
              '/subscriptions/{subscription_id}/resourceGroups/{rg_2}/providers/Microsoft.Network/virtualNetworks/{vn}/s'
              'ubnets/default\\"}}]}}" '
              '--sku name="Premium" capacity=2 '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}" '
+             '--name "{testIntegrationServiceEnvironment}" '
              '--resource-group "testResourceGroup"',
              checks=[])
     test.cmd('az logic integration-service-environment wait --created '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}"',
+             '--name "{testIntegrationServiceEnvironment}"',
              checks=[])
 
 
@@ -636,7 +637,7 @@ def step__integrationserviceenvironments_put_create_or_update_an_integration_ser
 @try_manual
 def step__integrationserviceenvironments_get_get_integration_service_environment_by_name(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-service-environment show '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}" '
+             '--name "{testIntegrationServiceEnvironment}" '
              '--resource-group "testResourceGroup"',
              checks=[])
 
@@ -662,7 +663,7 @@ def step__integrationserviceenvironments_get_list_integration_service_environmen
 @try_manual
 def step__integrationserviceenvironments_post_restarts_an_integration_service_environment(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-service-environment restart '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}" '
+             '--name "{testIntegrationServiceEnvironment}" '
              '--resource-group "testResourceGroup"',
              checks=[])
 
@@ -673,7 +674,7 @@ def step__integrationserviceenvironments_patch_patch_an_integration_service_envi
     test.cmd('az logic integration-service-environment update '
              '--sku name="Developer" capacity=0 '
              '--tags tag1="value1" '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}" '
+             '--name "{testIntegrationServiceEnvironment}" '
              '--resource-group "testResourceGroup"',
              checks=[])
 
@@ -764,7 +765,7 @@ def step__workflows_put_create_or_update_a_workflow(test, rg, rg_2, rg_3):
              'connections/test-custom-connector","connectionName":"test-custom-connector","id":"/subscriptions/34adfa4f'
              '-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.Web/locations/brazilsouth/managedApis/test-custom-connec'
              'tor"}}}}}}}}}} tags={{}} '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -773,7 +774,7 @@ def step__workflows_put_create_or_update_a_workflow(test, rg, rg_2, rg_3):
 def step__workflows_get_get_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow show '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -788,7 +789,8 @@ def step__workflows_get_list_all_workflows_in_a_resource_group(test, rg, rg_2, r
 # EXAMPLE: /Workflows/get/List all workflows in a subscription
 @try_manual
 def step__workflows_get_list_all_workflows_in_a_subscription(test, rg, rg_2, rg_3):
-    test.cmd('az logic workflow list',
+    test.cmd('az logic workflow list '
+             '-g ""',
              checks=[])
 
 
@@ -797,7 +799,7 @@ def step__workflows_get_list_all_workflows_in_a_subscription(test, rg, rg_2, rg_
 def step__workflows_post_disable_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow disable '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -806,7 +808,7 @@ def step__workflows_post_disable_a_workflow(test, rg, rg_2, rg_3):
 def step__workflows_post_enable_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow enable '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -816,7 +818,7 @@ def step__workflows_post_generate_an_upgraded_definition(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow generate-upgraded-definition '
              '--target-schema-version "2016-06-01" '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -827,7 +829,7 @@ def step__workflows_post_get_callback_url(test, rg, rg_2, rg_3):
              '--key-type "Primary" '
              '--not-after "2018-04-19T16:00:00Z" '
              '--resource-group "{rg_2}" '
-             '--workflow-name "{Workflows_2}"',
+             '--name "{Workflows_2}"',
              checks=[])
 
 
@@ -836,7 +838,7 @@ def step__workflows_post_get_callback_url(test, rg, rg_2, rg_3):
 def step__workflows_post_get_the_swagger_for_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow list-swagger '
              '--resource-group "{rg_2}" '
-             '--workflow-name "{Workflows_3}"',
+             '--name "{Workflows_3}"',
              checks=[])
 
 
@@ -844,10 +846,10 @@ def step__workflows_post_get_the_swagger_for_a_workflow(test, rg, rg_2, rg_3):
 @try_manual
 def step__workflows_post_move_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow move '
-             '--id "subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/newResourceGroup/providers/Micros'
-             'oft.Logic/workflows/newWorkflowName" '
+             '--id-properties-integration-service-environment-id "subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/re'
+             'sourceGroups/newResourceGroup/providers/Microsoft.Logic/workflows/newWorkflowName" '
              '--resource-group "{rg_2}" '
-             '--workflow-name "{Workflows_2}"',
+             '--name "{Workflows_2}"',
              checks=[])
 
 
@@ -857,7 +859,7 @@ def step__workflows_post_regenerate_the_callback_url_access_key_for_request_trig
     test.cmd('az logic workflow regenerate-access-key '
              '--key-type "Primary" '
              '--resource-group "{rg_2}" '
-             '--workflow-name "{Workflows_3}"',
+             '--name "{Workflows_3}"',
              checks=[])
 
 
@@ -871,9 +873,9 @@ def step__workflows_post_validate_a_workflow(test, rg, rg_2, rg_3):
              '--definition "{{\\"$schema\\":\\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/20'
              '16-06-01/workflowdefinition.json#\\",\\"actions\\":{{}},\\"contentVersion\\":\\"1.0.0.0\\",\\"outputs\\":'
              '{{}},\\"parameters\\":{{}},\\"triggers\\":{{}}}}" '
-             '--integration-account id="/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Logic/'
+             '--integration-account-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Logic/'
              'integrationAccounts/{test-integration-account}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -887,9 +889,9 @@ def step__workflows_post_validate_a_workflow(test, rg, rg_2, rg_3):
              '--definition "{{\\"$schema\\":\\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/20'
              '16-06-01/workflowdefinition.json#\\",\\"actions\\":{{}},\\"contentVersion\\":\\"1.0.0.0\\",\\"outputs\\":'
              '{{}},\\"parameters\\":{{}},\\"triggers\\":{{}}}}" '
-             '--integration-account id="/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Logic/'
+             '--integration-account-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.Logic/'
              'integrationAccounts/{test-integration-account}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -898,7 +900,7 @@ def step__workflows_post_validate_a_workflow(test, rg, rg_2, rg_3):
 def step__workflows_patch_patch_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow update '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -1125,7 +1127,7 @@ def step__workflowtriggers_get_get_a_workflow_trigger(test, rg, rg_2, rg_3):
 # EXAMPLE: /WorkflowTriggers/get/Get trigger schema
 @try_manual
 def step__workflowtriggers_get_get_trigger_schema(test, rg, rg_2, rg_3):
-    test.cmd('az logic workflow-trigger show '
+    test.cmd('az logic workflow-trigger get-schema-json '
              '--resource-group "{rg_2}" '
              '--trigger-name "testTrigger" '
              '--workflow-name "{Workflows_2}"',
@@ -1176,8 +1178,9 @@ def step__workflowtriggers_post_run_a_workflow_trigger(test, rg, rg_2, rg_3):
 def step__workflowtriggers_post_set_trigger_state(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow-trigger set-state '
              '--resource-group "{rg_2}" '
-             '--source id="subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/sourceResGroup/providers/M'
-             'icrosoft.Logic/workflows/sourceWorkflow/triggers/sourceTrigger" '
+             '--source id-properties-integration-service-environment-id="subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69a'
+             'b345/resourceGroups/sourceResGroup/providers/Microsoft.Logic/workflows/sourceWorkflow/triggers/sourceTrig'
+             'ger" '
              '--trigger-name "testTrigger" '
              '--workflow-name "{Workflows_2}"',
              checks=[])
@@ -1220,7 +1223,7 @@ def step__workflowversions_get_list_a_workflows_versions(test, rg, rg_2, rg_3):
 def step__workflows_delete_delete_a_workflow(test, rg, rg_2, rg_3):
     test.cmd('az logic workflow delete '
              '--resource-group "{rg}" '
-             '--workflow-name "{test-workflow}"',
+             '--name "{test-workflow}"',
              checks=[])
 
 
@@ -1308,7 +1311,7 @@ def step__integrationaccountsessions_delete_delete_an_integration_account_sessio
 @try_manual
 def step__integrationaccounts_delete_delete_an_integration_account(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-account delete '
-             '--integration-account-name "{IntegrationAccounts_2}" '
+             '--name "{IntegrationAccounts_2}" '
              '--resource-group "{rg_2}"',
              checks=[])
 
@@ -1330,7 +1333,7 @@ def step__integrationserviceenvironmentmanagedapis_delete_deletes_the_integratio
 @try_manual
 def step__integrationserviceenvironments_delete_delete_an_integration_account(test, rg, rg_2, rg_3):
     test.cmd('az logic integration-service-environment delete '
-             '--integration-service-environment-name "{testIntegrationServiceEnvironment}" '
+             '--name "{testIntegrationServiceEnvironment}" '
              '--resource-group "testResourceGroup"',
              checks=[])
 
@@ -1484,14 +1487,15 @@ class LogicManagementClientScenarioTest(ScenarioTest):
 
         self.kwargs.update({
             'test-integration-account': 'test-integration-account',
-            'IntegrationAccounts_2': 'IntegrationAccounts_2',
-            'IntegrationAccounts_3': 'IntegrationAccounts_3',
-            'IntegrationAccounts_4': 'IntegrationAccounts_4',
+            'IntegrationAccounts_2': 'testIntegrationAccount',
+            'IntegrationAccounts_3': '<integrationAccountName>',
+            'IntegrationAccounts_4': 'testia123',
             'testIntegrationServiceEnvironment': 'testIntegrationServiceEnvironment',
             'test-workflow': 'test-workflow',
-            'Workflows_2': 'Workflows_2',
-            'Workflows_3': 'Workflows_3',
-            'Workflows_4': 'Workflows_4',
+            'Workflows_2': 'testWorkflow',
+            'Workflows_3': 'testWorkflowName',
+            'Workflows_4': 'testFlow',
         })
 
         call_scenario(self, rg, rg_2, rg_3)
+        raise_if()

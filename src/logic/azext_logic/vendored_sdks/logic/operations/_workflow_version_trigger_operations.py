@@ -30,7 +30,7 @@ class WorkflowVersionTriggerOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -69,21 +69,22 @@ class WorkflowVersionTriggerOperations(object):
         :param not_after: The expiry time.
         :type not_after: ~datetime.datetime
         :param key_type: The key type.
-        :type key_type: str or ~azure.mgmt.logic.models.KeyType
+        :type key_type: str or ~logic_management_client.models.KeyType
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkflowTriggerCallbackUrl or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.WorkflowTriggerCallbackUrl
+        :return: WorkflowTriggerCallbackUrl, or the result of cls(response)
+        :rtype: ~logic_management_client.models.WorkflowTriggerCallbackUrl
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkflowTriggerCallbackUrl"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.GetCallbackUrlParameters(not_after=not_after, key_type=key_type)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.list_callback_url.metadata['url']
+        url = self.list_callback_url.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -122,7 +123,7 @@ class WorkflowVersionTriggerOperations(object):
         deserialized = self._deserialize('WorkflowTriggerCallbackUrl', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl'}
+    list_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl'}  # type: ignore

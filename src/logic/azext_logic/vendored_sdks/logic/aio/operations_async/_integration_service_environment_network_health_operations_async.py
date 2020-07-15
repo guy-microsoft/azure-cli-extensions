@@ -25,7 +25,7 @@ class IntegrationServiceEnvironmentNetworkHealthOperations:
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -45,7 +45,7 @@ class IntegrationServiceEnvironmentNetworkHealthOperations:
         resource_group: str,
         integration_service_environment_name: str,
         **kwargs
-    ) -> Dict[str, "IntegrationServiceEnvironmentSubnetNetworkHealth"]:
+    ) -> Dict[str, "models.IntegrationServiceEnvironmentSubnetNetworkHealth"]:
         """Gets the integration service environment network health.
 
         :param resource_group: The resource group.
@@ -53,16 +53,17 @@ class IntegrationServiceEnvironmentNetworkHealthOperations:
         :param integration_service_environment_name: The integration service environment name.
         :type integration_service_environment_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: dict or the result of cls(response)
-        :rtype: dict[str, ~azure.mgmt.logic.models.IntegrationServiceEnvironmentSubnetNetworkHealth]
+        :return: dict mapping str to IntegrationServiceEnvironmentSubnetNetworkHealth, or the result of cls(response)
+        :rtype: dict[str, ~logic_management_client.models.IntegrationServiceEnvironmentSubnetNetworkHealth]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType[Dict[str, "IntegrationServiceEnvironmentSubnetNetworkHealth"]]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        cls = kwargs.pop('cls', None)  # type: ClsType[Dict[str, "models.IntegrationServiceEnvironmentSubnetNetworkHealth"]]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -91,7 +92,7 @@ class IntegrationServiceEnvironmentNetworkHealthOperations:
         deserialized = self._deserialize('{IntegrationServiceEnvironmentSubnetNetworkHealth}', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/health/network'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/health/network'}  # type: ignore

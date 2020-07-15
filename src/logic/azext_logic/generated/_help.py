@@ -32,12 +32,27 @@ helps['logic workflow show'] = """
     examples:
       - name: Get a workflow
         text: |-
-               az logic workflow show --resource-group "test-resource-group" --workflow-name "test-workflow"
+               az logic workflow show --resource-group "test-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow create'] = """
     type: command
     short-summary: Creates or updates a workflow.
+    parameters:
+      - name: --endpoints-configuration-workflow
+        short-summary: The workflow endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-workflow outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
+      - name: --endpoints-configuration-connector
+        short-summary: The connector endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-connector outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
     examples:
       - name: Create or update a workflow
         text: |-
@@ -52,7 +67,7 @@ rs/Microsoft.Logic/integrationAccounts/test-integration-account"},"parameters":{
 onnector":{"connectionId":"/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/provi\
 ders/Microsoft.Web/connections/test-custom-connector","connectionName":"test-custom-connector","id":"/subscriptions/34a\
 dfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.Web/locations/brazilsouth/managedApis/test-custom-connector"}}}}}\
- tags={} --workflow-name "test-workflow"
+ tags={} --name "test-workflow"
 """
 
 helps['logic workflow update'] = """
@@ -61,7 +76,7 @@ helps['logic workflow update'] = """
     examples:
       - name: Patch a workflow
         text: |-
-               az logic workflow update --resource-group "test-resource-group" --workflow-name "test-workflow"
+               az logic workflow update --resource-group "test-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow delete'] = """
@@ -70,7 +85,7 @@ helps['logic workflow delete'] = """
     examples:
       - name: Delete a workflow
         text: |-
-               az logic workflow delete --resource-group "test-resource-group" --workflow-name "test-workflow"
+               az logic workflow delete --resource-group "test-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow disable'] = """
@@ -79,7 +94,7 @@ helps['logic workflow disable'] = """
     examples:
       - name: Disable a workflow
         text: |-
-               az logic workflow disable --resource-group "test-resource-group" --workflow-name "test-workflow"
+               az logic workflow disable --resource-group "test-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow enable'] = """
@@ -88,7 +103,7 @@ helps['logic workflow enable'] = """
     examples:
       - name: Enable a workflow
         text: |-
-               az logic workflow enable --resource-group "test-resource-group" --workflow-name "test-workflow"
+               az logic workflow enable --resource-group "test-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow generate-upgraded-definition'] = """
@@ -98,7 +113,7 @@ helps['logic workflow generate-upgraded-definition'] = """
       - name: Generate an upgraded definition
         text: |-
                az logic workflow generate-upgraded-definition --target-schema-version "2016-06-01" --resource-group "te\
-st-resource-group" --workflow-name "test-workflow"
+st-resource-group" --name "test-workflow"
 """
 
 helps['logic workflow list-callback-url'] = """
@@ -108,7 +123,7 @@ helps['logic workflow list-callback-url'] = """
       - name: Get callback url
         text: |-
                az logic workflow list-callback-url --key-type "Primary" --not-after "2018-04-19T16:00:00Z" --resource-g\
-roup "testResourceGroup" --workflow-name "testWorkflow"
+roup "testResourceGroup" --name "testWorkflow"
 """
 
 helps['logic workflow list-swagger'] = """
@@ -117,7 +132,7 @@ helps['logic workflow list-swagger'] = """
     examples:
       - name: Get the swagger for a workflow
         text: |-
-               az logic workflow list-swagger --resource-group "testResourceGroup" --workflow-name "testWorkflowName"
+               az logic workflow list-swagger --resource-group "testResourceGroup" --name "testWorkflowName"
 """
 
 helps['logic workflow move'] = """
@@ -126,9 +141,9 @@ helps['logic workflow move'] = """
     examples:
       - name: Move a workflow
         text: |-
-               az logic workflow move --id "subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/newResour\
-ceGroup/providers/Microsoft.Logic/workflows/newWorkflowName" --resource-group "testResourceGroup" --workflow-name "test\
-Workflow"
+               az logic workflow move --id-properties-integration-service-environment-id "subscriptions/34adfa4f-cedf-4\
+dc0-ba29-b6d1a69ab345/resourceGroups/newResourceGroup/providers/Microsoft.Logic/workflows/newWorkflowName" --resource-g\
+roup "testResourceGroup" --name "testWorkflow"
 """
 
 helps['logic workflow regenerate-access-key'] = """
@@ -137,35 +152,74 @@ helps['logic workflow regenerate-access-key'] = """
     examples:
       - name: Regenerate the callback URL access key for request triggers
         text: |-
-               az logic workflow regenerate-access-key --key-type "Primary" --resource-group "testResourceGroup" --work\
-flow-name "testWorkflowName"
+               az logic workflow regenerate-access-key --key-type "Primary" --resource-group "testResourceGroup" --name\
+ "testWorkflowName"
 """
 
 helps['logic workflow validate-by-location'] = """
     type: command
     short-summary: Validates the workflow definition.
+    parameters:
+      - name: --endpoints-configuration-workflow
+        short-summary: The workflow endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-workflow outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
+      - name: --endpoints-configuration-connector
+        short-summary: The connector endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-connector outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
     examples:
       - name: Validate a workflow
         text: |-
                az logic workflow validate-by-location --location "brazilsouth" --resource-group "test-resource-group" -\
 -location "brazilsouth" --definition "{\\"$schema\\":\\"https://schema.management.azure.com/providers/Microsoft.Logic/s\
 chemas/2016-06-01/workflowdefinition.json#\\",\\"actions\\":{},\\"contentVersion\\":\\"1.0.0.0\\",\\"outputs\\":{},\\"p\
-arameters\\":{},\\"triggers\\":{}}" --integration-account id="/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resou\
-rceGroups/test-resource-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account" --workflow-name "\
-test-workflow"
+arameters\\":{},\\"triggers\\":{}}" --integration-account-id "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resou\
+rceGroups/test-resource-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account" --name "test-work\
+flow"
 """
 
 helps['logic workflow validate-by-resource-group'] = """
     type: command
     short-summary: Validates the workflow.
+    parameters:
+      - name: --endpoints-configuration-workflow
+        short-summary: The workflow endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-workflow outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
+      - name: --endpoints-configuration-connector
+        short-summary: The connector endpoints.
+        long-summary: |
+            Usage: --endpoints-configuration-connector outgoing-ip-addresses=XX access-endpoint-ip-addresses=XX
+
+            outgoing-ip-addresses: The outgoing ip address.
+            access-endpoint-ip-addresses: The access endpoint ip address.
     examples:
       - name: Validate a workflow
         text: |-
                az logic workflow validate-by-resource-group --resource-group "test-resource-group" --location "brazilso\
 uth" --definition "{\\"$schema\\":\\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/w\
 orkflowdefinition.json#\\",\\"actions\\":{},\\"contentVersion\\":\\"1.0.0.0\\",\\"outputs\\":{},\\"parameters\\":{},\\"\
-triggers\\":{}}" --integration-account id="/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-reso\
-urce-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account" --workflow-name "test-workflow"
+triggers\\":{}}" --integration-account-id "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-reso\
+urce-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account" --name "test-workflow"
+"""
+
+helps['logic workflow wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the logic workflow is met.
+    examples:
+      - name: Pause executing next line of CLI script until the logic workflow is successfully created.
+        text: |-
+               az logic workflow wait --resource-group "test-resource-group" --name "test-workflow" --created
 """
 
 helps['logic workflow-version'] = """
@@ -208,12 +262,22 @@ helps['logic workflow-trigger list'] = """
 
 helps['logic workflow-trigger show'] = """
     type: command
-    short-summary: Get the trigger schema as JSON.
+    short-summary: Gets a workflow trigger.
     examples:
       - name: Get a workflow trigger
         text: |-
                az logic workflow-trigger show --resource-group "test-resource-group" --trigger-name "manual" --workflow\
 -name "test-workflow"
+"""
+
+helps['logic workflow-trigger get-schema-json'] = """
+    type: command
+    short-summary: Get the trigger schema as JSON.
+    examples:
+      - name: Get trigger schema
+        text: |-
+               az logic workflow-trigger get-schema-json --resource-group "testResourceGroup" --trigger-name "testTrigg\
+er" --workflow-name "testWorkflow"
 """
 
 helps['logic workflow-trigger list-callback-url'] = """
@@ -249,12 +313,22 @@ name "test-workflow"
 helps['logic workflow-trigger set-state'] = """
     type: command
     short-summary: Sets the state of a workflow trigger.
+    parameters:
+      - name: --source
+        short-summary: The source.
+        long-summary: |
+            Usage: --source flow-name=XX trigger-name=XX id-properties-integration-service-environment-id=XX
+
+            flow-name: The workflow name.
+            trigger-name: The workflow trigger name.
+            id-properties-integration-service-environment-id: The resource id.
     examples:
       - name: Set trigger state
         text: |-
-               az logic workflow-trigger set-state --resource-group "testResourceGroup" --source id="subscriptions/34ad\
-fa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/sourceResGroup/providers/Microsoft.Logic/workflows/sourceWorkflow/trigg\
-ers/sourceTrigger" --trigger-name "testTrigger" --workflow-name "testWorkflow"
+               az logic workflow-trigger set-state --resource-group "testResourceGroup" --source id-properties-integrat\
+ion-service-environment-id="subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/sourceResGroup/providers/\
+Microsoft.Logic/workflows/sourceWorkflow/triggers/sourceTrigger" --trigger-name "testTrigger" --workflow-name "testWork\
+flow"
 """
 
 helps['logic workflow-version-trigger'] = """
@@ -525,8 +599,7 @@ helps['logic integration-account show'] = """
     examples:
       - name: Get integration account by name
         text: |-
-               az logic integration-account show --integration-account-name "testIntegrationAccount" --resource-group "\
-testResourceGroup"
+               az logic integration-account show --name "testIntegrationAccount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account create'] = """
@@ -535,8 +608,8 @@ helps['logic integration-account create'] = """
     examples:
       - name: Create or update an integration account
         text: |-
-               az logic integration-account create --location "westus" --sku name="Standard" --integration-account-name\
- "testIntegrationAccount" --resource-group "testResourceGroup"
+               az logic integration-account create --location "westus" --sku-name "Standard" --name "testIntegrationAcc\
+ount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account update'] = """
@@ -545,8 +618,8 @@ helps['logic integration-account update'] = """
     examples:
       - name: Patch an integration account
         text: |-
-               az logic integration-account update --location "westus" --sku name="Standard" --integration-account-name\
- "testIntegrationAccount" --resource-group "testResourceGroup"
+               az logic integration-account update --location "westus" --sku-name "Standard" --name "testIntegrationAcc\
+ount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account delete'] = """
@@ -555,8 +628,7 @@ helps['logic integration-account delete'] = """
     examples:
       - name: Delete an integration account
         text: |-
-               az logic integration-account delete --integration-account-name "testIntegrationAccount" --resource-group\
- "testResourceGroup"
+               az logic integration-account delete --name "testIntegrationAccount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account list-callback-url'] = """
@@ -565,8 +637,8 @@ helps['logic integration-account list-callback-url'] = """
     examples:
       - name: List IntegrationAccount callback URL
         text: |-
-               az logic integration-account list-callback-url --integration-account-name "testIntegrationAccount" --key\
--type "Primary" --not-after "2017-03-05T08:00:00Z" --resource-group "testResourceGroup"
+               az logic integration-account list-callback-url --name "testIntegrationAccount" --key-type "Primary" --no\
+t-after "2017-03-05T08:00:00Z" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account list-key-vault-key'] = """
@@ -575,9 +647,9 @@ helps['logic integration-account list-key-vault-key'] = """
     examples:
       - name: Get Integration Account callback URL
         text: |-
-               az logic integration-account list-key-vault-key --integration-account-name "testIntegrationAccount" --ke\
-y-vault id="subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Key\
-Vault/vaults/testKeyVault" --skip-token "testSkipToken" --resource-group "testResourceGroup"
+               az logic integration-account list-key-vault-key --name "testIntegrationAccount" --key-vault-id "subscrip\
+tions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.KeyVault/vaults/testKey\
+Vault" --skip-token "testSkipToken" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account log-tracking-event'] = """
@@ -586,15 +658,15 @@ helps['logic integration-account log-tracking-event'] = """
     examples:
       - name: Log a tracked event
         text: |-
-               az logic integration-account log-tracking-event --integration-account-name "testIntegrationAccount" --ev\
-ents "[{\\"error\\":{\\"code\\":\\"NotFound\\",\\"message\\":\\"Some error occurred\\"},\\"eventLevel\\":\\"Information\
-al\\",\\"eventTime\\":\\"2016-08-05T01:54:49.505567Z\\",\\"record\\":{\\"agreementProperties\\":{\\"agreementName\\":\\\
-"testAgreement\\",\\"as2From\\":\\"testas2from\\",\\"as2To\\":\\"testas2to\\",\\"receiverPartnerName\\":\\"testPartner2\
-\\",\\"senderPartnerName\\":\\"testPartner1\\"},\\"messageProperties\\":{\\"IsMessageEncrypted\\":false,\\"IsMessageSig\
-ned\\":false,\\"correlationMessageId\\":\\"Unique message identifier\\",\\"direction\\":\\"Receive\\",\\"dispositionTyp\
-e\\":\\"received-success\\",\\"fileName\\":\\"test\\",\\"isMdnExpected\\":true,\\"isMessageCompressed\\":false,\\"isMes\
-sageFailed\\":false,\\"isNrrEnabled\\":true,\\"mdnType\\":\\"Async\\",\\"messageId\\":\\"12345\\"}},\\"recordType\\":\\\
-"AS2Message\\"}]" --source-type "Microsoft.Logic/workflows" --resource-group "testResourceGroup"
+               az logic integration-account log-tracking-event --name "testIntegrationAccount" --events "[{\\"error\\":\
+{\\"code\\":\\"NotFound\\",\\"message\\":\\"Some error occurred\\"},\\"eventLevel\\":\\"Informational\\",\\"eventTime\\\
+":\\"2016-08-05T01:54:49.505567Z\\",\\"record\\":{\\"agreementProperties\\":{\\"agreementName\\":\\"testAgreement\\",\\\
+"as2From\\":\\"testas2from\\",\\"as2To\\":\\"testas2to\\",\\"receiverPartnerName\\":\\"testPartner2\\",\\"senderPartner\
+Name\\":\\"testPartner1\\"},\\"messageProperties\\":{\\"IsMessageEncrypted\\":false,\\"IsMessageSigned\\":false,\\"corr\
+elationMessageId\\":\\"Unique message identifier\\",\\"direction\\":\\"Receive\\",\\"dispositionType\\":\\"received-suc\
+cess\\",\\"fileName\\":\\"test\\",\\"isMdnExpected\\":true,\\"isMessageCompressed\\":false,\\"isMessageFailed\\":false,\
+\\"isNrrEnabled\\":true,\\"mdnType\\":\\"Async\\",\\"messageId\\":\\"12345\\"}},\\"recordType\\":\\"AS2Message\\"}]" --\
+source-type "Microsoft.Logic/workflows" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account regenerate-access-key'] = """
@@ -603,8 +675,8 @@ helps['logic integration-account regenerate-access-key'] = """
     examples:
       - name: Regenerate access key
         text: |-
-               az logic integration-account regenerate-access-key --integration-account-name "testIntegrationAccount" -\
--key-type "Primary" --resource-group "testResourceGroup"
+               az logic integration-account regenerate-access-key --name "testIntegrationAccount" --key-type "Primary" \
+--resource-group "testResourceGroup"
 """
 
 helps['logic integration-account-assembly'] = """
@@ -635,6 +707,23 @@ helps['logic integration-account-assembly show'] = """
 helps['logic integration-account-assembly create'] = """
     type: command
     short-summary: Create or update an assembly for an integration account.
+    parameters:
+      - name: --properties
+        short-summary: The assembly properties.
+        long-summary: |
+            Usage: --properties assembly-name=XX assembly-version=XX assembly-culture=XX assembly-public-key-token=XX c\
+ontent=XX content-type=XX content-link=XX created-time=XX changed-time=XX metadata=XX
+
+            assembly-name: Required. The assembly name.
+            assembly-version: The assembly version.
+            assembly-culture: The assembly culture.
+            assembly-public-key-token: The assembly public key token.
+            content: Any object
+            content-type: The content type.
+            content-link: The content link.
+            created-time: The artifact creation time.
+            changed-time: The artifact changed time.
+            metadata: Any object
     examples:
       - name: Create or update an account assembly
         text: |-
@@ -646,6 +735,23 @@ ntegration-account-name "testIntegrationAccount" --resource-group "testResourceG
 helps['logic integration-account-assembly update'] = """
     type: command
     short-summary: Create or update an assembly for an integration account.
+    parameters:
+      - name: --properties
+        short-summary: The assembly properties.
+        long-summary: |
+            Usage: --properties assembly-name=XX assembly-version=XX assembly-culture=XX assembly-public-key-token=XX c\
+ontent=XX content-type=XX content-link=XX created-time=XX changed-time=XX metadata=XX
+
+            assembly-name: Required. The assembly name.
+            assembly-version: The assembly version.
+            assembly-culture: The assembly culture.
+            assembly-public-key-token: The assembly public key token.
+            content: Any object
+            content-type: The content type.
+            content-link: The content link.
+            created-time: The artifact creation time.
+            changed-time: The artifact changed time.
+            metadata: Any object
     examples:
       - name: Create or update an account assembly
         text: |-
@@ -702,25 +808,49 @@ helps['logic integration-account-batch-configuration show'] = """
 helps['logic integration-account-batch-configuration create'] = """
     type: command
     short-summary: Create or update a batch configuration for an integration account.
+    parameters:
+      - name: --release-criteria-recurrence-schedule-monthly-occurrences
+        short-summary: The monthly occurrences.
+        long-summary: |
+            Usage: --release-criteria-recurrence-schedule-monthly-occurrences day=XX occurrence=XX
+
+            day: The day of the week.
+            occurrence: The occurrence.
+
+            Multiple actions can be specified by using more than one --release-criteria-recurrence-schedule-monthly-occ\
+urrences argument.
     examples:
       - name: Create or update a batch configuration
         text: |-
                az logic integration-account-batch-configuration create --location "westus" --batch-group-name "DEFAULT"\
- --release-criteria "{\\"batchSize\\":234567,\\"messageCount\\":10,\\"recurrence\\":{\\"frequency\\":\\"Minute\\",\\"in\
-terval\\":1,\\"startTime\\":\\"2017-03-24T11:43:00\\",\\"timeZone\\":\\"India Standard Time\\"}}" --batch-configuration\
--name "testBatchConfiguration" --integration-account-name "testIntegrationAccount" --resource-group "testResourceGroup"
+ --release-criteria-batch-size 234567 --release-criteria-message-count 10 --release-criteria-recurrence-frequency "Minu\
+te" --release-criteria-recurrence-interval 1 --release-criteria-recurrence-start-time "2017-03-24T11:43:00" --release-c\
+riteria-recurrence-time-zone "India Standard Time" --batch-configuration-name "testBatchConfiguration" --integration-ac\
+count-name "testIntegrationAccount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account-batch-configuration update'] = """
     type: command
     short-summary: Create or update a batch configuration for an integration account.
+    parameters:
+      - name: --release-criteria-recurrence-schedule-monthly-occurrences
+        short-summary: The monthly occurrences.
+        long-summary: |
+            Usage: --release-criteria-recurrence-schedule-monthly-occurrences day=XX occurrence=XX
+
+            day: The day of the week.
+            occurrence: The occurrence.
+
+            Multiple actions can be specified by using more than one --release-criteria-recurrence-schedule-monthly-occ\
+urrences argument.
     examples:
       - name: Create or update a batch configuration
         text: |-
                az logic integration-account-batch-configuration update --location "westus" --batch-group-name "DEFAULT"\
- --release-criteria "{\\"batchSize\\":234567,\\"messageCount\\":10,\\"recurrence\\":{\\"frequency\\":\\"Minute\\",\\"in\
-terval\\":1,\\"startTime\\":\\"2017-03-24T11:43:00\\",\\"timeZone\\":\\"India Standard Time\\"}}" --batch-configuration\
--name "testBatchConfiguration" --integration-account-name "testIntegrationAccount" --resource-group "testResourceGroup"
+ --release-criteria-batch-size 234567 --release-criteria-message-count 10 --release-criteria-recurrence-frequency "Minu\
+te" --release-criteria-recurrence-interval 1 --release-criteria-recurrence-start-time "2017-03-24T11:43:00" --release-c\
+riteria-recurrence-time-zone "India Standard Time" --batch-configuration-name "testBatchConfiguration" --integration-ac\
+count-name "testIntegrationAccount" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-account-batch-configuration delete'] = """
@@ -1107,6 +1237,16 @@ name "testPartner" --resource-group "testResourceGroup"
 helps['logic integration-account-partner create'] = """
     type: command
     short-summary: Creates or updates an integration account partner.
+    parameters:
+      - name: --content-b2b-business-identities
+        short-summary: The list of partner business identities.
+        long-summary: |
+            Usage: --content-b2b-business-identities qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
+
+            Multiple actions can be specified by using more than one --content-b2b-business-identities argument.
     examples:
       - name: Create or update a partner
         text: |-
@@ -1118,6 +1258,16 @@ name "testPartner" --resource-group "testResourceGroup"
 helps['logic integration-account-partner update'] = """
     type: command
     short-summary: Creates or updates an integration account partner.
+    parameters:
+      - name: --content-b2b-business-identities
+        short-summary: The list of partner business identities.
+        long-summary: |
+            Usage: --content-b2b-business-identities qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
+
+            Multiple actions can be specified by using more than one --content-b2b-business-identities argument.
     examples:
       - name: Create or update a partner
         text: |-
@@ -1175,6 +1325,21 @@ helps['logic integration-account-agreement show'] = """
 helps['logic integration-account-agreement create'] = """
     type: command
     short-summary: Creates or updates an integration account agreement.
+    parameters:
+      - name: --host-identity
+        short-summary: The business identity of the host partner.
+        long-summary: |
+            Usage: --host-identity qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
+      - name: --guest-identity
+        short-summary: The business identity of the guest partner.
+        long-summary: |
+            Usage: --guest-identity qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
     examples:
       - name: Create or update an agreement
         text: |-
@@ -1220,6 +1385,21 @@ urceGroup"
 helps['logic integration-account-agreement update'] = """
     type: command
     short-summary: Creates or updates an integration account agreement.
+    parameters:
+      - name: --host-identity
+        short-summary: The business identity of the host partner.
+        long-summary: |
+            Usage: --host-identity qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
+      - name: --guest-identity
+        short-summary: The business identity of the guest partner.
+        long-summary: |
+            Usage: --guest-identity qualifier=XX value=XX
+
+            qualifier: Required. The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
+            value: Required. The user defined business identity value.
     examples:
       - name: Create or update an agreement
         text: |-
@@ -1311,6 +1491,13 @@ helps['logic integration-account-certificate show'] = """
 helps['logic integration-account-certificate create'] = """
     type: command
     short-summary: Creates or updates an integration account certificate.
+    parameters:
+      - name: --key-key-vault
+        short-summary: The key vault reference.
+        long-summary: |
+            Usage: --key-key-vault id=XX
+
+            id: The resource id.
     examples:
       - name: Create or update a certificate
         text: |-
@@ -1324,6 +1511,13 @@ up "testResourceGroup"
 helps['logic integration-account-certificate update'] = """
     type: command
     short-summary: Creates or updates an integration account certificate.
+    parameters:
+      - name: --key-key-vault
+        short-summary: The key vault reference.
+        long-summary: |
+            Usage: --key-key-vault id=XX
+
+            id: The resource id.
     examples:
       - name: Create or update a certificate
         text: |-
@@ -1421,13 +1615,21 @@ helps['logic integration-service-environment show'] = """
     examples:
       - name: Get integration service environment by name
         text: |-
-               az logic integration-service-environment show --integration-service-environment-name "testIntegrationSer\
-viceEnvironment" --resource-group "testResourceGroup"
+               az logic integration-service-environment show --name "testIntegrationServiceEnvironment" --resource-grou\
+p "testResourceGroup"
 """
 
 helps['logic integration-service-environment create'] = """
     type: command
     short-summary: Creates or updates an integration service environment.
+    parameters:
+      - name: --sku
+        short-summary: The sku.
+        long-summary: |
+            Usage: --sku name=XX capacity=XX
+
+            name: The sku name.
+            capacity: The sku capacity.
     examples:
       - name: Create or update an integration service environment
         text: |-
@@ -1438,18 +1640,26 @@ cessEndpoint\\":{\\"type\\":\\"Internal\\"},\\"subnets\\":[{\\"id\\":\\"/subscri
 lNetworks/testVNET/subnets/s2\\"},{\\"id\\":\\"/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testR\
 esourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnets/s3\\"},{\\"id\\":\\"/subscriptions/f34b22a3-2\
 202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnet\
-s/s4\\"}]}" --sku name="Premium" capacity=2 --integration-service-environment-name "testIntegrationServiceEnvironment" \
---resource-group "testResourceGroup"
+s/s4\\"}]}" --sku name="Premium" capacity=2 --name "testIntegrationServiceEnvironment" --resource-group "testResourceGr\
+oup"
 """
 
 helps['logic integration-service-environment update'] = """
     type: command
     short-summary: Updates an integration service environment.
+    parameters:
+      - name: --sku
+        short-summary: The sku.
+        long-summary: |
+            Usage: --sku name=XX capacity=XX
+
+            name: The sku name.
+            capacity: The sku capacity.
     examples:
       - name: Patch an integration service environment
         text: |-
                az logic integration-service-environment update --sku name="Developer" capacity=0 --tags tag1="value1" -\
--integration-service-environment-name "testIntegrationServiceEnvironment" --resource-group "testResourceGroup"
+-name "testIntegrationServiceEnvironment" --resource-group "testResourceGroup"
 """
 
 helps['logic integration-service-environment delete'] = """
@@ -1458,8 +1668,8 @@ helps['logic integration-service-environment delete'] = """
     examples:
       - name: Delete an integration account
         text: |-
-               az logic integration-service-environment delete --integration-service-environment-name "testIntegrationS\
-erviceEnvironment" --resource-group "testResourceGroup"
+               az logic integration-service-environment delete --name "testIntegrationServiceEnvironment" --resource-gr\
+oup "testResourceGroup"
 """
 
 helps['logic integration-service-environment restart'] = """
@@ -1468,8 +1678,25 @@ helps['logic integration-service-environment restart'] = """
     examples:
       - name: Restarts an integration service environment
         text: |-
-               az logic integration-service-environment restart --integration-service-environment-name "testIntegration\
-ServiceEnvironment" --resource-group "testResourceGroup"
+               az logic integration-service-environment restart --name "testIntegrationServiceEnvironment" --resource-g\
+roup "testResourceGroup"
+"""
+
+helps['logic integration-service-environment wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the logic integration-service-environment is m\
+et.
+    examples:
+      - name: Pause executing next line of CLI script until the logic integration-service-environment is successfully c\
+reated.
+        text: |-
+               az logic integration-service-environment wait --name "testIntegrationServiceEnvironment" --resource-grou\
+p "testResourceGroup" --created
+      - name: Pause executing next line of CLI script until the logic integration-service-environment is successfully u\
+pdated.
+        text: |-
+               az logic integration-service-environment wait --name "testIntegrationServiceEnvironment" --resource-grou\
+p "testResourceGroup" --updated
 """
 
 helps['logic integration-service-environment-sku'] = """
@@ -1545,6 +1772,23 @@ helps['logic integration-service-environment-managed-api put'] = """
         text: |-
                az logic integration-service-environment-managed-api put --api-name "servicebus" --integration-service-e\
 nvironment-name "testIntegrationServiceEnvironment" --resource-group "testResourceGroup"
+"""
+
+helps['logic integration-service-environment-managed-api wait'] = """
+    type: command
+    short-summary: Place the CLI in a waiting state until a condition of the logic integration-service-environment-mana\
+ged-api is met.
+    examples:
+      - name: Pause executing next line of CLI script until the logic integration-service-environment-managed-api is su\
+ccessfully deleted.
+        text: |-
+               az logic integration-service-environment-managed-api wait --api-name "servicebus" --integration-service-\
+environment-name "testIntegrationServiceEnvironment" --resource-group "testResourceGroup" --deleted
+      - name: Pause executing next line of CLI script until the logic integration-service-environment-managed-api is su\
+ccessfully created.
+        text: |-
+               az logic integration-service-environment-managed-api wait --api-name "servicebus" --integration-service-\
+environment-name "testIntegrationServiceEnvironment" --resource-group "testResourceGroup" --created
 """
 
 helps['logic integration-service-environment-managed-api-operation'] = """

@@ -15,6 +15,8 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
+    from azure.core.credentials import TokenCredential
+
 from ._configuration import LogicManagementClientConfiguration
 from .operations import WorkflowOperations
 from .operations import WorkflowVersionOperations
@@ -50,64 +52,65 @@ class LogicManagementClient(object):
     """REST API for Azure Logic Apps.
 
     :ivar workflow: WorkflowOperations operations
-    :vartype workflow: azure.mgmt.logic.operations.WorkflowOperations
+    :vartype workflow: logic_management_client.operations.WorkflowOperations
     :ivar workflow_version: WorkflowVersionOperations operations
-    :vartype workflow_version: azure.mgmt.logic.operations.WorkflowVersionOperations
+    :vartype workflow_version: logic_management_client.operations.WorkflowVersionOperations
     :ivar workflow_trigger: WorkflowTriggerOperations operations
-    :vartype workflow_trigger: azure.mgmt.logic.operations.WorkflowTriggerOperations
+    :vartype workflow_trigger: logic_management_client.operations.WorkflowTriggerOperations
     :ivar workflow_version_trigger: WorkflowVersionTriggerOperations operations
-    :vartype workflow_version_trigger: azure.mgmt.logic.operations.WorkflowVersionTriggerOperations
+    :vartype workflow_version_trigger: logic_management_client.operations.WorkflowVersionTriggerOperations
     :ivar workflow_trigger_history: WorkflowTriggerHistoryOperations operations
-    :vartype workflow_trigger_history: azure.mgmt.logic.operations.WorkflowTriggerHistoryOperations
+    :vartype workflow_trigger_history: logic_management_client.operations.WorkflowTriggerHistoryOperations
     :ivar workflow_run: WorkflowRunOperations operations
-    :vartype workflow_run: azure.mgmt.logic.operations.WorkflowRunOperations
+    :vartype workflow_run: logic_management_client.operations.WorkflowRunOperations
     :ivar workflow_run_action: WorkflowRunActionOperations operations
-    :vartype workflow_run_action: azure.mgmt.logic.operations.WorkflowRunActionOperations
+    :vartype workflow_run_action: logic_management_client.operations.WorkflowRunActionOperations
     :ivar workflow_run_action_repetition: WorkflowRunActionRepetitionOperations operations
-    :vartype workflow_run_action_repetition: azure.mgmt.logic.operations.WorkflowRunActionRepetitionOperations
+    :vartype workflow_run_action_repetition: logic_management_client.operations.WorkflowRunActionRepetitionOperations
     :ivar workflow_run_action_repetition_request_history: WorkflowRunActionRepetitionRequestHistoryOperations operations
-    :vartype workflow_run_action_repetition_request_history: azure.mgmt.logic.operations.WorkflowRunActionRepetitionRequestHistoryOperations
+    :vartype workflow_run_action_repetition_request_history: logic_management_client.operations.WorkflowRunActionRepetitionRequestHistoryOperations
     :ivar workflow_run_action_request_history: WorkflowRunActionRequestHistoryOperations operations
-    :vartype workflow_run_action_request_history: azure.mgmt.logic.operations.WorkflowRunActionRequestHistoryOperations
+    :vartype workflow_run_action_request_history: logic_management_client.operations.WorkflowRunActionRequestHistoryOperations
     :ivar workflow_run_action_scope_repetition: WorkflowRunActionScopeRepetitionOperations operations
-    :vartype workflow_run_action_scope_repetition: azure.mgmt.logic.operations.WorkflowRunActionScopeRepetitionOperations
+    :vartype workflow_run_action_scope_repetition: logic_management_client.operations.WorkflowRunActionScopeRepetitionOperations
     :ivar workflow_run_operation: WorkflowRunOperationOperations operations
-    :vartype workflow_run_operation: azure.mgmt.logic.operations.WorkflowRunOperationOperations
+    :vartype workflow_run_operation: logic_management_client.operations.WorkflowRunOperationOperations
     :ivar integration_account: IntegrationAccountOperations operations
-    :vartype integration_account: azure.mgmt.logic.operations.IntegrationAccountOperations
+    :vartype integration_account: logic_management_client.operations.IntegrationAccountOperations
     :ivar integration_account_assembly: IntegrationAccountAssemblyOperations operations
-    :vartype integration_account_assembly: azure.mgmt.logic.operations.IntegrationAccountAssemblyOperations
+    :vartype integration_account_assembly: logic_management_client.operations.IntegrationAccountAssemblyOperations
     :ivar integration_account_batch_configuration: IntegrationAccountBatchConfigurationOperations operations
-    :vartype integration_account_batch_configuration: azure.mgmt.logic.operations.IntegrationAccountBatchConfigurationOperations
+    :vartype integration_account_batch_configuration: logic_management_client.operations.IntegrationAccountBatchConfigurationOperations
     :ivar integration_account_schema: IntegrationAccountSchemaOperations operations
-    :vartype integration_account_schema: azure.mgmt.logic.operations.IntegrationAccountSchemaOperations
+    :vartype integration_account_schema: logic_management_client.operations.IntegrationAccountSchemaOperations
     :ivar integration_account_map: IntegrationAccountMapOperations operations
-    :vartype integration_account_map: azure.mgmt.logic.operations.IntegrationAccountMapOperations
+    :vartype integration_account_map: logic_management_client.operations.IntegrationAccountMapOperations
     :ivar integration_account_partner: IntegrationAccountPartnerOperations operations
-    :vartype integration_account_partner: azure.mgmt.logic.operations.IntegrationAccountPartnerOperations
+    :vartype integration_account_partner: logic_management_client.operations.IntegrationAccountPartnerOperations
     :ivar integration_account_agreement: IntegrationAccountAgreementOperations operations
-    :vartype integration_account_agreement: azure.mgmt.logic.operations.IntegrationAccountAgreementOperations
+    :vartype integration_account_agreement: logic_management_client.operations.IntegrationAccountAgreementOperations
     :ivar integration_account_certificate: IntegrationAccountCertificateOperations operations
-    :vartype integration_account_certificate: azure.mgmt.logic.operations.IntegrationAccountCertificateOperations
+    :vartype integration_account_certificate: logic_management_client.operations.IntegrationAccountCertificateOperations
     :ivar integration_account_session: IntegrationAccountSessionOperations operations
-    :vartype integration_account_session: azure.mgmt.logic.operations.IntegrationAccountSessionOperations
+    :vartype integration_account_session: logic_management_client.operations.IntegrationAccountSessionOperations
     :ivar integration_service_environment: IntegrationServiceEnvironmentOperations operations
-    :vartype integration_service_environment: azure.mgmt.logic.operations.IntegrationServiceEnvironmentOperations
+    :vartype integration_service_environment: logic_management_client.operations.IntegrationServiceEnvironmentOperations
     :ivar integration_service_environment_sku: IntegrationServiceEnvironmentSkuOperations operations
-    :vartype integration_service_environment_sku: azure.mgmt.logic.operations.IntegrationServiceEnvironmentSkuOperations
+    :vartype integration_service_environment_sku: logic_management_client.operations.IntegrationServiceEnvironmentSkuOperations
     :ivar integration_service_environment_network_health: IntegrationServiceEnvironmentNetworkHealthOperations operations
-    :vartype integration_service_environment_network_health: azure.mgmt.logic.operations.IntegrationServiceEnvironmentNetworkHealthOperations
+    :vartype integration_service_environment_network_health: logic_management_client.operations.IntegrationServiceEnvironmentNetworkHealthOperations
     :ivar integration_service_environment_managed_api: IntegrationServiceEnvironmentManagedApiOperations operations
-    :vartype integration_service_environment_managed_api: azure.mgmt.logic.operations.IntegrationServiceEnvironmentManagedApiOperations
+    :vartype integration_service_environment_managed_api: logic_management_client.operations.IntegrationServiceEnvironmentManagedApiOperations
     :ivar integration_service_environment_managed_api_operation: IntegrationServiceEnvironmentManagedApiOperationOperations operations
-    :vartype integration_service_environment_managed_api_operation: azure.mgmt.logic.operations.IntegrationServiceEnvironmentManagedApiOperationOperations
+    :vartype integration_service_environment_managed_api_operation: logic_management_client.operations.IntegrationServiceEnvironmentManagedApiOperationOperations
     :ivar operation: OperationOperations operations
-    :vartype operation: azure.mgmt.logic.operations.OperationOperations
+    :vartype operation: logic_management_client.operations.OperationOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The subscription id.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(

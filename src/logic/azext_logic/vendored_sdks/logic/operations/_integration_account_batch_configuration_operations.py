@@ -19,7 +19,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -31,7 +31,7 @@ class IntegrationAccountBatchConfigurationOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -52,7 +52,7 @@ class IntegrationAccountBatchConfigurationOperations(object):
         integration_account_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.BatchConfigurationCollection"
+        # type: (...) -> Iterable["models.BatchConfigurationCollection"]
         """List the batch configurations for an integration account.
 
         :param resource_group_name: The resource group name.
@@ -60,31 +60,32 @@ class IntegrationAccountBatchConfigurationOperations(object):
         :param integration_account_name: The integration account name.
         :type integration_account_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: BatchConfigurationCollection or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.BatchConfigurationCollection
+        :return: An iterator like instance of either BatchConfigurationCollection or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.BatchConfigurationCollection]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.BatchConfigurationCollection"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'integrationAccountName': self._serialize.url("integration_account_name", integration_account_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -116,7 +117,7 @@ class IntegrationAccountBatchConfigurationOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations'}  # type: ignore
 
     def get(
         self,
@@ -135,16 +136,17 @@ class IntegrationAccountBatchConfigurationOperations(object):
         :param batch_configuration_name: The batch configuration name.
         :type batch_configuration_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: BatchConfiguration or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.BatchConfiguration
+        :return: BatchConfiguration, or the result of cls(response)
+        :rtype: ~logic_management_client.models.BatchConfiguration
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.BatchConfiguration"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -174,10 +176,10 @@ class IntegrationAccountBatchConfigurationOperations(object):
         deserialized = self._deserialize('BatchConfiguration', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}  # type: ignore
 
     def create_or_update(
         self,
@@ -185,14 +187,23 @@ class IntegrationAccountBatchConfigurationOperations(object):
         integration_account_name,  # type: str
         batch_configuration_name,  # type: str
         batch_group_name,  # type: str
-        release_criteria,  # type: "models.BatchReleaseCriteria"
         location=None,  # type: Optional[str]
         tags=None,  # type: Optional[Dict[str, str]]
         created_time=None,  # type: Optional[datetime.datetime]
         changed_time=None,  # type: Optional[datetime.datetime]
         metadata=None,  # type: Optional[object]
-        batch_configuration_properties_created_time=None,  # type: Optional[datetime.datetime]
-        batch_configuration_properties_changed_time=None,  # type: Optional[datetime.datetime]
+        message_count=None,  # type: Optional[int]
+        batch_size=None,  # type: Optional[int]
+        frequency=None,  # type: Optional[Union[str, "models.RecurrenceFrequency"]]
+        interval=None,  # type: Optional[int]
+        start_time=None,  # type: Optional[str]
+        end_time=None,  # type: Optional[str]
+        time_zone=None,  # type: Optional[str]
+        minutes=None,  # type: Optional[List[int]]
+        hours=None,  # type: Optional[List[int]]
+        week_days=None,  # type: Optional[List[Union[str, "models.DaysOfWeek"]]]
+        month_days=None,  # type: Optional[List[int]]
+        monthly_occurrences=None,  # type: Optional[List["models.RecurrenceScheduleOccurrence"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.BatchConfiguration"
@@ -206,8 +217,6 @@ class IntegrationAccountBatchConfigurationOperations(object):
         :type batch_configuration_name: str
         :param batch_group_name: The name of the batch group.
         :type batch_group_name: str
-        :param release_criteria: The batch release criteria.
-        :type release_criteria: ~azure.mgmt.logic.models.BatchReleaseCriteria
         :param location: The resource location.
         :type location: str
         :param tags: The resource tags.
@@ -218,24 +227,45 @@ class IntegrationAccountBatchConfigurationOperations(object):
         :type changed_time: ~datetime.datetime
         :param metadata: Any object.
         :type metadata: object
-        :param batch_configuration_properties_created_time: The created time.
-        :type batch_configuration_properties_created_time: ~datetime.datetime
-        :param batch_configuration_properties_changed_time: The changed time.
-        :type batch_configuration_properties_changed_time: ~datetime.datetime
+        :param message_count: The message count.
+        :type message_count: int
+        :param batch_size: The batch size in bytes.
+        :type batch_size: int
+        :param frequency: The frequency.
+        :type frequency: str or ~logic_management_client.models.RecurrenceFrequency
+        :param interval: The interval.
+        :type interval: int
+        :param start_time: The start time.
+        :type start_time: str
+        :param end_time: The end time.
+        :type end_time: str
+        :param time_zone: The time zone.
+        :type time_zone: str
+        :param minutes: The minutes.
+        :type minutes: list[int]
+        :param hours: The hours.
+        :type hours: list[int]
+        :param week_days: The days of the week.
+        :type week_days: list[str or ~logic_management_client.models.DaysOfWeek]
+        :param month_days: The month days.
+        :type month_days: list[int]
+        :param monthly_occurrences: The monthly occurrences.
+        :type monthly_occurrences: list[~logic_management_client.models.RecurrenceScheduleOccurrence]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: BatchConfiguration or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.BatchConfiguration or ~azure.mgmt.logic.models.BatchConfiguration
+        :return: BatchConfiguration, or the result of cls(response)
+        :rtype: ~logic_management_client.models.BatchConfiguration
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.BatchConfiguration"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
-        _batch_configuration = models.BatchConfiguration(location=location, tags=tags, created_time_properties_created_time=created_time, changed_time_properties_changed_time=changed_time, metadata=metadata, batch_group_name=batch_group_name, release_criteria=release_criteria, created_time=batch_configuration_properties_created_time, changed_time=batch_configuration_properties_changed_time)
+        _batch_configuration = models.BatchConfiguration(location=location, tags=tags, created_time=created_time, changed_time=changed_time, metadata=metadata, batch_group_name=batch_group_name, message_count=message_count, batch_size=batch_size, frequency=frequency, interval=interval, start_time=start_time, end_time=end_time, time_zone=time_zone, minutes=minutes, hours=hours, week_days=week_days, month_days=month_days, monthly_occurrences=monthly_occurrences)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.create_or_update.metadata['url']
+        url = self.create_or_update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -275,10 +305,10 @@ class IntegrationAccountBatchConfigurationOperations(object):
             deserialized = self._deserialize('BatchConfiguration', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}
+    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}  # type: ignore
 
     def delete(
         self,
@@ -297,16 +327,17 @@ class IntegrationAccountBatchConfigurationOperations(object):
         :param batch_configuration_name: The batch configuration name.
         :type batch_configuration_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -333,6 +364,6 @@ class IntegrationAccountBatchConfigurationOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}'}  # type: ignore

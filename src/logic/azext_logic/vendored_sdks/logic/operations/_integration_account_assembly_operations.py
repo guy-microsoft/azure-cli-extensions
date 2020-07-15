@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class IntegrationAccountAssemblyOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -51,7 +51,7 @@ class IntegrationAccountAssemblyOperations(object):
         integration_account_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.AssemblyCollection"
+        # type: (...) -> Iterable["models.AssemblyCollection"]
         """List the assemblies for an integration account.
 
         :param resource_group_name: The resource group name.
@@ -59,31 +59,32 @@ class IntegrationAccountAssemblyOperations(object):
         :param integration_account_name: The integration account name.
         :type integration_account_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AssemblyCollection or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.AssemblyCollection
+        :return: An iterator like instance of either AssemblyCollection or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.AssemblyCollection]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AssemblyCollection"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'integrationAccountName': self._serialize.url("integration_account_name", integration_account_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -115,7 +116,7 @@ class IntegrationAccountAssemblyOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies'}  # type: ignore
 
     def get(
         self,
@@ -134,16 +135,17 @@ class IntegrationAccountAssemblyOperations(object):
         :param assembly_artifact_name: The assembly artifact name.
         :type assembly_artifact_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AssemblyDefinition or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.AssemblyDefinition
+        :return: AssemblyDefinition, or the result of cls(response)
+        :rtype: ~logic_management_client.models.AssemblyDefinition
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AssemblyDefinition"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -173,10 +175,10 @@ class IntegrationAccountAssemblyOperations(object):
         deserialized = self._deserialize('AssemblyDefinition', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}  # type: ignore
 
     def create_or_update(
         self,
@@ -198,25 +200,26 @@ class IntegrationAccountAssemblyOperations(object):
         :param assembly_artifact_name: The assembly artifact name.
         :type assembly_artifact_name: str
         :param properties: The assembly properties.
-        :type properties: ~azure.mgmt.logic.models.AssemblyProperties
+        :type properties: ~logic_management_client.models.AssemblyProperties
         :param location: The resource location.
         :type location: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AssemblyDefinition or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.AssemblyDefinition or ~azure.mgmt.logic.models.AssemblyDefinition
+        :return: AssemblyDefinition, or the result of cls(response)
+        :rtype: ~logic_management_client.models.AssemblyDefinition
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AssemblyDefinition"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _assembly_artifact = models.AssemblyDefinition(location=location, tags=tags, properties=properties)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.create_or_update.metadata['url']
+        url = self.create_or_update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -256,10 +259,10 @@ class IntegrationAccountAssemblyOperations(object):
             deserialized = self._deserialize('AssemblyDefinition', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}
+    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}  # type: ignore
 
     def delete(
         self,
@@ -278,16 +281,17 @@ class IntegrationAccountAssemblyOperations(object):
         :param assembly_artifact_name: The assembly artifact name.
         :type assembly_artifact_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -314,9 +318,9 @@ class IntegrationAccountAssemblyOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}'}  # type: ignore
 
     def list_content_callback_url(
         self,
@@ -335,16 +339,17 @@ class IntegrationAccountAssemblyOperations(object):
         :param assembly_artifact_name: The assembly artifact name.
         :type assembly_artifact_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkflowTriggerCallbackUrl or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.WorkflowTriggerCallbackUrl
+        :return: WorkflowTriggerCallbackUrl, or the result of cls(response)
+        :rtype: ~logic_management_client.models.WorkflowTriggerCallbackUrl
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkflowTriggerCallbackUrl"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.list_content_callback_url.metadata['url']
+        url = self.list_content_callback_url.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -374,7 +379,7 @@ class IntegrationAccountAssemblyOperations(object):
         deserialized = self._deserialize('WorkflowTriggerCallbackUrl', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_content_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}/listContentCallbackUrl'}
+    list_content_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}/listContentCallbackUrl'}  # type: ignore

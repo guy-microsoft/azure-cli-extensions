@@ -14,34 +14,10 @@ from knack.util import CLIError
 from collections import defaultdict
 
 
-class AddIntegrationAccount(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.integration_account = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'id':
-                d['id'] = v[0]
-        return d
-
-
 class AddEndpointsConfigurationWorkflow(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.endpoints_configuration_workflow = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -67,7 +43,6 @@ class AddSource(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.source = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -80,61 +55,11 @@ class AddSource(argparse.Action):
         for k in properties:
             kl = k.lower()
             v = properties[k]
-            if kl == 'name':
-                d['name'] = v[0]
-            elif kl == 'flow-name':
+            if kl == 'flow-name':
                 d['flow_name'] = v[0]
             elif kl == 'trigger-name':
                 d['trigger_name'] = v[0]
-            elif kl == 'id':
-                d['id'] = v[0]
-        return d
-
-
-class AddIntegrationaccountsSku(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.sku = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'name':
-                d['name'] = v[0]
-        return d
-
-
-class AddKeyVault(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        action = self.get_action(values, option_string)
-        namespace.key_vault = action
-
-
-    def get_action(self, values, option_string):  # pylint: disable=no-self-use
-        try:
-            properties = defaultdict(list)
-            for (k, v) in (x.split('=', 1) for x in values):
-                properties[k].append(v)
-            properties = dict(properties)
-        except ValueError:
-            raise CLIError('usage error: {} [KEY=VALUE ...]'.format(option_string))
-        d = {}
-        for k in properties:
-            kl = k.lower()
-            v = properties[k]
-            if kl == 'name':
-                d['name'] = v[0]
-            elif kl == 'id':
+            elif kl == 'id-properties-integration-service-environment-id':
                 d['id'] = v[0]
         return d
 
@@ -143,7 +68,6 @@ class AddProperties(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.properties = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -180,11 +104,10 @@ class AddProperties(argparse.Action):
         return d
 
 
-class AddParametersSchema(argparse.Action):
+class AddReleaseCriteriaRecurrenceScheduleMonthlyOccurrences(argparse._AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
-        namespace.parameters_schema = action
-
+        super(AddReleaseCriteriaRecurrenceScheduleMonthlyOccurrences, self).__call__(parser, namespace, action, option_string)
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -198,8 +121,10 @@ class AddParametersSchema(argparse.Action):
         for k in properties:
             kl = k.lower()
             v = properties[k]
-            if kl == 'ref':
-                d['ref'] = v[0]
+            if kl == 'day':
+                d['day'] = v[0]
+            elif kl == 'occurrence':
+                d['occurrence'] = v[0]
         return d
 
 
@@ -207,7 +132,6 @@ class AddContentB2bBusinessIdentities(argparse._AppendAction):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         super(AddContentB2bBusinessIdentities, self).__call__(parser, namespace, action, option_string)
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
@@ -233,7 +157,6 @@ class AddHostIdentity(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.host_identity = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -258,7 +181,6 @@ class AddKeyKeyVault(argparse.Action):
         action = self.get_action(values, option_string)
         namespace.key_key_vault = action
 
-
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:
             properties = defaultdict(list)
@@ -276,11 +198,10 @@ class AddKeyKeyVault(argparse.Action):
         return d
 
 
-class AddIntegrationserviceenvironmentsSku(argparse.Action):
+class AddSku(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         action = self.get_action(values, option_string)
         namespace.sku = action
-
 
     def get_action(self, values, option_string):  # pylint: disable=no-self-use
         try:

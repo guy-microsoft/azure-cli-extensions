@@ -6,7 +6,7 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 import datetime
-from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+from typing import Any, AsyncIterable, Callable, Dict, Generic, Optional, TypeVar, Union
 import warnings
 
 from azure.core.async_paging import AsyncItemPaged, AsyncList
@@ -27,7 +27,7 @@ class IntegrationAccountMapOperations:
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -49,7 +49,7 @@ class IntegrationAccountMapOperations:
         top: Optional[int] = None,
         filter: Optional[str] = None,
         **kwargs
-    ) -> "models.IntegrationAccountMapListResult":
+    ) -> AsyncIterable["models.IntegrationAccountMapListResult"]:
         """Gets a list of integration account maps.
 
         :param resource_group_name: The resource group name.
@@ -61,35 +61,36 @@ class IntegrationAccountMapOperations:
         :param filter: The filter to apply on the operation. Options for filters include: MapType.
         :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationAccountMapListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationAccountMapListResult
+        :return: An iterator like instance of either IntegrationAccountMapListResult or the result of cls(response)
+        :rtype: ~azure.core.async_paging.AsyncItemPaged[~logic_management_client.models.IntegrationAccountMapListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationAccountMapListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'integrationAccountName': self._serialize.url("integration_account_name", integration_account_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if top is not None:
+                    query_parameters['$top'] = self._serialize.query("top", top, 'int')
+                if filter is not None:
+                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if top is not None:
-                query_parameters['$top'] = self._serialize.query("top", top, 'int')
-            if filter is not None:
-                query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -121,7 +122,7 @@ class IntegrationAccountMapOperations:
         return AsyncItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps'}  # type: ignore
 
     async def get(
         self,
@@ -139,16 +140,17 @@ class IntegrationAccountMapOperations:
         :param map_name: The integration account map name.
         :type map_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationAccountMap or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationAccountMap
+        :return: IntegrationAccountMap, or the result of cls(response)
+        :rtype: ~logic_management_client.models.IntegrationAccountMap
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationAccountMap"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -178,10 +180,10 @@ class IntegrationAccountMapOperations:
         deserialized = self._deserialize('IntegrationAccountMap', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}  # type: ignore
 
     async def create_or_update(
         self,
@@ -191,10 +193,10 @@ class IntegrationAccountMapOperations:
         map_type: Union[str, "models.MapType"],
         location: Optional[str] = None,
         tags: Optional[Dict[str, str]] = None,
-        parameters_schema: Optional["models.IntegrationAccountMapPropertiesParametersSchema"] = None,
         content: Optional[str] = None,
         content_type_parameter: Optional[str] = None,
         metadata: Optional[object] = None,
+        ref: Optional[str] = None,
         **kwargs
     ) -> "models.IntegrationAccountMap":
         """Creates or updates an integration account map.
@@ -206,33 +208,34 @@ class IntegrationAccountMapOperations:
         :param map_name: The integration account map name.
         :type map_name: str
         :param map_type: The map type.
-        :type map_type: str or ~azure.mgmt.logic.models.MapType
+        :type map_type: str or ~logic_management_client.models.MapType
         :param location: The resource location.
         :type location: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
-        :param parameters_schema: The parameters schema of integration account map.
-        :type parameters_schema: ~azure.mgmt.logic.models.IntegrationAccountMapPropertiesParametersSchema
         :param content: The content.
         :type content: str
         :param content_type_parameter: The content type.
         :type content_type_parameter: str
         :param metadata: The metadata.
         :type metadata: object
+        :param ref: The reference name.
+        :type ref: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationAccountMap or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationAccountMap or ~azure.mgmt.logic.models.IntegrationAccountMap
+        :return: IntegrationAccountMap, or the result of cls(response)
+        :rtype: ~logic_management_client.models.IntegrationAccountMap
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationAccountMap"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
-        _map = models.IntegrationAccountMap(location=location, tags=tags, map_type=map_type, parameters_schema=parameters_schema, content=content, content_type=content_type_parameter, metadata=metadata)
+        _map = models.IntegrationAccountMap(location=location, tags=tags, map_type=map_type, content=content, content_type=content_type_parameter, metadata=metadata, ref=ref)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.create_or_update.metadata['url']
+        url = self.create_or_update.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -272,10 +275,10 @@ class IntegrationAccountMapOperations:
             deserialized = self._deserialize('IntegrationAccountMap', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}
+    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}  # type: ignore
 
     async def delete(
         self,
@@ -293,16 +296,17 @@ class IntegrationAccountMapOperations:
         :param map_name: The integration account map name.
         :type map_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -329,9 +333,9 @@ class IntegrationAccountMapOperations:
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}'}  # type: ignore
 
     async def list_content_callback_url(
         self,
@@ -353,21 +357,22 @@ class IntegrationAccountMapOperations:
         :param not_after: The expiry time.
         :type not_after: ~datetime.datetime
         :param key_type: The key type.
-        :type key_type: str or ~azure.mgmt.logic.models.KeyType
+        :type key_type: str or ~logic_management_client.models.KeyType
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: WorkflowTriggerCallbackUrl or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.WorkflowTriggerCallbackUrl
+        :return: WorkflowTriggerCallbackUrl, or the result of cls(response)
+        :rtype: ~logic_management_client.models.WorkflowTriggerCallbackUrl
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.WorkflowTriggerCallbackUrl"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _list_content_callback_url = models.GetCallbackUrlParameters(not_after=not_after, key_type=key_type)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self.list_content_callback_url.metadata['url']
+        url = self.list_content_callback_url.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -402,7 +407,7 @@ class IntegrationAccountMapOperations:
         deserialized = self._deserialize('WorkflowTriggerCallbackUrl', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list_content_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}/listContentCallbackUrl'}
+    list_content_callback_url.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}/listContentCallbackUrl'}  # type: ignore

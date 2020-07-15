@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -32,7 +32,7 @@ class IntegrationServiceEnvironmentOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -52,37 +52,38 @@ class IntegrationServiceEnvironmentOperations(object):
         top=None,  # type: Optional[int]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.IntegrationServiceEnvironmentListResult"
+        # type: (...) -> Iterable["models.IntegrationServiceEnvironmentListResult"]
         """Gets a list of integration service environments by subscription.
 
         :param top: The number of items to be included in the result.
         :type top: int
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationServiceEnvironmentListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationServiceEnvironmentListResult
+        :return: An iterator like instance of either IntegrationServiceEnvironmentListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.IntegrationServiceEnvironmentListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironmentListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_subscription.metadata['url']
+                url = self.list_by_subscription.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if top is not None:
+                    query_parameters['$top'] = self._serialize.query("top", top, 'int')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if top is not None:
-                query_parameters['$top'] = self._serialize.query("top", top, 'int')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -114,7 +115,7 @@ class IntegrationServiceEnvironmentOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Logic/integrationServiceEnvironments'}
+    list_by_subscription.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Logic/integrationServiceEnvironments'}  # type: ignore
 
     def list_by_resource_group(
         self,
@@ -122,7 +123,7 @@ class IntegrationServiceEnvironmentOperations(object):
         top=None,  # type: Optional[int]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.IntegrationServiceEnvironmentListResult"
+        # type: (...) -> Iterable["models.IntegrationServiceEnvironmentListResult"]
         """Gets a list of integration service environments by resource group.
 
         :param resource_group: The resource group.
@@ -130,32 +131,33 @@ class IntegrationServiceEnvironmentOperations(object):
         :param top: The number of items to be included in the result.
         :type top: int
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationServiceEnvironmentListResult or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationServiceEnvironmentListResult
+        :return: An iterator like instance of either IntegrationServiceEnvironmentListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.IntegrationServiceEnvironmentListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironmentListResult"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_resource_group.metadata['url']
+                url = self.list_by_resource_group.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if top is not None:
+                    query_parameters['$top'] = self._serialize.query("top", top, 'int')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-            if top is not None:
-                query_parameters['$top'] = self._serialize.query("top", top, 'int')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -187,7 +189,7 @@ class IntegrationServiceEnvironmentOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments'}
+    list_by_resource_group.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments'}  # type: ignore
 
     def get(
         self,
@@ -203,16 +205,17 @@ class IntegrationServiceEnvironmentOperations(object):
         :param integration_service_environment_name: The integration service environment name.
         :type integration_service_environment_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationServiceEnvironment or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationServiceEnvironment
+        :return: IntegrationServiceEnvironment, or the result of cls(response)
+        :rtype: ~logic_management_client.models.IntegrationServiceEnvironment
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironment"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.get.metadata['url']
+        url = self.get.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -241,10 +244,10 @@ class IntegrationServiceEnvironmentOperations(object):
         deserialized = self._deserialize('IntegrationServiceEnvironment', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def _create_or_update_initial(
         self,
@@ -262,14 +265,15 @@ class IntegrationServiceEnvironmentOperations(object):
     ):
         # type: (...) -> "models.IntegrationServiceEnvironment"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironment"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _integration_service_environment = models.IntegrationServiceEnvironment(location=location, tags=tags, sku=sku, provisioning_state=provisioning_state, state=state, integration_service_environment_id=integration_service_environment_id, endpoints_configuration=endpoints_configuration, network_configuration=network_configuration)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._create_or_update_initial.metadata['url']
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -308,10 +312,10 @@ class IntegrationServiceEnvironmentOperations(object):
             deserialized = self._deserialize('IntegrationServiceEnvironment', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def begin_create_or_update(
         self,
@@ -327,7 +331,7 @@ class IntegrationServiceEnvironmentOperations(object):
         network_configuration=None,  # type: Optional["models.NetworkConfiguration"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.IntegrationServiceEnvironment"
+        # type: (...) -> LROPoller
         """Creates or updates an integration service environment.
 
         :param resource_group: The resource group.
@@ -339,28 +343,32 @@ class IntegrationServiceEnvironmentOperations(object):
         :param tags: The resource tags.
         :type tags: dict[str, str]
         :param sku: The sku.
-        :type sku: ~azure.mgmt.logic.models.IntegrationServiceEnvironmentSku
+        :type sku: ~logic_management_client.models.IntegrationServiceEnvironmentSku
         :param provisioning_state: The provisioning state.
-        :type provisioning_state: str or ~azure.mgmt.logic.models.WorkflowProvisioningState
+        :type provisioning_state: str or ~logic_management_client.models.WorkflowProvisioningState
         :param state: The integration service environment state.
-        :type state: str or ~azure.mgmt.logic.models.WorkflowState
+        :type state: str or ~logic_management_client.models.WorkflowState
         :param integration_service_environment_id: Gets the tracking id.
         :type integration_service_environment_id: str
         :param endpoints_configuration: The endpoints configuration.
-        :type endpoints_configuration: ~azure.mgmt.logic.models.FlowEndpointsConfiguration
+        :type endpoints_configuration: ~logic_management_client.models.FlowEndpointsConfiguration
         :param network_configuration: The network configuration.
-        :type network_configuration: ~azure.mgmt.logic.models.NetworkConfiguration
+        :type network_configuration: ~logic_management_client.models.NetworkConfiguration
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns IntegrationServiceEnvironment
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.logic.models.IntegrationServiceEnvironment]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either IntegrationServiceEnvironment or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~logic_management_client.models.IntegrationServiceEnvironment]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironment"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._create_or_update_initial(
             resource_group=resource_group,
             integration_service_environment_name=integration_service_environment_name,
@@ -376,6 +384,9 @@ class IntegrationServiceEnvironmentOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('IntegrationServiceEnvironment', pipeline_response)
 
@@ -383,15 +394,11 @@ class IntegrationServiceEnvironmentOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def _update_initial(
         self,
@@ -409,14 +416,15 @@ class IntegrationServiceEnvironmentOperations(object):
     ):
         # type: (...) -> "models.IntegrationServiceEnvironment"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironment"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
 
         _integration_service_environment = models.IntegrationServiceEnvironment(location=location, tags=tags, sku=sku, provisioning_state=provisioning_state, state=state, integration_service_environment_id=integration_service_environment_id, endpoints_configuration=endpoints_configuration, network_configuration=network_configuration)
         api_version = "2019-05-01"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
-        url = self._update_initial.metadata['url']
+        url = self._update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -450,10 +458,10 @@ class IntegrationServiceEnvironmentOperations(object):
         deserialized = self._deserialize('IntegrationServiceEnvironment', pipeline_response)
 
         if cls:
-          return cls(pipeline_response, deserialized, {})
+            return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    _update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    _update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def begin_update(
         self,
@@ -469,7 +477,7 @@ class IntegrationServiceEnvironmentOperations(object):
         network_configuration=None,  # type: Optional["models.NetworkConfiguration"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.IntegrationServiceEnvironment"
+        # type: (...) -> LROPoller
         """Updates an integration service environment.
 
         :param resource_group: The resource group.
@@ -481,28 +489,32 @@ class IntegrationServiceEnvironmentOperations(object):
         :param tags: The resource tags.
         :type tags: dict[str, str]
         :param sku: The sku.
-        :type sku: ~azure.mgmt.logic.models.IntegrationServiceEnvironmentSku
+        :type sku: ~logic_management_client.models.IntegrationServiceEnvironmentSku
         :param provisioning_state: The provisioning state.
-        :type provisioning_state: str or ~azure.mgmt.logic.models.WorkflowProvisioningState
+        :type provisioning_state: str or ~logic_management_client.models.WorkflowProvisioningState
         :param state: The integration service environment state.
-        :type state: str or ~azure.mgmt.logic.models.WorkflowState
+        :type state: str or ~logic_management_client.models.WorkflowState
         :param integration_service_environment_id: Gets the tracking id.
         :type integration_service_environment_id: str
         :param endpoints_configuration: The endpoints configuration.
-        :type endpoints_configuration: ~azure.mgmt.logic.models.FlowEndpointsConfiguration
+        :type endpoints_configuration: ~logic_management_client.models.FlowEndpointsConfiguration
         :param network_configuration: The network configuration.
-        :type network_configuration: ~azure.mgmt.logic.models.NetworkConfiguration
+        :type network_configuration: ~logic_management_client.models.NetworkConfiguration
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
         :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :return: An instance of LROPoller that returns IntegrationServiceEnvironment
-        :rtype: ~azure.core.polling.LROPoller[~azure.mgmt.logic.models.IntegrationServiceEnvironment]
-
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either IntegrationServiceEnvironment or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~logic_management_client.models.IntegrationServiceEnvironment]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironment"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
         raw_result = self._update_initial(
             resource_group=resource_group,
             integration_service_environment_name=integration_service_environment_name,
@@ -518,6 +530,9 @@ class IntegrationServiceEnvironmentOperations(object):
             **kwargs
         )
 
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
         def get_long_running_output(pipeline_response):
             deserialized = self._deserialize('IntegrationServiceEnvironment', pipeline_response)
 
@@ -525,15 +540,11 @@ class IntegrationServiceEnvironmentOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        lro_delay = kwargs.get(
-            'polling_interval',
-            self._config.polling_interval
-        )
         if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    begin_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def delete(
         self,
@@ -549,16 +560,17 @@ class IntegrationServiceEnvironmentOperations(object):
         :param integration_service_environment_name: The integration service environment name.
         :type integration_service_environment_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.delete.metadata['url']
+        url = self.delete.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -584,9 +596,9 @@ class IntegrationServiceEnvironmentOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}'}  # type: ignore
 
     def restart(
         self,
@@ -602,16 +614,17 @@ class IntegrationServiceEnvironmentOperations(object):
         :param integration_service_environment_name: The integration service environment name.
         :type integration_service_environment_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: None or the result of cls(response)
+        :return: None, or the result of cls(response)
         :rtype: None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         # Construct URL
-        url = self.restart.metadata['url']
+        url = self.restart.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
@@ -637,6 +650,6 @@ class IntegrationServiceEnvironmentOperations(object):
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
         if cls:
-          return cls(pipeline_response, None, {})
+            return cls(pipeline_response, None, {})
 
-    restart.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/restart'}
+    restart.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/restart'}  # type: ignore

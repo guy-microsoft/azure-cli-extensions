@@ -32,7 +32,7 @@ def load_command_table(self, _):
         g.custom_command('regenerate-access-key', 'logic_workflow_regenerate_access_key')
         g.custom_command('validate-by-location', 'logic_workflow_validate_by_location')
         g.custom_command('validate-by-resource-group', 'logic_workflow_validate_by_resource_group')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'logic_workflow_show')
 
     from azext_logic.generated._client_factory import cf_workflow_version
     logic_workflow_version = CliCommandType(
@@ -53,6 +53,7 @@ def load_command_table(self, _):
                             is_experimental=True) as g:
         g.custom_command('list', 'logic_workflow_trigger_list')
         g.custom_show_command('show', 'logic_workflow_trigger_show')
+        g.custom_command('get-schema-json', 'logic_workflow_trigger_get_schema_json')
         g.custom_command('list-callback-url', 'logic_workflow_trigger_list_callback_url')
         g.custom_command('reset', 'logic_workflow_trigger_reset')
         g.custom_command('run', 'logic_workflow_trigger_run')
@@ -291,7 +292,7 @@ def load_command_table(self, _):
         g.custom_command('update', 'logic_integration_service_environment_update', supports_no_wait=True)
         g.custom_command('delete', 'logic_integration_service_environment_delete')
         g.custom_command('restart', 'logic_integration_service_environment_restart')
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'logic_integration_service_environment_show')
 
     from azext_logic.generated._client_factory import cf_integration_service_environment_sku
     logic_integration_service_environment_sku = CliCommandType(
@@ -325,7 +326,7 @@ def load_command_table(self, _):
         g.custom_show_command('show', 'logic_integration_service_environment_managed_api_show')
         g.custom_command('delete', 'logic_integration_service_environment_managed_api_delete', supports_no_wait=True)
         g.custom_command('put', 'logic_integration_service_environment_managed_api_put', supports_no_wait=True)
-        g.wait_command('wait')
+        g.custom_wait_command('wait', 'logic_integration_service_environment_managed_api_show')
 
     from azext_logic.generated._client_factory import cf_integration_service_environment_managed_api_operation
     logic_integration_service_environment_managed_api_operation = CliCommandType(

@@ -10,7 +10,7 @@ create a logic integration-account.
 |**--integration-account-name**|string|The integration account name.|integration_account_name|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--sku**|object|The sku.|sku|
+|**--sku-name**|choice|The sku name.|name_sku_name|
 |**--integration-service-environment**|object|The integration service environment.|integration_service_environment|
 |**--state**|choice|The workflow state.|state|
 ### logic integration-account delete
@@ -47,8 +47,8 @@ list-key-vault-key a logic integration-account.
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--integration-account-name**|string|The integration account name.|integration_account_name|
-|**--key-vault**|object|The key vault reference.|key_vault|
 |**--skip-token**|string|The skip token.|skip_token|
+|**--key-vault-id**|string|The resource id.|id_properties_integration_service_environment_id|
 ### logic integration-account log-tracking-event
 
 log-tracking-event a logic integration-account.
@@ -87,7 +87,7 @@ update a logic integration-account.
 |**--integration-account-name**|string|The integration account name.|integration_account_name|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--sku**|object|The sku.|sku|
+|**--sku-name**|choice|The sku name.|name_sku_name|
 |**--integration-service-environment**|object|The integration service environment.|integration_service_environment|
 |**--state**|choice|The workflow state.|state|
 ### logic integration-account-agreement create
@@ -234,14 +234,23 @@ create a logic integration-account-batch-configuration.
 |**--integration-account-name**|string|The integration account name.|integration_account_name|
 |**--batch-configuration-name**|string|The batch configuration name.|batch_configuration_name|
 |**--batch-group-name**|string|The name of the batch group.|batch_group_name|
-|**--release-criteria**|object|The batch release criteria.|release_criteria|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--properties-created-time**|date-time|The artifact creation time.|created_time|
-|**--properties-changed-time**|date-time|The artifact changed time.|changed_time|
+|**--created-time**|date-time|The artifact creation time.|created_time|
+|**--changed-time**|date-time|The artifact changed time.|changed_time|
 |**--metadata**|any|Any object|metadata|
-|**--created-time**|date-time|The created time.|created_time|
-|**--changed-time**|date-time|The changed time.|changed_time|
+|**--release-criteria-message-count**|integer|The message count.|message_count|
+|**--release-criteria-batch-size**|integer|The batch size in bytes.|batch_size|
+|**--release-criteria-recurrence-frequency**|choice|The frequency.|frequency|
+|**--release-criteria-recurrence-interval**|integer|The interval.|interval|
+|**--release-criteria-recurrence-start-time**|string|The start time.|start_time|
+|**--release-criteria-recurrence-end-time**|string|The end time.|end_time|
+|**--release-criteria-recurrence-time-zone**|string|The time zone.|time_zone|
+|**--release-criteria-recurrence-schedule-minutes**|array|The minutes.|minutes|
+|**--release-criteria-recurrence-schedule-hours**|array|The hours.|hours|
+|**--release-criteria-recurrence-schedule-week-days**|array|The days of the week.|week_days|
+|**--release-criteria-recurrence-schedule-month-days**|array|The month days.|month_days|
+|**--release-criteria-recurrence-schedule-monthly-occurrences**|array|The monthly occurrences.|monthly_occurrences|
 ### logic integration-account-batch-configuration delete
 
 delete a logic integration-account-batch-configuration.
@@ -278,14 +287,23 @@ create a logic integration-account-batch-configuration.
 |**--integration-account-name**|string|The integration account name.|integration_account_name|
 |**--batch-configuration-name**|string|The batch configuration name.|batch_configuration_name|
 |**--batch-group-name**|string|The name of the batch group.|batch_group_name|
-|**--release-criteria**|object|The batch release criteria.|release_criteria|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--properties-created-time**|date-time|The artifact creation time.|created_time|
-|**--properties-changed-time**|date-time|The artifact changed time.|changed_time|
+|**--created-time**|date-time|The artifact creation time.|created_time|
+|**--changed-time**|date-time|The artifact changed time.|changed_time|
 |**--metadata**|any|Any object|metadata|
-|**--created-time**|date-time|The created time.|created_time|
-|**--changed-time**|date-time|The changed time.|changed_time|
+|**--release-criteria-message-count**|integer|The message count.|message_count|
+|**--release-criteria-batch-size**|integer|The batch size in bytes.|batch_size|
+|**--release-criteria-recurrence-frequency**|choice|The frequency.|frequency|
+|**--release-criteria-recurrence-interval**|integer|The interval.|interval|
+|**--release-criteria-recurrence-start-time**|string|The start time.|start_time|
+|**--release-criteria-recurrence-end-time**|string|The end time.|end_time|
+|**--release-criteria-recurrence-time-zone**|string|The time zone.|time_zone|
+|**--release-criteria-recurrence-schedule-minutes**|array|The minutes.|minutes|
+|**--release-criteria-recurrence-schedule-hours**|array|The hours.|hours|
+|**--release-criteria-recurrence-schedule-week-days**|array|The days of the week.|week_days|
+|**--release-criteria-recurrence-schedule-month-days**|array|The month days.|month_days|
+|**--release-criteria-recurrence-schedule-monthly-occurrences**|array|The monthly occurrences.|monthly_occurrences|
 ### logic integration-account-certificate create
 
 create a logic integration-account-certificate.
@@ -357,10 +375,10 @@ create a logic integration-account-map.
 |**--map-type**|choice|The map type.|map_type|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--parameters-schema**|object|The parameters schema of integration account map.|parameters_schema|
 |**--content**|string|The content.|content|
 |**--properties-content-type**|string|The content type.|content_type|
 |**--metadata**|any|The metadata.|metadata|
+|**--parameters-schema-ref**|string|The reference name.|ref|
 ### logic integration-account-map delete
 
 delete a logic integration-account-map.
@@ -412,10 +430,10 @@ create a logic integration-account-map.
 |**--map-type**|choice|The map type.|map_type|
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
-|**--parameters-schema**|object|The parameters schema of integration account map.|parameters_schema|
 |**--content**|string|The content.|content|
 |**--properties-content-type**|string|The content type.|content_type|
 |**--metadata**|any|The metadata.|metadata|
+|**--parameters-schema-ref**|string|The reference name.|ref|
 ### logic integration-account-partner create
 
 create a logic integration-account-partner.
@@ -745,10 +763,10 @@ create a logic workflow.
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
 |**--state**|choice|The state.|state|
-|**--integration-account**|object|The integration account.|integration_account|
-|**--integration-service-environment**|object|The integration service environment.|integration_service_environment|
 |**--definition**|any|The definition.|definition|
 |**--parameters**|dictionary|The parameters.|parameters|
+|**--integration-service-environment-id**|string|The resource id.|id_properties_integration_service_environment_id|
+|**--integration-account-id**|string|The resource id.|id_properties_integration_service_environment_id|
 |**--access-control-triggers**|object|The access control configuration for invoking workflow triggers.|triggers|
 |**--access-control-contents**|object|The access control configuration for accessing workflow run contents.|contents|
 |**--access-control-actions**|object|The access control configuration for workflow actions.|actions|
@@ -823,8 +841,7 @@ move a logic workflow.
 |------|----|-----------|----------|--------------|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--workflow-name**|string|The workflow name.|workflow_name|
-|**--id**|string|The resource id.|id|
-|**--name**|string|The workflow name.|name|
+|**--id-properties-integration-service-environment-id**|string|The resource id.|id_properties_integration_service_environment_id|
 ### logic workflow regenerate-access-key
 
 regenerate-access-key a logic workflow.
@@ -862,10 +879,10 @@ validate-by-location a logic workflow.
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
 |**--state**|choice|The state.|state|
-|**--integration-account**|object|The integration account.|integration_account|
-|**--integration-service-environment**|object|The integration service environment.|integration_service_environment|
 |**--definition**|any|The definition.|definition|
 |**--parameters**|dictionary|The parameters.|parameters|
+|**--integration-service-environment-id**|string|The resource id.|id_properties_integration_service_environment_id|
+|**--integration-account-id**|string|The resource id.|id_properties_integration_service_environment_id|
 |**--access-control-triggers**|object|The access control configuration for invoking workflow triggers.|triggers|
 |**--access-control-contents**|object|The access control configuration for accessing workflow run contents.|contents|
 |**--access-control-actions**|object|The access control configuration for workflow actions.|actions|
@@ -883,10 +900,10 @@ validate-by-resource-group a logic workflow.
 |**--location**|string|The resource location.|location|
 |**--tags**|dictionary|The resource tags.|tags|
 |**--state**|choice|The state.|state|
-|**--integration-account**|object|The integration account.|integration_account|
-|**--integration-service-environment**|object|The integration service environment.|integration_service_environment|
 |**--definition**|any|The definition.|definition|
 |**--parameters**|dictionary|The parameters.|parameters|
+|**--integration-service-environment-id**|string|The resource id.|id_properties_integration_service_environment_id|
+|**--integration-account-id**|string|The resource id.|id_properties_integration_service_environment_id|
 |**--access-control-triggers**|object|The access control configuration for invoking workflow triggers.|triggers|
 |**--access-control-contents**|object|The access control configuration for accessing workflow run contents.|contents|
 |**--access-control-actions**|object|The access control configuration for workflow actions.|actions|
@@ -1059,6 +1076,15 @@ show a logic workflow-run-operation.
 |**--workflow-name**|string|The workflow name.|workflow_name|
 |**--run-name**|string|The workflow run name.|run_name|
 |**--operation-id**|string|The workflow operation id.|operation_id|
+### logic workflow-trigger get-schema-json
+
+get-schema-json a logic workflow-trigger.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--resource-group-name**|string|The resource group name.|resource_group_name|
+|**--workflow-name**|string|The workflow name.|workflow_name|
+|**--trigger-name**|string|The workflow trigger name.|trigger_name|
 ### logic workflow-trigger list
 
 list a logic workflow-trigger.

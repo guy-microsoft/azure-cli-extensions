@@ -19,17 +19,14 @@ from azure.cli.core.commands.parameters import (
 )
 from azure.cli.core.commands.validators import get_default_location_from_resource_group
 from azext_logic.action import (
-    AddIntegrationAccount,
     AddEndpointsConfigurationWorkflow,
     AddSource,
-    AddIntegrationaccountsSku,
-    AddKeyVault,
     AddProperties,
-    AddParametersSchema,
+    AddReleaseCriteriaRecurrenceScheduleMonthlyOccurrences,
     AddContentB2bBusinessIdentities,
     AddHostIdentity,
     AddKeyKeyVault,
-    AddIntegrationserviceenvironmentsSku
+    AddSku
 )
 
 
@@ -43,24 +40,22 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow create') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('state', arg_type=get_enum_type(['NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Sus'
                    'pended']), help='The state.')
-        c.argument('integration_account', action=AddIntegrationAccount, nargs='+', help='The integration account. Expec'
-                   't value: id=xx.')
-        c.argument('integration_service_environment', action=AddIntegrationAccount, nargs='+', help='The integration se'
-                   'rvice environment. Expect value: id=xx.')
         c.argument('definition', arg_type=CLIArgumentType(options_list=['--definition'], help='The definition. Expected'
                    ' value: json-string/@json-file.'))
         c.argument('parameters', arg_type=CLIArgumentType(options_list=['--parameters'], help='The parameters. Expected'
                    ' value: json-string/@json-file.'))
+        c.argument('integration_service_environment_id', help='The resource id.')
+        c.argument('integration_account_id', help='The resource id.')
         c.argument('access_control_triggers', arg_type=CLIArgumentType(options_list=['--access-control-triggers'],
                    help='The access control configuration for invoking workflow triggers. Expected value: json-string/@'
                    'json-file.'))
@@ -73,70 +68,65 @@ def load_arguments(self, _):
                    'low-management'], help='The access control configuration for workflow management. Expected value: j'
                    'son-string/@json-file.'))
         c.argument('endpoints_configuration_workflow', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The w'
-                   'orkflow endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-addr'
-                   'esses, access-endpoint-ip-addresses.')
+                   'orkflow endpoints.')
         c.argument('endpoints_configuration_connector', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The '
-                   'connector endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-ad'
-                   'dresses, access-endpoint-ip-addresses.')
+                   'connector endpoints.')
 
     with self.argument_context('logic workflow update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow disable') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow enable') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow generate-upgraded-definition') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
         c.argument('target_schema_version', help='The target schema version.')
 
     with self.argument_context('logic workflow list-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.')
         c.argument('not_after', help='The expiry time.')
         c.argument('key_type', arg_type=get_enum_type(['NotSpecified', 'Primary', 'Secondary']), help='The key type.')
 
     with self.argument_context('logic workflow list-swagger') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.')
 
     with self.argument_context('logic workflow move') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('id_', options_list=['--id'], help='The resource id.')
-        c.argument('name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
+        c.argument('id_properties_integration_service_environment_id', help='The resource id.')
 
     with self.argument_context('logic workflow regenerate-access-key') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
         c.argument('key_type', arg_type=get_enum_type(['NotSpecified', 'Primary', 'Secondary']), help='The key type.')
 
     with self.argument_context('logic workflow validate-by-location') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
-                   validator=get_default_location_from_resource_group)
-        c.argument('workflow_name', help='The workflow name.')
+                   validator=get_default_location_from_resource_group, id_part='name')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='child_name_1')
         c.argument('tags', tags_type)
         c.argument('state', arg_type=get_enum_type(['NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Sus'
                    'pended']), help='The state.')
-        c.argument('integration_account', action=AddIntegrationAccount, nargs='+', help='The integration account. Expec'
-                   't value: id=xx.')
-        c.argument('integration_service_environment', action=AddIntegrationAccount, nargs='+', help='The integration se'
-                   'rvice environment. Expect value: id=xx.')
         c.argument('definition', arg_type=CLIArgumentType(options_list=['--definition'], help='The definition. Expected'
                    ' value: json-string/@json-file.'))
         c.argument('parameters', arg_type=CLIArgumentType(options_list=['--parameters'], help='The parameters. Expected'
                    ' value: json-string/@json-file.'))
+        c.argument('integration_service_environment_id', help='The resource id.')
+        c.argument('integration_account_id', help='The resource id.')
         c.argument('access_control_triggers', arg_type=CLIArgumentType(options_list=['--access-control-triggers'],
                    help='The access control configuration for invoking workflow triggers. Expected value: json-string/@'
                    'json-file.'))
@@ -149,28 +139,24 @@ def load_arguments(self, _):
                    'low-management'], help='The access control configuration for workflow management. Expected value: j'
                    'son-string/@json-file.'))
         c.argument('endpoints_configuration_workflow', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The w'
-                   'orkflow endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-addr'
-                   'esses, access-endpoint-ip-addresses.')
+                   'orkflow endpoints.')
         c.argument('endpoints_configuration_connector', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The '
-                   'connector endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-ad'
-                   'dresses, access-endpoint-ip-addresses.')
+                   'connector endpoints.')
 
     with self.argument_context('logic workflow validate-by-resource-group') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('state', arg_type=get_enum_type(['NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Sus'
                    'pended']), help='The state.')
-        c.argument('integration_account', action=AddIntegrationAccount, nargs='+', help='The integration account. Expec'
-                   't value: id=xx.')
-        c.argument('integration_service_environment', action=AddIntegrationAccount, nargs='+', help='The integration se'
-                   'rvice environment. Expect value: id=xx.')
         c.argument('definition', arg_type=CLIArgumentType(options_list=['--definition'], help='The definition. Expected'
                    ' value: json-string/@json-file.'))
         c.argument('parameters', arg_type=CLIArgumentType(options_list=['--parameters'], help='The parameters. Expected'
                    ' value: json-string/@json-file.'))
+        c.argument('integration_service_environment_id', help='The resource id.')
+        c.argument('integration_account_id', help='The resource id.')
         c.argument('access_control_triggers', arg_type=CLIArgumentType(options_list=['--access-control-triggers'],
                    help='The access control configuration for invoking workflow triggers. Expected value: json-string/@'
                    'json-file.'))
@@ -183,11 +169,13 @@ def load_arguments(self, _):
                    'low-management'], help='The access control configuration for workflow management. Expected value: j'
                    'son-string/@json-file.'))
         c.argument('endpoints_configuration_workflow', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The w'
-                   'orkflow endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-addr'
-                   'esses, access-endpoint-ip-addresses.')
+                   'orkflow endpoints.')
         c.argument('endpoints_configuration_connector', action=AddEndpointsConfigurationWorkflow, nargs='+', help='The '
-                   'connector endpoints. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: outgoing-ip-ad'
-                   'dresses, access-endpoint-ip-addresses.')
+                   'connector endpoints.')
+
+    with self.argument_context('logic workflow wait') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('workflow_name', options_list=['--name', '-n'], help='The workflow name.', id_part='name')
 
     with self.argument_context('logic workflow-version list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -196,8 +184,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-version show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('version_id', help='The workflow versionId.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('version_id', help='The workflow versionId.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-trigger list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -207,8 +195,13 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-trigger show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
+
+    with self.argument_context('logic workflow-trigger get-schema-json') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-trigger list-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -217,20 +210,19 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-trigger reset') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-trigger run') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-trigger set-state') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
-        c.argument('source', action=AddSource, nargs='+', help='The source. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... ,'
-                   ' available KEYs are: name, flow-name, trigger-name, id.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
+        c.argument('source', action=AddSource, nargs='+', help='The source.')
 
     with self.argument_context('logic workflow-version-trigger list-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -250,17 +242,17 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-trigger-history show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
         c.argument('history_name', help='The workflow trigger history name. Corresponds to the run name for triggers th'
-                   'at resulted in a run.')
+                   'at resulted in a run.', id_part='child_name_2')
 
     with self.argument_context('logic workflow-trigger-history resubmit') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('trigger_name', help='The workflow trigger name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('trigger_name', help='The workflow trigger name.', id_part='child_name_1')
         c.argument('history_name', help='The workflow trigger history name. Corresponds to the run name for triggers th'
-                   'at resulted in a run.')
+                   'at resulted in a run.', id_part='child_name_2')
 
     with self.argument_context('logic workflow-run list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -271,13 +263,13 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-run cancel') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
 
     with self.argument_context('logic workflow-run-action list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -288,9 +280,9 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run-action show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('action_name', help='The workflow action name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('action_name', help='The workflow action name.', id_part='child_name_2')
 
     with self.argument_context('logic workflow-run-action list-expression-trace') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -306,10 +298,10 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run-action-repetition show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('action_name', help='The workflow action name.')
-        c.argument('repetition_name', help='The workflow repetition.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('action_name', help='The workflow action name.', id_part='child_name_2')
+        c.argument('repetition_name', help='The workflow repetition.', id_part='child_name_3')
 
     with self.argument_context('logic workflow-run-action-repetition list-expression-trace') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -327,11 +319,11 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run-action-repetition-request-history show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('action_name', help='The workflow action name.')
-        c.argument('repetition_name', help='The workflow repetition.')
-        c.argument('request_history_name', help='The request history name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('action_name', help='The workflow action name.', id_part='child_name_2')
+        c.argument('repetition_name', help='The workflow repetition.', id_part='child_name_3')
+        c.argument('request_history_name', help='The request history name.', id_part='child_name_4')
 
     with self.argument_context('logic workflow-run-action-request-history list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -341,10 +333,10 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run-action-request-history show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('action_name', help='The workflow action name.')
-        c.argument('request_history_name', help='The request history name.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('action_name', help='The workflow action name.', id_part='child_name_2')
+        c.argument('request_history_name', help='The request history name.', id_part='child_name_3')
 
     with self.argument_context('logic workflow-run-action-scope-repetition list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -354,16 +346,16 @@ def load_arguments(self, _):
 
     with self.argument_context('logic workflow-run-action-scope-repetition show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('action_name', help='The workflow action name.')
-        c.argument('repetition_name', help='The workflow repetition.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('action_name', help='The workflow action name.', id_part='child_name_2')
+        c.argument('repetition_name', help='The workflow repetition.', id_part='child_name_3')
 
     with self.argument_context('logic workflow-run-operation show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('workflow_name', help='The workflow name.')
-        c.argument('run_name', help='The workflow run name.')
-        c.argument('operation_id', help='The workflow operation id.')
+        c.argument('workflow_name', help='The workflow name.', id_part='name')
+        c.argument('run_name', help='The workflow run name.', id_part='child_name_1')
+        c.argument('operation_id', help='The workflow operation id.', id_part='child_name_2')
 
     with self.argument_context('logic integration-account list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -371,15 +363,17 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.',
+                   id_part='name')
 
     with self.argument_context('logic integration-account create') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddIntegrationaccountsSku, nargs='+', help='The sku. Expect value: name=xx.')
+        c.argument('sku_name', arg_type=get_enum_type(['NotSpecified', 'Free', 'Basic', 'Standard']), help='The sku nam'
+                   'e.')
         c.argument('integration_service_environment', arg_type=CLIArgumentType(options_list=['--integration-service-env'
                    'ironment'], help='The integration service environment. Expected value: json-string/@json-file.'))
         c.argument('state', arg_type=get_enum_type(['NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Sus'
@@ -387,11 +381,13 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.',
+                   id_part='name')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddIntegrationaccountsSku, nargs='+', help='The sku. Expect value: name=xx.')
+        c.argument('sku_name', arg_type=get_enum_type(['NotSpecified', 'Free', 'Basic', 'Standard']), help='The sku nam'
+                   'e.')
         c.argument('integration_service_environment', arg_type=CLIArgumentType(options_list=['--integration-service-env'
                    'ironment'], help='The integration service environment. Expected value: json-string/@json-file.'))
         c.argument('state', arg_type=get_enum_type(['NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Sus'
@@ -399,24 +395,25 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.',
+                   id_part='name')
 
     with self.argument_context('logic integration-account list-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.')
         c.argument('not_after', help='The expiry time.')
         c.argument('key_type', arg_type=get_enum_type(['NotSpecified', 'Primary', 'Secondary']), help='The key type.')
 
     with self.argument_context('logic integration-account list-key-vault-key') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('key_vault', action=AddKeyVault, nargs='+', help='The key vault reference. Expect value: KEY1=VALUE1'
-                   ' KEY2=VALUE2 ... , available KEYs are: name, id.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.')
         c.argument('skip_token', help='The skip token.')
+        c.argument('key_vault_id', help='The resource id.')
 
     with self.argument_context('logic integration-account log-tracking-event') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.',
+                   id_part='name')
         c.argument('source_type', help='The source type.')
         c.argument('track_events_options', arg_type=get_enum_type(['None', 'DisableSourceInfoEnrich']), help='The track'
                    ' events options.')
@@ -425,7 +422,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account regenerate-access-key') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
+        c.argument('integration_account_name', options_list=['--name', '-n'], help='The integration account name.',
+                   id_part='name')
         c.argument('key_type', arg_type=get_enum_type(['NotSpecified', 'Primary', 'Secondary']), help='The key type.')
 
     with self.argument_context('logic integration-account-assembly list') as c:
@@ -434,8 +432,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-assembly show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('assembly_artifact_name', help='The assembly artifact name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('assembly_artifact_name', help='The assembly artifact name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-assembly create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -444,25 +442,21 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('properties', action=AddProperties, nargs='+', help='The assembly properties. Expect value: KEY1=VAL'
-                   'UE1 KEY2=VALUE2 ... , available KEYs are: assembly-name, assembly-version, assembly-culture, assemb'
-                   'ly-public-key-token, content, content-type, content-link, created-time, changed-time, metadata.')
+        c.argument('properties', action=AddProperties, nargs='+', help='The assembly properties.')
 
     with self.argument_context('logic integration-account-assembly update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('assembly_artifact_name', help='The assembly artifact name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('assembly_artifact_name', help='The assembly artifact name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('properties', action=AddProperties, nargs='+', help='The assembly properties. Expect value: KEY1=VAL'
-                   'UE1 KEY2=VALUE2 ... , available KEYs are: assembly-name, assembly-version, assembly-culture, assemb'
-                   'ly-public-key-token, content, content-type, content-link, created-time, changed-time, metadata.')
+        c.argument('properties', action=AddProperties, nargs='+', help='The assembly properties.')
 
     with self.argument_context('logic integration-account-assembly delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('assembly_artifact_name', help='The assembly artifact name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('assembly_artifact_name', help='The assembly artifact name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-assembly list-content-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -475,8 +469,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-batch-configuration show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('batch_configuration_name', help='The batch configuration name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('batch_configuration_name', help='The batch configuration name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-batch-configuration create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -485,37 +479,59 @@ def load_arguments(self, _):
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('properties_created_time', help='The artifact creation time.')
-        c.argument('properties_changed_time', help='The artifact changed time.')
+        c.argument('created_time', help='The artifact creation time.')
+        c.argument('changed_time', help='The artifact changed time.')
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='Any object Expected value: j'
                    'son-string/@json-file.'))
         c.argument('batch_group_name', help='The name of the batch group.')
-        c.argument('release_criteria', arg_type=CLIArgumentType(options_list=['--release-criteria'], help='The batch re'
-                   'lease criteria. Expected value: json-string/@json-file.'))
-        c.argument('created_time', help='The created time.')
-        c.argument('changed_time', help='The changed time.')
+        c.argument('release_criteria_message_count', help='The message count.')
+        c.argument('release_criteria_batch_size', help='The batch size in bytes.')
+        c.argument('release_criteria_recurrence_frequency', arg_type=get_enum_type(['NotSpecified', 'Second', 'Minute',
+                    'Hour', 'Day', 'Week', 'Month', 'Year']), help='The frequency.')
+        c.argument('release_criteria_recurrence_interval', help='The interval.')
+        c.argument('release_criteria_recurrence_start_time', help='The start time.')
+        c.argument('release_criteria_recurrence_end_time', help='The end time.')
+        c.argument('release_criteria_recurrence_time_zone', help='The time zone.')
+        c.argument('release_criteria_recurrence_schedule_minutes', nargs='+', help='The minutes.')
+        c.argument('release_criteria_recurrence_schedule_hours', nargs='+', help='The hours.')
+        c.argument('release_criteria_recurrence_schedule_week_days', nargs='+', help='The days of the week.')
+        c.argument('release_criteria_recurrence_schedule_month_days', nargs='+', help='The month days.')
+        c.argument('release_criteria_recurrence_schedule_monthly_occurrences',
+                   action=AddReleaseCriteriaRecurrenceScheduleMonthlyOccurrences, nargs='+', help='The monthly occurren'
+                   'ces.')
 
     with self.argument_context('logic integration-account-batch-configuration update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('batch_configuration_name', help='The batch configuration name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('batch_configuration_name', help='The batch configuration name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('properties_created_time', help='The artifact creation time.')
-        c.argument('properties_changed_time', help='The artifact changed time.')
+        c.argument('created_time', help='The artifact creation time.')
+        c.argument('changed_time', help='The artifact changed time.')
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='Any object Expected value: j'
                    'son-string/@json-file.'))
         c.argument('batch_group_name', help='The name of the batch group.')
-        c.argument('release_criteria', arg_type=CLIArgumentType(options_list=['--release-criteria'], help='The batch re'
-                   'lease criteria. Expected value: json-string/@json-file.'))
-        c.argument('created_time', help='The created time.')
-        c.argument('changed_time', help='The changed time.')
+        c.argument('release_criteria_message_count', help='The message count.')
+        c.argument('release_criteria_batch_size', help='The batch size in bytes.')
+        c.argument('release_criteria_recurrence_frequency', arg_type=get_enum_type(['NotSpecified', 'Second', 'Minute',
+                    'Hour', 'Day', 'Week', 'Month', 'Year']), help='The frequency.')
+        c.argument('release_criteria_recurrence_interval', help='The interval.')
+        c.argument('release_criteria_recurrence_start_time', help='The start time.')
+        c.argument('release_criteria_recurrence_end_time', help='The end time.')
+        c.argument('release_criteria_recurrence_time_zone', help='The time zone.')
+        c.argument('release_criteria_recurrence_schedule_minutes', nargs='+', help='The minutes.')
+        c.argument('release_criteria_recurrence_schedule_hours', nargs='+', help='The hours.')
+        c.argument('release_criteria_recurrence_schedule_week_days', nargs='+', help='The days of the week.')
+        c.argument('release_criteria_recurrence_schedule_month_days', nargs='+', help='The month days.')
+        c.argument('release_criteria_recurrence_schedule_monthly_occurrences',
+                   action=AddReleaseCriteriaRecurrenceScheduleMonthlyOccurrences, nargs='+', help='The monthly occurren'
+                   'ces.')
 
     with self.argument_context('logic integration-account-batch-configuration delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('batch_configuration_name', help='The batch configuration name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('batch_configuration_name', help='The batch configuration name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-schema list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -525,8 +541,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-schema show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('schema_name', help='The integration account schema name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('schema_name', help='The integration account schema name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-schema create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -546,8 +562,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-schema update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('schema_name', help='The integration account schema name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('schema_name', help='The integration account schema name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
@@ -562,8 +578,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-schema delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('schema_name', help='The integration account schema name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('schema_name', help='The integration account schema name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-schema list-content-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -580,8 +596,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-map show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('map_name', help='The integration account map name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('map_name', help='The integration account map name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-map create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -592,33 +608,31 @@ def load_arguments(self, _):
         c.argument('tags', tags_type)
         c.argument('map_type', arg_type=get_enum_type(['NotSpecified', 'Xslt', 'Xslt20', 'Xslt30', 'Liquid']), help='Th'
                    'e map type.')
-        c.argument('parameters_schema', action=AddParametersSchema, nargs='+', help='The parameters schema of integrati'
-                   'on account map. Expect value: ref=xx.')
         c.argument('content', help='The content.')
         c.argument('properties_content_type', help='The content type.')
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
+        c.argument('parameters_schema_ref', help='The reference name.')
 
     with self.argument_context('logic integration-account-map update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('map_name', help='The integration account map name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('map_name', help='The integration account map name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('map_type', arg_type=get_enum_type(['NotSpecified', 'Xslt', 'Xslt20', 'Xslt30', 'Liquid']), help='Th'
                    'e map type.')
-        c.argument('parameters_schema', action=AddParametersSchema, nargs='+', help='The parameters schema of integrati'
-                   'on account map. Expect value: ref=xx.')
         c.argument('content', help='The content.')
         c.argument('properties_content_type', help='The content type.')
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
+        c.argument('parameters_schema_ref', help='The reference name.')
 
     with self.argument_context('logic integration-account-map delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('map_name', help='The integration account map name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('map_name', help='The integration account map name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-map list-content-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -635,8 +649,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-partner show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('partner_name', help='The integration account partner name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('partner_name', help='The integration account partner name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-partner create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -649,13 +663,12 @@ def load_arguments(self, _):
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
         c.argument('content_b2b_business_identities', action=AddContentB2bBusinessIdentities, nargs='+', help='The list'
-                   ' of partner business identities. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qu'
-                   'alifier, value.')
+                   ' of partner business identities.')
 
     with self.argument_context('logic integration-account-partner update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('partner_name', help='The integration account partner name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('partner_name', help='The integration account partner name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
@@ -663,13 +676,12 @@ def load_arguments(self, _):
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
         c.argument('content_b2b_business_identities', action=AddContentB2bBusinessIdentities, nargs='+', help='The list'
-                   ' of partner business identities. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qu'
-                   'alifier, value.')
+                   ' of partner business identities.')
 
     with self.argument_context('logic integration-account-partner delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('partner_name', help='The integration account partner name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('partner_name', help='The integration account partner name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-partner list-content-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -686,8 +698,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-agreement show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('agreement_name', help='The integration account agreement name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('agreement_name', help='The integration account agreement name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-agreement create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -705,16 +717,16 @@ def load_arguments(self, _):
         c.argument('guest_partner', help='The integration account partner that is set as guest partner for this agreeme'
                    'nt.')
         c.argument('host_identity', action=AddHostIdentity, nargs='+', help='The business identity of the host partner.'
-                   ' Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qualifier, value.')
+                   '')
         c.argument('guest_identity', action=AddHostIdentity, nargs='+', help='The business identity of the guest partne'
-                   'r. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qualifier, value.')
+                   'r.')
         c.argument('content', arg_type=CLIArgumentType(options_list=['--content'], help='The agreement content. Expecte'
                    'd value: json-string/@json-file.'))
 
     with self.argument_context('logic integration-account-agreement update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('agreement_name', help='The integration account agreement name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('agreement_name', help='The integration account agreement name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
@@ -727,16 +739,16 @@ def load_arguments(self, _):
         c.argument('guest_partner', help='The integration account partner that is set as guest partner for this agreeme'
                    'nt.')
         c.argument('host_identity', action=AddHostIdentity, nargs='+', help='The business identity of the host partner.'
-                   ' Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qualifier, value.')
+                   '')
         c.argument('guest_identity', action=AddHostIdentity, nargs='+', help='The business identity of the guest partne'
-                   'r. Expect value: KEY1=VALUE1 KEY2=VALUE2 ... , available KEYs are: qualifier, value.')
+                   'r.')
         c.argument('content', arg_type=CLIArgumentType(options_list=['--content'], help='The agreement content. Expecte'
                    'd value: json-string/@json-file.'))
 
     with self.argument_context('logic integration-account-agreement delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('agreement_name', help='The integration account agreement name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('agreement_name', help='The integration account agreement name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-agreement list-content-callback-url') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -752,8 +764,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-certificate show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('certificate_name', help='The integration account certificate name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('certificate_name', help='The integration account certificate name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-certificate create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -765,30 +777,28 @@ def load_arguments(self, _):
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
         c.argument('public_certificate', help='The public certificate.')
-        c.argument('key_key_vault', action=AddKeyKeyVault, nargs='+', help='The key vault reference. Expect value: id=x'
-                   'x.')
+        c.argument('key_key_vault', action=AddKeyKeyVault, nargs='+', help='The key vault reference.')
         c.argument('key_key_name', help='The private key name in key vault.')
         c.argument('key_key_version', help='The private key version in key vault.')
 
     with self.argument_context('logic integration-account-certificate update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('certificate_name', help='The integration account certificate name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('certificate_name', help='The integration account certificate name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('metadata', arg_type=CLIArgumentType(options_list=['--metadata'], help='The metadata. Expected value'
                    ': json-string/@json-file.'))
         c.argument('public_certificate', help='The public certificate.')
-        c.argument('key_key_vault', action=AddKeyKeyVault, nargs='+', help='The key vault reference. Expect value: id=x'
-                   'x.')
+        c.argument('key_key_vault', action=AddKeyKeyVault, nargs='+', help='The key vault reference.')
         c.argument('key_key_name', help='The private key name in key vault.')
         c.argument('key_key_version', help='The private key version in key vault.')
 
     with self.argument_context('logic integration-account-certificate delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('certificate_name', help='The integration account certificate name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('certificate_name', help='The integration account certificate name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-session list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -798,8 +808,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-session show') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('session_name', help='The integration account session name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('session_name', help='The integration account session name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-account-session create') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -813,8 +823,8 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-session update') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('session_name', help='The integration account session name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('session_name', help='The integration account session name.', id_part='child_name_1')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
@@ -823,25 +833,26 @@ def load_arguments(self, _):
 
     with self.argument_context('logic integration-account-session delete') as c:
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('integration_account_name', help='The integration account name.')
-        c.argument('session_name', help='The integration account session name.')
+        c.argument('integration_account_name', help='The integration account name.', id_part='name')
+        c.argument('session_name', help='The integration account session name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-service-environment list') as c:
         c.argument('resource_group', help='The resource group.')
         c.argument('top', help='The number of items to be included in the result.')
 
     with self.argument_context('logic integration-service-environment show') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.', id_part='name')
 
     with self.argument_context('logic integration-service-environment create') as c:
         c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddIntegrationserviceenvironmentsSku, nargs='+', help='The sku. Expect value: KEY1=VAL'
-                   'UE1 KEY2=VALUE2 ... , available KEYs are: name, capacity.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku.')
         c.argument('provisioning_state', arg_type=get_enum_type(['NotSpecified', 'Accepted', 'Running', 'Ready', 'Creat'
                    'ing', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Moving', 'Updating', 'R'
                    'egistering', 'Registered', 'Unregistering', 'Unregistered', 'Completed', 'Renewing', 'Pending', 'Wa'
@@ -855,13 +866,13 @@ def load_arguments(self, _):
                    'e network configuration. Expected value: json-string/@json-file.'))
 
     with self.argument_context('logic integration-service-environment update') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.', id_part='name')
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
-        c.argument('sku', action=AddIntegrationserviceenvironmentsSku, nargs='+', help='The sku. Expect value: KEY1=VAL'
-                   'UE1 KEY2=VALUE2 ... , available KEYs are: name, capacity.')
+        c.argument('sku', action=AddSku, nargs='+', help='The sku.')
         c.argument('provisioning_state', arg_type=get_enum_type(['NotSpecified', 'Accepted', 'Running', 'Ready', 'Creat'
                    'ing', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Moving', 'Updating', 'R'
                    'egistering', 'Registered', 'Unregistering', 'Unregistered', 'Completed', 'Renewing', 'Pending', 'Wa'
@@ -875,39 +886,56 @@ def load_arguments(self, _):
                    'e network configuration. Expected value: json-string/@json-file.'))
 
     with self.argument_context('logic integration-service-environment delete') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.', id_part='name')
 
     with self.argument_context('logic integration-service-environment restart') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.', id_part='name')
+
+    with self.argument_context('logic integration-service-environment wait') as c:
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', options_list=['--name', '-n'], help='The integration service'
+                   ' environment name.', id_part='name')
 
     with self.argument_context('logic integration-service-environment-sku list') as c:
         c.argument('resource_group', help='The resource group.')
         c.argument('integration_service_environment_name', help='The integration service environment name.')
 
     with self.argument_context('logic integration-service-environment-network-health show') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', help='The integration service environment name.', id_part='n'
+                   'ame')
 
     with self.argument_context('logic integration-service-environment-managed-api list') as c:
         c.argument('resource_group', help='The resource group.')
         c.argument('integration_service_environment_name', help='The integration service environment name.')
 
     with self.argument_context('logic integration-service-environment-managed-api show') as c:
-        c.argument('resource_group', help='The resource group name.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
-        c.argument('api_name', help='The api name.')
+        c.argument('resource_group', help='The resource group name.', id_part='resource_group')
+        c.argument('integration_service_environment_name', help='The integration service environment name.', id_part='n'
+                   'ame')
+        c.argument('api_name', help='The api name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-service-environment-managed-api delete') as c:
-        c.argument('resource_group', help='The resource group.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
-        c.argument('api_name', help='The api name.')
+        c.argument('resource_group', help='The resource group.', id_part='resource_group')
+        c.argument('integration_service_environment_name', help='The integration service environment name.', id_part='n'
+                   'ame')
+        c.argument('api_name', help='The api name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-service-environment-managed-api put') as c:
-        c.argument('resource_group', help='The resource group name.')
-        c.argument('integration_service_environment_name', help='The integration service environment name.')
-        c.argument('api_name', help='The api name.')
+        c.argument('resource_group', help='The resource group name.', id_part='resource_group')
+        c.argument('integration_service_environment_name', help='The integration service environment name.', id_part='n'
+                   'ame')
+        c.argument('api_name', help='The api name.', id_part='child_name_1')
+
+    with self.argument_context('logic integration-service-environment-managed-api wait') as c:
+        c.argument('resource_group', help='The resource group name.', id_part='resource_group')
+        c.argument('integration_service_environment_name', help='The integration service environment name.', id_part='n'
+                   'ame')
+        c.argument('api_name', help='The api name.', id_part='child_name_1')
 
     with self.argument_context('logic integration-service-environment-managed-api-operation list') as c:
         c.argument('resource_group', help='The resource group.')

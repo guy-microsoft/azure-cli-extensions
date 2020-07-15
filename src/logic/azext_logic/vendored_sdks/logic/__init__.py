@@ -7,13 +7,10 @@
 # --------------------------------------------------------------------------
 
 from ._logic_management_client import LogicManagementClient
-from ._version import VERSION
-
-__version__ = VERSION
 __all__ = ['LogicManagementClient']
 
 try:
-    from .patch import patch_sdk
+    from ._patch import patch_sdk
     patch_sdk()
 except ImportError:
     pass

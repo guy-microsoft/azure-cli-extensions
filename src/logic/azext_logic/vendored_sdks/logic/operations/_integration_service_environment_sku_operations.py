@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -30,7 +30,7 @@ class IntegrationServiceEnvironmentSkuOperations(object):
     instantiates it for you and attaches it as an attribute.
 
     :ivar models: Alias to model classes used in this operation group.
-    :type models: ~azure.mgmt.logic.models
+    :type models: ~logic_management_client.models
     :param client: Client for service requests.
     :param config: Configuration of service client.
     :param serializer: An object model serializer.
@@ -51,7 +51,7 @@ class IntegrationServiceEnvironmentSkuOperations(object):
         integration_service_environment_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.IntegrationServiceEnvironmentSkuList"
+        # type: (...) -> Iterable["models.IntegrationServiceEnvironmentSkuList"]
         """Gets a list of integration service environment Skus.
 
         :param resource_group: The resource group.
@@ -59,31 +59,32 @@ class IntegrationServiceEnvironmentSkuOperations(object):
         :param integration_service_environment_name: The integration service environment name.
         :type integration_service_environment_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: IntegrationServiceEnvironmentSkuList or the result of cls(response)
-        :rtype: ~azure.mgmt.logic.models.IntegrationServiceEnvironmentSkuList
+        :return: An iterator like instance of either IntegrationServiceEnvironmentSkuList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~logic_management_client.models.IntegrationServiceEnvironmentSkuList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.IntegrationServiceEnvironmentSkuList"]
-        error_map = kwargs.pop('error_map', {404: ResourceNotFoundError, 409: ResourceExistsError})
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
         api_version = "2019-05-01"
 
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroup': self._serialize.url("resource_group", resource_group, 'str'),
                     'integrationServiceEnvironmentName': self._serialize.url("integration_service_environment_name", integration_service_environment_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
             else:
                 url = next_link
-
-            # Construct parameters
-            query_parameters = {}  # type: Dict[str, Any]
-            query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
+                query_parameters = {}  # type: Dict[str, Any]
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
             header_parameters['Accept'] = 'application/json'
@@ -115,4 +116,4 @@ class IntegrationServiceEnvironmentSkuOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/skus'}
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/skus'}  # type: ignore

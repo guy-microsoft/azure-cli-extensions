@@ -40,7 +40,6 @@ try:
     from ._models_py3 import BatchConfiguration
     from ._models_py3 import BatchConfigurationCollection
     from ._models_py3 import BatchConfigurationProperties
-    from ._models_py3 import BatchReleaseCriteria
     from ._models_py3 import BusinessIdentity
     from ._models_py3 import CallbackUrl
     from ._models_py3 import ContentHash
@@ -83,7 +82,6 @@ try:
     from ._models_py3 import IntegrationAccountMap
     from ._models_py3 import IntegrationAccountMapFilter
     from ._models_py3 import IntegrationAccountMapListResult
-    from ._models_py3 import IntegrationAccountMapPropertiesParametersSchema
     from ._models_py3 import IntegrationAccountPartner
     from ._models_py3 import IntegrationAccountPartnerFilter
     from ._models_py3 import IntegrationAccountPartnerListResult
@@ -93,7 +91,6 @@ try:
     from ._models_py3 import IntegrationAccountSession
     from ._models_py3 import IntegrationAccountSessionFilter
     from ._models_py3 import IntegrationAccountSessionListResult
-    from ._models_py3 import IntegrationAccountSku
     from ._models_py3 import IntegrationServiceEnvironment
     from ._models_py3 import IntegrationServiceEnvironmentAccessEndpoint
     from ._models_py3 import IntegrationServiceEnvironmentListResult
@@ -126,7 +123,6 @@ try:
     from ._models_py3 import OperationListResult
     from ._models_py3 import OperationResult
     from ._models_py3 import OperationResultProperties
-    from ._models_py3 import RecurrenceSchedule
     from ._models_py3 import RecurrenceScheduleOccurrence
     from ._models_py3 import RegenerateActionParameter
     from ._models_py3 import RepetitionIndex
@@ -234,7 +230,6 @@ except (SyntaxError, ImportError):
     from ._models import BatchConfiguration  # type: ignore
     from ._models import BatchConfigurationCollection  # type: ignore
     from ._models import BatchConfigurationProperties  # type: ignore
-    from ._models import BatchReleaseCriteria  # type: ignore
     from ._models import BusinessIdentity  # type: ignore
     from ._models import CallbackUrl  # type: ignore
     from ._models import ContentHash  # type: ignore
@@ -277,7 +272,6 @@ except (SyntaxError, ImportError):
     from ._models import IntegrationAccountMap  # type: ignore
     from ._models import IntegrationAccountMapFilter  # type: ignore
     from ._models import IntegrationAccountMapListResult  # type: ignore
-    from ._models import IntegrationAccountMapPropertiesParametersSchema  # type: ignore
     from ._models import IntegrationAccountPartner  # type: ignore
     from ._models import IntegrationAccountPartnerFilter  # type: ignore
     from ._models import IntegrationAccountPartnerListResult  # type: ignore
@@ -287,7 +281,6 @@ except (SyntaxError, ImportError):
     from ._models import IntegrationAccountSession  # type: ignore
     from ._models import IntegrationAccountSessionFilter  # type: ignore
     from ._models import IntegrationAccountSessionListResult  # type: ignore
-    from ._models import IntegrationAccountSku  # type: ignore
     from ._models import IntegrationServiceEnvironment  # type: ignore
     from ._models import IntegrationServiceEnvironmentAccessEndpoint  # type: ignore
     from ._models import IntegrationServiceEnvironmentListResult  # type: ignore
@@ -320,7 +313,6 @@ except (SyntaxError, ImportError):
     from ._models import OperationListResult  # type: ignore
     from ._models import OperationResult  # type: ignore
     from ._models import OperationResultProperties  # type: ignore
-    from ._models import RecurrenceSchedule  # type: ignore
     from ._models import RecurrenceScheduleOccurrence  # type: ignore
     from ._models import RegenerateActionParameter  # type: ignore
     from ._models import RepetitionIndex  # type: ignore
@@ -476,7 +468,6 @@ __all__ = [
     'BatchConfiguration',
     'BatchConfigurationCollection',
     'BatchConfigurationProperties',
-    'BatchReleaseCriteria',
     'BusinessIdentity',
     'CallbackUrl',
     'ContentHash',
@@ -519,7 +510,6 @@ __all__ = [
     'IntegrationAccountMap',
     'IntegrationAccountMapFilter',
     'IntegrationAccountMapListResult',
-    'IntegrationAccountMapPropertiesParametersSchema',
     'IntegrationAccountPartner',
     'IntegrationAccountPartnerFilter',
     'IntegrationAccountPartnerListResult',
@@ -529,7 +519,6 @@ __all__ = [
     'IntegrationAccountSession',
     'IntegrationAccountSessionFilter',
     'IntegrationAccountSessionListResult',
-    'IntegrationAccountSku',
     'IntegrationServiceEnvironment',
     'IntegrationServiceEnvironmentAccessEndpoint',
     'IntegrationServiceEnvironmentListResult',
@@ -562,7 +551,6 @@ __all__ = [
     'OperationListResult',
     'OperationResult',
     'OperationResultProperties',
-    'RecurrenceSchedule',
     'RecurrenceScheduleOccurrence',
     'RegenerateActionParameter',
     'RepetitionIndex',
