@@ -12,6 +12,20 @@
 from knack.help_files import helps
 
 
+helps['databoxedge available-sku'] = """
+    type: group
+    short-summary: databoxedge available-sku
+"""
+
+helps['databoxedge available-sku list'] = """
+    type: command
+    short-summary: List all the available Skus and information related to them.
+    examples:
+      - name: AvailableSkus
+        text: |-
+               az databoxedge available-sku list
+"""
+
 helps['databoxedge device'] = """
     type: group
     short-summary: databoxedge device
@@ -41,8 +55,8 @@ helps['databoxedge device create'] = """
     examples:
       - name: DataBoxEdgeDevicePut
         text: |-
-               az databoxedge device create --location "eastus" --sku-name "Edge" --name "testedgedevice" --resource-gr\
-oup "GroupForEdgeAutomation"
+               az databoxedge device create --location "WUS" --sku-name "Edge" --name "testedgedevice" --resource-group\
+ "GroupForEdgeAutomation"
 """
 
 helps['databoxedge device update'] = """
@@ -178,6 +192,20 @@ helps['databoxedge device wait'] = """
                az databoxedge device wait --name "testedgedevice" --resource-group "GroupForEdgeAutomation" --deleted
 """
 
+helps['databoxedge sku'] = """
+    type: group
+    short-summary: databoxedge sku
+"""
+
+helps['databoxedge sku list'] = """
+    type: command
+    short-summary: List all the available Skus and information related to them.
+    examples:
+      - name: ListSkus
+        text: |-
+               az databoxedge sku list
+"""
+
 helps['databoxedge alert'] = """
     type: group
     short-summary: databoxedge alert
@@ -286,35 +314,6 @@ helps['databoxedge job show'] = """
 esource-group "GroupForEdgeAutomation"
 """
 
-helps['databoxedge node'] = """
-    type: group
-    short-summary: databoxedge node
-"""
-
-helps['databoxedge node list'] = """
-    type: command
-    short-summary: Gets all the nodes currently configured under this Data Box Edge device
-    examples:
-      - name: NodesGetAllInDevice
-        text: |-
-               az databoxedge node list --device-name "testedgedevice" --resource-group "GroupForEdgeAutomation"
-"""
-
-helps['databoxedge operation-status'] = """
-    type: group
-    short-summary: databoxedge operation-status
-"""
-
-helps['databoxedge operation-status show'] = """
-    type: command
-    short-summary: Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-    examples:
-      - name: OperationsStatusGet
-        text: |-
-               az databoxedge operation-status show --name "159a00c7-8543-4343-9435-263ac87df3bb" --device-name "tested\
-gedevice" --resource-group "GroupForEdgeAutomation"
-"""
-
 helps['databoxedge order'] = """
     type: group
     short-summary: databoxedge order
@@ -357,12 +356,12 @@ helps['databoxedge order create'] = """
             Usage: --shipping-address address-line1=XX address-line2=XX address-line3=XX postal-code=XX city=XX state=X\
 X country=XX
 
-            address-line1: Required. The address line1.
+            address-line1: The address line1.
             address-line2: The address line2.
             address-line3: The address line3.
-            postal-code: Required. The postal code.
-            city: Required. The city name.
-            state: Required. The state name.
+            postal-code: The postal code.
+            city: The city name.
+            state: The state name.
             country: Required. The country name.
     examples:
       - name: OrderPut
@@ -392,12 +391,12 @@ helps['databoxedge order update'] = """
             Usage: --shipping-address address-line1=XX address-line2=XX address-line3=XX postal-code=XX city=XX state=X\
 X country=XX
 
-            address-line1: Required. The address line1.
+            address-line1: The address line1.
             address-line2: The address line2.
             address-line3: The address line3.
-            postal-code: Required. The postal code.
-            city: Required. The city name.
-            state: Required. The state name.
+            postal-code: The postal code.
+            city: The city name.
+            state: The state name.
             country: Required. The country name.
     examples:
       - name: OrderPut
@@ -417,6 +416,16 @@ helps['databoxedge order delete'] = """
                az databoxedge order delete --device-name "testedgedevice" --resource-group "GroupForEdgeAutomation"
 """
 
+helps['databoxedge order list-dc-access-code'] = """
+    type: command
+    short-summary: Gets the DCAccess Code
+    examples:
+      - name: GetDCAccessCode
+        text: |-
+               az databoxedge order list-dc-access-code --device-name "testedgedevice" --resource-group "GroupForEdgeAu\
+tomation"
+"""
+
 helps['databoxedge order wait'] = """
     type: command
     short-summary: Place the CLI in a waiting state until a condition of the databoxedge order is met.
@@ -429,6 +438,35 @@ ated
         text: |-
                az databoxedge order wait --device-name "testedgedevice" --resource-group "GroupForEdgeAutomation" --del\
 eted
+"""
+
+helps['databoxedge node'] = """
+    type: group
+    short-summary: databoxedge node
+"""
+
+helps['databoxedge node list'] = """
+    type: command
+    short-summary: Gets all the nodes currently configured under this Data Box Edge device
+    examples:
+      - name: NodesGetAllInDevice
+        text: |-
+               az databoxedge node list --device-name "testedgedevice" --resource-group "GroupForEdgeAutomation"
+"""
+
+helps['databoxedge operation-status'] = """
+    type: group
+    short-summary: databoxedge operation-status
+"""
+
+helps['databoxedge operation-status show'] = """
+    type: command
+    short-summary: Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
+    examples:
+      - name: OperationsStatusGet
+        text: |-
+               az databoxedge operation-status show --name "159a00c7-8543-4343-9435-263ac87df3bb" --device-name "tested\
+gedevice" --resource-group "GroupForEdgeAutomation"
 """
 
 helps['databoxedge role'] = """
@@ -794,7 +832,7 @@ helps['databoxedge storage-account'] = """
 
 helps['databoxedge storage-account list'] = """
     type: command
-    short-summary: Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
+    short-summary: Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
     examples:
       - name: StorageAccountGetAllInDevice
         text: |-
@@ -1111,16 +1149,6 @@ ice.
             encryption-cert-thumbprint: Thumbprint certificate used to encrypt \"Value\". If the value is unencrypted, \
 it will be null.
             encryption-algorithm: Required. The algorithm used to encrypt "Value".
-      - name: --share-access-rights
-        short-summary: List of shares that the user has rights on. This field should not be specified during user creat\
-ion.
-        long-summary: |
-            Usage: --share-access-rights share-id=XX access-type=XX
-
-            share-id: Required. The share ID.
-            access-type: Required. Type of access to be allowed on the share for this user.
-
-            Multiple actions can be specified by using more than one --share-access-rights argument.
     examples:
       - name: UserPut
         text: |-
@@ -1143,16 +1171,6 @@ ice.
             encryption-cert-thumbprint: Thumbprint certificate used to encrypt \"Value\". If the value is unencrypted, \
 it will be null.
             encryption-algorithm: Required. The algorithm used to encrypt "Value".
-      - name: --share-access-rights
-        short-summary: List of shares that the user has rights on. This field should not be specified during user creat\
-ion.
-        long-summary: |
-            Usage: --share-access-rights share-id=XX access-type=XX
-
-            share-id: Required. The share ID.
-            access-type: Required. Type of access to be allowed on the share for this user.
-
-            Multiple actions can be specified by using more than one --share-access-rights argument.
     examples:
       - name: UserPut
         text: |-
@@ -1183,18 +1201,4 @@ omation" --created
         text: |-
                az databoxedge user wait --name "user1" --device-name "testedgedevice" --resource-group "GroupForEdgeAut\
 omation" --deleted
-"""
-
-helps['databoxedge sku'] = """
-    type: group
-    short-summary: databoxedge sku
-"""
-
-helps['databoxedge sku list'] = """
-    type: command
-    short-summary: List all the available Skus in the region and information related to them
-    examples:
-      - name: ListSkus
-        text: |-
-               az databoxedge sku list
 """

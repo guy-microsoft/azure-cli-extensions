@@ -19,13 +19,15 @@ if TYPE_CHECKING:
 
 from ._configuration import DataBoxEdgeManagementClientConfiguration
 from .operations import OperationOperations
+from .operations import AvailableSkuOperations
 from .operations import DeviceOperations
+from .operations import SkuOperations
 from .operations import AlertOperations
 from .operations import BandwidthScheduleOperations
 from .operations import JobOperations
+from .operations import OrderOperations
 from .operations import NodeOperations
 from .operations import OperationStatusOperations
-from .operations import OrderOperations
 from .operations import RoleOperations
 from .operations import ShareOperations
 from .operations import StorageAccountCredentialsOperations
@@ -33,7 +35,6 @@ from .operations import StorageAccountOperations
 from .operations import ContainerOperations
 from .operations import TriggerOperations
 from .operations import UserOperations
-from .operations import SkuOperations
 from . import models
 
 
@@ -42,20 +43,24 @@ class DataBoxEdgeManagementClient(object):
 
     :ivar operation: OperationOperations operations
     :vartype operation: data_box_edge_management_client.operations.OperationOperations
+    :ivar available_sku: AvailableSkuOperations operations
+    :vartype available_sku: data_box_edge_management_client.operations.AvailableSkuOperations
     :ivar device: DeviceOperations operations
     :vartype device: data_box_edge_management_client.operations.DeviceOperations
+    :ivar sku: SkuOperations operations
+    :vartype sku: data_box_edge_management_client.operations.SkuOperations
     :ivar alert: AlertOperations operations
     :vartype alert: data_box_edge_management_client.operations.AlertOperations
     :ivar bandwidth_schedule: BandwidthScheduleOperations operations
     :vartype bandwidth_schedule: data_box_edge_management_client.operations.BandwidthScheduleOperations
     :ivar job: JobOperations operations
     :vartype job: data_box_edge_management_client.operations.JobOperations
+    :ivar order: OrderOperations operations
+    :vartype order: data_box_edge_management_client.operations.OrderOperations
     :ivar node: NodeOperations operations
     :vartype node: data_box_edge_management_client.operations.NodeOperations
     :ivar operation_status: OperationStatusOperations operations
     :vartype operation_status: data_box_edge_management_client.operations.OperationStatusOperations
-    :ivar order: OrderOperations operations
-    :vartype order: data_box_edge_management_client.operations.OrderOperations
     :ivar role: RoleOperations operations
     :vartype role: data_box_edge_management_client.operations.RoleOperations
     :ivar share: ShareOperations operations
@@ -70,8 +75,6 @@ class DataBoxEdgeManagementClient(object):
     :vartype trigger: data_box_edge_management_client.operations.TriggerOperations
     :ivar user: UserOperations operations
     :vartype user: data_box_edge_management_client.operations.UserOperations
-    :ivar sku: SkuOperations operations
-    :vartype sku: data_box_edge_management_client.operations.SkuOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The subscription ID.
@@ -99,7 +102,11 @@ class DataBoxEdgeManagementClient(object):
 
         self.operation = OperationOperations(
             self._client, self._config, self._serialize, self._deserialize)
+        self.available_sku = AvailableSkuOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.device = DeviceOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.sku = SkuOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.alert = AlertOperations(
             self._client, self._config, self._serialize, self._deserialize)
@@ -107,11 +114,11 @@ class DataBoxEdgeManagementClient(object):
             self._client, self._config, self._serialize, self._deserialize)
         self.job = JobOperations(
             self._client, self._config, self._serialize, self._deserialize)
+        self.order = OrderOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.node = NodeOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.operation_status = OperationStatusOperations(
-            self._client, self._config, self._serialize, self._deserialize)
-        self.order = OrderOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.role = RoleOperations(
             self._client, self._config, self._serialize, self._deserialize)
@@ -126,8 +133,6 @@ class DataBoxEdgeManagementClient(object):
         self.trigger = TriggerOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.user = UserOperations(
-            self._client, self._config, self._serialize, self._deserialize)
-        self.sku = SkuOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
     def close(self):

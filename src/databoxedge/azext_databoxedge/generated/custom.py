@@ -14,6 +14,10 @@ from knack.util import CLIError
 from azure.cli.core.util import sdk_no_wait
 
 
+def databoxedge_available_sku_list(client):
+    return client.list()
+
+
 def databoxedge_device_list(client,
                             resource_group_name=None,
                             expand=None):
@@ -36,6 +40,7 @@ def databoxedge_device_create(client,
                               location,
                               tags=None,
                               etag=None,
+                              kind=None,
                               data_box_edge_device_status=None,
                               description=None,
                               model_description=None,
@@ -49,6 +54,7 @@ def databoxedge_device_create(client,
                        location=location,
                        tags=tags,
                        etag=etag,
+                       kind=kind,
                        data_box_edge_device_status=data_box_edge_device_status,
                        description=description,
                        model_description=model_description,
@@ -149,6 +155,11 @@ def databoxedge_device_upload_certificate(client,
                                      certificate=certificate)
 
 
+def databoxedge_sku_list(client,
+                         filter=None):
+    return client.list(filter=filter)
+
+
 def databoxedge_alert_list(client,
                            device_name,
                            resource_group_name):
@@ -233,22 +244,6 @@ def databoxedge_job_show(client,
                       resource_group_name=resource_group_name)
 
 
-def databoxedge_node_list(client,
-                          device_name,
-                          resource_group_name):
-    return client.list_by_data_box_edge_device(device_name=device_name,
-                                               resource_group_name=resource_group_name)
-
-
-def databoxedge_operation_status_show(client,
-                                      device_name,
-                                      name,
-                                      resource_group_name):
-    return client.get(device_name=device_name,
-                      name=name,
-                      resource_group_name=resource_group_name)
-
-
 def databoxedge_order_list(client,
                            device_name,
                            resource_group_name):
@@ -268,6 +263,7 @@ def databoxedge_order_create(client,
                              resource_group_name,
                              contact_information=None,
                              shipping_address=None,
+                             shipment_type=None,
                              current_status_status=None,
                              current_status_comments=None,
                              no_wait=False):
@@ -277,6 +273,7 @@ def databoxedge_order_create(client,
                        resource_group_name=resource_group_name,
                        contact_information=contact_information,
                        shipping_address=shipping_address,
+                       shipment_type=shipment_type,
                        status=current_status_status,
                        comments=current_status_comments)
 
@@ -286,6 +283,7 @@ def databoxedge_order_update(client,
                              resource_group_name,
                              contact_information=None,
                              shipping_address=None,
+                             shipment_type=None,
                              current_status_status=None,
                              current_status_comments=None,
                              no_wait=False):
@@ -295,6 +293,7 @@ def databoxedge_order_update(client,
                        resource_group_name=resource_group_name,
                        contact_information=contact_information,
                        shipping_address=shipping_address,
+                       shipment_type=shipment_type,
                        status=current_status_status,
                        comments=current_status_comments)
 
@@ -307,6 +306,29 @@ def databoxedge_order_delete(client,
                        client.begin_delete,
                        device_name=device_name,
                        resource_group_name=resource_group_name)
+
+
+def databoxedge_order_list_dc_access_code(client,
+                                          device_name,
+                                          resource_group_name):
+    return client.list_dc_access_code(device_name=device_name,
+                                      resource_group_name=resource_group_name)
+
+
+def databoxedge_node_list(client,
+                          device_name,
+                          resource_group_name):
+    return client.list_by_data_box_edge_device(device_name=device_name,
+                                               resource_group_name=resource_group_name)
+
+
+def databoxedge_operation_status_show(client,
+                                      device_name,
+                                      name,
+                                      resource_group_name):
+    return client.get(device_name=device_name,
+                      name=name,
+                      resource_group_name=resource_group_name)
 
 
 def databoxedge_role_list(client,
@@ -552,9 +574,9 @@ def databoxedge_storage_account_create(client,
                                        device_name,
                                        storage_account_name,
                                        resource_group_name,
+                                       data_policy,
                                        description=None,
                                        storage_account_status=None,
-                                       data_policy=None,
                                        storage_account_credential_id=None,
                                        no_wait=False):
     return sdk_no_wait(no_wait,
@@ -572,9 +594,9 @@ def databoxedge_storage_account_update(client,
                                        device_name,
                                        storage_account_name,
                                        resource_group_name,
+                                       data_policy,
                                        description=None,
                                        storage_account_status=None,
-                                       data_policy=None,
                                        storage_account_credential_id=None,
                                        no_wait=False):
     return sdk_no_wait(no_wait,
@@ -769,7 +791,6 @@ def databoxedge_user_create(client,
                             resource_group_name,
                             user_type,
                             encrypted_password=None,
-                            share_access_rights=None,
                             no_wait=False):
     return sdk_no_wait(no_wait,
                        client.begin_create_or_update,
@@ -777,26 +798,16 @@ def databoxedge_user_create(client,
                        name=name,
                        resource_group_name=resource_group_name,
                        encrypted_password=encrypted_password,
-                       share_access_rights=share_access_rights,
                        user_type=user_type)
 
 
-def databoxedge_user_update(client,
+def databoxedge_user_update(instance,
                             device_name,
                             name,
                             resource_group_name,
                             user_type,
-                            encrypted_password=None,
-                            share_access_rights=None,
                             no_wait=False):
-    return sdk_no_wait(no_wait,
-                       client.begin_create_or_update,
-                       device_name=device_name,
-                       name=name,
-                       resource_group_name=resource_group_name,
-                       encrypted_password=encrypted_password,
-                       share_access_rights=share_access_rights,
-                       user_type=user_type)
+    return instance
 
 
 def databoxedge_user_delete(client,
@@ -809,8 +820,3 @@ def databoxedge_user_delete(client,
                        device_name=device_name,
                        name=name,
                        resource_group_name=resource_group_name)
-
-
-def databoxedge_sku_list(client,
-                         filter=None):
-    return client.list(filter=filter)

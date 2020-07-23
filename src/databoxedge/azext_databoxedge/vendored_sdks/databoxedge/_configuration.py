@@ -46,7 +46,7 @@ class DataBoxEdgeManagementClientConfiguration(Configuration):
 
         self.credential = credential
         self.subscription_id = subscription_id
-        self.api_version = "2019-08-01"
+        self.api_version = "2020-07-01-preview"
         self.credential_scopes = ['https://management.azure.com/.default']
         self.credential_scopes.extend(kwargs.pop('credential_scopes', []))
         kwargs.setdefault('sdk_moniker', 'databoxedgemanagementclient/{}'.format(VERSION))

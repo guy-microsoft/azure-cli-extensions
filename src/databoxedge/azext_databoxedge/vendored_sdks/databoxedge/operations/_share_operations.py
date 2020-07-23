@@ -70,7 +70,7 @@ class ShareOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -147,7 +147,7 @@ class ShareOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Share"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -206,7 +206,7 @@ class ShareOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _share = models.Share(description=description, share_status=share_status, monitoring_status=monitoring_status, azure_container_info=azure_container_info, access_protocol=access_protocol, user_access_rights=user_access_rights, client_access_rights=client_access_rights, refresh_details=refresh_details, data_policy=data_policy)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -357,7 +357,7 @@ class ShareOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore
@@ -453,7 +453,7 @@ class ShareOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._refresh_initial.metadata['url']  # type: ignore

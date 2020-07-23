@@ -26,8 +26,14 @@ try:
     from ._models_py3 import DataBoxEdgeDeviceExtendedInfo
     from ._models_py3 import DataBoxEdgeDeviceList
     from ._models_py3 import DataBoxEdgeDevicePatch
+    from ._models_py3 import DataBoxEdgeMoveRequest
+    from ._models_py3 import DataBoxEdgeSku
+    from ._models_py3 import DataBoxEdgeSkuList
+    from ._models_py3 import DcAccessCode
     from ._models_py3 import FileEventTrigger
+    from ._models_py3 import ImageRepositoryCredential
     from ._models_py3 import IoTDeviceInfo
+    from ._models_py3 import IoTEdgeAgentInfo
     from ._models_py3 import IoTRole
     from ._models_py3 import Ipv4Config
     from ._models_py3 import Ipv6Config
@@ -50,6 +56,7 @@ try:
     from ._models_py3 import OrderStatus
     from ._models_py3 import PeriodicTimerEventTrigger
     from ._models_py3 import RefreshDetails
+    from ._models_py3 import ResourceMoveDetails
     from ._models_py3 import ResourceTypeSku
     from ._models_py3 import Role
     from ._models_py3 import RoleList
@@ -59,6 +66,7 @@ try:
     from ._models_py3 import ShareAccessRight
     from ._models_py3 import ShareList
     from ._models_py3 import SkuCost
+    from ._models_py3 import SkuInformation
     from ._models_py3 import SkuInformationList
     from ._models_py3 import SkuLocationInfo
     from ._models_py3 import SkuRestriction
@@ -99,8 +107,14 @@ except (SyntaxError, ImportError):
     from ._models import DataBoxEdgeDeviceExtendedInfo  # type: ignore
     from ._models import DataBoxEdgeDeviceList  # type: ignore
     from ._models import DataBoxEdgeDevicePatch  # type: ignore
+    from ._models import DataBoxEdgeMoveRequest  # type: ignore
+    from ._models import DataBoxEdgeSku  # type: ignore
+    from ._models import DataBoxEdgeSkuList  # type: ignore
+    from ._models import DcAccessCode  # type: ignore
     from ._models import FileEventTrigger  # type: ignore
+    from ._models import ImageRepositoryCredential  # type: ignore
     from ._models import IoTDeviceInfo  # type: ignore
+    from ._models import IoTEdgeAgentInfo  # type: ignore
     from ._models import IoTRole  # type: ignore
     from ._models import Ipv4Config  # type: ignore
     from ._models import Ipv6Config  # type: ignore
@@ -123,6 +137,7 @@ except (SyntaxError, ImportError):
     from ._models import OrderStatus  # type: ignore
     from ._models import PeriodicTimerEventTrigger  # type: ignore
     from ._models import RefreshDetails  # type: ignore
+    from ._models import ResourceMoveDetails  # type: ignore
     from ._models import ResourceTypeSku  # type: ignore
     from ._models import Role  # type: ignore
     from ._models import RoleList  # type: ignore
@@ -132,6 +147,7 @@ except (SyntaxError, ImportError):
     from ._models import ShareAccessRight  # type: ignore
     from ._models import ShareList  # type: ignore
     from ._models import SkuCost  # type: ignore
+    from ._models import SkuInformation  # type: ignore
     from ._models import SkuInformationList  # type: ignore
     from ._models import SkuLocationInfo  # type: ignore
     from ._models import SkuRestriction  # type: ignore
@@ -160,11 +176,13 @@ from ._data_box_edge_management_client_enums import (
     AzureContainerDataFormat,
     ClientPermissionType,
     ContainerStatus,
+    DataBoxEdgeDeviceKind,
     DataBoxEdgeDeviceStatus,
     DataPolicy,
     DayOfWeek,
     DownloadPhase,
     EncryptionAlgorithm,
+    HostPlatformType,
     InstallRebootBehavior,
     JobStatus,
     JobType,
@@ -172,6 +190,7 @@ from ._data_box_edge_management_client_enums import (
     MetricCategory,
     MetricUnit,
     MonitoringStatus,
+    MountType,
     NetworkAdapterDhcpStatus,
     NetworkAdapterRdmaStatus,
     NetworkAdapterStatus,
@@ -179,13 +198,18 @@ from ._data_box_edge_management_client_enums import (
     NodeStatus,
     OrderState,
     PlatformType,
+    ResourceMoveStatus,
     RoleStatus,
     RoleTypes,
     ShareAccessProtocol,
     ShareAccessType,
     ShareStatus,
+    ShipmentType,
+    SkuAvailability,
     SkuName,
     SkuRestrictionReasonCode,
+    SkuSignupOption,
+    SkuVersion,
     SslStatus,
     StorageAccountStatus,
     TimeGrain,
@@ -215,8 +239,14 @@ __all__ = [
     'DataBoxEdgeDeviceExtendedInfo',
     'DataBoxEdgeDeviceList',
     'DataBoxEdgeDevicePatch',
+    'DataBoxEdgeMoveRequest',
+    'DataBoxEdgeSku',
+    'DataBoxEdgeSkuList',
+    'DcAccessCode',
     'FileEventTrigger',
+    'ImageRepositoryCredential',
     'IoTDeviceInfo',
+    'IoTEdgeAgentInfo',
     'IoTRole',
     'Ipv4Config',
     'Ipv6Config',
@@ -239,6 +269,7 @@ __all__ = [
     'OrderStatus',
     'PeriodicTimerEventTrigger',
     'RefreshDetails',
+    'ResourceMoveDetails',
     'ResourceTypeSku',
     'Role',
     'RoleList',
@@ -248,6 +279,7 @@ __all__ = [
     'ShareAccessRight',
     'ShareList',
     'SkuCost',
+    'SkuInformation',
     'SkuInformationList',
     'SkuLocationInfo',
     'SkuRestriction',
@@ -274,11 +306,13 @@ __all__ = [
     'AzureContainerDataFormat',
     'ClientPermissionType',
     'ContainerStatus',
+    'DataBoxEdgeDeviceKind',
     'DataBoxEdgeDeviceStatus',
     'DataPolicy',
     'DayOfWeek',
     'DownloadPhase',
     'EncryptionAlgorithm',
+    'HostPlatformType',
     'InstallRebootBehavior',
     'JobStatus',
     'JobType',
@@ -286,6 +320,7 @@ __all__ = [
     'MetricCategory',
     'MetricUnit',
     'MonitoringStatus',
+    'MountType',
     'NetworkAdapterDhcpStatus',
     'NetworkAdapterRdmaStatus',
     'NetworkAdapterStatus',
@@ -293,13 +328,18 @@ __all__ = [
     'NodeStatus',
     'OrderState',
     'PlatformType',
+    'ResourceMoveStatus',
     'RoleStatus',
     'RoleTypes',
     'ShareAccessProtocol',
     'ShareAccessType',
     'ShareStatus',
+    'ShipmentType',
+    'SkuAvailability',
     'SkuName',
     'SkuRestrictionReasonCode',
+    'SkuSignupOption',
+    'SkuVersion',
     'SslStatus',
     'StorageAccountStatus',
     'TimeGrain',

@@ -43,6 +43,64 @@ class OrderOperations:
         self._deserialize = deserializer
         self._config = config
 
+    async def list_dc_access_code(
+        self,
+        device_name: str,
+        resource_group_name: str,
+        **kwargs
+    ) -> "models.DcAccessCode":
+        """Gets the DCAccess Code.
+
+        Gets the DCAccess Code.
+
+        :param device_name: The device name.
+        :type device_name: str
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: DcAccessCode, or the result of cls(response)
+        :rtype: ~data_box_edge_management_client.models.DcAccessCode
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DcAccessCode"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2020-07-01-preview"
+
+        # Construct URL
+        url = self.list_dc_access_code.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'deviceName': self._serialize.url("device_name", device_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        request = self._client.post(url, query_parameters, header_parameters)
+        pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('DcAccessCode', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    list_dc_access_code.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default/listDCAccessCode'}  # type: ignore
+
     def list_by_data_box_edge_device(
         self,
         device_name: str,
@@ -65,7 +123,7 @@ class OrderOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.OrderList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -138,7 +196,7 @@ class OrderOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Order"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -180,6 +238,7 @@ class OrderOperations:
         resource_group_name: str,
         contact_information: Optional["models.ContactDetails"] = None,
         shipping_address: Optional["models.Address"] = None,
+        shipment_type: Optional[Union[str, "models.ShipmentType"]] = None,
         status: Optional[Union[str, "models.OrderState"]] = None,
         comments: Optional[str] = None,
         **kwargs
@@ -188,8 +247,8 @@ class OrderOperations:
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _order = models.Order(contact_information=contact_information, shipping_address=shipping_address, status=status, comments=comments)
-        api_version = "2019-08-01"
+        _order = models.Order(contact_information=contact_information, shipping_address=shipping_address, shipment_type=shipment_type, status=status, comments=comments)
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -239,6 +298,7 @@ class OrderOperations:
         resource_group_name: str,
         contact_information: Optional["models.ContactDetails"] = None,
         shipping_address: Optional["models.Address"] = None,
+        shipment_type: Optional[Union[str, "models.ShipmentType"]] = None,
         status: Optional[Union[str, "models.OrderState"]] = None,
         comments: Optional[str] = None,
         **kwargs
@@ -255,6 +315,8 @@ class OrderOperations:
         :type contact_information: ~data_box_edge_management_client.models.ContactDetails
         :param shipping_address: The shipping address.
         :type shipping_address: ~data_box_edge_management_client.models.Address
+        :param shipment_type: ShipmentType of the order.
+        :type shipment_type: str or ~data_box_edge_management_client.models.ShipmentType
         :param status: Status of the order as per the allowed status types.
         :type status: str or ~data_box_edge_management_client.models.OrderState
         :param comments: Comments related to this status change.
@@ -279,6 +341,7 @@ class OrderOperations:
             resource_group_name=resource_group_name,
             contact_information=contact_information,
             shipping_address=shipping_address,
+            shipment_type=shipment_type,
             status=status,
             comments=comments,
             cls=lambda x,y,z: x,
@@ -310,7 +373,7 @@ class OrderOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore

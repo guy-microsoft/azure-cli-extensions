@@ -20,7 +20,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -61,7 +61,7 @@ class UserOperations(object):
         :type device_name: str
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
-        :param filter: Specify $filter='UserType eq :code:`<type>`' to filter on user type property.
+        :param filter: Specify $filter='Type eq :code:`<type>`' to filter on user type property.
         :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: An iterator like instance of either UserList or the result of cls(response)
@@ -71,7 +71,7 @@ class UserOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.UserList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -148,7 +148,7 @@ class UserOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.User"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -192,7 +192,6 @@ class UserOperations(object):
         resource_group_name,  # type: str
         user_type,  # type: Union[str, "models.UserType"]
         encrypted_password=None,  # type: Optional["models.AsymmetricEncryptedSecret"]
-        share_access_rights=None,  # type: Optional[List["models.ShareAccessRight"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.User"
@@ -200,8 +199,8 @@ class UserOperations(object):
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _user = models.User(encrypted_password=encrypted_password, share_access_rights=share_access_rights, user_type=user_type)
-        api_version = "2019-08-01"
+        _user = models.User(encrypted_password=encrypted_password, user_type=user_type)
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -253,7 +252,6 @@ class UserOperations(object):
         resource_group_name,  # type: str
         user_type,  # type: Union[str, "models.UserType"]
         encrypted_password=None,  # type: Optional["models.AsymmetricEncryptedSecret"]
-        share_access_rights=None,  # type: Optional[List["models.ShareAccessRight"]]
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller
@@ -269,9 +267,6 @@ class UserOperations(object):
         :type user_type: str or ~data_box_edge_management_client.models.UserType
         :param encrypted_password: The password details.
         :type encrypted_password: ~data_box_edge_management_client.models.AsymmetricEncryptedSecret
-        :param share_access_rights: List of shares that the user has rights on. This field should not
-     be specified during user creation.
-        :type share_access_rights: list[~data_box_edge_management_client.models.ShareAccessRight]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword polling: True for ARMPolling, False for no polling, or a
          polling object for personal polling strategy
@@ -293,7 +288,6 @@ class UserOperations(object):
             resource_group_name=resource_group_name,
             user_type=user_type,
             encrypted_password=encrypted_password,
-            share_access_rights=share_access_rights,
             cls=lambda x,y,z: x,
             **kwargs
         )
@@ -325,7 +319,7 @@ class UserOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore

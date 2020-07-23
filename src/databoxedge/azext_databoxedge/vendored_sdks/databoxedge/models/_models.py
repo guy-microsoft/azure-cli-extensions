@@ -14,27 +14,23 @@ class Address(msrest.serialization.Model):
 
     All required parameters must be populated in order to send to Azure.
 
-    :param address_line1: Required. The address line1.
+    :param address_line1: The address line1.
     :type address_line1: str
     :param address_line2: The address line2.
     :type address_line2: str
     :param address_line3: The address line3.
     :type address_line3: str
-    :param postal_code: Required. The postal code.
+    :param postal_code: The postal code.
     :type postal_code: str
-    :param city: Required. The city name.
+    :param city: The city name.
     :type city: str
-    :param state: Required. The state name.
+    :param state: The state name.
     :type state: str
     :param country: Required. The country name.
     :type country: str
     """
 
     _validation = {
-        'address_line1': {'required': True},
-        'postal_code': {'required': True},
-        'city': {'required': True},
-        'state': {'required': True},
         'country': {'required': True},
     }
 
@@ -53,12 +49,12 @@ class Address(msrest.serialization.Model):
         **kwargs
     ):
         super(Address, self).__init__(**kwargs)
-        self.address_line1 = kwargs['address_line1']
+        self.address_line1 = kwargs.get('address_line1', None)
         self.address_line2 = kwargs.get('address_line2', None)
         self.address_line3 = kwargs.get('address_line3', None)
-        self.postal_code = kwargs['postal_code']
-        self.city = kwargs['city']
-        self.state = kwargs['state']
+        self.postal_code = kwargs.get('postal_code', None)
+        self.city = kwargs.get('city', None)
+        self.state = kwargs.get('state', None)
         self.country = kwargs['country']
 
 
@@ -616,6 +612,9 @@ class DataBoxEdgeDevice(ArmBaseModel):
     :type tags: dict[str, str]
     :param etag: The etag for the devices.
     :type etag: str
+    :param kind: The etag for the devices. Possible values include: "AzureDataBoxGateway",
+     "AzureStackEdge", "AzureStackHub".
+    :type kind: str or ~data_box_edge_management_client.models.DataBoxEdgeDeviceKind
     :param data_box_edge_device_status: The status of the Data Box Edge/Gateway device. Possible
      values include: "ReadyToSetup", "Online", "Offline", "NeedsAttention", "Disconnected",
      "PartiallyDisconnected", "Maintenance".
@@ -648,9 +647,11 @@ class DataBoxEdgeDevice(ArmBaseModel):
     :vartype configured_role_types: list[str or ~data_box_edge_management_client.models.RoleTypes]
     :ivar node_count: The number of nodes in the cluster.
     :vartype node_count: int
+    :ivar resource_move_details: The details of the move operation on this resource.
+    :vartype resource_move_details: ~data_box_edge_management_client.models.ResourceMoveDetails
     :param name_sku_name: SKU name. Possible values include: "Gateway", "Edge", "TEA_1Node",
      "TEA_1Node_UPS", "TEA_1Node_Heater", "TEA_1Node_UPS_Heater", "TEA_4Node_Heater",
-     "TEA_4Node_UPS_Heater", "TMA".
+     "TEA_4Node_UPS_Heater", "TMA", "TDC", "TCA_Large", "TCA_Small", "GPU".
     :type name_sku_name: str or ~data_box_edge_management_client.models.SkuName
     :ivar tier: The SKU tier. This is based on the SKU name. Default value: "Standard".
     :vartype tier: str
@@ -671,6 +672,7 @@ class DataBoxEdgeDevice(ArmBaseModel):
         'device_hcs_version': {'readonly': True},
         'configured_role_types': {'readonly': True},
         'node_count': {'readonly': True},
+        'resource_move_details': {'readonly': True},
         'tier': {'constant': True},
     }
 
@@ -681,6 +683,7 @@ class DataBoxEdgeDevice(ArmBaseModel):
         'location': {'key': 'location', 'type': 'str'},
         'tags': {'key': 'tags', 'type': '{str}'},
         'etag': {'key': 'etag', 'type': 'str'},
+        'kind': {'key': 'kind', 'type': 'str'},
         'data_box_edge_device_status': {'key': 'properties.dataBoxEdgeDeviceStatus', 'type': 'str'},
         'serial_number': {'key': 'properties.serialNumber', 'type': 'str'},
         'description': {'key': 'properties.description', 'type': 'str'},
@@ -695,6 +698,7 @@ class DataBoxEdgeDevice(ArmBaseModel):
         'device_hcs_version': {'key': 'properties.deviceHcsVersion', 'type': 'str'},
         'configured_role_types': {'key': 'properties.configuredRoleTypes', 'type': '[str]'},
         'node_count': {'key': 'properties.nodeCount', 'type': 'int'},
+        'resource_move_details': {'key': 'properties.resourceMoveDetails', 'type': 'ResourceMoveDetails'},
         'name_sku_name': {'key': 'sku.name', 'type': 'str'},
         'tier': {'key': 'sku.tier', 'type': 'str'},
     }
@@ -710,6 +714,7 @@ class DataBoxEdgeDevice(ArmBaseModel):
         self.location = kwargs['location']
         self.tags = kwargs.get('tags', None)
         self.etag = kwargs.get('etag', None)
+        self.kind = kwargs.get('kind', None)
         self.data_box_edge_device_status = kwargs.get('data_box_edge_device_status', None)
         self.serial_number = None
         self.description = kwargs.get('description', None)
@@ -724,6 +729,7 @@ class DataBoxEdgeDevice(ArmBaseModel):
         self.device_hcs_version = None
         self.configured_role_types = None
         self.node_count = None
+        self.resource_move_details = None
         self.name_sku_name = kwargs.get('name_sku_name', None)
 
 
@@ -820,6 +826,184 @@ class DataBoxEdgeDevicePatch(msrest.serialization.Model):
     ):
         super(DataBoxEdgeDevicePatch, self).__init__(**kwargs)
         self.tags = kwargs.get('tags', None)
+
+
+class DataBoxEdgeMoveRequest(msrest.serialization.Model):
+    """Resource Move details.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param target_resource_group: Required. Target resource group ARMId.
+    :type target_resource_group: str
+    :param resources: Required. List of resources to be moved.
+    :type resources: list[str]
+    """
+
+    _validation = {
+        'target_resource_group': {'required': True},
+        'resources': {'required': True},
+    }
+
+    _attribute_map = {
+        'target_resource_group': {'key': 'targetResourceGroup', 'type': 'str'},
+        'resources': {'key': 'resources', 'type': '[str]'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DataBoxEdgeMoveRequest, self).__init__(**kwargs)
+        self.target_resource_group = kwargs['target_resource_group']
+        self.resources = kwargs['resources']
+
+
+class DataBoxEdgeSku(msrest.serialization.Model):
+    """The Sku information.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar resource_type: The type of the resource.
+    :vartype resource_type: str
+    :ivar name: The Sku name. Possible values include: "Gateway", "Edge", "TEA_1Node",
+     "TEA_1Node_UPS", "TEA_1Node_Heater", "TEA_1Node_UPS_Heater", "TEA_4Node_Heater",
+     "TEA_4Node_UPS_Heater", "TMA", "TDC", "TCA_Large", "TCA_Small", "GPU".
+    :vartype name: str or ~data_box_edge_management_client.models.SkuName
+    :ivar kind: The Sku kind.
+    :vartype kind: str
+    :ivar tier: The Sku tier. Default value: "Standard".
+    :vartype tier: str
+    :ivar size: The Sku kind.
+    :vartype size: str
+    :ivar family: The Sku family.
+    :vartype family: str
+    :ivar locations: Availability of the Sku for the region.
+    :vartype locations: list[str]
+    :ivar api_versions: The API versions in which Sku is available.
+    :vartype api_versions: list[str]
+    :ivar location_info: Availability of the Sku for the location/zone/site.
+    :vartype location_info: list[~data_box_edge_management_client.models.SkuLocationInfo]
+    :ivar costs: The pricing info of the Sku.
+    :vartype costs: list[~data_box_edge_management_client.models.SkuCost]
+    :ivar restrictions: Restriction info of the SKU.
+    :vartype restrictions: list[~data_box_edge_management_client.models.SkuRestriction]
+    :ivar signup_option: Can the SKU be signed up.. Possible values include: "None", "Available".
+    :vartype signup_option: str or ~data_box_edge_management_client.models.SkuSignupOption
+    :ivar version: Sku version. Possible values include: "Stable", "Preview".
+    :vartype version: str or ~data_box_edge_management_client.models.SkuVersion
+    :ivar availability: Is SKU available. Possible values include: "Available", "Unavailable".
+    :vartype availability: str or ~data_box_edge_management_client.models.SkuAvailability
+    :ivar shipment_types: List of Shipment Types supported by this SKU.
+    :vartype shipment_types: list[str or ~data_box_edge_management_client.models.ShipmentType]
+    """
+
+    _validation = {
+        'resource_type': {'readonly': True},
+        'name': {'readonly': True},
+        'kind': {'readonly': True},
+        'tier': {'readonly': True, 'constant': True},
+        'size': {'readonly': True},
+        'family': {'readonly': True},
+        'locations': {'readonly': True},
+        'api_versions': {'readonly': True},
+        'location_info': {'readonly': True},
+        'costs': {'readonly': True},
+        'restrictions': {'readonly': True},
+        'signup_option': {'readonly': True},
+        'version': {'readonly': True},
+        'availability': {'readonly': True},
+        'shipment_types': {'readonly': True},
+    }
+
+    _attribute_map = {
+        'resource_type': {'key': 'resourceType', 'type': 'str'},
+        'name': {'key': 'name', 'type': 'str'},
+        'kind': {'key': 'kind', 'type': 'str'},
+        'tier': {'key': 'tier', 'type': 'str'},
+        'size': {'key': 'size', 'type': 'str'},
+        'family': {'key': 'family', 'type': 'str'},
+        'locations': {'key': 'locations', 'type': '[str]'},
+        'api_versions': {'key': 'apiVersions', 'type': '[str]'},
+        'location_info': {'key': 'locationInfo', 'type': '[SkuLocationInfo]'},
+        'costs': {'key': 'costs', 'type': '[SkuCost]'},
+        'restrictions': {'key': 'restrictions', 'type': '[SkuRestriction]'},
+        'signup_option': {'key': 'signupOption', 'type': 'str'},
+        'version': {'key': 'version', 'type': 'str'},
+        'availability': {'key': 'availability', 'type': 'str'},
+        'shipment_types': {'key': 'shipmentTypes', 'type': '[str]'},
+    }
+
+    tier = "Standard"
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DataBoxEdgeSku, self).__init__(**kwargs)
+        self.resource_type = None
+        self.name = None
+        self.kind = None
+        self.tier = None
+        self.size = None
+        self.family = None
+        self.locations = None
+        self.api_versions = None
+        self.location_info = None
+        self.costs = None
+        self.restrictions = None
+        self.signup_option = None
+        self.version = None
+        self.availability = None
+        self.shipment_types = None
+
+
+class DataBoxEdgeSkuList(msrest.serialization.Model):
+    """List of SKU Information objects.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar value: List of ResourceType Sku.
+    :vartype value: list[~data_box_edge_management_client.models.DataBoxEdgeSku]
+    :ivar next_link: Links to the next set of results.
+    :vartype next_link: str
+    """
+
+    _validation = {
+        'value': {'readonly': True},
+        'next_link': {'readonly': True},
+    }
+
+    _attribute_map = {
+        'value': {'key': 'value', 'type': '[DataBoxEdgeSku]'},
+        'next_link': {'key': 'nextLink', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DataBoxEdgeSkuList, self).__init__(**kwargs)
+        self.value = None
+        self.next_link = None
+
+
+class DcAccessCode(msrest.serialization.Model):
+    """DC Access code in the case of Self Managed Shipping.
+
+    :param auth_code: DCAccess Code for the device.
+    :type auth_code: str
+    """
+
+    _attribute_map = {
+        'auth_code': {'key': 'properties.authCode', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(DcAccessCode, self).__init__(**kwargs)
+        self.auth_code = kwargs.get('auth_code', None)
 
 
 class Trigger(ArmBaseModel):
@@ -925,6 +1109,40 @@ class FileEventTrigger(Trigger):
         self.share_id = kwargs['share_id']
 
 
+class ImageRepositoryCredential(msrest.serialization.Model):
+    """Image repository credential.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param image_repository_url: Required. Image repository url (e.g.: mcr.microsoft.com).
+    :type image_repository_url: str
+    :param user_name: Required. Repository user name.
+    :type user_name: str
+    :param password: Repository user password.
+    :type password: ~data_box_edge_management_client.models.AsymmetricEncryptedSecret
+    """
+
+    _validation = {
+        'image_repository_url': {'required': True},
+        'user_name': {'required': True},
+    }
+
+    _attribute_map = {
+        'image_repository_url': {'key': 'imageRepositoryUrl', 'type': 'str'},
+        'user_name': {'key': 'userName', 'type': 'str'},
+        'password': {'key': 'password', 'type': 'AsymmetricEncryptedSecret'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(ImageRepositoryCredential, self).__init__(**kwargs)
+        self.image_repository_url = kwargs['image_repository_url']
+        self.user_name = kwargs['user_name']
+        self.password = kwargs.get('password', None)
+
+
 class IoTDeviceInfo(msrest.serialization.Model):
     """Metadata of IoT device/IoT Edge device to be configured.
 
@@ -936,7 +1154,7 @@ class IoTDeviceInfo(msrest.serialization.Model):
     :type io_t_host_hub: str
     :param io_t_host_hub_id: Id for the IoT hub associated to the device.
     :type io_t_host_hub_id: str
-    :param authentication: IoT device authentication info.
+    :param authentication: Encrypted IoT device/IoT edge device connection string.
     :type authentication: ~data_box_edge_management_client.models.Authentication
     """
 
@@ -961,6 +1179,40 @@ class IoTDeviceInfo(msrest.serialization.Model):
         self.io_t_host_hub = kwargs['io_t_host_hub']
         self.io_t_host_hub_id = kwargs.get('io_t_host_hub_id', None)
         self.authentication = kwargs.get('authentication', None)
+
+
+class IoTEdgeAgentInfo(msrest.serialization.Model):
+    """IoT edge agent details is optional, this will be used for download system Agent module while bootstrapping IoT Role if specified.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param image_name: Required. Name of the IoT edge agent image.
+    :type image_name: str
+    :param tag: Required. Image Tag.
+    :type tag: str
+    :param image_repository: Image repository details.
+    :type image_repository: ~data_box_edge_management_client.models.ImageRepositoryCredential
+    """
+
+    _validation = {
+        'image_name': {'required': True},
+        'tag': {'required': True},
+    }
+
+    _attribute_map = {
+        'image_name': {'key': 'imageName', 'type': 'str'},
+        'tag': {'key': 'tag', 'type': 'str'},
+        'image_repository': {'key': 'imageRepository', 'type': 'ImageRepositoryCredential'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(IoTEdgeAgentInfo, self).__init__(**kwargs)
+        self.image_name = kwargs['image_name']
+        self.tag = kwargs['tag']
+        self.image_repository = kwargs.get('image_repository', None)
 
 
 class Role(ArmBaseModel):
@@ -1036,6 +1288,12 @@ class IoTRole(Role):
     :type io_t_edge_device_details: ~data_box_edge_management_client.models.IoTDeviceInfo
     :param share_mappings: Mount points of shares in role(s).
     :type share_mappings: list[~data_box_edge_management_client.models.MountPointMap]
+    :param io_t_edge_agent_info: Iot edge agent details to download the agent and bootstrap iot
+     runtime.
+    :type io_t_edge_agent_info: ~data_box_edge_management_client.models.IoTEdgeAgentInfo
+    :ivar host_platform_type: Platform where the Iot runtime is hosted. Possible values include:
+     "KubernetesCluster", "LinuxVM".
+    :vartype host_platform_type: str or ~data_box_edge_management_client.models.HostPlatformType
     :param role_status: Role status. Possible values include: "Enabled", "Disabled".
     :type role_status: str or ~data_box_edge_management_client.models.RoleStatus
     """
@@ -1045,6 +1303,7 @@ class IoTRole(Role):
         'name': {'readonly': True},
         'type': {'readonly': True},
         'kind': {'required': True},
+        'host_platform_type': {'readonly': True},
     }
 
     _attribute_map = {
@@ -1056,6 +1315,8 @@ class IoTRole(Role):
         'io_t_device_details': {'key': 'properties.ioTDeviceDetails', 'type': 'IoTDeviceInfo'},
         'io_t_edge_device_details': {'key': 'properties.ioTEdgeDeviceDetails', 'type': 'IoTDeviceInfo'},
         'share_mappings': {'key': 'properties.shareMappings', 'type': '[MountPointMap]'},
+        'io_t_edge_agent_info': {'key': 'properties.ioTEdgeAgentInfo', 'type': 'IoTEdgeAgentInfo'},
+        'host_platform_type': {'key': 'properties.hostPlatformType', 'type': 'str'},
         'role_status': {'key': 'properties.roleStatus', 'type': 'str'},
     }
 
@@ -1069,6 +1330,8 @@ class IoTRole(Role):
         self.io_t_device_details = kwargs.get('io_t_device_details', None)
         self.io_t_edge_device_details = kwargs.get('io_t_edge_device_details', None)
         self.share_mappings = kwargs.get('share_mappings', None)
+        self.io_t_edge_agent_info = kwargs.get('io_t_edge_agent_info', None)
+        self.host_platform_type = None
         self.role_status = kwargs.get('role_status', None)
 
 
@@ -1165,7 +1428,8 @@ class Job(msrest.serialization.Model):
     :ivar error: The error details.
     :vartype error: ~data_box_edge_management_client.models.JobErrorDetails
     :ivar job_type: The type of the job. Possible values include: "Invalid", "ScanForUpdates",
-     "DownloadUpdates", "InstallUpdates", "RefreshShare", "RefreshContainer".
+     "DownloadUpdates", "InstallUpdates", "RefreshShare", "RefreshContainer",
+     "TriggerSupportPackage".
     :vartype job_type: str or ~data_box_edge_management_client.models.JobType
     :ivar current_stage: Current stage of the update operation. Possible values include: "Unknown",
      "Initial", "ScanStarted", "ScanComplete", "ScanFailed", "DownloadStarted", "DownloadComplete",
@@ -1421,6 +1685,8 @@ class MountPointMap(msrest.serialization.Model):
     :vartype role_id: str
     :ivar mount_point: Mount point for the share.
     :vartype mount_point: str
+    :ivar mount_type: Mounting type. Possible values include: "Volume", "HostPath".
+    :vartype mount_type: str or ~data_box_edge_management_client.models.MountType
     :ivar role_type: Role type. Possible values include: "IOT", "ASA", "Functions", "Cognitive".
     :vartype role_type: str or ~data_box_edge_management_client.models.RoleTypes
     """
@@ -1429,6 +1695,7 @@ class MountPointMap(msrest.serialization.Model):
         'share_id': {'required': True},
         'role_id': {'readonly': True},
         'mount_point': {'readonly': True},
+        'mount_type': {'readonly': True},
         'role_type': {'readonly': True},
     }
 
@@ -1436,6 +1703,7 @@ class MountPointMap(msrest.serialization.Model):
         'share_id': {'key': 'shareId', 'type': 'str'},
         'role_id': {'key': 'roleId', 'type': 'str'},
         'mount_point': {'key': 'mountPoint', 'type': 'str'},
+        'mount_type': {'key': 'mountType', 'type': 'str'},
         'role_type': {'key': 'roleType', 'type': 'str'},
     }
 
@@ -1447,6 +1715,7 @@ class MountPointMap(msrest.serialization.Model):
         self.share_id = kwargs['share_id']
         self.role_id = None
         self.mount_point = None
+        self.mount_type = None
         self.role_type = None
 
 
@@ -1825,15 +2094,21 @@ class Order(ArmBaseModel):
     :ivar return_tracking_info: Tracking information for the package returned from the customer
      whether it has an original or a replacement device.
     :vartype return_tracking_info: list[~data_box_edge_management_client.models.TrackingInfo]
+    :param shipment_type: ShipmentType of the order. Possible values include: "NotApplicable",
+     "ShippedToCustomer", "SelfPickup".
+    :type shipment_type: str or ~data_box_edge_management_client.models.ShipmentType
     :param status: Status of the order as per the allowed status types. Possible values include:
      "Untracked", "AwaitingFulfilment", "AwaitingPreparation", "AwaitingShipment", "Shipped",
      "Arriving", "Delivered", "ReplacementRequested", "LostDevice", "Declined", "ReturnInitiated",
-     "AwaitingReturnShipment", "ShippedBack", "CollectedAtMicrosoft".
+     "AwaitingReturnShipment", "ShippedBack", "CollectedAtMicrosoft", "AwaitingPickup",
+     "PickupCompleted", "AwaitingDrop".
     :type status: str or ~data_box_edge_management_client.models.OrderState
     :ivar update_date_time: Time of status update.
     :vartype update_date_time: ~datetime.datetime
     :param comments: Comments related to this status change.
     :type comments: str
+    :ivar tracking_information: Tracking information related to the state in the ordering flow.
+    :vartype tracking_information: ~data_box_edge_management_client.models.TrackingInfo
     :ivar additional_order_details: Dictionary to hold generic information which is not stored
      by the already existing properties.
     :vartype additional_order_details: dict[str, str]
@@ -1848,6 +2123,7 @@ class Order(ArmBaseModel):
         'delivery_tracking_info': {'readonly': True},
         'return_tracking_info': {'readonly': True},
         'update_date_time': {'readonly': True},
+        'tracking_information': {'readonly': True},
         'additional_order_details': {'readonly': True},
     }
 
@@ -1861,9 +2137,11 @@ class Order(ArmBaseModel):
         'serial_number': {'key': 'properties.serialNumber', 'type': 'str'},
         'delivery_tracking_info': {'key': 'properties.deliveryTrackingInfo', 'type': '[TrackingInfo]'},
         'return_tracking_info': {'key': 'properties.returnTrackingInfo', 'type': '[TrackingInfo]'},
+        'shipment_type': {'key': 'properties.shipmentType', 'type': 'str'},
         'status': {'key': 'properties.currentStatus.status', 'type': 'str'},
         'update_date_time': {'key': 'properties.currentStatus.updateDateTime', 'type': 'iso-8601'},
         'comments': {'key': 'properties.currentStatus.comments', 'type': 'str'},
+        'tracking_information': {'key': 'properties.currentStatus.trackingInformation', 'type': 'TrackingInfo'},
         'additional_order_details': {'key': 'properties.currentStatus.additionalOrderDetails', 'type': '{str}'},
     }
 
@@ -1878,9 +2156,11 @@ class Order(ArmBaseModel):
         self.serial_number = None
         self.delivery_tracking_info = None
         self.return_tracking_info = None
+        self.shipment_type = kwargs.get('shipment_type', None)
         self.status = kwargs.get('status', None)
         self.update_date_time = None
         self.comments = kwargs.get('comments', None)
+        self.tracking_information = None
         self.additional_order_details = None
 
 
@@ -1924,12 +2204,15 @@ class OrderStatus(msrest.serialization.Model):
     :param status: Required. Status of the order as per the allowed status types. Possible values
      include: "Untracked", "AwaitingFulfilment", "AwaitingPreparation", "AwaitingShipment",
      "Shipped", "Arriving", "Delivered", "ReplacementRequested", "LostDevice", "Declined",
-     "ReturnInitiated", "AwaitingReturnShipment", "ShippedBack", "CollectedAtMicrosoft".
+     "ReturnInitiated", "AwaitingReturnShipment", "ShippedBack", "CollectedAtMicrosoft",
+     "AwaitingPickup", "PickupCompleted", "AwaitingDrop".
     :type status: str or ~data_box_edge_management_client.models.OrderState
     :ivar update_date_time: Time of status update.
     :vartype update_date_time: ~datetime.datetime
     :param comments: Comments related to this status change.
     :type comments: str
+    :ivar tracking_information: Tracking information related to the state in the ordering flow.
+    :vartype tracking_information: ~data_box_edge_management_client.models.TrackingInfo
     :ivar additional_order_details: Dictionary to hold generic information which is not stored
      by the already existing properties.
     :vartype additional_order_details: dict[str, str]
@@ -1938,6 +2221,7 @@ class OrderStatus(msrest.serialization.Model):
     _validation = {
         'status': {'required': True},
         'update_date_time': {'readonly': True},
+        'tracking_information': {'readonly': True},
         'additional_order_details': {'readonly': True},
     }
 
@@ -1945,6 +2229,7 @@ class OrderStatus(msrest.serialization.Model):
         'status': {'key': 'status', 'type': 'str'},
         'update_date_time': {'key': 'updateDateTime', 'type': 'iso-8601'},
         'comments': {'key': 'comments', 'type': 'str'},
+        'tracking_information': {'key': 'trackingInformation', 'type': 'TrackingInfo'},
         'additional_order_details': {'key': 'additionalOrderDetails', 'type': '{str}'},
     }
 
@@ -1956,6 +2241,7 @@ class OrderStatus(msrest.serialization.Model):
         self.status = kwargs['status']
         self.update_date_time = None
         self.comments = kwargs.get('comments', None)
+        self.tracking_information = None
         self.additional_order_details = None
 
 
@@ -2065,62 +2351,51 @@ class RefreshDetails(msrest.serialization.Model):
         self.last_job = kwargs.get('last_job', None)
 
 
+class ResourceMoveDetails(msrest.serialization.Model):
+    """Fields for tracking resource move.
+
+    :param operation_in_progress: Denotes whether move operation is in progress. Possible values
+     include: "None", "ResourceMoveInProgress", "ResourceMoveFailed".
+    :type operation_in_progress: str or ~data_box_edge_management_client.models.ResourceMoveStatus
+    :param operation_in_progress_lock_timeout_in_utc: Denotes the timeout of the operation to
+     finish.
+    :type operation_in_progress_lock_timeout_in_utc: ~datetime.datetime
+    """
+
+    _attribute_map = {
+        'operation_in_progress': {'key': 'operationInProgress', 'type': 'str'},
+        'operation_in_progress_lock_timeout_in_utc': {'key': 'operationInProgressLockTimeoutInUTC', 'type': 'iso-8601'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(ResourceMoveDetails, self).__init__(**kwargs)
+        self.operation_in_progress = kwargs.get('operation_in_progress', None)
+        self.operation_in_progress_lock_timeout_in_utc = kwargs.get('operation_in_progress_lock_timeout_in_utc', None)
+
+
 class ResourceTypeSku(msrest.serialization.Model):
-    """SkuInformation object.
+    """Resource type Sku object.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar resource_type: The type of the resource.
+    :ivar resource_type: The resource type.
     :vartype resource_type: str
-    :ivar name: The Sku name. Possible values include: "Gateway", "Edge", "TEA_1Node",
-     "TEA_1Node_UPS", "TEA_1Node_Heater", "TEA_1Node_UPS_Heater", "TEA_4Node_Heater",
-     "TEA_4Node_UPS_Heater", "TMA".
-    :vartype name: str or ~data_box_edge_management_client.models.SkuName
-    :ivar kind: The Sku kind.
-    :vartype kind: str
-    :ivar tier: The Sku tier. Default value: "Standard".
-    :vartype tier: str
-    :ivar family: The Sku family.
-    :vartype family: str
-    :ivar locations: Availability of the SKU for the region.
-    :vartype locations: list[str]
-    :ivar api_versions: The API versions in which SKU is available.
-    :vartype api_versions: list[str]
-    :ivar location_info: Availability of the SKU for the location/zone.
-    :vartype location_info: list[~data_box_edge_management_client.models.SkuLocationInfo]
-    :ivar costs: The pricing info of the Sku.
-    :vartype costs: list[~data_box_edge_management_client.models.SkuCost]
-    :ivar restrictions: Restrictions of the SKU availability.
-    :vartype restrictions: list[~data_box_edge_management_client.models.SkuRestriction]
+    :ivar skus: The skus.
+    :vartype skus: list[~data_box_edge_management_client.models.SkuInformation]
     """
 
     _validation = {
         'resource_type': {'readonly': True},
-        'name': {'readonly': True},
-        'kind': {'readonly': True},
-        'tier': {'readonly': True, 'constant': True},
-        'family': {'readonly': True},
-        'locations': {'readonly': True},
-        'api_versions': {'readonly': True},
-        'location_info': {'readonly': True},
-        'costs': {'readonly': True},
-        'restrictions': {'readonly': True},
+        'skus': {'readonly': True},
     }
 
     _attribute_map = {
         'resource_type': {'key': 'resourceType', 'type': 'str'},
-        'name': {'key': 'name', 'type': 'str'},
-        'kind': {'key': 'kind', 'type': 'str'},
-        'tier': {'key': 'tier', 'type': 'str'},
-        'family': {'key': 'family', 'type': 'str'},
-        'locations': {'key': 'locations', 'type': '[str]'},
-        'api_versions': {'key': 'apiVersions', 'type': '[str]'},
-        'location_info': {'key': 'locationInfo', 'type': '[SkuLocationInfo]'},
-        'costs': {'key': 'costs', 'type': '[SkuCost]'},
-        'restrictions': {'key': 'restrictions', 'type': '[SkuRestriction]'},
+        'skus': {'key': 'skus', 'type': '[SkuInformation]'},
     }
-
-    tier = "Standard"
 
     def __init__(
         self,
@@ -2128,15 +2403,7 @@ class ResourceTypeSku(msrest.serialization.Model):
     ):
         super(ResourceTypeSku, self).__init__(**kwargs)
         self.resource_type = None
-        self.name = None
-        self.kind = None
-        self.tier = None
-        self.family = None
-        self.locations = None
-        self.api_versions = None
-        self.location_info = None
-        self.costs = None
-        self.restrictions = None
+        self.skus = None
 
 
 class RoleList(msrest.serialization.Model):
@@ -2384,7 +2651,7 @@ class SkuCost(msrest.serialization.Model):
     :vartype meter_id: str
     :ivar quantity: The cost quantity.
     :vartype quantity: long
-    :ivar extended_unit: Restriction of the SKU for the location/zone.
+    :ivar extended_unit: The extended unit.
     :vartype extended_unit: str
     """
 
@@ -2410,12 +2677,77 @@ class SkuCost(msrest.serialization.Model):
         self.extended_unit = None
 
 
+class SkuInformation(msrest.serialization.Model):
+    """Sku information.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar name: The sku name.
+    :vartype name: str
+    :ivar tier: The sku tier.
+    :vartype tier: str
+    :ivar kind: The sku kind.
+    :vartype kind: str
+    :ivar family: The Sku family.
+    :vartype family: str
+    :ivar costs: The pricing info of the Sku.
+    :vartype costs: list[~data_box_edge_management_client.models.SkuCost]
+    :ivar locations: The locations where Sku is available.
+    :vartype locations: list[str]
+    :ivar location_info: The locations where Sku is available with zones and sites info.
+    :vartype location_info: list[~data_box_edge_management_client.models.SkuLocationInfo]
+    :ivar required_quota_ids: The required quotaIds for the sku to be available.
+    :vartype required_quota_ids: list[str]
+    :ivar required_features: The required features for the sku to be available.
+    :vartype required_features: list[str]
+    """
+
+    _validation = {
+        'name': {'readonly': True},
+        'tier': {'readonly': True},
+        'kind': {'readonly': True},
+        'family': {'readonly': True},
+        'costs': {'readonly': True},
+        'locations': {'readonly': True},
+        'location_info': {'readonly': True},
+        'required_quota_ids': {'readonly': True},
+        'required_features': {'readonly': True},
+    }
+
+    _attribute_map = {
+        'name': {'key': 'name', 'type': 'str'},
+        'tier': {'key': 'tier', 'type': 'str'},
+        'kind': {'key': 'kind', 'type': 'str'},
+        'family': {'key': 'family', 'type': 'str'},
+        'costs': {'key': 'costs', 'type': '[SkuCost]'},
+        'locations': {'key': 'locations', 'type': '[str]'},
+        'location_info': {'key': 'locationInfo', 'type': '[SkuLocationInfo]'},
+        'required_quota_ids': {'key': 'requiredQuotaIds', 'type': '[str]'},
+        'required_features': {'key': 'requiredFeatures', 'type': '[str]'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(SkuInformation, self).__init__(**kwargs)
+        self.name = None
+        self.tier = None
+        self.kind = None
+        self.family = None
+        self.costs = None
+        self.locations = None
+        self.location_info = None
+        self.required_quota_ids = None
+        self.required_features = None
+
+
 class SkuInformationList(msrest.serialization.Model):
     """List of SKU Information objects.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar value: List of ResourceType Sku.
+    :ivar value: List of ResourceTypeSku objects.
     :vartype value: list[~data_box_edge_management_client.models.ResourceTypeSku]
     :ivar next_link: Links to the next set of results.
     :vartype next_link: str
@@ -2551,6 +2883,8 @@ class StorageAccount(ArmBaseModel):
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
+    All required parameters must be populated in order to send to Azure.
+
     :ivar id: The path ID that uniquely identifies the object.
     :vartype id: str
     :ivar name: The object name.
@@ -2563,8 +2897,8 @@ class StorageAccount(ArmBaseModel):
      "OK", "Offline", "Unknown", "Updating", "NeedsAttention".
     :type storage_account_status: str or
      ~data_box_edge_management_client.models.StorageAccountStatus
-    :param data_policy: Data policy of the storage Account. Possible values include: "Cloud",
-     "Local".
+    :param data_policy: Required. Data policy of the storage Account. Possible values include:
+     "Cloud", "Local".
     :type data_policy: str or ~data_box_edge_management_client.models.DataPolicy
     :param storage_account_credential_id: Storage Account Credential Id.
     :type storage_account_credential_id: str
@@ -2579,6 +2913,7 @@ class StorageAccount(ArmBaseModel):
         'id': {'readonly': True},
         'name': {'readonly': True},
         'type': {'readonly': True},
+        'data_policy': {'required': True},
         'blob_endpoint': {'readonly': True},
         'container_count': {'readonly': True},
     }
@@ -2602,7 +2937,7 @@ class StorageAccount(ArmBaseModel):
         super(StorageAccount, self).__init__(**kwargs)
         self.description = kwargs.get('description', None)
         self.storage_account_status = kwargs.get('storage_account_status', None)
-        self.data_policy = kwargs.get('data_policy', None)
+        self.data_policy = kwargs['data_policy']
         self.storage_account_credential_id = kwargs.get('storage_account_credential_id', None)
         self.blob_endpoint = None
         self.container_count = None
@@ -3134,9 +3469,9 @@ class User(ArmBaseModel):
     :vartype type: str
     :param encrypted_password: The password details.
     :type encrypted_password: ~data_box_edge_management_client.models.AsymmetricEncryptedSecret
-    :param share_access_rights: List of shares that the user has rights on. This field should not
-     be specified during user creation.
-    :type share_access_rights: list[~data_box_edge_management_client.models.ShareAccessRight]
+    :ivar share_access_rights: List of shares that the user has rights on. This field should not be
+     specified during user creation.
+    :vartype share_access_rights: list[~data_box_edge_management_client.models.ShareAccessRight]
     :param user_type: Required. Type of the user. Possible values include: "Share",
      "LocalManagement", "ARM".
     :type user_type: str or ~data_box_edge_management_client.models.UserType
@@ -3146,6 +3481,7 @@ class User(ArmBaseModel):
         'id': {'readonly': True},
         'name': {'readonly': True},
         'type': {'readonly': True},
+        'share_access_rights': {'readonly': True},
         'user_type': {'required': True},
     }
 
@@ -3164,7 +3500,7 @@ class User(ArmBaseModel):
     ):
         super(User, self).__init__(**kwargs)
         self.encrypted_password = kwargs.get('encrypted_password', None)
-        self.share_access_rights = kwargs.get('share_access_rights', None)
+        self.share_access_rights = None
         self.user_type = kwargs['user_type']
 
 

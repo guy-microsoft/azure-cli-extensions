@@ -27,12 +27,14 @@ from azext_databoxedge.action import (
     AddClientAccessRights,
     AddRefreshDetails,
     AddFileEventTrigger,
-    AddPeriodicTimerEventTrigger,
-    AddShareAccessRights
+    AddPeriodicTimerEventTrigger
 )
 
 
 def load_arguments(self, _):
+
+    with self.argument_context('databoxedge available-sku list') as c:
+        pass
 
     with self.argument_context('databoxedge device list') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -50,6 +52,8 @@ def load_arguments(self, _):
                    validator=get_default_location_from_resource_group)
         c.argument('tags', tags_type)
         c.argument('etag', help='The etag for the devices.')
+        c.argument('kind', arg_type=get_enum_type(['AzureDataBoxGateway', 'AzureStackEdge', 'AzureStackHub']), help='Th'
+                   'e etag for the devices.')
         c.argument('data_box_edge_device_status', arg_type=get_enum_type(['ReadyToSetup', 'Online', 'Offline', 'NeedsAt'
                    'tention', 'Disconnected', 'PartiallyDisconnected', 'Maintenance']), help='The status of the Data Bo'
                    'x Edge/Gateway device.')
@@ -57,8 +61,8 @@ def load_arguments(self, _):
         c.argument('model_description', help='The description of the Data Box Edge/Gateway device model.')
         c.argument('friendly_name', help='The Data Box Edge/Gateway device name.')
         c.argument('sku_name', arg_type=get_enum_type(['Gateway', 'Edge', 'TEA_1Node', 'TEA_1Node_UPS', 'TEA_1Node_Heat'
-                   'er', 'TEA_1Node_UPS_Heater', 'TEA_4Node_Heater', 'TEA_4Node_UPS_Heater', 'TMA']),
-                   help='SKU name.')
+                   'er', 'TEA_1Node_UPS_Heater', 'TEA_4Node_Heater', 'TEA_4Node_UPS_Heater', 'TMA', 'TDC', 'TCA_Large',
+                    'TCA_Small', 'GPU']), help='SKU name.')
 
     with self.argument_context('databoxedge device update') as c:
         c.argument('device_name', options_list=['--name', '-n'], help='The device name.', id_part='name')
@@ -112,6 +116,9 @@ def load_arguments(self, _):
         c.argument('device_name', options_list=['--name', '-n'], help='The device name.', id_part='name')
         c.argument('resource_group_name', resource_group_name_type)
 
+    with self.argument_context('databoxedge sku list') as c:
+        c.argument('filter', help='Specify $filter=\'location eq :code:`<location>`\' to filter on location.')
+
     with self.argument_context('databoxedge alert list') as c:
         c.argument('device_name', help='The device name.')
         c.argument('resource_group_name', resource_group_name_type)
@@ -164,15 +171,6 @@ def load_arguments(self, _):
         c.argument('name', help='The job name.', id_part='child_name_1')
         c.argument('resource_group_name', resource_group_name_type)
 
-    with self.argument_context('databoxedge node list') as c:
-        c.argument('device_name', help='The device name.')
-        c.argument('resource_group_name', resource_group_name_type)
-
-    with self.argument_context('databoxedge operation-status show') as c:
-        c.argument('device_name', help='The device name.', id_part='name')
-        c.argument('name', help='The job name.', id_part='child_name_1')
-        c.argument('resource_group_name', resource_group_name_type)
-
     with self.argument_context('databoxedge order list') as c:
         c.argument('device_name', help='The device name.')
         c.argument('resource_group_name', resource_group_name_type)
@@ -186,10 +184,13 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('contact_information', action=AddContactInformation, nargs='+', help='The contact details.')
         c.argument('shipping_address', action=AddShippingAddress, nargs='+', help='The shipping address.')
+        c.argument('shipment_type', arg_type=get_enum_type(['NotApplicable', 'ShippedToCustomer', 'SelfPickup']),
+                   help='ShipmentType of the order')
         c.argument('current_status_status', arg_type=get_enum_type(['Untracked', 'AwaitingFulfilment', 'AwaitingPrepara'
                    'tion', 'AwaitingShipment', 'Shipped', 'Arriving', 'Delivered', 'ReplacementRequested',
                    'LostDevice', 'Declined', 'ReturnInitiated', 'AwaitingReturnShipment', 'ShippedBack', 'CollectedAtMi'
-                   'crosoft']), help='Status of the order as per the allowed status types.')
+                   'crosoft', 'AwaitingPickup', 'PickupCompleted', 'AwaitingDrop']), help='Status of the order as per t'
+                   'he allowed status types.')
         c.argument('current_status_comments', help='Comments related to this status change.')
 
     with self.argument_context('databoxedge order update') as c:
@@ -197,18 +198,34 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('contact_information', action=AddContactInformation, nargs='+', help='The contact details.')
         c.argument('shipping_address', action=AddShippingAddress, nargs='+', help='The shipping address.')
+        c.argument('shipment_type', arg_type=get_enum_type(['NotApplicable', 'ShippedToCustomer', 'SelfPickup']),
+                   help='ShipmentType of the order')
         c.argument('current_status_status', arg_type=get_enum_type(['Untracked', 'AwaitingFulfilment', 'AwaitingPrepara'
                    'tion', 'AwaitingShipment', 'Shipped', 'Arriving', 'Delivered', 'ReplacementRequested',
                    'LostDevice', 'Declined', 'ReturnInitiated', 'AwaitingReturnShipment', 'ShippedBack', 'CollectedAtMi'
-                   'crosoft']), help='Status of the order as per the allowed status types.')
+                   'crosoft', 'AwaitingPickup', 'PickupCompleted', 'AwaitingDrop']), help='Status of the order as per t'
+                   'he allowed status types.')
         c.argument('current_status_comments', help='Comments related to this status change.')
 
     with self.argument_context('databoxedge order delete') as c:
         c.argument('device_name', help='The device name.', id_part='name')
         c.argument('resource_group_name', resource_group_name_type)
 
+    with self.argument_context('databoxedge order list-dc-access-code') as c:
+        c.argument('device_name', help='The device name')
+        c.argument('resource_group_name', resource_group_name_type)
+
     with self.argument_context('databoxedge order wait') as c:
         c.argument('device_name', help='The device name.', id_part='name')
+        c.argument('resource_group_name', resource_group_name_type)
+
+    with self.argument_context('databoxedge node list') as c:
+        c.argument('device_name', help='The device name.')
+        c.argument('resource_group_name', resource_group_name_type)
+
+    with self.argument_context('databoxedge operation-status show') as c:
+        c.argument('device_name', help='The device name.', id_part='name')
+        c.argument('name', help='The job name.', id_part='child_name_1')
         c.argument('resource_group_name', resource_group_name_type)
 
     with self.argument_context('databoxedge role list') as c:
@@ -497,7 +514,7 @@ def load_arguments(self, _):
     with self.argument_context('databoxedge user list') as c:
         c.argument('device_name', help='The device name.')
         c.argument('resource_group_name', resource_group_name_type)
-        c.argument('filter', help='Specify $filter=\'UserType eq :code:`<type>`\' to filter on user type property')
+        c.argument('filter', help='Specify $filter=\'Type eq :code:`<type>`\' to filter on user type property')
 
     with self.argument_context('databoxedge user show') as c:
         c.argument('device_name', help='The device name.', id_part='name')
@@ -509,8 +526,6 @@ def load_arguments(self, _):
         c.argument('name', help='The user name.')
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('encrypted_password', action=AddDeviceAdminPassword, nargs='+', help='The password details.')
-        c.argument('share_access_rights', action=AddShareAccessRights, nargs='+', help='List of shares that the user ha'
-                   's rights on. This field should not be specified during user creation.')
         c.argument('user_type', arg_type=get_enum_type(['Share', 'LocalManagement', 'ARM']), help='Type of the user.')
 
     with self.argument_context('databoxedge user update') as c:
@@ -518,8 +533,6 @@ def load_arguments(self, _):
         c.argument('name', help='The user name.', id_part='child_name_1')
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('encrypted_password', action=AddDeviceAdminPassword, nargs='+', help='The password details.')
-        c.argument('share_access_rights', action=AddShareAccessRights, nargs='+', help='List of shares that the user ha'
-                   's rights on. This field should not be specified during user creation.')
         c.argument('user_type', arg_type=get_enum_type(['Share', 'LocalManagement', 'ARM']), help='Type of the user.')
 
     with self.argument_context('databoxedge user delete') as c:
@@ -531,6 +544,3 @@ def load_arguments(self, _):
         c.argument('device_name', help='The device name.', id_part='name')
         c.argument('name', help='The user name.', id_part='child_name_1')
         c.argument('resource_group_name', resource_group_name_type)
-
-    with self.argument_context('databoxedge sku list') as c:
-        c.argument('filter', help='Specify $filter=\'location eq :code:`<location>`\' to filter on location.')

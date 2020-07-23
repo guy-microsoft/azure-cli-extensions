@@ -70,7 +70,7 @@ class StorageAccountCredentialsOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.StorageAccountCredentialList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -145,7 +145,7 @@ class StorageAccountCredentialsOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.StorageAccountCredential"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -203,7 +203,7 @@ class StorageAccountCredentialsOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _storage_account_credential = models.StorageAccountCredential(alias=alias, user_name=user_name, account_key=account_key, connection_string=connection_string, ssl_status=ssl_status, blob_domain_name=blob_domain_name, account_type=account_type, storage_account_id=storage_account_id)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -347,7 +347,7 @@ class StorageAccountCredentialsOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore

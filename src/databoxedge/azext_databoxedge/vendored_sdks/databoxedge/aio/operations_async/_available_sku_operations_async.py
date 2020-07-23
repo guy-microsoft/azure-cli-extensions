@@ -19,8 +19,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class NodeOperations:
-    """NodeOperations async operations.
+class AvailableSkuOperations:
+    """AvailableSkuOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -41,24 +41,20 @@ class NodeOperations:
         self._deserialize = deserializer
         self._config = config
 
-    def list_by_data_box_edge_device(
+    def list(
         self,
-        device_name: str,
-        resource_group_name: str,
         **kwargs
-    ) -> AsyncIterable["models.NodeList"]:
-        """Gets all the nodes currently configured under this Data Box Edge device.
+    ) -> AsyncIterable["models.DataBoxEdgeSkuList"]:
+        """List all the available Skus and information related to them.
 
-        :param device_name: The device name.
-        :type device_name: str
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
+        List all the available Skus and information related to them.
+
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either NodeList or the result of cls(response)
-        :rtype: ~azure.core.async_paging.AsyncItemPaged[~data_box_edge_management_client.models.NodeList]
+        :return: An iterator like instance of either DataBoxEdgeSkuList or the result of cls(response)
+        :rtype: ~azure.core.async_paging.AsyncItemPaged[~data_box_edge_management_client.models.DataBoxEdgeSkuList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.NodeList"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeSkuList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-07-01-preview"
@@ -66,11 +62,9 @@ class NodeOperations:
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list_by_data_box_edge_device.metadata['url']  # type: ignore
+                url = self.list.metadata['url']  # type: ignore
                 path_format_arguments = {
-                    'deviceName': self._serialize.url("device_name", device_name, 'str'),
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
                 # Construct parameters
@@ -89,11 +83,11 @@ class NodeOperations:
             return request
 
         async def extract_data(pipeline_response):
-            deserialized = self._deserialize('NodeList', pipeline_response)
+            deserialized = self._deserialize('DataBoxEdgeSkuList', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
-            return None, AsyncList(list_of_elem)
+            return deserialized.next_link or None, AsyncList(list_of_elem)
 
         async def get_next(next_link=None):
             request = prepare_request(next_link)
@@ -110,4 +104,4 @@ class NodeOperations:
         return AsyncItemPaged(
             get_next, extract_data
         )
-    list_by_data_box_edge_device.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/nodes'}  # type: ignore
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/availableSkus'}  # type: ignore

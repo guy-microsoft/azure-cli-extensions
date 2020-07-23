@@ -15,8 +15,16 @@ def cf_databoxedge(cli_ctx, *_):
     return get_mgmt_service_client(cli_ctx, DataBoxEdgeManagementClient)
 
 
+def cf_available_sku(cli_ctx, *_):
+    return cf_databoxedge(cli_ctx).available_sku
+
+
 def cf_device(cli_ctx, *_):
     return cf_databoxedge(cli_ctx).device
+
+
+def cf_sku(cli_ctx, *_):
+    return cf_databoxedge(cli_ctx).sku
 
 
 def cf_alert(cli_ctx, *_):
@@ -31,16 +39,16 @@ def cf_job(cli_ctx, *_):
     return cf_databoxedge(cli_ctx).job
 
 
+def cf_order(cli_ctx, *_):
+    return cf_databoxedge(cli_ctx).order
+
+
 def cf_node(cli_ctx, *_):
     return cf_databoxedge(cli_ctx).node
 
 
 def cf_operation_status(cli_ctx, *_):
     return cf_databoxedge(cli_ctx).operation_status
-
-
-def cf_order(cli_ctx, *_):
-    return cf_databoxedge(cli_ctx).order
 
 
 def cf_role(cli_ctx, *_):
@@ -69,7 +77,3 @@ def cf_trigger(cli_ctx, *_):
 
 def cf_user(cli_ctx, *_):
     return cf_databoxedge(cli_ctx).user
-
-
-def cf_sku(cli_ctx, *_):
-    return cf_databoxedge(cli_ctx).sku

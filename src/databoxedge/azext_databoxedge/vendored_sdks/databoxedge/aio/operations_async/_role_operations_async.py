@@ -63,7 +63,7 @@ class RoleOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.RoleList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -137,7 +137,7 @@ class RoleOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Role"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -185,7 +185,7 @@ class RoleOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Role"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -298,7 +298,7 @@ class RoleOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore

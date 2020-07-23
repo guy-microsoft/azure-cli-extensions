@@ -50,22 +50,22 @@ class SkuOperations(object):
         filter=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> Iterable["models.SkuInformationList"]
-        """List all the available Skus in the region and information related to them.
+        # type: (...) -> Iterable["models.DataBoxEdgeSkuList"]
+        """List all the available Skus and information related to them.
 
-        List all the available Skus in the region and information related to them.
+        List all the available Skus and information related to them.
 
         :param filter: Specify $filter='location eq :code:`<location>`' to filter on location.
         :type filter: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either SkuInformationList or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~data_box_edge_management_client.models.SkuInformationList]
+        :return: An iterator like instance of either DataBoxEdgeSkuList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_box_edge_management_client.models.DataBoxEdgeSkuList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.SkuInformationList"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeSkuList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -93,7 +93,7 @@ class SkuOperations(object):
             return request
 
         def extract_data(pipeline_response):
-            deserialized = self._deserialize('SkuInformationList', pipeline_response)
+            deserialized = self._deserialize('DataBoxEdgeSkuList', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)

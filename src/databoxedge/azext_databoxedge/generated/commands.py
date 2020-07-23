@@ -13,6 +13,15 @@ from azure.cli.core.commands import CliCommandType
 
 def load_command_table(self, _):
 
+    from azext_databoxedge.generated._client_factory import cf_available_sku
+    databoxedge_available_sku = CliCommandType(
+        operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._available_sku_operations#AvailableSkuO'
+        'perations.{}',
+        client_factory=cf_available_sku)
+    with self.command_group('databoxedge available-sku', databoxedge_available_sku, client_factory=cf_available_sku,
+                            is_experimental=True) as g:
+        g.custom_command('list', 'databoxedge_available_sku_list')
+
     from azext_databoxedge.generated._client_factory import cf_device
     databoxedge_device = CliCommandType(
         operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._device_operations#DeviceOperations.{}',
@@ -34,6 +43,13 @@ def load_command_table(self, _):
         g.custom_command('scan-for-update', 'databoxedge_device_scan_for_update', supports_no_wait=True)
         g.custom_command('upload-certificate', 'databoxedge_device_upload_certificate')
         g.custom_wait_command('wait', 'databoxedge_device_show')
+
+    from azext_databoxedge.generated._client_factory import cf_sku
+    databoxedge_sku = CliCommandType(
+        operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._sku_operations#SkuOperations.{}',
+        client_factory=cf_sku)
+    with self.command_group('databoxedge sku', databoxedge_sku, client_factory=cf_sku, is_experimental=True) as g:
+        g.custom_command('list', 'databoxedge_sku_list')
 
     from azext_databoxedge.generated._client_factory import cf_alert
     databoxedge_alert = CliCommandType(
@@ -66,6 +82,20 @@ def load_command_table(self, _):
     with self.command_group('databoxedge job', databoxedge_job, client_factory=cf_job, is_experimental=True) as g:
         g.custom_show_command('show', 'databoxedge_job_show')
 
+    from azext_databoxedge.generated._client_factory import cf_order
+    databoxedge_order = CliCommandType(
+        operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._order_operations#OrderOperations.{}',
+        client_factory=cf_order)
+    with self.command_group('databoxedge order', databoxedge_order, client_factory=cf_order,
+                            is_experimental=True) as g:
+        g.custom_command('list', 'databoxedge_order_list')
+        g.custom_show_command('show', 'databoxedge_order_show')
+        g.custom_command('create', 'databoxedge_order_create', supports_no_wait=True)
+        g.custom_command('update', 'databoxedge_order_update', supports_no_wait=True)
+        g.custom_command('delete', 'databoxedge_order_delete', supports_no_wait=True)
+        g.custom_command('list-dc-access-code', 'databoxedge_order_list_dc_access_code')
+        g.custom_wait_command('wait', 'databoxedge_order_show')
+
     from azext_databoxedge.generated._client_factory import cf_node
     databoxedge_node = CliCommandType(
         operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._node_operations#NodeOperations.{}',
@@ -81,19 +111,6 @@ def load_command_table(self, _):
     with self.command_group('databoxedge operation-status', databoxedge_operation_status,
                             client_factory=cf_operation_status, is_experimental=True) as g:
         g.custom_show_command('show', 'databoxedge_operation_status_show')
-
-    from azext_databoxedge.generated._client_factory import cf_order
-    databoxedge_order = CliCommandType(
-        operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._order_operations#OrderOperations.{}',
-        client_factory=cf_order)
-    with self.command_group('databoxedge order', databoxedge_order, client_factory=cf_order,
-                            is_experimental=True) as g:
-        g.custom_command('list', 'databoxedge_order_list')
-        g.custom_show_command('show', 'databoxedge_order_show')
-        g.custom_command('create', 'databoxedge_order_create', supports_no_wait=True)
-        g.custom_command('update', 'databoxedge_order_update', supports_no_wait=True)
-        g.custom_command('delete', 'databoxedge_order_delete', supports_no_wait=True)
-        g.custom_wait_command('wait', 'databoxedge_order_show')
 
     from azext_databoxedge.generated._client_factory import cf_role
     databoxedge_role = CliCommandType(
@@ -190,13 +207,7 @@ def load_command_table(self, _):
         g.custom_command('list', 'databoxedge_user_list')
         g.custom_show_command('show', 'databoxedge_user_show')
         g.custom_command('create', 'databoxedge_user_create', supports_no_wait=True)
-        g.custom_command('update', 'databoxedge_user_update', supports_no_wait=True)
+        g.generic_update_command('update', setter_arg_name='encrypted_password', setter_name='begin_create_or_update',
+                                 custom_func_name='databoxedge_user_update', supports_no_wait=True)
         g.custom_command('delete', 'databoxedge_user_delete', supports_no_wait=True)
         g.custom_wait_command('wait', 'databoxedge_user_show')
-
-    from azext_databoxedge.generated._client_factory import cf_sku
-    databoxedge_sku = CliCommandType(
-        operations_tmpl='azext_databoxedge.vendored_sdks.databoxedge.operations._sku_operations#SkuOperations.{}',
-        client_factory=cf_sku)
-    with self.command_group('databoxedge sku', databoxedge_sku, client_factory=cf_sku, is_experimental=True) as g:
-        g.custom_command('list', 'databoxedge_sku_list')

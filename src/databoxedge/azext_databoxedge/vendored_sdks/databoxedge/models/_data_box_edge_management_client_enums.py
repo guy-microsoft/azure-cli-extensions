@@ -56,6 +56,14 @@ class ContainerStatus(str, Enum):
     updating = "Updating"
     needs_attention = "NeedsAttention"
 
+class DataBoxEdgeDeviceKind(str, Enum):
+    """The etag for the devices.
+    """
+
+    azure_data_box_gateway = "AzureDataBoxGateway"
+    azure_stack_edge = "AzureStackEdge"
+    azure_stack_hub = "AzureStackHub"
+
 class DataBoxEdgeDeviceStatus(str, Enum):
     """The status of the Data Box Edge/Gateway device.
     """
@@ -102,6 +110,13 @@ class EncryptionAlgorithm(str, Enum):
     aes256 = "AES256"
     rsaes_pkcs1_v1_5 = "RSAES_PKCS1_v_1_5"
 
+class HostPlatformType(str, Enum):
+    """Platform where the Iot runtime is hosted.
+    """
+
+    kubernetes_cluster = "KubernetesCluster"
+    linux_vm = "LinuxVM"
+
 class InstallRebootBehavior(str, Enum):
     """Indicates if updates are available and at least one of the updates needs a reboot.
     """
@@ -132,6 +147,7 @@ class JobType(str, Enum):
     install_updates = "InstallUpdates"
     refresh_share = "RefreshShare"
     refresh_container = "RefreshContainer"
+    trigger_support_package = "TriggerSupportPackage"
 
 class MetricAggregationType(str, Enum):
     """Metric aggregation type.
@@ -171,6 +187,13 @@ class MonitoringStatus(str, Enum):
 
     enabled = "Enabled"
     disabled = "Disabled"
+
+class MountType(str, Enum):
+    """Mounting type.
+    """
+
+    volume = "Volume"
+    host_path = "HostPath"
 
 class NetworkAdapterDhcpStatus(str, Enum):
     """Value indicating whether this adapter has DHCP enabled.
@@ -229,6 +252,9 @@ class OrderState(str, Enum):
     awaiting_return_shipment = "AwaitingReturnShipment"
     shipped_back = "ShippedBack"
     collected_at_microsoft = "CollectedAtMicrosoft"
+    awaiting_pickup = "AwaitingPickup"
+    pickup_completed = "PickupCompleted"
+    awaiting_drop = "AwaitingDrop"
 
 class PlatformType(str, Enum):
     """Host OS supported by the IoT role.
@@ -236,6 +262,14 @@ class PlatformType(str, Enum):
 
     windows = "Windows"
     linux = "Linux"
+
+class ResourceMoveStatus(str, Enum):
+    """Denotes whether move operation is in progress
+    """
+
+    none = "None"
+    resource_move_in_progress = "ResourceMoveInProgress"
+    resource_move_failed = "ResourceMoveFailed"
 
 class RoleStatus(str, Enum):
     """Role status.
@@ -276,8 +310,21 @@ class ShareStatus(str, Enum):
     updating = "Updating"
     needs_attention = "NeedsAttention"
 
+class ShipmentType(str, Enum):
+
+    not_applicable = "NotApplicable"
+    shipped_to_customer = "ShippedToCustomer"
+    self_pickup = "SelfPickup"
+
+class SkuAvailability(str, Enum):
+    """Is SKU available
+    """
+
+    available = "Available"
+    unavailable = "Unavailable"
+
 class SkuName(str, Enum):
-    """The Sku name
+    """The Sku name.
     """
 
     gateway = "Gateway"
@@ -289,6 +336,10 @@ class SkuName(str, Enum):
     tea4_node_heater = "TEA_4Node_Heater"
     tea4_node_ups_heater = "TEA_4Node_UPS_Heater"
     tma = "TMA"
+    tdc = "TDC"
+    tca_large = "TCA_Large"
+    tca_small = "TCA_Small"
+    gpu = "GPU"
 
 class SkuRestrictionReasonCode(str, Enum):
     """The SKU restriction reason.
@@ -296,6 +347,20 @@ class SkuRestrictionReasonCode(str, Enum):
 
     not_available_for_subscription = "NotAvailableForSubscription"
     quota_id = "QuotaId"
+
+class SkuSignupOption(str, Enum):
+    """Can the SKU be signed up..
+    """
+
+    none = "None"
+    available = "Available"
+
+class SkuVersion(str, Enum):
+    """Sku version.
+    """
+
+    stable = "Stable"
+    preview = "Preview"
 
 class SslStatus(str, Enum):
     """Signifies whether SSL needs to be enabled or not.

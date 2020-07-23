@@ -17,6 +17,12 @@ show a databoxedge alert.
 |**--device-name**|string|The device name.|device_name|
 |**--name**|string|The alert name.|name|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
+### databoxedge available-sku list
+
+list a databoxedge available-sku.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
 ### databoxedge bandwidth-schedule create
 
 create a databoxedge bandwidth-schedule.
@@ -141,6 +147,7 @@ create a databoxedge device.
 |**--location**|string|The location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an identical geographical region is specified on update, the request will succeed.|location|
 |**--tags**|dictionary|The list of tags that describe the device. These tags can be used to view and group this device (across resource groups).|tags|
 |**--etag**|string|The etag for the devices.|etag|
+|**--kind**|choice|The etag for the devices.|kind|
 |**--data-box-edge-device-status**|choice|The status of the Data Box Edge/Gateway device.|data_box_edge_device_status|
 |**--description**|string|The Description of the Data Box Edge/Gateway device.|description|
 |**--model-description**|string|The description of the Data Box Edge/Gateway device model.|model_description|
@@ -282,6 +289,7 @@ create a databoxedge order.
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--contact-information**|object|The contact details.|contact_information|
 |**--shipping-address**|object|The shipping address.|shipping_address|
+|**--shipment-type**|choice|ShipmentType of the order|shipment_type|
 |**--current-status-status**|choice|Status of the order as per the allowed status types.|status|
 |**--current-status-comments**|string|Comments related to this status change.|comments|
 ### databoxedge order delete
@@ -299,6 +307,14 @@ list a databoxedge order.
 |Option|Type|Description|Path (SDK)|Path (swagger)|
 |------|----|-----------|----------|--------------|
 |**--device-name**|string|The device name.|device_name|
+|**--resource-group-name**|string|The resource group name.|resource_group_name|
+### databoxedge order list-dc-access-code
+
+list-dc-access-code a databoxedge order.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--device-name**|string|The device name|device_name|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 ### databoxedge order show
 
@@ -318,6 +334,7 @@ create a databoxedge order.
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--contact-information**|object|The contact details.|contact_information|
 |**--shipping-address**|object|The shipping address.|shipping_address|
+|**--shipment-type**|choice|ShipmentType of the order|shipment_type|
 |**--current-status-status**|choice|Status of the order as per the allowed status types.|status|
 |**--current-status-comments**|string|Comments related to this status change.|comments|
 ### databoxedge role create
@@ -453,9 +470,9 @@ create a databoxedge storage-account.
 |**--device-name**|string|The device name.|device_name|
 |**--storage-account-name**|string|The StorageAccount name.|storage_account_name|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
+|**--data-policy**|choice|Data policy of the storage Account.|data_policy|
 |**--description**|string|Description for the storage Account.|description|
 |**--storage-account-status**|choice|Current status of the storage account|storage_account_status|
-|**--data-policy**|choice|Data policy of the storage Account.|data_policy|
 |**--storage-account-credential-id**|string|Storage Account Credential Id|storage_account_credential_id|
 ### databoxedge storage-account delete
 
@@ -492,9 +509,9 @@ create a databoxedge storage-account.
 |**--device-name**|string|The device name.|device_name|
 |**--storage-account-name**|string|The StorageAccount name.|storage_account_name|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
+|**--data-policy**|choice|Data policy of the storage Account.|data_policy|
 |**--description**|string|Description for the storage Account.|description|
 |**--storage-account-status**|choice|Current status of the storage account|storage_account_status|
-|**--data-policy**|choice|Data policy of the storage Account.|data_policy|
 |**--storage-account-credential-id**|string|Storage Account Credential Id|storage_account_credential_id|
 ### databoxedge storage-account-credentials create
 
@@ -616,7 +633,6 @@ create a databoxedge user.
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--user-type**|choice|Type of the user.|user_type|
 |**--encrypted-password**|object|The password details.|encrypted_password|
-|**--share-access-rights**|array|List of shares that the user has rights on. This field should not be specified during user creation.|share_access_rights|
 ### databoxedge user delete
 
 delete a databoxedge user.
@@ -634,7 +650,7 @@ list a databoxedge user.
 |------|----|-----------|----------|--------------|
 |**--device-name**|string|The device name.|device_name|
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
-|**--filter**|string|Specify $filter='UserType eq :code:`<type>`' to filter on user type property|filter|
+|**--filter**|string|Specify $filter='Type eq :code:`<type>`' to filter on user type property|filter|
 ### databoxedge user show
 
 show a databoxedge user.
@@ -655,4 +671,3 @@ create a databoxedge user.
 |**--resource-group-name**|string|The resource group name.|resource_group_name|
 |**--user-type**|choice|Type of the user.|user_type|
 |**--encrypted-password**|object|The password details.|encrypted_password|
-|**--share-access-rights**|array|List of shares that the user has rights on. This field should not be specified during user creation.|share_access_rights|

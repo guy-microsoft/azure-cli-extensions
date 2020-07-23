@@ -61,7 +61,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeDeviceList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -133,7 +133,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeDeviceList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -205,7 +205,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeDevice"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -248,6 +248,7 @@ class DeviceOperations:
         location: str,
         tags: Optional[Dict[str, str]] = None,
         etag: Optional[str] = None,
+        kind: Optional[Union[str, "models.DataBoxEdgeDeviceKind"]] = None,
         data_box_edge_device_status: Optional[Union[str, "models.DataBoxEdgeDeviceStatus"]] = None,
         description: Optional[str] = None,
         model_description: Optional[str] = None,
@@ -259,8 +260,8 @@ class DeviceOperations:
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _data_box_edge_device = models.DataBoxEdgeDevice(location=location, tags=tags, etag=etag, data_box_edge_device_status=data_box_edge_device_status, description=description, model_description=model_description, friendly_name=friendly_name, name_sku_name=name)
-        api_version = "2019-08-01"
+        _data_box_edge_device = models.DataBoxEdgeDevice(location=location, tags=tags, etag=etag, kind=kind, data_box_edge_device_status=data_box_edge_device_status, description=description, model_description=model_description, friendly_name=friendly_name, name_sku_name=name)
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -309,6 +310,7 @@ class DeviceOperations:
         location: str,
         tags: Optional[Dict[str, str]] = None,
         etag: Optional[str] = None,
+        kind: Optional[Union[str, "models.DataBoxEdgeDeviceKind"]] = None,
         data_box_edge_device_status: Optional[Union[str, "models.DataBoxEdgeDeviceStatus"]] = None,
         description: Optional[str] = None,
         model_description: Optional[str] = None,
@@ -332,6 +334,8 @@ class DeviceOperations:
         :type tags: dict[str, str]
         :param etag: The etag for the devices.
         :type etag: str
+        :param kind: The etag for the devices.
+        :type kind: str or ~data_box_edge_management_client.models.DataBoxEdgeDeviceKind
         :param data_box_edge_device_status: The status of the Data Box Edge/Gateway device.
         :type data_box_edge_device_status: str or ~data_box_edge_management_client.models.DataBoxEdgeDeviceStatus
         :param description: The Description of the Data Box Edge/Gateway device.
@@ -363,6 +367,7 @@ class DeviceOperations:
             location=location,
             tags=tags,
             etag=etag,
+            kind=kind,
             data_box_edge_device_status=data_box_edge_device_status,
             description=description,
             model_description=model_description,
@@ -397,7 +402,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore
@@ -501,7 +506,7 @@ class DeviceOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.DataBoxEdgeDevicePatch(tags=tags)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -552,7 +557,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._download_update_initial.metadata['url']  # type: ignore
@@ -653,7 +658,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DataBoxEdgeDeviceExtendedInfo"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get_extended_information.metadata['url']  # type: ignore
@@ -698,7 +703,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._install_update_initial.metadata['url']  # type: ignore
@@ -799,7 +804,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.NetworkSettings"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get_network_setting.metadata['url']  # type: ignore
@@ -844,7 +849,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._scan_for_update_initial.metadata['url']  # type: ignore
@@ -937,7 +942,7 @@ class DeviceOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _security_settings = models.SecuritySettings(device_admin_password=device_admin_password)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -1052,7 +1057,7 @@ class DeviceOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.UpdateSummary"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get_update_summary.metadata['url']  # type: ignore
@@ -1116,7 +1121,7 @@ class DeviceOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.UploadCertificateRequest(authentication_type=authentication_type, certificate=certificate)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL

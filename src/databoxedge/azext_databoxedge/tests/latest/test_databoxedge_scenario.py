@@ -27,7 +27,7 @@ def setup(test, rg, rg_2, rg_3):
 @try_manual
 def step_databoxedgedeviceput(test, rg, rg_2, rg_3):
     test.cmd('az databoxedge device create '
-             '--location "eastus" '
+             '--location "WUS" '
              '--sku-name "Edge" '
              '--name "{testedgedevice}" '
              '--resource-group "{rg}"',

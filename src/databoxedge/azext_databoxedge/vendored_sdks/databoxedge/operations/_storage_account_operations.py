@@ -54,9 +54,9 @@ class StorageAccountOperations(object):
         **kwargs  # type: Any
     ):
         # type: (...) -> Iterable["models.StorageAccountList"]
-        """Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
+        """Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
 
-        Lists all the storage accounts in a Data Box Edge/Data Box Gateway device.
+        Lists all the StorageAccounts in a Data Box Edge/Data Box Gateway device.
 
         :param device_name: The device name.
         :type device_name: str
@@ -70,7 +70,7 @@ class StorageAccountOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.StorageAccountList"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -147,7 +147,7 @@ class StorageAccountOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.StorageAccount"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -189,9 +189,9 @@ class StorageAccountOperations(object):
         device_name,  # type: str
         storage_account_name,  # type: str
         resource_group_name,  # type: str
+        data_policy,  # type: Union[str, "models.DataPolicy"]
         description=None,  # type: Optional[str]
         storage_account_status=None,  # type: Optional[Union[str, "models.StorageAccountStatus"]]
-        data_policy=None,  # type: Optional[Union[str, "models.DataPolicy"]]
         storage_account_credential_id=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
@@ -201,7 +201,7 @@ class StorageAccountOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _storage_account = models.StorageAccount(description=description, storage_account_status=storage_account_status, data_policy=data_policy, storage_account_credential_id=storage_account_credential_id)
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -251,9 +251,9 @@ class StorageAccountOperations(object):
         device_name,  # type: str
         storage_account_name,  # type: str
         resource_group_name,  # type: str
+        data_policy,  # type: Union[str, "models.DataPolicy"]
         description=None,  # type: Optional[str]
         storage_account_status=None,  # type: Optional[Union[str, "models.StorageAccountStatus"]]
-        data_policy=None,  # type: Optional[Union[str, "models.DataPolicy"]]
         storage_account_credential_id=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
@@ -268,12 +268,12 @@ class StorageAccountOperations(object):
         :type storage_account_name: str
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
+        :param data_policy: Data policy of the storage Account.
+        :type data_policy: str or ~data_box_edge_management_client.models.DataPolicy
         :param description: Description for the storage Account.
         :type description: str
         :param storage_account_status: Current status of the storage account.
         :type storage_account_status: str or ~data_box_edge_management_client.models.StorageAccountStatus
-        :param data_policy: Data policy of the storage Account.
-        :type data_policy: str or ~data_box_edge_management_client.models.DataPolicy
         :param storage_account_credential_id: Storage Account Credential Id.
         :type storage_account_credential_id: str
         :keyword callable cls: A custom type or function that will be passed the direct response
@@ -295,9 +295,9 @@ class StorageAccountOperations(object):
             device_name=device_name,
             storage_account_name=storage_account_name,
             resource_group_name=resource_group_name,
+            data_policy=data_policy,
             description=description,
             storage_account_status=storage_account_status,
-            data_policy=data_policy,
             storage_account_credential_id=storage_account_credential_id,
             cls=lambda x,y,z: x,
             **kwargs
@@ -330,7 +330,7 @@ class StorageAccountOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-08-01"
+        api_version = "2020-07-01-preview"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore

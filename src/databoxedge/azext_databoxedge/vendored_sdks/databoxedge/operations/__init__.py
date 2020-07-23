@@ -7,13 +7,15 @@
 # --------------------------------------------------------------------------
 
 from ._operation_operations import OperationOperations
+from ._available_sku_operations import AvailableSkuOperations
 from ._device_operations import DeviceOperations
+from ._sku_operations import SkuOperations
 from ._alert_operations import AlertOperations
 from ._bandwidth_schedule_operations import BandwidthScheduleOperations
 from ._job_operations import JobOperations
+from ._order_operations import OrderOperations
 from ._node_operations import NodeOperations
 from ._operation_status_operations import OperationStatusOperations
-from ._order_operations import OrderOperations
 from ._role_operations import RoleOperations
 from ._share_operations import ShareOperations
 from ._storage_account_credentials_operations import StorageAccountCredentialsOperations
@@ -21,17 +23,18 @@ from ._storage_account_operations import StorageAccountOperations
 from ._container_operations import ContainerOperations
 from ._trigger_operations import TriggerOperations
 from ._user_operations import UserOperations
-from ._sku_operations import SkuOperations
 
 __all__ = [
     'OperationOperations',
+    'AvailableSkuOperations',
     'DeviceOperations',
+    'SkuOperations',
     'AlertOperations',
     'BandwidthScheduleOperations',
     'JobOperations',
+    'OrderOperations',
     'NodeOperations',
     'OperationStatusOperations',
-    'OrderOperations',
     'RoleOperations',
     'ShareOperations',
     'StorageAccountCredentialsOperations',
@@ -39,5 +42,4 @@ __all__ = [
     'ContainerOperations',
     'TriggerOperations',
     'UserOperations',
-    'SkuOperations',
 ]
