@@ -10,6 +10,8 @@ try:
     from ._models_py3 import Alert
     from ._models_py3 import AlertPropertiesDefinition
     from ._models_py3 import AlertsResult
+    from ._models_py3 import AnomalyDetails
+    from ._models_py3 import AnomalyInsights
     from ._models_py3 import CommonExportProperties
     from ._models_py3 import Dimension
     from ._models_py3 import DimensionsListResult
@@ -26,6 +28,12 @@ try:
     from ._models_py3 import ExportRecurrencePeriod
     from ._models_py3 import ExportTimePeriod
     from ._models_py3 import ForecastDefinition
+    from ._models_py3 import Insights
+    from ._models_py3 import InsightsAnomalyBoundary
+    from ._models_py3 import InsightsAnomalyContributors
+    from ._models_py3 import InsightsAnomalyForecast
+    from ._models_py3 import InsightsAnomalyJustification
+    from ._models_py3 import InsightsListResult
     from ._models_py3 import KpiProperties
     from ._models_py3 import Operation
     from ._models_py3 import OperationDisplay
@@ -56,6 +64,8 @@ except (SyntaxError, ImportError):
     from ._models import Alert  # type: ignore
     from ._models import AlertPropertiesDefinition  # type: ignore
     from ._models import AlertsResult  # type: ignore
+    from ._models import AnomalyDetails  # type: ignore
+    from ._models import AnomalyInsights  # type: ignore
     from ._models import CommonExportProperties  # type: ignore
     from ._models import Dimension  # type: ignore
     from ._models import DimensionsListResult  # type: ignore
@@ -72,6 +82,12 @@ except (SyntaxError, ImportError):
     from ._models import ExportRecurrencePeriod  # type: ignore
     from ._models import ExportTimePeriod  # type: ignore
     from ._models import ForecastDefinition  # type: ignore
+    from ._models import Insights  # type: ignore
+    from ._models import InsightsAnomalyBoundary  # type: ignore
+    from ._models import InsightsAnomalyContributors  # type: ignore
+    from ._models import InsightsAnomalyForecast  # type: ignore
+    from ._models import InsightsAnomalyJustification  # type: ignore
+    from ._models import InsightsListResult  # type: ignore
     from ._models import KpiProperties  # type: ignore
     from ._models import Operation  # type: ignore
     from ._models import OperationDisplay  # type: ignore
@@ -115,6 +131,7 @@ from ._cost_management_client_enums import (
     ExternalCloudProviderType,
     ForecastTimeframeType,
     ForecastType,
+    InsightsStatus,
     KpiType,
     MetricType,
     OperatorType,
@@ -133,6 +150,8 @@ __all__ = [
     'Alert',
     'AlertPropertiesDefinition',
     'AlertsResult',
+    'AnomalyDetails',
+    'AnomalyInsights',
     'CommonExportProperties',
     'Dimension',
     'DimensionsListResult',
@@ -149,6 +168,12 @@ __all__ = [
     'ExportRecurrencePeriod',
     'ExportTimePeriod',
     'ForecastDefinition',
+    'Insights',
+    'InsightsAnomalyBoundary',
+    'InsightsAnomalyContributors',
+    'InsightsAnomalyForecast',
+    'InsightsAnomalyJustification',
+    'InsightsListResult',
     'KpiProperties',
     'Operation',
     'OperationDisplay',
@@ -190,6 +215,7 @@ __all__ = [
     'ExternalCloudProviderType',
     'ForecastTimeframeType',
     'ForecastType',
+    'InsightsStatus',
     'KpiType',
     'MetricType',
     'OperatorType',

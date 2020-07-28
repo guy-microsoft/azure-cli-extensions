@@ -72,7 +72,7 @@ class AlertOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AlertsResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.list.metadata['url']  # type: ignore
@@ -142,7 +142,7 @@ class AlertOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Alert"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -293,7 +293,7 @@ class AlertOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.DismissAlertPayload(definition=definition, description=description, source=source, cost_entity_id=cost_entity_id, status=status, creation_time=creation_time, close_time=close_time, modification_time=modification_time, status_modification_user_name=status_modification_user_name, status_modification_time=status_modification_time, time_grain_type=time_grain_type, period_start_date=period_start_date, triggered_by=triggered_by, resource_group_filter=resource_group_filter, resource_filter=resource_filter, meter_filter=meter_filter, tag_filter=tag_filter, threshold=threshold, operator=operator, amount=amount, unit=unit, current_spend=current_spend, contact_emails=contact_emails, contact_groups=contact_groups, contact_roles=contact_roles, overriding_alert=overriding_alert)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -358,7 +358,7 @@ class AlertOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AlertsResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.list_external.metadata['url']  # type: ignore

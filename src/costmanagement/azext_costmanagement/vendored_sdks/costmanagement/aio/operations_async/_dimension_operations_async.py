@@ -89,7 +89,7 @@ class DimensionOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DimensionsListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -186,7 +186,7 @@ class DimensionOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DimensionsListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:

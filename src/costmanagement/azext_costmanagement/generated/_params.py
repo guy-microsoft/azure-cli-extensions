@@ -529,3 +529,12 @@ def load_arguments(self, _):
                    '\'/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}\' specific'
                    ' for partners.')
         c.argument('export_name', options_list=['--name', '-n'], help='Export Name.')
+
+    with self.argument_context('costmanagement insight list') as c:
+        c.argument('scope', help='The scope associated with insights operations. This includes \'/subscriptions/{subscr'
+                   'iptionId}/\' for subscription scope. At present, only subscription scope is supported.')
+
+    with self.argument_context('costmanagement insight get-by-scope') as c:
+        c.argument('scope', help='The scope associated with insights operations. This includes \'/subscriptions/{subscr'
+                   'iptionId}/\' for subscription scope. At present, only subscription scope is supported.')
+        c.argument('insight_name', options_list=['--name', '-n'], help='Insights name')

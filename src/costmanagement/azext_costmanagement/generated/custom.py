@@ -395,3 +395,15 @@ def costmanagement_export_get_execution_history(client,
                                                 export_name):
     return client.get_execution_history(scope=scope,
                                         export_name=export_name)
+
+
+def costmanagement_insight_list(client,
+                                scope):
+    return client.list_by_scope(scope=scope)
+
+
+def costmanagement_insight_get_by_scope(client,
+                                        scope,
+                                        insight_name):
+    return client.get_by_scope(scope=scope,
+                               insight_name=insight_name)

@@ -24,6 +24,7 @@ from .operations import ForecastOperations
 from .operations import DimensionOperations
 from .operations import QueryOperations
 from .operations import ExportOperations
+from .operations import InsightOperations
 from .operations import OperationOperations
 from . import models
 
@@ -43,6 +44,8 @@ class CostManagementClient(object):
     :vartype query: cost_management_client.operations.QueryOperations
     :ivar export: ExportOperations operations
     :vartype export: cost_management_client.operations.ExportOperations
+    :ivar insight: InsightOperations operations
+    :vartype insight: cost_management_client.operations.InsightOperations
     :ivar operation: OperationOperations operations
     :vartype operation: cost_management_client.operations.OperationOperations
     :param credential: Credential needed for the client to connect to Azure.
@@ -78,6 +81,8 @@ class CostManagementClient(object):
         self.query = QueryOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.export = ExportOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.insight = InsightOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.operation = OperationOperations(
             self._client, self._config, self._serialize, self._deserialize)

@@ -419,7 +419,7 @@ def step__exports_put_exportcreateorupdatebybillingaccount(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "providers/Microsoft.Billing/billingAccounts/123456"',
              checks=[])
@@ -437,7 +437,7 @@ def step__exports_put_exportcreateorupdatebydepartment(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "providers/Microsoft.Billing/billingAccounts/12/departments/1234"',
              checks=[])
@@ -455,7 +455,7 @@ def step__exports_put_exportcreateorupdatebyenrollmentaccount(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456"',
              checks=[])
@@ -473,7 +473,7 @@ def step__exports_put_exportcreateorupdatebymanagementgroup(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "providers/Microsoft.Management/managementGroups/TestMG"',
              checks=[])
@@ -491,7 +491,7 @@ def step__exports_put_exportcreateorupdatebyresourcegroup(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG"',
              checks=[])
@@ -509,7 +509,7 @@ def step__exports_put_exportcreateorupdatebysubscription(test, rg):
              '--delivery-info-destination container="exports" resource-id="/subscriptions/{subscription_id}/resourceGro'
              'ups/{rg}/providers/Microsoft.Storage/storageAccounts/{sa}" root-folder-path="ad-hoc" '
              '--schedule-recurrence "Weekly" '
-             '--schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
+             '--schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020-10-31T00:00:00Z" '
              '--schedule-status "Active" '
              '--scope "subscriptions/00000000-0000-0000-0000-000000000000"',
              checks=[])
@@ -864,6 +864,23 @@ def step__forecast_post_subscriptionforecast(test, rg):
              '--include-actual-cost false '
              '--include-fresh-partial-cost false '
              '--timeframe "MonthToDate" '
+             '--scope "subscriptions/00000000-0000-0000-0000-000000000000"',
+             checks=[])
+
+
+# EXAMPLE: /Insights/get/InsightsBySubscription
+@try_manual
+def step__insights_get_insightsbysubscription(test, rg):
+    test.cmd('az costmanagement insight get-by-scope '
+             '--name "{swaggerExample}" '
+             '--scope "subscriptions/00000000-0000-0000-0000-000000000000"',
+             checks=[])
+
+
+# EXAMPLE: /Insights/get/InsightsListBySubscription
+@try_manual
+def step__insights_get_insightslistbysubscription(test, rg):
+    test.cmd('az costmanagement insight list '
              '--scope "subscriptions/00000000-0000-0000-0000-000000000000"',
              checks=[])
 
@@ -1398,6 +1415,8 @@ def call_scenario(test, rg):
     step__forecast_post_invoicesectionforecast(test, rg)
     step__forecast_post_resourcegroupforecast(test, rg)
     step__forecast_post_subscriptionforecast(test, rg)
+    step__insights_get_insightsbysubscription(test, rg)
+    step__insights_get_insightslistbysubscription(test, rg)
     step__query_post_billingaccountquery_legacy(test, rg)
     step__query_post_billingaccountquery_modern(test, rg)
     step__query_post_billingaccountquerygrouping_legacy(test, rg)
@@ -1453,6 +1472,7 @@ class CostManagementClientScenarioTest(ScenarioTest):
             'swaggerExample': 'swaggerExample',
             'Views_2': 'TestView',
             'TestExport': 'TestExport',
+            'swaggerExample': 'swaggerExample',
         })
 
         call_scenario(self, rg)

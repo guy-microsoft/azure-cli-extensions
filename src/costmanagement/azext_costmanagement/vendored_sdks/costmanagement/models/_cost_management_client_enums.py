@@ -157,6 +157,15 @@ class ForecastType(str, Enum):
     actual_cost = "ActualCost"
     amortized_cost = "AmortizedCost"
 
+class InsightsStatus(str, Enum):
+    """Status of the insight.
+    """
+
+    new = "New"
+    dismissed = "Dismissed"
+    acknowledged = "Acknowledged"
+    resolved = "Resolved"
+
 class KpiType(str, Enum):
     """KPI type (Forecast, Budget).
     """

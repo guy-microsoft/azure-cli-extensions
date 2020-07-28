@@ -23,8 +23,8 @@ if TYPE_CHECKING:
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
-class OperationOperations(object):
-    """OperationOperations operations.
+class InsightOperations(object):
+    """InsightOperations operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -45,19 +45,24 @@ class OperationOperations(object):
         self._deserialize = deserializer
         self._config = config
 
-    def list(
+    def list_by_scope(
         self,
+        scope,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> Iterable["models.OperationListResult"]
-        """Lists all of the available cost management REST API operations.
+        # type: (...) -> Iterable["models.InsightsListResult"]
+        """Lists all insights at the given scope.
 
+        :param scope: The scope associated with insights operations. This includes
+     '/subscriptions/{subscriptionId}/' for subscription scope. At present, only subscription scope
+     is supported.
+        :type scope: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either OperationListResult or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~cost_management_client.models.OperationListResult]
+        :return: An iterator like instance of either InsightsListResult or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~cost_management_client.models.InsightsListResult]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.OperationListResult"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.InsightsListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-08-01-preview"
@@ -65,7 +70,11 @@ class OperationOperations(object):
         def prepare_request(next_link=None):
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']  # type: ignore
+                url = self.list_by_scope.metadata['url']  # type: ignore
+                path_format_arguments = {
+                    'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
+                }
+                url = self._client.format_url(url, **path_format_arguments)
                 # Construct parameters
                 query_parameters = {}  # type: Dict[str, Any]
                 query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
@@ -82,7 +91,7 @@ class OperationOperations(object):
             return request
 
         def extract_data(pipeline_response):
-            deserialized = self._deserialize('OperationListResult', pipeline_response)
+            deserialized = self._deserialize('InsightsListResult', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
@@ -104,4 +113,63 @@ class OperationOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/providers/Microsoft.CostManagement/operations'}  # type: ignore
+    list_by_scope.metadata = {'url': '/{scope}/providers/Microsoft.CostManagement/insights'}  # type: ignore
+
+    def get_by_scope(
+        self,
+        scope,  # type: str
+        insight_name,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.Insights"
+        """Gets the insight for the defined scope by insight name.
+
+        :param scope: The scope associated with insights operations. This includes
+         '/subscriptions/{subscriptionId}/' for subscription scope. At present, only subscription scope
+         is supported.
+        :type scope: str
+        :param insight_name: Insights name.
+        :type insight_name: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: Insights, or the result of cls(response)
+        :rtype: ~cost_management_client.models.Insights
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.Insights"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2020-08-01-preview"
+
+        # Construct URL
+        url = self.get_by_scope.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'scope': self._serialize.url("scope", scope, 'str', skip_quote=True),
+            'insightName': self._serialize.url("insight_name", insight_name, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        request = self._client.get(url, query_parameters, header_parameters)
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize(models.ErrorResponse, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('Insights', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    get_by_scope.metadata = {'url': '/{scope}/providers/Microsoft.CostManagement/insights/{insightName}'}  # type: ignore

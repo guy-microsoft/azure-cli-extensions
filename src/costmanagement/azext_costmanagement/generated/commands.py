@@ -84,3 +84,13 @@ def load_command_table(self, _):
         g.custom_command('delete', 'costmanagement_export_delete')
         g.custom_command('execute', 'costmanagement_export_execute')
         g.custom_command('get-execution-history', 'costmanagement_export_get_execution_history')
+
+    from azext_costmanagement.generated._client_factory import cf_insight
+    costmanagement_insight = CliCommandType(
+        operations_tmpl='azext_costmanagement.vendored_sdks.costmanagement.operations._insight_operations#InsightOperat'
+        'ions.{}',
+        client_factory=cf_insight)
+    with self.command_group('costmanagement insight', costmanagement_insight, client_factory=cf_insight,
+                            is_experimental=True) as g:
+        g.custom_command('list', 'costmanagement_insight_list')
+        g.custom_command('get-by-scope', 'costmanagement_insight_get_by_scope')

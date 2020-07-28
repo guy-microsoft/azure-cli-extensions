@@ -22,6 +22,7 @@ from .operations_async import ForecastOperations
 from .operations_async import DimensionOperations
 from .operations_async import QueryOperations
 from .operations_async import ExportOperations
+from .operations_async import InsightOperations
 from .operations_async import OperationOperations
 from .. import models
 
@@ -41,6 +42,8 @@ class CostManagementClient(object):
     :vartype query: cost_management_client.aio.operations_async.QueryOperations
     :ivar export: ExportOperations operations
     :vartype export: cost_management_client.aio.operations_async.ExportOperations
+    :ivar insight: InsightOperations operations
+    :vartype insight: cost_management_client.aio.operations_async.InsightOperations
     :ivar operation: OperationOperations operations
     :vartype operation: cost_management_client.aio.operations_async.OperationOperations
     :param credential: Credential needed for the client to connect to Azure.
@@ -75,6 +78,8 @@ class CostManagementClient(object):
         self.query = QueryOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.export = ExportOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.insight = InsightOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.operation = OperationOperations(
             self._client, self._config, self._serialize, self._deserialize)

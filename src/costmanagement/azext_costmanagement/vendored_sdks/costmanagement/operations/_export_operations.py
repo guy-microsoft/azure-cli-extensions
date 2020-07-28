@@ -81,7 +81,7 @@ class ExportOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ExportListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.list.metadata['url']  # type: ignore
@@ -158,7 +158,7 @@ class ExportOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Export"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -270,7 +270,7 @@ class ExportOperations(object):
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.Export(e_tag=e_tag, run_history=run_history, type_properties_definition_type=type, timeframe=timeframe, time_period=time_period, configuration=configuration, destination=destination, status=status, recurrence=recurrence, recurrence_period=recurrence_period)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -353,7 +353,7 @@ class ExportOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.delete.metadata['url']  # type: ignore
@@ -421,7 +421,7 @@ class ExportOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.execute.metadata['url']  # type: ignore
@@ -489,7 +489,7 @@ class ExportOperations(object):
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ExportExecutionListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.get_execution_history.metadata['url']  # type: ignore

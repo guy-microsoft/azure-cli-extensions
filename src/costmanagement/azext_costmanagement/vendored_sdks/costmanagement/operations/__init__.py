@@ -12,6 +12,7 @@ from ._forecast_operations import ForecastOperations
 from ._dimension_operations import DimensionOperations
 from ._query_operations import QueryOperations
 from ._export_operations import ExportOperations
+from ._insight_operations import InsightOperations
 from ._operation_operations import OperationOperations
 
 __all__ = [
@@ -21,5 +22,6 @@ __all__ = [
     'DimensionOperations',
     'QueryOperations',
     'ExportOperations',
+    'InsightOperations',
     'OperationOperations',
 ]

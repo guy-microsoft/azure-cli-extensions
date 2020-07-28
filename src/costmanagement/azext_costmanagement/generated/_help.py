@@ -754,7 +754,7 @@ date must be greater than start date.
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/123456"
       - name: ExportCreateOrUpdateByDepartment
         text: |-
@@ -762,7 +762,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/12/departments/1234"
       - name: ExportCreateOrUpdateByEnrollmentAccount
         text: |-
@@ -770,7 +770,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccount\
 s/456"
       - name: ExportCreateOrUpdateByManagementGroup
@@ -779,7 +779,7 @@ s/456"
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Management/managementGroups/TestMG"
       - name: ExportCreateOrUpdateByResourceGroup
         text: |-
@@ -787,7 +787,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups\
 /MYDEVTESTRG"
       - name: ExportCreateOrUpdateBySubscription
@@ -796,7 +796,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "subscriptions/00000000-0000-0000-0000-000000000000"
 """
 
@@ -842,7 +842,7 @@ date must be greater than start date.
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/123456"
       - name: ExportCreateOrUpdateByDepartment
         text: |-
@@ -850,7 +850,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/12/departments/1234"
       - name: ExportCreateOrUpdateByEnrollmentAccount
         text: |-
@@ -858,7 +858,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccount\
 s/456"
       - name: ExportCreateOrUpdateByManagementGroup
@@ -867,7 +867,7 @@ s/456"
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "providers/Microsoft.Management/managementGroups/TestMG"
       - name: ExportCreateOrUpdateByResourceGroup
         text: |-
@@ -875,7 +875,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups\
 /MYDEVTESTRG"
       - name: ExportCreateOrUpdateBySubscription
@@ -884,7 +884,7 @@ t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-peri
 -configuration columns="Date" columns="MeterId" columns="ResourceId" columns="ResourceLocation" columns="Quantity" --de\
 finition-timeframe "MonthToDate" --delivery-info-destination container="exports" resource-id="/subscriptions/00000000-0\
 000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182" roo\
-t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-06-01T00:00:00Z" to="2020\
+t-folder-path="ad-hoc" --schedule-recurrence "Weekly" --schedule-recurrence-period from="2020-08-01T00:00:00Z" to="2020\
 -10-31T00:00:00Z" --schedule-status "Active" --scope "subscriptions/00000000-0000-0000-0000-000000000000"
 """
 
@@ -976,4 +976,28 @@ nt/managementGroups/TestMG"
         text: |-
                az costmanagement export get-execution-history --name "TestExport" --scope "subscriptions/00000000-0000-\
 0000-0000-000000000000"
+"""
+
+helps['costmanagement insight'] = """
+    type: group
+    short-summary: costmanagement insight
+"""
+
+helps['costmanagement insight list'] = """
+    type: command
+    short-summary: Lists all insights at the given scope.
+    examples:
+      - name: InsightsListBySubscription
+        text: |-
+               az costmanagement insight list --scope "subscriptions/00000000-0000-0000-0000-000000000000"
+"""
+
+helps['costmanagement insight get-by-scope'] = """
+    type: command
+    short-summary: Gets the insight for the defined scope by insight name.
+    examples:
+      - name: InsightsBySubscription
+        text: |-
+               az costmanagement insight get-by-scope --name "swaggerExample" --scope "subscriptions/00000000-0000-0000\
+-0000-000000000000"
 """

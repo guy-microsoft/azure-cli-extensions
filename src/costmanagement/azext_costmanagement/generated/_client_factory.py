@@ -39,3 +39,7 @@ def cf_query(cli_ctx, *_):
 
 def cf_export(cli_ctx, *_):
     return cf_costmanagement(cli_ctx).export
+
+
+def cf_insight(cli_ctx, *_):
+    return cf_costmanagement(cli_ctx).insight

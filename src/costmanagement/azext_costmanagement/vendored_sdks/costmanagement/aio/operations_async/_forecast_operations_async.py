@@ -111,7 +111,7 @@ class ForecastOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.ForecastDefinition(type=type, timeframe=timeframe, time_period=time_period, include_actual_cost=include_actual_cost, include_fresh_partial_cost=include_fresh_partial_cost, configuration=configuration, aggregation=aggregation, grouping=grouping, filter=query_filter)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -216,7 +216,7 @@ class ForecastOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.ForecastDefinition(type=type, timeframe=timeframe, time_period=time_period, include_actual_cost=include_actual_cost, include_fresh_partial_cost=include_fresh_partial_cost, configuration=configuration, aggregation=aggregation, grouping=grouping, filter=query_filter)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL

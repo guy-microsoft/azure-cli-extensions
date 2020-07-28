@@ -55,7 +55,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ViewListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -134,7 +134,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ViewListResult"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         def prepare_request(next_link=None):
             if not next_link:
@@ -201,7 +201,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.View"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -306,7 +306,7 @@ class ViewOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.View(e_tag=e_tag, display_name=display_name, scope=scope, chart=chart, accumulated=accumulated, metric=metric, kpis=kpis, pivots=pivots, timeframe=timeframe, time_period=time_period, dataset=dataset)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -369,7 +369,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.delete.metadata['url']  # type: ignore
@@ -436,7 +436,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType["models.View"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.get_by_scope.metadata['url']  # type: ignore
@@ -561,7 +561,7 @@ class ViewOperations:
         error_map.update(kwargs.pop('error_map', {}))
 
         _parameters = models.View(e_tag=e_tag, display_name=display_name, scope=view_properties_scope, chart=chart, accumulated=accumulated, metric=metric, kpis=kpis, pivots=pivots, timeframe=timeframe, time_period=time_period, dataset=dataset)
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
 
         # Construct URL
@@ -644,7 +644,7 @@ class ViewOperations:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-06-01"
+        api_version = "2020-08-01-preview"
 
         # Construct URL
         url = self.delete_by_scope.metadata['url']  # type: ignore

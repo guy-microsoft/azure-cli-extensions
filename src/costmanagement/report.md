@@ -190,6 +190,21 @@ usage a costmanagement forecast.
 |**--dataset-aggregation**|dictionary|Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated column. Query can have up to 2 aggregation clauses.|aggregation|
 |**--dataset-grouping**|array|Array of group by expression to use in the query. Query can have up to 2 group by clauses.|grouping|
 |**--dataset-filter**|object|Has filter expression to use in the query.|filter|
+### costmanagement insight get-by-scope
+
+get-by-scope a costmanagement insight.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--scope**|string|The scope associated with insights operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope. At present, only subscription scope is supported.|scope|
+|**--insight-name**|string|Insights name|insight_name|
+### costmanagement insight list
+
+list a costmanagement insight.
+
+|Option|Type|Description|Path (SDK)|Path (swagger)|
+|------|----|-----------|----------|--------------|
+|**--scope**|string|The scope associated with insights operations. This includes '/subscriptions/{subscriptionId}/' for subscription scope. At present, only subscription scope is supported.|scope|
 ### costmanagement query usage
 
 usage a costmanagement query.
