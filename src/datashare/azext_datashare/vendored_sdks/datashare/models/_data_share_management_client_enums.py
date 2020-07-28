@@ -16,7 +16,7 @@ class DataSetMappingStatus(str, Enum):
     broken = "Broken"
 
 class DataSetType(str, Enum):
-    """Type of the data set
+    """Type of data set
     """
 
     blob = "Blob"
@@ -60,7 +60,7 @@ class Kind(str, Enum):
     schedule_based = "ScheduleBased"
 
 class OutputType(str, Enum):
-    """File output type
+    """Type of output file
     """
 
     csv = "Csv"

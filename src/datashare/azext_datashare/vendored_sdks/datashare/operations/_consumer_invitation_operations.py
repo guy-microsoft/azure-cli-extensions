@@ -45,131 +45,6 @@ class ConsumerInvitationOperations(object):
         self._deserialize = deserializer
         self._config = config
 
-    def reject_invitation(
-        self,
-        location,  # type: str
-        invitation_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.ConsumerInvitation"
-        """Reject an invitation.
-
-        Rejects the invitation identified by invitationId.
-
-        :param location: Location of the invitation.
-        :type location: str
-        :param invitation_id: Unique id of the invitation.
-        :type invitation_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ConsumerInvitation, or the result of cls(response)
-        :rtype: ~data_share_management_client.models.ConsumerInvitation
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ConsumerInvitation"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-
-        _invitation = models.ConsumerInvitation(invitation_id=invitation_id)
-        api_version = "2019-11-01"
-        content_type = kwargs.pop("content_type", "application/json")
-
-        # Construct URL
-        url = self.reject_invitation.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'location': self._serialize.url("location", location, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_invitation, 'ConsumerInvitation')
-        body_content_kwargs['content'] = body_content
-        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.DataShareError, response)
-            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('ConsumerInvitation', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    reject_invitation.metadata = {'url': '/providers/Microsoft.DataShare/locations/{location}/RejectInvitation'}  # type: ignore
-
-    def get(
-        self,
-        location,  # type: str
-        invitation_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.ConsumerInvitation"
-        """Get an invitation.
-
-        Gets the invitation identified by invitationId.
-
-        :param location: Location of the invitation.
-        :type location: str
-        :param invitation_id: An invitation id.
-        :type invitation_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: ConsumerInvitation, or the result of cls(response)
-        :rtype: ~data_share_management_client.models.ConsumerInvitation
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ConsumerInvitation"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-11-01"
-
-        # Construct URL
-        url = self.get.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'location': self._serialize.url("location", location, 'str'),
-            'invitationId': self._serialize.url("invitation_id", invitation_id, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        request = self._client.get(url, query_parameters, header_parameters)
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.DataShareError, response)
-            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('ConsumerInvitation', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    get.metadata = {'url': '/providers/Microsoft.DataShare/locations/{location}/consumerInvitations/{invitationId}'}  # type: ignore
-
     def list_invitation(
         self,
         skip_token=None,  # type: Optional[str]
@@ -237,3 +112,128 @@ class ConsumerInvitationOperations(object):
             get_next, extract_data
         )
     list_invitation.metadata = {'url': '/providers/Microsoft.DataShare/ListInvitations'}  # type: ignore
+
+    def get(
+        self,
+        location,  # type: str
+        invitation_id,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.ConsumerInvitation"
+        """Get an invitation.
+
+        Gets the invitation identified by invitationId.
+
+        :param location: Location of the invitation.
+        :type location: str
+        :param invitation_id: An invitation id.
+        :type invitation_id: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: ConsumerInvitation, or the result of cls(response)
+        :rtype: ~data_share_management_client.models.ConsumerInvitation
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ConsumerInvitation"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2019-11-01"
+
+        # Construct URL
+        url = self.get.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'location': self._serialize.url("location", location, 'str'),
+            'invitationId': self._serialize.url("invitation_id", invitation_id, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        request = self._client.get(url, query_parameters, header_parameters)
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize(models.DataShareError, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('ConsumerInvitation', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    get.metadata = {'url': '/providers/Microsoft.DataShare/locations/{location}/consumerInvitations/{invitationId}'}  # type: ignore
+
+    def reject_invitation(
+        self,
+        location,  # type: str
+        invitation_id,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.ConsumerInvitation"
+        """Reject an invitation.
+
+        Rejects the invitation identified by invitationId.
+
+        :param location: Location of the invitation.
+        :type location: str
+        :param invitation_id: Unique id of the invitation.
+        :type invitation_id: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: ConsumerInvitation, or the result of cls(response)
+        :rtype: ~data_share_management_client.models.ConsumerInvitation
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ConsumerInvitation"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _invitation = models.ConsumerInvitation(invitation_id=invitation_id)
+        api_version = "2019-11-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self.reject_invitation.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'location': self._serialize.url("location", location, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_invitation, 'ConsumerInvitation')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize(models.DataShareError, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+        deserialized = self._deserialize('ConsumerInvitation', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    reject_invitation.metadata = {'url': '/providers/Microsoft.DataShare/locations/{location}/RejectInvitation'}  # type: ignore

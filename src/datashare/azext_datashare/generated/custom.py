@@ -114,53 +114,53 @@ def datashare_data_set_create(client,
                               account_name,
                               share_name,
                               data_set_name,
+                              a_d_l_s_gen1_file_data_set=None,
+                              a_d_l_s_gen1_folder_data_set=None,
+                              a_d_l_s_gen2_file_data_set=None,
+                              a_d_l_s_gen2_file_system_data_set=None,
+                              a_d_l_s_gen2_folder_data_set=None,
+                              blob_container_data_set=None,
                               blob_data_set=None,
                               blob_folder_data_set=None,
-                              blob_container_data_set=None,
-                              a_d_l_s_gen2_file_data_set=None,
-                              a_d_l_s_gen2_folder_data_set=None,
-                              a_d_l_s_gen2_file_system_data_set=None,
-                              a_d_l_s_gen1_folder_data_set=None,
-                              a_d_l_s_gen1_file_data_set=None,
                               kusto_cluster_data_set=None,
                               kusto_database_data_set=None,
-                              sql_d_w_table_data_set=None,
-                              sql_d_b_table_data_set=None):
+                              sql_d_b_table_data_set=None,
+                              sql_d_w_table_data_set=None):
     all_data_set = []
+    if a_d_l_s_gen1_file_data_set is not None:
+        all_data_set.append(a_d_l_s_gen1_file_data_set)
+    if a_d_l_s_gen1_folder_data_set is not None:
+        all_data_set.append(a_d_l_s_gen1_folder_data_set)
+    if a_d_l_s_gen2_file_data_set is not None:
+        all_data_set.append(a_d_l_s_gen2_file_data_set)
+    if a_d_l_s_gen2_file_system_data_set is not None:
+        all_data_set.append(a_d_l_s_gen2_file_system_data_set)
+    if a_d_l_s_gen2_folder_data_set is not None:
+        all_data_set.append(a_d_l_s_gen2_folder_data_set)
+    if blob_container_data_set is not None:
+        all_data_set.append(blob_container_data_set)
     if blob_data_set is not None:
         all_data_set.append(blob_data_set)
     if blob_folder_data_set is not None:
         all_data_set.append(blob_folder_data_set)
-    if blob_container_data_set is not None:
-        all_data_set.append(blob_container_data_set)
-    if a_d_l_s_gen2_file_data_set is not None:
-        all_data_set.append(a_d_l_s_gen2_file_data_set)
-    if a_d_l_s_gen2_folder_data_set is not None:
-        all_data_set.append(a_d_l_s_gen2_folder_data_set)
-    if a_d_l_s_gen2_file_system_data_set is not None:
-        all_data_set.append(a_d_l_s_gen2_file_system_data_set)
-    if a_d_l_s_gen1_folder_data_set is not None:
-        all_data_set.append(a_d_l_s_gen1_folder_data_set)
-    if a_d_l_s_gen1_file_data_set is not None:
-        all_data_set.append(a_d_l_s_gen1_file_data_set)
     if kusto_cluster_data_set is not None:
         all_data_set.append(kusto_cluster_data_set)
     if kusto_database_data_set is not None:
         all_data_set.append(kusto_database_data_set)
-    if sql_d_w_table_data_set is not None:
-        all_data_set.append(sql_d_w_table_data_set)
     if sql_d_b_table_data_set is not None:
         all_data_set.append(sql_d_b_table_data_set)
+    if sql_d_w_table_data_set is not None:
+        all_data_set.append(sql_d_w_table_data_set)
     if len(all_data_set) > 1:
-        raise CLIError('at most one of  blob_data_set, blob_folder_data_set, blob_container_data_set, a_d_l_s_gen2_file'
-                       '_data_set, a_d_l_s_gen2_folder_data_set, a_d_l_s_gen2_file_system_data_set, a_d_l_s_gen1_folder'
-                       '_data_set, a_d_l_s_gen1_file_data_set, kusto_cluster_data_set, kusto_database_data_set, sql_d_w'
-                       '_table_data_set, sql_d_b_table_data_set is needed for data_set!')
+        raise CLIError('at most one of  a_d_l_s_gen1_file_data_set, a_d_l_s_gen1_folder_data_set, a_d_l_s_gen2_file_dat'
+                       'a_set, a_d_l_s_gen2_file_system_data_set, a_d_l_s_gen2_folder_data_set, blob_container_data_set'
+                       ', blob_data_set, blob_folder_data_set, kusto_cluster_data_set, kusto_database_data_set, sql_d_b'
+                       '_table_data_set, sql_d_w_table_data_set is needed for data_set!')
     if len(all_data_set) != 1:
-        raise CLIError('data_set is required. but none of blob_data_set, blob_folder_data_set, blob_container_data_set,'
-                       ' a_d_l_s_gen2_file_data_set, a_d_l_s_gen2_folder_data_set, a_d_l_s_gen2_file_system_data_set, a'
-                       '_d_l_s_gen1_folder_data_set, a_d_l_s_gen1_file_data_set, kusto_cluster_data_set, kusto_database'
-                       '_data_set, sql_d_w_table_data_set, sql_d_b_table_data_set is provided!')
+        raise CLIError('data_set is required. but none of a_d_l_s_gen1_file_data_set, a_d_l_s_gen1_folder_data_set, a_d'
+                       '_l_s_gen2_file_data_set, a_d_l_s_gen2_file_system_data_set, a_d_l_s_gen2_folder_data_set, blob_'
+                       'container_data_set, blob_data_set, blob_folder_data_set, kusto_cluster_data_set, kusto_database'
+                       '_data_set, sql_d_b_table_data_set, sql_d_w_table_data_set is provided!')
     data_set = all_data_set[0] if len(all_data_set) == 1 else None
     return client.create(resource_group_name=resource_group_name,
                          account_name=account_name,
@@ -214,47 +214,47 @@ def datashare_data_set_mapping_create(client,
                                       account_name,
                                       share_subscription_name,
                                       data_set_mapping_name,
+                                      a_d_l_s_gen2_file_data_set_mapping=None,
+                                      a_d_l_s_gen2_file_system_data_set_mapping=None,
+                                      a_d_l_s_gen2_folder_data_set_mapping=None,
+                                      blob_container_data_set_mapping=None,
                                       blob_data_set_mapping=None,
                                       blob_folder_data_set_mapping=None,
-                                      blob_container_data_set_mapping=None,
-                                      a_d_l_s_gen2_file_data_set_mapping=None,
-                                      a_d_l_s_gen2_folder_data_set_mapping=None,
-                                      a_d_l_s_gen2_file_system_data_set_mapping=None,
                                       kusto_cluster_data_set_mapping=None,
                                       kusto_database_data_set_mapping=None,
-                                      sql_d_w_table_data_set_mapping=None,
-                                      sql_d_b_table_data_set_mapping=None):
+                                      sql_d_b_table_data_set_mapping=None,
+                                      sql_d_w_table_data_set_mapping=None):
     all_data_set_mapping = []
+    if a_d_l_s_gen2_file_data_set_mapping is not None:
+        all_data_set_mapping.append(a_d_l_s_gen2_file_data_set_mapping)
+    if a_d_l_s_gen2_file_system_data_set_mapping is not None:
+        all_data_set_mapping.append(a_d_l_s_gen2_file_system_data_set_mapping)
+    if a_d_l_s_gen2_folder_data_set_mapping is not None:
+        all_data_set_mapping.append(a_d_l_s_gen2_folder_data_set_mapping)
+    if blob_container_data_set_mapping is not None:
+        all_data_set_mapping.append(blob_container_data_set_mapping)
     if blob_data_set_mapping is not None:
         all_data_set_mapping.append(blob_data_set_mapping)
     if blob_folder_data_set_mapping is not None:
         all_data_set_mapping.append(blob_folder_data_set_mapping)
-    if blob_container_data_set_mapping is not None:
-        all_data_set_mapping.append(blob_container_data_set_mapping)
-    if a_d_l_s_gen2_file_data_set_mapping is not None:
-        all_data_set_mapping.append(a_d_l_s_gen2_file_data_set_mapping)
-    if a_d_l_s_gen2_folder_data_set_mapping is not None:
-        all_data_set_mapping.append(a_d_l_s_gen2_folder_data_set_mapping)
-    if a_d_l_s_gen2_file_system_data_set_mapping is not None:
-        all_data_set_mapping.append(a_d_l_s_gen2_file_system_data_set_mapping)
     if kusto_cluster_data_set_mapping is not None:
         all_data_set_mapping.append(kusto_cluster_data_set_mapping)
     if kusto_database_data_set_mapping is not None:
         all_data_set_mapping.append(kusto_database_data_set_mapping)
-    if sql_d_w_table_data_set_mapping is not None:
-        all_data_set_mapping.append(sql_d_w_table_data_set_mapping)
     if sql_d_b_table_data_set_mapping is not None:
         all_data_set_mapping.append(sql_d_b_table_data_set_mapping)
+    if sql_d_w_table_data_set_mapping is not None:
+        all_data_set_mapping.append(sql_d_w_table_data_set_mapping)
     if len(all_data_set_mapping) > 1:
-        raise CLIError('at most one of  blob_data_set_mapping, blob_folder_data_set_mapping, blob_container_data_set_ma'
-                       'pping, a_d_l_s_gen2_file_data_set_mapping, a_d_l_s_gen2_folder_data_set_mapping, a_d_l_s_gen2_f'
-                       'ile_system_data_set_mapping, kusto_cluster_data_set_mapping, kusto_database_data_set_mapping, s'
-                       'ql_d_w_table_data_set_mapping, sql_d_b_table_data_set_mapping is needed for data_set_mapping!')
+        raise CLIError('at most one of  a_d_l_s_gen2_file_data_set_mapping, a_d_l_s_gen2_file_system_data_set_mapping, '
+                       'a_d_l_s_gen2_folder_data_set_mapping, blob_container_data_set_mapping, blob_data_set_mapping, b'
+                       'lob_folder_data_set_mapping, kusto_cluster_data_set_mapping, kusto_database_data_set_mapping, s'
+                       'ql_d_b_table_data_set_mapping, sql_d_w_table_data_set_mapping is needed for data_set_mapping!')
     if len(all_data_set_mapping) != 1:
-        raise CLIError('data_set_mapping is required. but none of blob_data_set_mapping, blob_folder_data_set_mapping, '
-                       'blob_container_data_set_mapping, a_d_l_s_gen2_file_data_set_mapping, a_d_l_s_gen2_folder_data_s'
-                       'et_mapping, a_d_l_s_gen2_file_system_data_set_mapping, kusto_cluster_data_set_mapping, kusto_da'
-                       'tabase_data_set_mapping, sql_d_w_table_data_set_mapping, sql_d_b_table_data_set_mapping is prov'
+        raise CLIError('data_set_mapping is required. but none of a_d_l_s_gen2_file_data_set_mapping, a_d_l_s_gen2_file'
+                       '_system_data_set_mapping, a_d_l_s_gen2_folder_data_set_mapping, blob_container_data_set_mapping'
+                       ', blob_data_set_mapping, blob_folder_data_set_mapping, kusto_cluster_data_set_mapping, kusto_da'
+                       'tabase_data_set_mapping, sql_d_b_table_data_set_mapping, sql_d_w_table_data_set_mapping is prov'
                        'ided!')
     data_set_mapping = all_data_set_mapping[0] if len(all_data_set_mapping) == 1 else None
     return client.create(resource_group_name=resource_group_name,

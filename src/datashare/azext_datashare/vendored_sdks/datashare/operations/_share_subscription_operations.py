@@ -47,6 +47,537 @@ class ShareSubscriptionOperations(object):
         self._deserialize = deserializer
         self._config = config
 
+    def _cancel_synchronization_initial(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        synchronization_id,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.ShareSubscriptionSynchronization"
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _share_subscription_synchronization = models.ShareSubscriptionSynchronization(synchronization_id=synchronization_id)
+        api_version = "2019-11-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self._cancel_synchronization_initial.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'accountName': self._serialize.url("account_name", account_name, 'str'),
+            'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_share_subscription_synchronization, 'ShareSubscriptionSynchronization')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 202]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize(models.DataShareError, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+        deserialized = None
+        if response.status_code == 200:
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+        if response.status_code == 202:
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    _cancel_synchronization_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/cancelSynchronization'}  # type: ignore
+
+    def begin_cancel_synchronization(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        synchronization_id,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> LROPoller
+        """Request to cancel a synchronization.
+
+        Request cancellation of a data share snapshot.
+
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param account_name: The name of the share account.
+        :type account_name: str
+        :param share_subscription_name: The name of the shareSubscription.
+        :type share_subscription_name: str
+        :param synchronization_id: Synchronization id.
+        :type synchronization_id: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :keyword polling: True for ARMPolling, False for no polling, or a
+         polling object for personal polling strategy
+        :paramtype polling: bool or ~azure.core.polling.PollingMethod
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either ShareSubscriptionSynchronization or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~data_share_management_client.models.ShareSubscriptionSynchronization]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
+        raw_result = self._cancel_synchronization_initial(
+            resource_group_name=resource_group_name,
+            account_name=account_name,
+            share_subscription_name=share_subscription_name,
+            synchronization_id=synchronization_id,
+            cls=lambda x,y,z: x,
+            **kwargs
+        )
+
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
+        def get_long_running_output(pipeline_response):
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+            if cls:
+                return cls(pipeline_response, deserialized, {})
+            return deserialized
+
+        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
+        elif polling is False: polling_method = NoPolling()
+        else: polling_method = polling
+        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
+    begin_cancel_synchronization.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/cancelSynchronization'}  # type: ignore
+
+    def list_source_share_synchronization_setting(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        skip_token=None,  # type: Optional[str]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> Iterable["models.SourceShareSynchronizationSettingList"]
+        """Get synchronization settings set on a share.
+
+        Get source share synchronization settings for a shareSubscription.
+
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param account_name: The name of the share account.
+        :type account_name: str
+        :param share_subscription_name: The name of the shareSubscription.
+        :type share_subscription_name: str
+        :param skip_token: Continuation token.
+        :type skip_token: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: An iterator like instance of either SourceShareSynchronizationSettingList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.SourceShareSynchronizationSettingList]
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.SourceShareSynchronizationSettingList"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2019-11-01"
+
+        def prepare_request(next_link=None):
+            if not next_link:
+                # Construct URL
+                url = self.list_source_share_synchronization_setting.metadata['url']  # type: ignore
+                path_format_arguments = {
+                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+                    'accountName': self._serialize.url("account_name", account_name, 'str'),
+                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
+                }
+                url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skip_token is not None:
+                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
+
+            else:
+                url = next_link
+                query_parameters = {}  # type: Dict[str, Any]
+            # Construct headers
+            header_parameters = {}  # type: Dict[str, Any]
+            header_parameters['Accept'] = 'application/json'
+
+            # Construct and send request
+            request = self._client.post(url, query_parameters, header_parameters)
+            return request
+
+        def extract_data(pipeline_response):
+            deserialized = self._deserialize('SourceShareSynchronizationSettingList', pipeline_response)
+            list_of_elem = deserialized.value
+            if cls:
+                list_of_elem = cls(list_of_elem)
+            return deserialized.next_link or None, iter(list_of_elem)
+
+        def get_next(next_link=None):
+            request = prepare_request(next_link)
+
+            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+            response = pipeline_response.http_response
+
+            if response.status_code not in [200]:
+                error = self._deserialize(models.DataShareError, response)
+                map_error(status_code=response.status_code, response=response, error_map=error_map)
+                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+            return pipeline_response
+
+        return ItemPaged(
+            get_next, extract_data
+        )
+    list_source_share_synchronization_setting.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSourceShareSynchronizationSettings'}  # type: ignore
+
+    def list_synchronization_detail(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        synchronization_id,  # type: str
+        skip_token=None,  # type: Optional[str]
+        filter=None,  # type: Optional[str]
+        orderby=None,  # type: Optional[str]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> Iterable["models.SynchronizationDetailsList"]
+        """List synchronization details.
+
+        List data set level details for a share subscription synchronization.
+
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param account_name: The name of the share account.
+        :type account_name: str
+        :param share_subscription_name: The name of the share subscription.
+        :type share_subscription_name: str
+        :param synchronization_id: Synchronization id.
+        :type synchronization_id: str
+        :param skip_token: Continuation token.
+        :type skip_token: str
+        :param filter: Filters the results using OData syntax.
+        :type filter: str
+        :param orderby: Sorts the results using OData syntax.
+        :type orderby: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: An iterator like instance of either SynchronizationDetailsList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.SynchronizationDetailsList]
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.SynchronizationDetailsList"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        _share_subscription_synchronization = models.ShareSubscriptionSynchronization(synchronization_id=synchronization_id)
+        api_version = "2019-11-01"
+        content_type = "application/json"
+
+        def prepare_request(next_link=None):
+            if not next_link:
+                # Construct URL
+                url = self.list_synchronization_detail.metadata['url']  # type: ignore
+                path_format_arguments = {
+                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+                    'accountName': self._serialize.url("account_name", account_name, 'str'),
+                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
+                }
+                url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skip_token is not None:
+                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
+                if filter is not None:
+                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
+                if orderby is not None:
+                    query_parameters['$orderby'] = self._serialize.query("orderby", orderby, 'str')
+
+            else:
+                url = next_link
+                query_parameters = {}  # type: Dict[str, Any]
+            # Construct headers
+            header_parameters = {}  # type: Dict[str, Any]
+            header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+            header_parameters['Accept'] = 'application/json'
+
+            # Construct and send request
+            body_content_kwargs = {}  # type: Dict[str, Any]
+            body_content = self._serialize.body(_share_subscription_synchronization, 'ShareSubscriptionSynchronization')
+            body_content_kwargs['content'] = body_content
+            request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+            return request
+
+        def extract_data(pipeline_response):
+            deserialized = self._deserialize('SynchronizationDetailsList', pipeline_response)
+            list_of_elem = deserialized.value
+            if cls:
+                list_of_elem = cls(list_of_elem)
+            return deserialized.next_link or None, iter(list_of_elem)
+
+        def get_next(next_link=None):
+            request = prepare_request(next_link)
+
+            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+            response = pipeline_response.http_response
+
+            if response.status_code not in [200]:
+                error = self._deserialize(models.DataShareError, response)
+                map_error(status_code=response.status_code, response=response, error_map=error_map)
+                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+            return pipeline_response
+
+        return ItemPaged(
+            get_next, extract_data
+        )
+    list_synchronization_detail.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSynchronizationDetails'}  # type: ignore
+
+    def list_synchronization(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        skip_token=None,  # type: Optional[str]
+        filter=None,  # type: Optional[str]
+        orderby=None,  # type: Optional[str]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> Iterable["models.ShareSubscriptionSynchronizationList"]
+        """List synchronizations of a share subscription.
+
+        List Synchronizations in a share subscription.
+
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param account_name: The name of the share account.
+        :type account_name: str
+        :param share_subscription_name: The name of the share subscription.
+        :type share_subscription_name: str
+        :param skip_token: Continuation token.
+        :type skip_token: str
+        :param filter: Filters the results using OData syntax.
+        :type filter: str
+        :param orderby: Sorts the results using OData syntax.
+        :type orderby: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: An iterator like instance of either ShareSubscriptionSynchronizationList or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.ShareSubscriptionSynchronizationList]
+        :raises: ~azure.core.exceptions.HttpResponseError
+        """
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronizationList"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2019-11-01"
+
+        def prepare_request(next_link=None):
+            if not next_link:
+                # Construct URL
+                url = self.list_synchronization.metadata['url']  # type: ignore
+                path_format_arguments = {
+                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+                    'accountName': self._serialize.url("account_name", account_name, 'str'),
+                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
+                }
+                url = self._client.format_url(url, **path_format_arguments)
+                # Construct parameters
+                query_parameters = {}  # type: Dict[str, Any]
+                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+                if skip_token is not None:
+                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
+                if filter is not None:
+                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
+                if orderby is not None:
+                    query_parameters['$orderby'] = self._serialize.query("orderby", orderby, 'str')
+
+            else:
+                url = next_link
+                query_parameters = {}  # type: Dict[str, Any]
+            # Construct headers
+            header_parameters = {}  # type: Dict[str, Any]
+            header_parameters['Accept'] = 'application/json'
+
+            # Construct and send request
+            request = self._client.post(url, query_parameters, header_parameters)
+            return request
+
+        def extract_data(pipeline_response):
+            deserialized = self._deserialize('ShareSubscriptionSynchronizationList', pipeline_response)
+            list_of_elem = deserialized.value
+            if cls:
+                list_of_elem = cls(list_of_elem)
+            return deserialized.next_link or None, iter(list_of_elem)
+
+        def get_next(next_link=None):
+            request = prepare_request(next_link)
+
+            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+            response = pipeline_response.http_response
+
+            if response.status_code not in [200]:
+                error = self._deserialize(models.DataShareError, response)
+                map_error(status_code=response.status_code, response=response, error_map=error_map)
+                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+            return pipeline_response
+
+        return ItemPaged(
+            get_next, extract_data
+        )
+    list_synchronization.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSynchronizations'}  # type: ignore
+
+    def _synchronize_initial(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        synchronization_mode=None,  # type: Optional[Union[str, "models.SynchronizationMode"]]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.ShareSubscriptionSynchronization"
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
+        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map.update(kwargs.pop('error_map', {}))
+
+        _synchronize = models.Synchronize(synchronization_mode=synchronization_mode)
+        api_version = "2019-11-01"
+        content_type = kwargs.pop("content_type", "application/json")
+
+        # Construct URL
+        url = self._synchronize_initial.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'accountName': self._serialize.url("account_name", account_name, 'str'),
+            'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
+
+        # Construct parameters
+        query_parameters = {}  # type: Dict[str, Any]
+        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
+
+        # Construct headers
+        header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = 'application/json'
+
+        # Construct and send request
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(_synchronize, 'Synchronize')
+        body_content_kwargs['content'] = body_content
+        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
+
+        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200, 202]:
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            error = self._deserialize(models.DataShareError, response)
+            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
+
+        deserialized = None
+        if response.status_code == 200:
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+        if response.status_code == 202:
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+        if cls:
+            return cls(pipeline_response, deserialized, {})
+
+        return deserialized
+    _synchronize_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/Synchronize'}  # type: ignore
+
+    def begin_synchronize(
+        self,
+        resource_group_name,  # type: str
+        account_name,  # type: str
+        share_subscription_name,  # type: str
+        synchronization_mode=None,  # type: Optional[Union[str, "models.SynchronizationMode"]]
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> LROPoller
+        """Initiate a copy.
+
+        Initiate an asynchronous data share job.
+
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param account_name: The name of the share account.
+        :type account_name: str
+        :param share_subscription_name: The name of share subscription.
+        :type share_subscription_name: str
+        :param synchronization_mode: Mode of synchronization used in triggers and snapshot sync.
+     Incremental by default.
+        :type synchronization_mode: str or ~data_share_management_client.models.SynchronizationMode
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :keyword polling: True for ARMPolling, False for no polling, or a
+         polling object for personal polling strategy
+        :paramtype polling: bool or ~azure.core.polling.PollingMethod
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either ShareSubscriptionSynchronization or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~data_share_management_client.models.ShareSubscriptionSynchronization]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
+        raw_result = self._synchronize_initial(
+            resource_group_name=resource_group_name,
+            account_name=account_name,
+            share_subscription_name=share_subscription_name,
+            synchronization_mode=synchronization_mode,
+            cls=lambda x,y,z: x,
+            **kwargs
+        )
+
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
+        def get_long_running_output(pipeline_response):
+            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
+
+            if cls:
+                return cls(pipeline_response, deserialized, {})
+            return deserialized
+
+        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
+        elif polling is False: polling_method = NoPolling()
+        else: polling_method = polling
+        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
+    begin_synchronize.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/Synchronize'}  # type: ignore
+
     def get(
         self,
         resource_group_name,  # type: str
@@ -391,534 +922,3 @@ class ShareSubscriptionOperations(object):
             get_next, extract_data
         )
     list_by_account.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions'}  # type: ignore
-
-    def list_source_share_synchronization_setting(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        skip_token=None,  # type: Optional[str]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> Iterable["models.SourceShareSynchronizationSettingList"]
-        """Get synchronization settings set on a share.
-
-        Get source share synchronization settings for a shareSubscription.
-
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
-        :param account_name: The name of the share account.
-        :type account_name: str
-        :param share_subscription_name: The name of the shareSubscription.
-        :type share_subscription_name: str
-        :param skip_token: Continuation token.
-        :type skip_token: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either SourceShareSynchronizationSettingList or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.SourceShareSynchronizationSettingList]
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.SourceShareSynchronizationSettingList"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-11-01"
-
-        def prepare_request(next_link=None):
-            if not next_link:
-                # Construct URL
-                url = self.list_source_share_synchronization_setting.metadata['url']  # type: ignore
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-                    'accountName': self._serialize.url("account_name", account_name, 'str'),
-                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-                # Construct parameters
-                query_parameters = {}  # type: Dict[str, Any]
-                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-                if skip_token is not None:
-                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
-
-            else:
-                url = next_link
-                query_parameters = {}  # type: Dict[str, Any]
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            request = self._client.post(url, query_parameters, header_parameters)
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('SourceShareSynchronizationSettingList', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return deserialized.next_link or None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                error = self._deserialize(models.DataShareError, response)
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list_source_share_synchronization_setting.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSourceShareSynchronizationSettings'}  # type: ignore
-
-    def list_synchronization(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        skip_token=None,  # type: Optional[str]
-        filter=None,  # type: Optional[str]
-        orderby=None,  # type: Optional[str]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> Iterable["models.ShareSubscriptionSynchronizationList"]
-        """List synchronizations of a share subscription.
-
-        List Synchronizations in a share subscription.
-
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
-        :param account_name: The name of the share account.
-        :type account_name: str
-        :param share_subscription_name: The name of the share subscription.
-        :type share_subscription_name: str
-        :param skip_token: Continuation token.
-        :type skip_token: str
-        :param filter: Filters the results using OData syntax.
-        :type filter: str
-        :param orderby: Sorts the results using OData syntax.
-        :type orderby: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either ShareSubscriptionSynchronizationList or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.ShareSubscriptionSynchronizationList]
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronizationList"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2019-11-01"
-
-        def prepare_request(next_link=None):
-            if not next_link:
-                # Construct URL
-                url = self.list_synchronization.metadata['url']  # type: ignore
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-                    'accountName': self._serialize.url("account_name", account_name, 'str'),
-                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-                # Construct parameters
-                query_parameters = {}  # type: Dict[str, Any]
-                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-                if skip_token is not None:
-                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
-                if filter is not None:
-                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-                if orderby is not None:
-                    query_parameters['$orderby'] = self._serialize.query("orderby", orderby, 'str')
-
-            else:
-                url = next_link
-                query_parameters = {}  # type: Dict[str, Any]
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            request = self._client.post(url, query_parameters, header_parameters)
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('ShareSubscriptionSynchronizationList', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return deserialized.next_link or None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                error = self._deserialize(models.DataShareError, response)
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list_synchronization.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSynchronizations'}  # type: ignore
-
-    def list_synchronization_detail(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        synchronization_id,  # type: str
-        skip_token=None,  # type: Optional[str]
-        filter=None,  # type: Optional[str]
-        orderby=None,  # type: Optional[str]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> Iterable["models.SynchronizationDetailsList"]
-        """List synchronization details.
-
-        List data set level details for a share subscription synchronization.
-
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
-        :param account_name: The name of the share account.
-        :type account_name: str
-        :param share_subscription_name: The name of the share subscription.
-        :type share_subscription_name: str
-        :param synchronization_id: Synchronization id.
-        :type synchronization_id: str
-        :param skip_token: Continuation token.
-        :type skip_token: str
-        :param filter: Filters the results using OData syntax.
-        :type filter: str
-        :param orderby: Sorts the results using OData syntax.
-        :type orderby: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either SynchronizationDetailsList or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~data_share_management_client.models.SynchronizationDetailsList]
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.SynchronizationDetailsList"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        _share_subscription_synchronization = models.ShareSubscriptionSynchronization(synchronization_id=synchronization_id)
-        api_version = "2019-11-01"
-        content_type = "application/json"
-
-        def prepare_request(next_link=None):
-            if not next_link:
-                # Construct URL
-                url = self.list_synchronization_detail.metadata['url']  # type: ignore
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-                    'accountName': self._serialize.url("account_name", account_name, 'str'),
-                    'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-                # Construct parameters
-                query_parameters = {}  # type: Dict[str, Any]
-                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-                if skip_token is not None:
-                    query_parameters['$skipToken'] = self._serialize.query("skip_token", skip_token, 'str')
-                if filter is not None:
-                    query_parameters['$filter'] = self._serialize.query("filter", filter, 'str')
-                if orderby is not None:
-                    query_parameters['$orderby'] = self._serialize.query("orderby", orderby, 'str')
-
-            else:
-                url = next_link
-                query_parameters = {}  # type: Dict[str, Any]
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            body_content_kwargs = {}  # type: Dict[str, Any]
-            body_content = self._serialize.body(_share_subscription_synchronization, 'ShareSubscriptionSynchronization')
-            body_content_kwargs['content'] = body_content
-            request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('SynchronizationDetailsList', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return deserialized.next_link or None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                error = self._deserialize(models.DataShareError, response)
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list_synchronization_detail.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/listSynchronizationDetails'}  # type: ignore
-
-    def _synchronize_initial(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        synchronization_mode=None,  # type: Optional[Union[str, "models.SynchronizationMode"]]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.ShareSubscriptionSynchronization"
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-
-        _synchronize = models.Synchronize(synchronization_mode=synchronization_mode)
-        api_version = "2019-11-01"
-        content_type = kwargs.pop("content_type", "application/json")
-
-        # Construct URL
-        url = self._synchronize_initial.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-            'accountName': self._serialize.url("account_name", account_name, 'str'),
-            'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_synchronize, 'Synchronize')
-        body_content_kwargs['content'] = body_content
-        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200, 202]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.DataShareError, response)
-            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    _synchronize_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/Synchronize'}  # type: ignore
-
-    def begin_synchronize(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        synchronization_mode=None,  # type: Optional[Union[str, "models.SynchronizationMode"]]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> LROPoller
-        """Initiate a copy.
-
-        Initiate an asynchronous data share job.
-
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
-        :param account_name: The name of the share account.
-        :type account_name: str
-        :param share_subscription_name: The name of share subscription.
-        :type share_subscription_name: str
-        :param synchronization_mode: Mode of synchronization used in triggers and snapshot sync.
-     Incremental by default.
-        :type synchronization_mode: str or ~data_share_management_client.models.SynchronizationMode
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword polling: True for ARMPolling, False for no polling, or a
-         polling object for personal polling strategy
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: An instance of LROPoller that returns either ShareSubscriptionSynchronization or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[~data_share_management_client.models.ShareSubscriptionSynchronization]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
-        lro_delay = kwargs.pop(
-            'polling_interval',
-            self._config.polling_interval
-        )
-        raw_result = self._synchronize_initial(
-            resource_group_name=resource_group_name,
-            account_name=account_name,
-            share_subscription_name=share_subscription_name,
-            synchronization_mode=synchronization_mode,
-            cls=lambda x,y,z: x,
-            **kwargs
-        )
-
-        kwargs.pop('error_map', None)
-        kwargs.pop('content_type', None)
-
-        def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-            if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
-
-        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
-        elif polling is False: polling_method = NoPolling()
-        else: polling_method = polling
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_synchronize.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/Synchronize'}  # type: ignore
-
-    def _cancel_synchronization_initial(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        synchronization_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.ShareSubscriptionSynchronization"
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-
-        _share_subscription_synchronization = models.ShareSubscriptionSynchronization(synchronization_id=synchronization_id)
-        api_version = "2019-11-01"
-        content_type = kwargs.pop("content_type", "application/json")
-
-        # Construct URL
-        url = self._cancel_synchronization_initial.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
-            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
-            'accountName': self._serialize.url("account_name", account_name, 'str'),
-            'shareSubscriptionName': self._serialize.url("share_subscription_name", share_subscription_name, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
-
-        # Construct and send request
-        body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_share_subscription_synchronization, 'ShareSubscriptionSynchronization')
-        body_content_kwargs['content'] = body_content
-        request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200, 202]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.DataShareError, response)
-            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-        if response.status_code == 202:
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    _cancel_synchronization_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/cancelSynchronization'}  # type: ignore
-
-    def begin_cancel_synchronization(
-        self,
-        resource_group_name,  # type: str
-        account_name,  # type: str
-        share_subscription_name,  # type: str
-        synchronization_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> LROPoller
-        """Request to cancel a synchronization.
-
-        Request cancellation of a data share snapshot.
-
-        :param resource_group_name: The resource group name.
-        :type resource_group_name: str
-        :param account_name: The name of the share account.
-        :type account_name: str
-        :param share_subscription_name: The name of the shareSubscription.
-        :type share_subscription_name: str
-        :param synchronization_id: Synchronization id.
-        :type synchronization_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :keyword polling: True for ARMPolling, False for no polling, or a
-         polling object for personal polling strategy
-        :paramtype polling: bool or ~azure.core.polling.PollingMethod
-        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
-        :return: An instance of LROPoller that returns either ShareSubscriptionSynchronization or the result of cls(response)
-        :rtype: ~azure.core.polling.LROPoller[~data_share_management_client.models.ShareSubscriptionSynchronization]
-        :raises ~azure.core.exceptions.HttpResponseError:
-        """
-        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.ShareSubscriptionSynchronization"]
-        lro_delay = kwargs.pop(
-            'polling_interval',
-            self._config.polling_interval
-        )
-        raw_result = self._cancel_synchronization_initial(
-            resource_group_name=resource_group_name,
-            account_name=account_name,
-            share_subscription_name=share_subscription_name,
-            synchronization_id=synchronization_id,
-            cls=lambda x,y,z: x,
-            **kwargs
-        )
-
-        kwargs.pop('error_map', None)
-        kwargs.pop('content_type', None)
-
-        def get_long_running_output(pipeline_response):
-            deserialized = self._deserialize('ShareSubscriptionSynchronization', pipeline_response)
-
-            if cls:
-                return cls(pipeline_response, deserialized, {})
-            return deserialized
-
-        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
-        elif polling is False: polling_method = NoPolling()
-        else: polling_method = polling
-        return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_cancel_synchronization.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shareSubscriptions/{shareSubscriptionName}/cancelSynchronization'}  # type: ignore

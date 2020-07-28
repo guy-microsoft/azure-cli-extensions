@@ -18,28 +18,28 @@ from azure.cli.core.commands.parameters import (
 )
 from azure.cli.core.commands.validators import get_default_location_from_resource_group
 from azext_datashare.action import (
+    AddADLSGen1FileDataSet,
+    AddADLSGen1FolderDataSet,
+    AddADLSGen2FileDataSet,
+    AddADLSGen2FileSystemDataSet,
+    AddADLSGen2FolderDataSet,
+    AddBlobContainerDataSet,
     AddBlobDataSet,
     AddBlobFolderDataSet,
-    AddBlobContainerDataSet,
-    AddADLSGen2FileDataSet,
-    AddADLSGen2FolderDataSet,
-    AddADLSGen2FileSystemDataSet,
-    AddADLSGen1FolderDataSet,
-    AddADLSGen1FileDataSet,
     AddKustoClusterDataSet,
     AddKustoDatabaseDataSet,
-    AddSqlDWTableDataSet,
     AddSqlDBTableDataSet,
+    AddSqlDWTableDataSet,
+    AddADLSGen2FileDataSetMapping,
+    AddADLSGen2FileSystemDataSetMapping,
+    AddADLSGen2FolderDataSetMapping,
+    AddBlobContainerDataSetMapping,
     AddBlobDataSetMapping,
     AddBlobFolderDataSetMapping,
-    AddBlobContainerDataSetMapping,
-    AddADLSGen2FileDataSetMapping,
-    AddADLSGen2FolderDataSetMapping,
-    AddADLSGen2FileSystemDataSetMapping,
     AddKustoClusterDataSetMapping,
     AddKustoDatabaseDataSetMapping,
-    AddSqlDWTableDataSetMapping,
     AddSqlDBTableDataSetMapping,
+    AddSqlDWTableDataSetMapping,
     AddScheduledSynchronizationSetting,
     AddScheduledTrigger
 )
@@ -112,29 +112,29 @@ def load_arguments(self, _):
         c.argument('account_name', help='The name of the share account.')
         c.argument('share_name', help='The name of the share to add the data set to.')
         c.argument('data_set_name', options_list=['--name', '-n'], help='The name of the dataSet.')
+        c.argument('a_d_l_s_gen1_file_data_set', action=AddADLSGen1FileDataSet, nargs='+', help='An ADLS Gen 1 file dat'
+                   'a set.', arg_group='DataSet')
+        c.argument('a_d_l_s_gen1_folder_data_set', action=AddADLSGen1FolderDataSet, nargs='+', help='An ADLS Gen 1 fold'
+                   'er data set.', arg_group='DataSet')
+        c.argument('a_d_l_s_gen2_file_data_set', action=AddADLSGen2FileDataSet, nargs='+', help='An ADLS Gen 2 file dat'
+                   'a set.', arg_group='DataSet')
+        c.argument('a_d_l_s_gen2_file_system_data_set', action=AddADLSGen2FileSystemDataSet, nargs='+', help='An ADLS G'
+                   'en 2 file system data set.', arg_group='DataSet')
+        c.argument('a_d_l_s_gen2_folder_data_set', action=AddADLSGen2FolderDataSet, nargs='+', help='An ADLS Gen 2 fold'
+                   'er data set.', arg_group='DataSet')
+        c.argument('blob_container_data_set', action=AddBlobContainerDataSet, nargs='+', help='An Azure storage blob co'
+                   'ntainer data set.', arg_group='DataSet')
         c.argument('blob_data_set', action=AddBlobDataSet, nargs='+', help='An Azure storage blob data set.',
                    arg_group='DataSet')
         c.argument('blob_folder_data_set', action=AddBlobFolderDataSet, nargs='+', help='An Azure storage blob folder d'
                    'ata set.', arg_group='DataSet')
-        c.argument('blob_container_data_set', action=AddBlobContainerDataSet, nargs='+', help='An Azure storage blob co'
-                   'ntainer data set.', arg_group='DataSet')
-        c.argument('a_d_l_s_gen2_file_data_set', action=AddADLSGen2FileDataSet, nargs='+', help='An ADLS Gen 2 file dat'
-                   'a set.', arg_group='DataSet')
-        c.argument('a_d_l_s_gen2_folder_data_set', action=AddADLSGen2FolderDataSet, nargs='+', help='An ADLS Gen 2 fold'
-                   'er data set.', arg_group='DataSet')
-        c.argument('a_d_l_s_gen2_file_system_data_set', action=AddADLSGen2FileSystemDataSet, nargs='+', help='An ADLS G'
-                   'en 2 file system data set.', arg_group='DataSet')
-        c.argument('a_d_l_s_gen1_folder_data_set', action=AddADLSGen1FolderDataSet, nargs='+', help='An ADLS Gen 1 fold'
-                   'er data set.', arg_group='DataSet')
-        c.argument('a_d_l_s_gen1_file_data_set', action=AddADLSGen1FileDataSet, nargs='+', help='An ADLS Gen 1 file dat'
-                   'a set.', arg_group='DataSet')
         c.argument('kusto_cluster_data_set', action=AddKustoClusterDataSet, nargs='+',
                    help='A kusto cluster data set.', arg_group='DataSet')
         c.argument('kusto_database_data_set', action=AddKustoDatabaseDataSet, nargs='+', help='A kusto database data se'
                    't.', arg_group='DataSet')
-        c.argument('sql_d_w_table_data_set', action=AddSqlDWTableDataSet, nargs='+', help='A SQL DW table data set.',
-                   arg_group='DataSet')
         c.argument('sql_d_b_table_data_set', action=AddSqlDBTableDataSet, nargs='+', help='A SQL DB table data set.',
+                   arg_group='DataSet')
+        c.argument('sql_d_w_table_data_set', action=AddSqlDWTableDataSet, nargs='+', help='A SQL DW table data set.',
                    arg_group='DataSet')
 
     with self.argument_context('datashare data-set delete') as c:
@@ -173,25 +173,25 @@ def load_arguments(self, _):
                    'k.')
         c.argument('data_set_mapping_name', options_list=['--name', '-n'], help='The name of the data set mapping to be'
                    ' created.')
+        c.argument('a_d_l_s_gen2_file_data_set_mapping', action=AddADLSGen2FileDataSetMapping, nargs='+', help='An ADLS'
+                   ' Gen2 file data set mapping.', arg_group='DataSetMapping')
+        c.argument('a_d_l_s_gen2_file_system_data_set_mapping', action=AddADLSGen2FileSystemDataSetMapping, nargs='+',
+                   help='An ADLS Gen2 file system data set mapping.', arg_group='DataSetMapping')
+        c.argument('a_d_l_s_gen2_folder_data_set_mapping', action=AddADLSGen2FolderDataSetMapping, nargs='+', help='An '
+                   'ADLS Gen2 folder data set mapping.', arg_group='DataSetMapping')
+        c.argument('blob_container_data_set_mapping', action=AddBlobContainerDataSetMapping, nargs='+', help='A Blob co'
+                   'ntainer data set mapping.', arg_group='DataSetMapping')
         c.argument('blob_data_set_mapping', action=AddBlobDataSetMapping, nargs='+', help='A Blob data set mapping.',
                    arg_group='DataSetMapping')
         c.argument('blob_folder_data_set_mapping', action=AddBlobFolderDataSetMapping, nargs='+', help='A Blob folder d'
                    'ata set mapping.', arg_group='DataSetMapping')
-        c.argument('blob_container_data_set_mapping', action=AddBlobContainerDataSetMapping, nargs='+', help='A Blob co'
-                   'ntainer data set mapping.', arg_group='DataSetMapping')
-        c.argument('a_d_l_s_gen2_file_data_set_mapping', action=AddADLSGen2FileDataSetMapping, nargs='+', help='An ADLS'
-                   ' Gen2 file data set mapping.', arg_group='DataSetMapping')
-        c.argument('a_d_l_s_gen2_folder_data_set_mapping', action=AddADLSGen2FolderDataSetMapping, nargs='+', help='An '
-                   'ADLS Gen2 folder data set mapping.', arg_group='DataSetMapping')
-        c.argument('a_d_l_s_gen2_file_system_data_set_mapping', action=AddADLSGen2FileSystemDataSetMapping, nargs='+',
-                   help='An ADLS Gen2 file system data set mapping.', arg_group='DataSetMapping')
         c.argument('kusto_cluster_data_set_mapping', action=AddKustoClusterDataSetMapping, nargs='+', help='A Kusto clu'
                    'ster data set mapping', arg_group='DataSetMapping')
         c.argument('kusto_database_data_set_mapping', action=AddKustoDatabaseDataSetMapping, nargs='+', help='A Kusto d'
                    'atabase data set mapping', arg_group='DataSetMapping')
-        c.argument('sql_d_w_table_data_set_mapping', action=AddSqlDWTableDataSetMapping, nargs='+', help='A SQL DW Tabl'
-                   'e data set mapping.', arg_group='DataSetMapping')
         c.argument('sql_d_b_table_data_set_mapping', action=AddSqlDBTableDataSetMapping, nargs='+', help='A SQL DB Tabl'
+                   'e data set mapping.', arg_group='DataSetMapping')
+        c.argument('sql_d_w_table_data_set_mapping', action=AddSqlDWTableDataSetMapping, nargs='+', help='A SQL DW Tabl'
                    'e data set mapping.', arg_group='DataSetMapping')
 
     with self.argument_context('datashare data-set-mapping delete') as c:

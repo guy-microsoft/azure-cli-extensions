@@ -86,18 +86,18 @@ create a datashare data-set.
 |**--account-name**|string|The name of the share account.|account_name|
 |**--share-name**|string|The name of the share to add the data set to.|share_name|
 |**--data-set-name**|string|The name of the dataSet.|data_set_name|
+|**--a-d-l-s-gen1-file-data-set**|object|An ADLS Gen 1 file data set.|a_d_l_s_gen1_file_data_set|
+|**--a-d-l-s-gen1-folder-data-set**|object|An ADLS Gen 1 folder data set.|a_d_l_s_gen1_folder_data_set|
+|**--a-d-l-s-gen2-file-data-set**|object|An ADLS Gen 2 file data set.|a_d_l_s_gen2_file_data_set|
+|**--a-d-l-s-gen2-file-system-data-set**|object|An ADLS Gen 2 file system data set.|a_d_l_s_gen2_file_system_data_set|
+|**--a-d-l-s-gen2-folder-data-set**|object|An ADLS Gen 2 folder data set.|a_d_l_s_gen2_folder_data_set|
+|**--blob-container-data-set**|object|An Azure storage blob container data set.|blob_container_data_set|
 |**--blob-data-set**|object|An Azure storage blob data set.|blob_data_set|
 |**--blob-folder-data-set**|object|An Azure storage blob folder data set.|blob_folder_data_set|
-|**--blob-container-data-set**|object|An Azure storage blob container data set.|blob_container_data_set|
-|**--a-d-l-s-gen2-file-data-set**|object|An ADLS Gen 2 file data set.|a_d_l_s_gen2_file_data_set|
-|**--a-d-l-s-gen2-folder-data-set**|object|An ADLS Gen 2 folder data set.|a_d_l_s_gen2_folder_data_set|
-|**--a-d-l-s-gen2-file-system-data-set**|object|An ADLS Gen 2 file system data set.|a_d_l_s_gen2_file_system_data_set|
-|**--a-d-l-s-gen1-folder-data-set**|object|An ADLS Gen 1 folder data set.|a_d_l_s_gen1_folder_data_set|
-|**--a-d-l-s-gen1-file-data-set**|object|An ADLS Gen 1 file data set.|a_d_l_s_gen1_file_data_set|
 |**--kusto-cluster-data-set**|object|A kusto cluster data set.|kusto_cluster_data_set|
 |**--kusto-database-data-set**|object|A kusto database data set.|kusto_database_data_set|
-|**--sql-d-w-table-data-set**|object|A SQL DW table data set.|sql_d_w_table_data_set|
 |**--sql-d-b-table-data-set**|object|A SQL DB table data set.|sql_d_b_table_data_set|
+|**--sql-d-w-table-data-set**|object|A SQL DW table data set.|sql_d_w_table_data_set|
 ### datashare data-set delete
 
 delete a datashare data-set.
@@ -140,16 +140,16 @@ create a datashare data-set-mapping.
 |**--account-name**|string|The name of the share account.|account_name|
 |**--share-subscription-name**|string|The name of the share subscription which will hold the data set sink.|share_subscription_name|
 |**--data-set-mapping-name**|string|The name of the data set mapping to be created.|data_set_mapping_name|
+|**--a-d-l-s-gen2-file-data-set-mapping**|object|An ADLS Gen2 file data set mapping.|a_d_l_s_gen2_file_data_set_mapping|
+|**--a-d-l-s-gen2-file-system-data-set-mapping**|object|An ADLS Gen2 file system data set mapping.|a_d_l_s_gen2_file_system_data_set_mapping|
+|**--a-d-l-s-gen2-folder-data-set-mapping**|object|An ADLS Gen2 folder data set mapping.|a_d_l_s_gen2_folder_data_set_mapping|
+|**--blob-container-data-set-mapping**|object|A Blob container data set mapping.|blob_container_data_set_mapping|
 |**--blob-data-set-mapping**|object|A Blob data set mapping.|blob_data_set_mapping|
 |**--blob-folder-data-set-mapping**|object|A Blob folder data set mapping.|blob_folder_data_set_mapping|
-|**--blob-container-data-set-mapping**|object|A Blob container data set mapping.|blob_container_data_set_mapping|
-|**--a-d-l-s-gen2-file-data-set-mapping**|object|An ADLS Gen2 file data set mapping.|a_d_l_s_gen2_file_data_set_mapping|
-|**--a-d-l-s-gen2-folder-data-set-mapping**|object|An ADLS Gen2 folder data set mapping.|a_d_l_s_gen2_folder_data_set_mapping|
-|**--a-d-l-s-gen2-file-system-data-set-mapping**|object|An ADLS Gen2 file system data set mapping.|a_d_l_s_gen2_file_system_data_set_mapping|
 |**--kusto-cluster-data-set-mapping**|object|A Kusto cluster data set mapping|kusto_cluster_data_set_mapping|
 |**--kusto-database-data-set-mapping**|object|A Kusto database data set mapping|kusto_database_data_set_mapping|
-|**--sql-d-w-table-data-set-mapping**|object|A SQL DW Table data set mapping.|sql_d_w_table_data_set_mapping|
 |**--sql-d-b-table-data-set-mapping**|object|A SQL DB Table data set mapping.|sql_d_b_table_data_set_mapping|
+|**--sql-d-w-table-data-set-mapping**|object|A SQL DW Table data set mapping.|sql_d_w_table_data_set_mapping|
 ### datashare data-set-mapping delete
 
 delete a datashare data-set-mapping.

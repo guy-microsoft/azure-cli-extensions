@@ -139,6 +139,75 @@ helps['datashare data-set create'] = """
     type: command
     short-summary: Create a DataSet
     parameters:
+      - name: --a-d-l-s-gen1-file-data-set
+        short-summary: An ADLS Gen 1 file data set.
+        long-summary: |
+            Usage: --a-d-l-s-gen1-file-data-set account-name=XX file-name=XX folder-path=XX resource-group=XX subscript\
+ion-id=XX kind=XX
+
+            account-name: Required. The ADLS account name.
+            file-name: Required. The file name in the ADLS account.
+            folder-path: Required. The folder path within the ADLS account.
+            resource-group: Required. Resource group of ADLS account.
+            subscription-id: Required. Subscription id of ADLS account.
+            kind: Required. Kind of data set.
+      - name: --a-d-l-s-gen1-folder-data-set
+        short-summary: An ADLS Gen 1 folder data set.
+        long-summary: |
+            Usage: --a-d-l-s-gen1-folder-data-set account-name=XX folder-path=XX resource-group=XX subscription-id=XX k\
+ind=XX
+
+            account-name: Required. The ADLS account name.
+            folder-path: Required. The folder path within the ADLS account.
+            resource-group: Required. Resource group of ADLS account.
+            subscription-id: Required. Subscription id of ADLS account.
+            kind: Required. Kind of data set.
+      - name: --a-d-l-s-gen2-file-data-set
+        short-summary: An ADLS Gen 2 file data set.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-file-data-set file-path=XX file-system=XX resource-group=XX storage-account-name=XX s\
+ubscription-id=XX kind=XX
+
+            file-path: Required. File path within the file system.
+            file-system: Required. File system to which the file belongs.
+            resource-group: Required. Resource group of storage account
+            storage-account-name: Required. Storage account name of the source data set
+            subscription-id: Required. Subscription id of storage account
+            kind: Required. Kind of data set.
+      - name: --a-d-l-s-gen2-file-system-data-set
+        short-summary: An ADLS Gen 2 file system data set.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-file-system-data-set file-system=XX resource-group=XX storage-account-name=XX subscri\
+ption-id=XX kind=XX
+
+            file-system: Required. The file system name.
+            resource-group: Required. Resource group of storage account
+            storage-account-name: Required. Storage account name of the source data set
+            subscription-id: Required. Subscription id of storage account
+            kind: Required. Kind of data set.
+      - name: --a-d-l-s-gen2-folder-data-set
+        short-summary: An ADLS Gen 2 folder data set.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-folder-data-set file-system=XX folder-path=XX resource-group=XX storage-account-name=\
+XX subscription-id=XX kind=XX
+
+            file-system: Required. File system to which the folder belongs.
+            folder-path: Required. Folder path within the file system.
+            resource-group: Required. Resource group of storage account
+            storage-account-name: Required. Storage account name of the source data set
+            subscription-id: Required. Subscription id of storage account
+            kind: Required. Kind of data set.
+      - name: --blob-container-data-set
+        short-summary: An Azure storage blob container data set.
+        long-summary: |
+            Usage: --blob-container-data-set container-name=XX resource-group=XX storage-account-name=XX subscription-i\
+d=XX kind=XX
+
+            container-name: Required. BLOB Container name.
+            resource-group: Required. Resource group of storage account
+            storage-account-name: Required. Storage account name of the source data set
+            subscription-id: Required. Subscription id of storage account
+            kind: Required. Kind of data set.
       - name: --blob-data-set
         short-summary: An Azure storage blob data set.
         long-summary: |
@@ -163,75 +232,6 @@ ption-id=XX kind=XX
             storage-account-name: Required. Storage account name of the source data set
             subscription-id: Required. Subscription id of storage account
             kind: Required. Kind of data set.
-      - name: --blob-container-data-set
-        short-summary: An Azure storage blob container data set.
-        long-summary: |
-            Usage: --blob-container-data-set container-name=XX resource-group=XX storage-account-name=XX subscription-i\
-d=XX kind=XX
-
-            container-name: Required. BLOB Container name.
-            resource-group: Required. Resource group of storage account
-            storage-account-name: Required. Storage account name of the source data set
-            subscription-id: Required. Subscription id of storage account
-            kind: Required. Kind of data set.
-      - name: --a-d-l-s-gen2-file-data-set
-        short-summary: An ADLS Gen 2 file data set.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-file-data-set file-path=XX file-system=XX resource-group=XX storage-account-name=XX s\
-ubscription-id=XX kind=XX
-
-            file-path: Required. File path within the file system.
-            file-system: Required. File system to which the file belongs.
-            resource-group: Required. Resource group of storage account
-            storage-account-name: Required. Storage account name of the source data set
-            subscription-id: Required. Subscription id of storage account
-            kind: Required. Kind of data set.
-      - name: --a-d-l-s-gen2-folder-data-set
-        short-summary: An ADLS Gen 2 folder data set.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-folder-data-set file-system=XX folder-path=XX resource-group=XX storage-account-name=\
-XX subscription-id=XX kind=XX
-
-            file-system: Required. File system to which the folder belongs.
-            folder-path: Required. Folder path within the file system.
-            resource-group: Required. Resource group of storage account
-            storage-account-name: Required. Storage account name of the source data set
-            subscription-id: Required. Subscription id of storage account
-            kind: Required. Kind of data set.
-      - name: --a-d-l-s-gen2-file-system-data-set
-        short-summary: An ADLS Gen 2 file system data set.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-file-system-data-set file-system=XX resource-group=XX storage-account-name=XX subscri\
-ption-id=XX kind=XX
-
-            file-system: Required. The file system name.
-            resource-group: Required. Resource group of storage account
-            storage-account-name: Required. Storage account name of the source data set
-            subscription-id: Required. Subscription id of storage account
-            kind: Required. Kind of data set.
-      - name: --a-d-l-s-gen1-folder-data-set
-        short-summary: An ADLS Gen 1 folder data set.
-        long-summary: |
-            Usage: --a-d-l-s-gen1-folder-data-set account-name=XX folder-path=XX resource-group=XX subscription-id=XX k\
-ind=XX
-
-            account-name: Required. The ADLS account name.
-            folder-path: Required. The folder path within the ADLS account.
-            resource-group: Required. Resource group of ADLS account.
-            subscription-id: Required. Subscription id of ADLS account.
-            kind: Required. Kind of data set.
-      - name: --a-d-l-s-gen1-file-data-set
-        short-summary: An ADLS Gen 1 file data set.
-        long-summary: |
-            Usage: --a-d-l-s-gen1-file-data-set account-name=XX file-name=XX folder-path=XX resource-group=XX subscript\
-ion-id=XX kind=XX
-
-            account-name: Required. The ADLS account name.
-            file-name: Required. The file name in the ADLS account.
-            folder-path: Required. The folder path within the ADLS account.
-            resource-group: Required. Resource group of ADLS account.
-            subscription-id: Required. Subscription id of ADLS account.
-            kind: Required. Kind of data set.
       - name: --kusto-cluster-data-set
         short-summary: A kusto cluster data set.
         long-summary: |
@@ -246,17 +246,6 @@ ion-id=XX kind=XX
 
             kusto-database-resource-id: Required. Resource id of the kusto database.
             kind: Required. Kind of data set.
-      - name: --sql-d-w-table-data-set
-        short-summary: A SQL DW table data set.
-        long-summary: |
-            Usage: --sql-d-w-table-data-set data-warehouse-name=XX schema-name=XX sql-server-resource-id=XX table-name=\
-XX kind=XX
-
-            data-warehouse-name: DataWarehouse name of the source data set
-            schema-name: Schema of the table. Default value is dbo.
-            sql-server-resource-id: Resource id of SQL server
-            table-name: SQL DW table name.
-            kind: Required. Kind of data set.
       - name: --sql-d-b-table-data-set
         short-summary: A SQL DB table data set.
         long-summary: |
@@ -267,6 +256,17 @@ d=XX
             schema-name: Schema of the table. Default value is dbo.
             sql-server-resource-id: Resource id of SQL server
             table-name: SQL DB table name.
+            kind: Required. Kind of data set.
+      - name: --sql-d-w-table-data-set
+        short-summary: A SQL DW table data set.
+        long-summary: |
+            Usage: --sql-d-w-table-data-set data-warehouse-name=XX schema-name=XX sql-server-resource-id=XX table-name=\
+XX kind=XX
+
+            data-warehouse-name: DataWarehouse name of the source data set
+            schema-name: Schema of the table. Default value is dbo.
+            sql-server-resource-id: Resource id of SQL server
+            table-name: SQL DW table name.
             kind: Required. Kind of data set.
     examples:
       - name: DataSets_Create
@@ -347,6 +347,57 @@ helps['datashare data-set-mapping create'] = """
     type: command
     short-summary: Create a DataSetMapping
     parameters:
+      - name: --a-d-l-s-gen2-file-data-set-mapping
+        short-summary: An ADLS Gen2 file data set mapping.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-file-data-set-mapping data-set-id=XX file-path=XX file-system=XX output-type=XX resou\
+rce-group=XX storage-account-name=XX subscription-id=XX kind=XX
+
+            data-set-id: Required. The id of the source data set.
+            file-path: Required. File path within the file system.
+            file-system: Required. File system to which the file belongs.
+            output-type: Type of output file
+            resource-group: Required. Resource group of storage account.
+            storage-account-name: Required. Storage account name of the source data set.
+            subscription-id: Required. Subscription id of storage account.
+            kind: Required. Kind of data set mapping.
+      - name: --a-d-l-s-gen2-file-system-data-set-mapping
+        short-summary: An ADLS Gen2 file system data set mapping.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-file-system-data-set-mapping data-set-id=XX file-system=XX resource-group=XX storage-\
+account-name=XX subscription-id=XX kind=XX
+
+            data-set-id: Required. The id of the source data set.
+            file-system: Required. The file system name.
+            resource-group: Required. Resource group of storage account.
+            storage-account-name: Required. Storage account name of the source data set.
+            subscription-id: Required. Subscription id of storage account.
+            kind: Required. Kind of data set mapping.
+      - name: --a-d-l-s-gen2-folder-data-set-mapping
+        short-summary: An ADLS Gen2 folder data set mapping.
+        long-summary: |
+            Usage: --a-d-l-s-gen2-folder-data-set-mapping data-set-id=XX file-system=XX folder-path=XX resource-group=X\
+X storage-account-name=XX subscription-id=XX kind=XX
+
+            data-set-id: Required. The id of the source data set.
+            file-system: Required. File system to which the folder belongs.
+            folder-path: Required. Folder path within the file system.
+            resource-group: Required. Resource group of storage account.
+            storage-account-name: Required. Storage account name of the source data set.
+            subscription-id: Required. Subscription id of storage account.
+            kind: Required. Kind of data set mapping.
+      - name: --blob-container-data-set-mapping
+        short-summary: A Blob container data set mapping.
+        long-summary: |
+            Usage: --blob-container-data-set-mapping container-name=XX data-set-id=XX resource-group=XX storage-account\
+-name=XX subscription-id=XX kind=XX
+
+            container-name: Required. BLOB Container name.
+            data-set-id: Required. The id of the source data set.
+            resource-group: Required. Resource group of storage account.
+            storage-account-name: Required. Storage account name of the source data set.
+            subscription-id: Required. Subscription id of storage account.
+            kind: Required. Kind of data set mapping.
       - name: --blob-data-set-mapping
         short-summary: A Blob data set mapping.
         long-summary: |
@@ -374,57 +425,6 @@ account-name=XX subscription-id=XX kind=XX
             storage-account-name: Required. Storage account name of the source data set.
             subscription-id: Required. Subscription id of storage account.
             kind: Required. Kind of data set mapping.
-      - name: --blob-container-data-set-mapping
-        short-summary: A Blob container data set mapping.
-        long-summary: |
-            Usage: --blob-container-data-set-mapping container-name=XX data-set-id=XX resource-group=XX storage-account\
--name=XX subscription-id=XX kind=XX
-
-            container-name: Required. BLOB Container name.
-            data-set-id: Required. The id of the source data set.
-            resource-group: Required. Resource group of storage account.
-            storage-account-name: Required. Storage account name of the source data set.
-            subscription-id: Required. Subscription id of storage account.
-            kind: Required. Kind of data set mapping.
-      - name: --a-d-l-s-gen2-file-data-set-mapping
-        short-summary: An ADLS Gen2 file data set mapping.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-file-data-set-mapping data-set-id=XX file-path=XX file-system=XX output-type=XX resou\
-rce-group=XX storage-account-name=XX subscription-id=XX kind=XX
-
-            data-set-id: Required. The id of the source data set.
-            file-path: Required. File path within the file system.
-            file-system: Required. File system to which the file belongs.
-            output-type: Type of output file
-            resource-group: Required. Resource group of storage account.
-            storage-account-name: Required. Storage account name of the source data set.
-            subscription-id: Required. Subscription id of storage account.
-            kind: Required. Kind of data set mapping.
-      - name: --a-d-l-s-gen2-folder-data-set-mapping
-        short-summary: An ADLS Gen2 folder data set mapping.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-folder-data-set-mapping data-set-id=XX file-system=XX folder-path=XX resource-group=X\
-X storage-account-name=XX subscription-id=XX kind=XX
-
-            data-set-id: Required. The id of the source data set.
-            file-system: Required. File system to which the folder belongs.
-            folder-path: Required. Folder path within the file system.
-            resource-group: Required. Resource group of storage account.
-            storage-account-name: Required. Storage account name of the source data set.
-            subscription-id: Required. Subscription id of storage account.
-            kind: Required. Kind of data set mapping.
-      - name: --a-d-l-s-gen2-file-system-data-set-mapping
-        short-summary: An ADLS Gen2 file system data set mapping.
-        long-summary: |
-            Usage: --a-d-l-s-gen2-file-system-data-set-mapping data-set-id=XX file-system=XX resource-group=XX storage-\
-account-name=XX subscription-id=XX kind=XX
-
-            data-set-id: Required. The id of the source data set.
-            file-system: Required. The file system name.
-            resource-group: Required. Resource group of storage account.
-            storage-account-name: Required. Storage account name of the source data set.
-            subscription-id: Required. Subscription id of storage account.
-            kind: Required. Kind of data set mapping.
       - name: --kusto-cluster-data-set-mapping
         short-summary: A Kusto cluster data set mapping
         long-summary: |
@@ -441,18 +441,6 @@ account-name=XX subscription-id=XX kind=XX
             data-set-id: Required. The id of the source data set.
             kusto-cluster-resource-id: Required. Resource id of the sink kusto cluster.
             kind: Required. Kind of data set mapping.
-      - name: --sql-d-w-table-data-set-mapping
-        short-summary: A SQL DW Table data set mapping.
-        long-summary: |
-            Usage: --sql-d-w-table-data-set-mapping data-set-id=XX data-warehouse-name=XX schema-name=XX sql-server-res\
-ource-id=XX table-name=XX kind=XX
-
-            data-set-id: Required. The id of the source data set.
-            data-warehouse-name: Required. DataWarehouse name of the source data set
-            schema-name: Required. Schema of the table. Default value is dbo.
-            sql-server-resource-id: Required. Resource id of SQL server
-            table-name: Required. SQL DW table name.
-            kind: Required. Kind of data set mapping.
       - name: --sql-d-b-table-data-set-mapping
         short-summary: A SQL DB Table data set mapping.
         long-summary: |
@@ -464,6 +452,18 @@ id=XX table-name=XX kind=XX
             schema-name: Required. Schema of the table. Default value is dbo.
             sql-server-resource-id: Required. Resource id of SQL server
             table-name: Required. SQL DB table name.
+            kind: Required. Kind of data set mapping.
+      - name: --sql-d-w-table-data-set-mapping
+        short-summary: A SQL DW Table data set mapping.
+        long-summary: |
+            Usage: --sql-d-w-table-data-set-mapping data-set-id=XX data-warehouse-name=XX schema-name=XX sql-server-res\
+ource-id=XX table-name=XX kind=XX
+
+            data-set-id: Required. The id of the source data set.
+            data-warehouse-name: Required. DataWarehouse name of the source data set
+            schema-name: Required. Schema of the table. Default value is dbo.
+            sql-server-resource-id: Required. Resource id of SQL server
+            table-name: Required. SQL DW table name.
             kind: Required. Kind of data set mapping.
     examples:
       - name: DataSetMappings_Create
