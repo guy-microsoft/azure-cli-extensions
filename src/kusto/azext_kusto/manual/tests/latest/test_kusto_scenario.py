@@ -22,9 +22,7 @@ TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))
 
 @try_manual
 def setup(test, rg):
-    test.kwargs.update({'eventhub_namespace': "codegenlivetest", 'eventhub_name': 'livetest'})
-    test.cmd('az eventhubs namespace create --name {eventhub_namespace} -g {rg}')
-    test.cmd('az eventhubs eventhub create --name {eventhub_name} --namespace-name {eventhub_namespace} -g {rg}')
+    pass
 
 
 # EXAMPLE: kustoclusterscreateorupdate
@@ -350,7 +348,7 @@ def step_kustodataconnectionvalidation(test, rg):
              '--database-name "KustoDatabase8" '
              '--data-connection-name "{DataConnections8}" '
              '--consumer-group "$Default" '
-             '--event-hub-resource-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.EventHub/namespaces/{eventhub_namespace}/eventhubs/{eventhub_name}" '
+             '--event-hub-resource-id "/subscriptions/11d5f159-a21d-4a6c-8053-c3aae30057cf/resourceGroups/RPTestResourceGroupDoNotDelete/providers/Microsoft.EventHub/namespaces/RpTestEventHubNamespaceDoNotDelete/eventhubs/rptesteventhub" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -364,7 +362,7 @@ def step_kustodataconnectionscreateorupdate(test, rg):
              '--database-name "KustoDatabase8" '
              '--location "southcentralus" '
              '--consumer-group "$Default" '
-             '--event-hub-resource-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.EventHub/namespaces/{eventhub_namespace}/eventhubs/{eventhub_name}" '
+             '--event-hub-resource-id "/subscriptions/11d5f159-a21d-4a6c-8053-c3aae30057cf/resourceGroups/RPTestResourceGroupDoNotDelete/providers/Microsoft.EventHub/namespaces/RpTestEventHubNamespaceDoNotDelete/eventhubs/rptesteventhub" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -389,7 +387,7 @@ def step_kustodataconnectionsupdate(test, rg):
              '--database-name "KustoDatabase8" '
              '--location "southcentralus" '
              '--consumer-group "$Default" '
-             '--event-hub-resource-id "/subscriptions/{subscription_id}/resourceGroups/{rg}/providers/Microsoft.EventHub/namespaces/{eventhub_namespace}/eventhubs/{eventhub_name}" '
+             '--event-hub-resource-id "/subscriptions/11d5f159-a21d-4a6c-8053-c3aae30057cf/resourceGroups/RPTestResourceGroupDoNotDelete/providers/Microsoft.EventHub/namespaces/RpTestEventHubNamespaceDoNotDelete/eventhubs/rptesteventhub" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -407,11 +405,7 @@ def step_kustodataconnectionsdelete(test, rg):
 
 @try_manual
 def cleanup(test, rg):
-    try:
-        test.cmd('az eventhubs eventhub delete --name {eventhub_name} --namespace-name {eventhub_namespace} -g {rg}')
-        test.cmd('az eventhubs namespace delete --name {eventhub_namespace} -g {rg}')
-    except:
-        pass
+    pass
 
 
 @try_manual
