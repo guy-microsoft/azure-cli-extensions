@@ -341,6 +341,12 @@ class PutAliasRequestProperties(msrest.serialization.Model):
     :type subscription_id: str
     """
 
+    _validation = {
+        'display_name': {'required': True},
+        'workload': {'required': True},
+        'billing_scope': {'required': True},
+    }
+
     _attribute_map = {
         'display_name': {'key': 'displayName', 'type': 'str'},
         'workload': {'key': 'workload', 'type': 'str'},
