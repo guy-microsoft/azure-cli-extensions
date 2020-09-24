@@ -21,6 +21,9 @@ from ._trigger_operations_async import TriggerOperations
 from ._trigger_run_operations_async import TriggerRunOperations
 from ._data_flow_operations_async import DataFlowOperations
 from ._data_flow_debug_session_operations_async import DataFlowDebugSessionOperations
+from ._managed_virtual_network_operations_async import ManagedVirtualNetworkOperations
+from ._managed_private_endpoint_operations_async import ManagedPrivateEndpointOperations
+from ._credential_operation_operations_async import CredentialOperationOperations
 
 __all__ = [
     'OperationOperations',
@@ -38,4 +41,7 @@ __all__ = [
     'TriggerRunOperations',
     'DataFlowOperations',
     'DataFlowDebugSessionOperations',
+    'ManagedVirtualNetworkOperations',
+    'ManagedPrivateEndpointOperations',
+    'CredentialOperationOperations',
 ]

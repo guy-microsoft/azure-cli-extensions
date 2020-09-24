@@ -54,3 +54,7 @@ def cf_trigger(cli_ctx, *_):
 
 def cf_trigger_run(cli_ctx, *_):
     return cf_datafactory_cl(cli_ctx).trigger_run
+
+
+def cf_credential_operation(cli_ctx, *_):
+    return cf_datafactory_cl(cli_ctx).credential_operation

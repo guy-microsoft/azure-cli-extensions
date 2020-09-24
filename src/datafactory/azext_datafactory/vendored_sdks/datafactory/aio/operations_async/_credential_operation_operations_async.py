@@ -19,8 +19,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class LinkedServiceOperations:
-    """LinkedServiceOperations async operations.
+class CredentialOperationOperations:
+    """CredentialOperationOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -46,19 +46,19 @@ class LinkedServiceOperations:
         resource_group_name: str,
         factory_name: str,
         **kwargs
-    ) -> AsyncIterable["models.LinkedServiceListResponse"]:
-        """Lists linked services.
+    ) -> AsyncIterable["models.CredentialListResponse"]:
+        """List credentials.
 
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
         :param factory_name: The factory name.
         :type factory_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either LinkedServiceListResponse or the result of cls(response)
-        :rtype: ~azure.core.async_paging.AsyncItemPaged[~data_factory_management_client.models.LinkedServiceListResponse]
+        :return: An iterator like instance of either CredentialListResponse or the result of cls(response)
+        :rtype: ~azure.core.async_paging.AsyncItemPaged[~data_factory_management_client.models.CredentialListResponse]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.LinkedServiceListResponse"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.CredentialListResponse"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
@@ -89,7 +89,7 @@ class LinkedServiceOperations:
             return request
 
         async def extract_data(pipeline_response):
-            deserialized = self._deserialize('LinkedServiceListResponse', pipeline_response)
+            deserialized = self._deserialize('CredentialListResponse', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
@@ -110,40 +110,40 @@ class LinkedServiceOperations:
         return AsyncItemPaged(
             get_next, extract_data
         )
-    list_by_factory.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices'}  # type: ignore
+    list_by_factory.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials'}  # type: ignore
 
     async def create_or_update(
         self,
         resource_group_name: str,
         factory_name: str,
-        linked_service_name: str,
-        properties: "models.LinkedService",
+        credential_name: str,
+        properties: "models.Credential",
         if_match: Optional[str] = None,
         **kwargs
-    ) -> "models.LinkedServiceResource":
-        """Creates or updates a linked service.
+    ) -> "models.CredentialResource":
+        """Creates or updates a credential.
 
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
         :param factory_name: The factory name.
         :type factory_name: str
-        :param linked_service_name: The linked service name.
-        :type linked_service_name: str
-        :param properties: Properties of linked service.
-        :type properties: ~data_factory_management_client.models.LinkedService
-        :param if_match: ETag of the linkedService entity.  Should only be specified for update, for
-         which it should match existing entity or can be * for unconditional update.
+        :param credential_name: Credential name.
+        :type credential_name: str
+        :param properties: Properties of credentials.
+        :type properties: ~data_factory_management_client.models.Credential
+        :param if_match: ETag of the credential entity. Should only be specified for update, for which
+         it should match existing entity or can be * for unconditional update.
         :type if_match: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: LinkedServiceResource, or the result of cls(response)
-        :rtype: ~data_factory_management_client.models.LinkedServiceResource
+        :return: CredentialResource, or the result of cls(response)
+        :rtype: ~data_factory_management_client.models.CredentialResource
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.LinkedServiceResource"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.CredentialResource"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _linked_service = models.LinkedServiceResource(properties=properties)
+        _credential = models.CredentialResource(properties=properties)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
 
@@ -153,7 +153,7 @@ class LinkedServiceOperations:
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
             'factoryName': self._serialize.url("factory_name", factory_name, 'str', max_length=63, min_length=3, pattern=r'^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$'),
-            'linkedServiceName': self._serialize.url("linked_service_name", linked_service_name, 'str', max_length=260, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
+            'credentialName': self._serialize.url("credential_name", credential_name, 'str', max_length=127, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -169,7 +169,7 @@ class LinkedServiceOperations:
         header_parameters['Accept'] = 'application/json'
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_linked_service, 'LinkedServiceResource')
+        body_content = self._serialize.body(_credential, 'CredentialResource')
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
 
@@ -180,40 +180,39 @@ class LinkedServiceOperations:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('LinkedServiceResource', pipeline_response)
+        deserialized = self._deserialize('CredentialResource', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}'}  # type: ignore
+    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}'}  # type: ignore
 
     async def get(
         self,
         resource_group_name: str,
         factory_name: str,
-        linked_service_name: str,
+        credential_name: str,
         if_none_match: Optional[str] = None,
         **kwargs
-    ) -> Optional["models.LinkedServiceResource"]:
-        """Gets a linked service.
+    ) -> "models.CredentialResource":
+        """Gets a credential.
 
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
         :param factory_name: The factory name.
         :type factory_name: str
-        :param linked_service_name: The linked service name.
-        :type linked_service_name: str
-        :param if_none_match: ETag of the linked service entity. Should only be specified for get. If
-         the ETag matches the existing entity tag, or if * was provided, then no content will be
-         returned.
+        :param credential_name: Credential name.
+        :type credential_name: str
+        :param if_none_match: ETag of the credential entity. Should only be specified for get. If the
+         ETag matches the existing entity tag, or if * was provided, then no content will be returned.
         :type if_none_match: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: LinkedServiceResource, or the result of cls(response)
-        :rtype: ~data_factory_management_client.models.LinkedServiceResource or None
+        :return: CredentialResource, or the result of cls(response)
+        :rtype: ~data_factory_management_client.models.CredentialResource
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.LinkedServiceResource"]]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.CredentialResource"]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
@@ -224,7 +223,7 @@ class LinkedServiceOperations:
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
             'factoryName': self._serialize.url("factory_name", factory_name, 'str', max_length=63, min_length=3, pattern=r'^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$'),
-            'linkedServiceName': self._serialize.url("linked_service_name", linked_service_name, 'str', max_length=260, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
+            'credentialName': self._serialize.url("credential_name", credential_name, 'str', max_length=127, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -242,35 +241,33 @@ class LinkedServiceOperations:
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
-        if response.status_code not in [200, 304]:
+        if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response, error_format=ARMErrorFormat)
 
-        deserialized = None
-        if response.status_code == 200:
-            deserialized = self._deserialize('LinkedServiceResource', pipeline_response)
+        deserialized = self._deserialize('CredentialResource', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}'}  # type: ignore
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}'}  # type: ignore
 
     async def delete(
         self,
         resource_group_name: str,
         factory_name: str,
-        linked_service_name: str,
+        credential_name: str,
         **kwargs
     ) -> None:
-        """Deletes a linked service.
+        """Deletes a credential.
 
         :param resource_group_name: The resource group name.
         :type resource_group_name: str
         :param factory_name: The factory name.
         :type factory_name: str
-        :param linked_service_name: The linked service name.
-        :type linked_service_name: str
+        :param credential_name: Credential name.
+        :type credential_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: None, or the result of cls(response)
         :rtype: None
@@ -287,7 +284,7 @@ class LinkedServiceOperations:
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
             'factoryName': self._serialize.url("factory_name", factory_name, 'str', max_length=63, min_length=3, pattern=r'^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$'),
-            'linkedServiceName': self._serialize.url("linked_service_name", linked_service_name, 'str', max_length=260, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
+            'credentialName': self._serialize.url("credential_name", credential_name, 'str', max_length=127, min_length=1, pattern=r'^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -309,4 +306,4 @@ class LinkedServiceOperations:
         if cls:
             return cls(pipeline_response, None, {})
 
-    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}'}  # type: ignore
+    delete.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}'}  # type: ignore
