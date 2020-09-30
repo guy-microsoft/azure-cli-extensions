@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -63,6 +63,10 @@ class FactoryOperations(object):
         api_version = "2018-06-01"
 
         def prepare_request(next_link=None):
+            # Construct headers
+            header_parameters = {}  # type: Dict[str, Any]
+            header_parameters['Accept'] = 'application/json'
+
             if not next_link:
                 # Construct URL
                 url = self.list.metadata['url']  # type: ignore
@@ -74,15 +78,11 @@ class FactoryOperations(object):
                 query_parameters = {}  # type: Dict[str, Any]
                 query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
+                request = self._client.get(url, query_parameters, header_parameters)
             else:
                 url = next_link
                 query_parameters = {}  # type: Dict[str, Any]
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            request = self._client.get(url, query_parameters, header_parameters)
+                request = self._client.get(url, query_parameters, header_parameters)
             return request
 
         def extract_data(pipeline_response):
@@ -155,7 +155,6 @@ class FactoryOperations(object):
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(_factory_repo_update, 'FactoryRepoUpdate')
         body_content_kwargs['content'] = body_content
@@ -197,6 +196,10 @@ class FactoryOperations(object):
         api_version = "2018-06-01"
 
         def prepare_request(next_link=None):
+            # Construct headers
+            header_parameters = {}  # type: Dict[str, Any]
+            header_parameters['Accept'] = 'application/json'
+
             if not next_link:
                 # Construct URL
                 url = self.list_by_resource_group.metadata['url']  # type: ignore
@@ -209,15 +212,11 @@ class FactoryOperations(object):
                 query_parameters = {}  # type: Dict[str, Any]
                 query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
 
+                request = self._client.get(url, query_parameters, header_parameters)
             else:
                 url = next_link
                 query_parameters = {}  # type: Dict[str, Any]
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            # Construct and send request
-            request = self._client.get(url, query_parameters, header_parameters)
+                request = self._client.get(url, query_parameters, header_parameters)
             return request
 
         def extract_data(pipeline_response):
@@ -251,9 +250,15 @@ class FactoryOperations(object):
         if_match=None,  # type: Optional[str]
         location=None,  # type: Optional[str]
         tags=None,  # type: Optional[Dict[str, str]]
-        identity=None,  # type: Optional["models.FactoryIdentity"]
         repo_configuration=None,  # type: Optional["models.FactoryRepoConfiguration"]
         global_parameters=None,  # type: Optional[Dict[str, "models.GlobalParameterSpecification"]]
+        public_network_access=None,  # type: Optional[Union[str, "models.PublicNetworkAccess"]]
+        key_name=None,  # type: Optional[str]
+        vault_base_url=None,  # type: Optional[str]
+        key_version=None,  # type: Optional[str]
+        identity=None,  # type: Optional["models.CmkIdentityDefinition"]
+        type="SystemAssigned",  # type: Optional[Union[str, "models.FactoryIdentityType"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Factory"
@@ -270,12 +275,27 @@ class FactoryOperations(object):
         :type location: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
-        :param identity: Managed service identity of the factory.
-        :type identity: ~data_factory_management_client.models.FactoryIdentity
         :param repo_configuration: Git repo information of the factory.
         :type repo_configuration: ~data_factory_management_client.models.FactoryRepoConfiguration
         :param global_parameters: List of parameters for factory.
         :type global_parameters: dict[str, ~data_factory_management_client.models.GlobalParameterSpecification]
+        :param public_network_access: Whether or not public network access is allowed for the data
+         factory.
+        :type public_network_access: str or ~data_factory_management_client.models.PublicNetworkAccess
+        :param key_name: The name of the key in Azure Key Vault to use as Customer Managed Key.
+        :type key_name: str
+        :param vault_base_url: The url of the Azure Key Vault used for CMK.
+        :type vault_base_url: str
+        :param key_version: The version of the key used for CMK. If not provided, latest version will
+         be used.
+        :type key_version: str
+        :param identity: User assigned identity to use to authenticate to customer's key vault. If not
+         provided Managed Service Identity will be used.
+        :type identity: ~data_factory_management_client.models.CmkIdentityDefinition
+        :param type: The identity type.
+        :type type: str or ~data_factory_management_client.models.FactoryIdentityType
+        :param user_assigned_identities: List of user assigned identities for the factory.
+        :type user_assigned_identities: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Factory, or the result of cls(response)
         :rtype: ~data_factory_management_client.models.Factory
@@ -285,7 +305,7 @@ class FactoryOperations(object):
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _factory = models.Factory(location=location, tags=tags, identity=identity, repo_configuration=repo_configuration, global_parameters=global_parameters)
+        _factory = models.Factory(location=location, tags=tags, repo_configuration=repo_configuration, global_parameters=global_parameters, public_network_access=public_network_access, key_name=key_name, vault_base_url=vault_base_url, key_version=key_version, identity=identity, type_identity_type=type, user_assigned_identities=user_assigned_identities)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
 
@@ -309,7 +329,6 @@ class FactoryOperations(object):
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(_factory, 'Factory')
         body_content_kwargs['content'] = body_content
@@ -335,7 +354,8 @@ class FactoryOperations(object):
         resource_group_name,  # type: str
         factory_name,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        identity=None,  # type: Optional["models.FactoryIdentity"]
+        type="SystemAssigned",  # type: Optional[Union[str, "models.FactoryIdentityType"]]
+        user_assigned_identities=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Factory"
@@ -347,8 +367,10 @@ class FactoryOperations(object):
         :type factory_name: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
-        :param identity: Managed service identity of the factory.
-        :type identity: ~data_factory_management_client.models.FactoryIdentity
+        :param type: The identity type.
+        :type type: str or ~data_factory_management_client.models.FactoryIdentityType
+        :param user_assigned_identities: List of user assigned identities for the factory.
+        :type user_assigned_identities: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Factory, or the result of cls(response)
         :rtype: ~data_factory_management_client.models.Factory
@@ -358,7 +380,7 @@ class FactoryOperations(object):
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
 
-        _factory_update_parameters = models.FactoryUpdateParameters(tags=tags, identity=identity)
+        _factory_update_parameters = models.FactoryUpdateParameters(tags=tags, type=type, user_assigned_identities=user_assigned_identities)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
 
@@ -380,7 +402,6 @@ class FactoryOperations(object):
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(_factory_update_parameters, 'FactoryUpdateParameters')
         body_content_kwargs['content'] = body_content
@@ -408,7 +429,7 @@ class FactoryOperations(object):
         if_none_match=None,  # type: Optional[str]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.Factory"
+        # type: (...) -> Optional["models.Factory"]
         """Gets a factory.
 
         :param resource_group_name: The resource group name.
@@ -423,7 +444,7 @@ class FactoryOperations(object):
         :rtype: ~data_factory_management_client.models.Factory or None
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.Factory"]
+        cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.Factory"]]
         error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
@@ -447,7 +468,6 @@ class FactoryOperations(object):
             header_parameters['If-None-Match'] = self._serialize.header("if_none_match", if_none_match, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
@@ -505,7 +525,6 @@ class FactoryOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
 
-        # Construct and send request
         request = self._client.delete(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
@@ -572,7 +591,6 @@ class FactoryOperations(object):
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(_git_hub_access_token_request, 'GitHubAccessTokenRequest')
         body_content_kwargs['content'] = body_content
@@ -656,7 +674,6 @@ class FactoryOperations(object):
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
         header_parameters['Accept'] = 'application/json'
 
-        # Construct and send request
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(_policy, 'UserAccessPolicy')
         body_content_kwargs['content'] = body_content

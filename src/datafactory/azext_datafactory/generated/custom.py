@@ -38,7 +38,14 @@ def datafactory_factory_create(client,
                                tags=None,
                                factory_vsts_configuration=None,
                                factory_git_hub_configuration=None,
-                               global_parameters=None):
+                               global_parameters=None,
+                               public_network_access=None,
+                               encryption_key_name=None,
+                               encryption_vault_base_url=None,
+                               encryption_key_version=None,
+                               encryption_identity=None,
+                               identity_type=None,
+                               identity_user_assigned_identities=None):
     all_repo_configuration = []
     if factory_vsts_configuration is not None:
         all_repo_configuration.append(factory_vsts_configuration)
@@ -48,23 +55,37 @@ def datafactory_factory_create(client,
         raise CLIError('at most one of  factory_vsts_configuration, factory_git_hub_configuration is needed for '
                        'repo_configuration!')
     repo_configuration = all_repo_configuration[0] if len(all_repo_configuration) == 1 else None
+    if identity_type is None:
+        identity_type = "SystemAssigned"
     return client.create_or_update(resource_group_name=resource_group_name,
                                    factory_name=factory_name,
                                    if_match=if_match,
                                    location=location,
                                    tags=tags,
-                                   identity={"type": "SystemAssigned"},
-                                   repo_configuration=repo_configuration)
+                                   repo_configuration=repo_configuration,
+                                   global_parameters=global_parameters,
+                                   public_network_access=public_network_access,
+                                   key_name=encryption_key_name,
+                                   vault_base_url=encryption_vault_base_url,
+                                   key_version=encryption_key_version,
+                                   identity=encryption_identity,
+                                   type=identity_type,
+                                   user_assigned_identities=identity_user_assigned_identities)
 
 
 def datafactory_factory_update(client,
                                resource_group_name,
                                factory_name,
-                               tags=None):
+                               tags=None,
+                               identity_type=None,
+                               identity_user_assigned_identities=None):
+    if identity_type is None:
+        identity_type = "SystemAssigned"
     return client.update(resource_group_name=resource_group_name,
                          factory_name=factory_name,
                          tags=tags,
-                         identity={"type": "SystemAssigned"})
+                         type=identity_type,
+                         user_assigned_identities=identity_user_assigned_identities)
 
 
 def datafactory_factory_delete(client,
@@ -395,6 +416,26 @@ def datafactory_linked_service_create(client,
                                    properties=properties)
 
 
+def datafactory_linked_service_update(instance,
+                                      resource_group_name,
+                                      factory_name,
+                                      linked_service_name,
+                                      if_match=None,
+                                      connect_via=None,
+                                      description=None,
+                                      parameters=None,
+                                      annotations=None):
+    if connect_via is not None:
+        instance.connect_via = connect_via
+    if description is not None:
+        instance.description = description
+    if parameters is not None:
+        instance.parameters = parameters
+    if annotations is not None:
+        instance.annotations = annotations
+    return instance
+
+
 def datafactory_linked_service_delete(client,
                                       resource_group_name,
                                       factory_name,
@@ -433,6 +474,35 @@ def datafactory_dataset_create(client,
                                    dataset_name=dataset_name,
                                    if_match=if_match,
                                    properties=properties)
+
+
+def datafactory_dataset_update(instance,
+                               resource_group_name,
+                               factory_name,
+                               dataset_name,
+                               linked_service_name,
+                               if_match=None,
+                               description=None,
+                               structure=None,
+                               schema=None,
+                               parameters=None,
+                               annotations=None,
+                               folder=None):
+    if description is not None:
+        instance.description = description
+    if structure is not None:
+        instance.structure = structure
+    if schema is not None:
+        instance.schema = schema
+    if linked_service_name is not None:
+        instance.linked_service_name = linked_service_name
+    if parameters is not None:
+        instance.parameters = parameters
+    if annotations is not None:
+        instance.annotations = annotations
+    if folder is not None:
+        instance.folder = folder
+    return instance
 
 
 def datafactory_dataset_delete(client,
@@ -488,22 +558,6 @@ def datafactory_pipeline_update(instance,
                                 annotations=None,
                                 run_dimensions=None,
                                 folder_name=None):
-    if description is not None:
-        instance.description = description
-    if activities is not None:
-        instance.activities = activities
-    if parameters is not None:
-        instance.parameters = parameters
-    if variables is not None:
-        instance.variables = variables
-    if concurrency is not None:
-        instance.concurrency = concurrency
-    if annotations is not None:
-        instance.annotations = annotations
-    if run_dimensions is not None:
-        instance.run_dimensions = run_dimensions
-    if folder_name is not None:
-        instance.name_properties_folder_name = folder_name
     return instance
 
 
@@ -565,7 +619,7 @@ def datafactory_pipeline_run_query_by_factory(client,
                                               order_by=None):
     return client.query_by_factory(resource_group_name=resource_group_name,
                                    factory_name=factory_name,
-                                   continuation_token=continuation_token,
+                                   continuation_token_parameter=continuation_token,
                                    last_updated_after=last_updated_after,
                                    last_updated_before=last_updated_before,
                                    filters=filters,
@@ -584,7 +638,7 @@ def datafactory_activity_run_query_by_pipeline_run(client,
     return client.query_by_pipeline_run(resource_group_name=resource_group_name,
                                         factory_name=factory_name,
                                         run_id=run_id,
-                                        continuation_token=continuation_token,
+                                        continuation_token_parameter=continuation_token,
                                         last_updated_after=last_updated_after,
                                         last_updated_before=last_updated_before,
                                         filters=filters,
@@ -622,6 +676,20 @@ def datafactory_trigger_create(client,
                                    properties=properties)
 
 
+def datafactory_trigger_update(instance,
+                               resource_group_name,
+                               factory_name,
+                               trigger_name,
+                               if_match=None,
+                               description=None,
+                               annotations=None):
+    if description is not None:
+        instance.description = description
+    if annotations is not None:
+        instance.annotations = annotations
+    return instance
+
+
 def datafactory_trigger_delete(client,
                                resource_group_name,
                                factory_name,
@@ -647,7 +715,7 @@ def datafactory_trigger_query_by_factory(client,
                                          parent_trigger_name=None):
     return client.query_by_factory(resource_group_name=resource_group_name,
                                    factory_name=factory_name,
-                                   continuation_token=continuation_token,
+                                   continuation_token_parameter=continuation_token,
                                    parent_trigger_name=parent_trigger_name)
 
 
@@ -699,6 +767,17 @@ def datafactory_trigger_unsubscribe_from_event(client,
                        trigger_name=trigger_name)
 
 
+def datafactory_trigger_run_cancel(client,
+                                   resource_group_name,
+                                   factory_name,
+                                   trigger_name,
+                                   run_id):
+    return client.cancel(resource_group_name=resource_group_name,
+                         factory_name=factory_name,
+                         trigger_name=trigger_name,
+                         run_id=run_id)
+
+
 def datafactory_trigger_run_query_by_factory(client,
                                              resource_group_name,
                                              factory_name,
@@ -709,7 +788,7 @@ def datafactory_trigger_run_query_by_factory(client,
                                              order_by=None):
     return client.query_by_factory(resource_group_name=resource_group_name,
                                    factory_name=factory_name,
-                                   continuation_token=continuation_token,
+                                   continuation_token_parameter=continuation_token,
                                    last_updated_after=last_updated_after,
                                    last_updated_before=last_updated_before,
                                    filters=filters,
