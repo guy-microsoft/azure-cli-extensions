@@ -10,13 +10,14 @@
 
 import os
 from azure.cli.testsdk import ScenarioTest
-from .. import try_manual, raise_if
+from .. import try_manual, raise_if, calc_coverage
 from azure.cli.testsdk import ResourceGroupPreparer
 
 
 TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))
 
 
+# Env setup
 @try_manual
 def setup(test, rg):
     pass
@@ -33,12 +34,33 @@ def step__hostpools_put_hostpool_create(test, rg):
              '--load-balancer-type "BreadthFirst" '
              '--max-session-limit 999999 '
              '--personal-desktop-assignment-type "Automatic" '
-             '--registration-info expiration-time="2020-08-20T08:57:45.479Z" registration-token-operation="Update" '
+             '--preferred-app-group-type "Desktop" '
+             '--registration-info expiration-time="2020-10-23T18:29:39.631Z" registration-token-operation="Update" '
+             '--sso-client-id "client" '
+             '--sso-client-secret-key-vault-path "https://keyvault/secret" '
              '--sso-context "KeyVaultPath" '
+             '--sso-secret-type "SharedKey" '
+             '--ssoadfs-authority "https://adfs" '
+             '--vm-template "{json:json}" '
              '--tags tag1="value1" tag2="value2" '
              '--name "{myHostPool}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolType", "Pooled", case_sensitive=False),
+                 test.check("loadBalancerType", "BreadthFirst", case_sensitive=False),
+                 test.check("maxSessionLimit", 999999),
+                 test.check("personalDesktopAssignmentType", "Automatic", case_sensitive=False),
+                 test.check("preferredAppGroupType", "Desktop", case_sensitive=False),
+                 test.check("ssoClientId", "client", case_sensitive=False),
+                 test.check("ssoClientSecretKeyVaultPath", "https://keyvault/secret", case_sensitive=False),
+                 test.check("ssoSecretType", "SharedKey", case_sensitive=False),
+                 test.check("ssoadfsAuthority", "https://adfs", case_sensitive=False),
+                 test.check("vmTemplate", "{json:json}", case_sensitive=False),
+                 test.check("name", "{myHostPool}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /HostPools/get/HostPool_Get
@@ -47,7 +69,22 @@ def step__hostpools_get_hostpool_get(test, rg):
     test.cmd('az desktopvirtualization hostpool show '
              '--name "{myHostPool}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolType", "Pooled", case_sensitive=False),
+                 test.check("loadBalancerType", "BreadthFirst", case_sensitive=False),
+                 test.check("maxSessionLimit", 999999),
+                 test.check("personalDesktopAssignmentType", "Automatic", case_sensitive=False),
+                 test.check("preferredAppGroupType", "Desktop", case_sensitive=False),
+                 test.check("ssoClientId", "client", case_sensitive=False),
+                 test.check("ssoClientSecretKeyVaultPath", "https://keyvault/secret", case_sensitive=False),
+                 test.check("ssoSecretType", "SharedKey", case_sensitive=False),
+                 test.check("ssoadfsAuthority", "https://adfs", case_sensitive=False),
+                 test.check("vmTemplate", "{json:json}", case_sensitive=False),
+                 test.check("name", "{myHostPool}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /HostPools/get/HostPool_List
@@ -55,7 +92,9 @@ def step__hostpools_get_hostpool_get(test, rg):
 def step__hostpools_get_hostpool_list(test, rg):
     test.cmd('az desktopvirtualization hostpool list '
              '-g ""',
-             checks=[])
+             checks=[
+                 test.check('length(@)', 1),
+             ])
 
 
 # EXAMPLE: /HostPools/get/HostPool_ListByResourceGroup
@@ -63,7 +102,9 @@ def step__hostpools_get_hostpool_list(test, rg):
 def step__hostpools_get_hostpool_listbyresourcegroup(test, rg):
     test.cmd('az desktopvirtualization hostpool list '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check('length(@)', 1),
+             ])
 
 
 # EXAMPLE: /HostPools/patch/HostPool_Update
@@ -75,17 +116,37 @@ def step__hostpools_patch_hostpool_update(test, rg):
              '--load-balancer-type "BreadthFirst" '
              '--max-session-limit 999999 '
              '--personal-desktop-assignment-type "Automatic" '
-             '--registration-info expiration-time="2020-08-20T08:57:45.522Z" registration-token-operation="Update" '
+             '--registration-info expiration-time="2020-10-23T18:29:39.632Z" registration-token-operation="Update" '
+             '--sso-client-id "client" '
+             '--sso-client-secret-key-vault-path "https://keyvault/secret" '
              '--sso-context "KeyVaultPath" '
+             '--sso-secret-type "SharedKey" '
+             '--ssoadfs-authority "https://adfs" '
+             '--vm-template "{json:json}" '
              '--tags tag1="value1" tag2="value2" '
              '--name "{myHostPool}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolType", "Pooled", case_sensitive=False),
+                 test.check("loadBalancerType", "BreadthFirst", case_sensitive=False),
+                 test.check("maxSessionLimit", 999999),
+                 test.check("personalDesktopAssignmentType", "Automatic", case_sensitive=False),
+                 test.check("preferredAppGroupType", "Desktop", case_sensitive=False),
+                 test.check("ssoClientId", "client", case_sensitive=False),
+                 test.check("ssoClientSecretKeyVaultPath", "https://keyvault/secret", case_sensitive=False),
+                 test.check("ssoSecretType", "SharedKey", case_sensitive=False),
+                 test.check("ssoadfsAuthority", "https://adfs", case_sensitive=False),
+                 test.check("vmTemplate", "{json:json}", case_sensitive=False),
+                 test.check("name", "{myHostPool}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /ApplicationGroups/put/ApplicationGroup_Create
 @try_manual
-def step__applicationgroups_put_applicationgroup_create(test, rg):
+def step__applicationgroups_put(test, rg):
     test.cmd('az desktopvirtualization applicationgroup create '
              '--location "centralus" '
              '--description "des1" '
@@ -96,7 +157,15 @@ def step__applicationgroups_put_applicationgroup_create(test, rg):
              '--tags tag1="value1" tag2="value2" '
              '--name "{myApplicationGroup}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("applicationGroupType", "RemoteApp", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolArmPath", "/subscriptions/{subscription_id}/resourcegroups/{rg}/providers/Microsof"
+                            "t.DesktopVirtualization/hostpools/{myHostPool}", case_sensitive=False),
+                 test.check("name", "{myApplicationGroup}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /ApplicationGroups/get/ApplicationGroup_Get
@@ -105,7 +174,15 @@ def step__applicationgroups_get_applicationgroup_get(test, rg):
     test.cmd('az desktopvirtualization applicationgroup show '
              '--name "{myApplicationGroup}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("applicationGroupType", "RemoteApp", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolArmPath", "/subscriptions/{subscription_id}/resourcegroups/{rg}/providers/Microsof"
+                            "t.DesktopVirtualization/hostpools/{myHostPool}", case_sensitive=False),
+                 test.check("name", "{myApplicationGroup}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /ApplicationGroups/get/ApplicationGroup_List
@@ -119,7 +196,7 @@ def step__applicationgroups_get_applicationgroup_list(test, rg):
 
 # EXAMPLE: /ApplicationGroups/get/ApplicationGroup_ListByResourceGroup
 @try_manual
-def step__applicationgroups_get_applicationgroup_listbyresourcegroup(test, rg):
+def step__applicationgroups_get(test, rg):
     test.cmd('az desktopvirtualization applicationgroup list '
              '--filter "applicationGroupType eq \'RailApplication\'" '
              '--resource-group "{rg}"',
@@ -128,21 +205,39 @@ def step__applicationgroups_get_applicationgroup_listbyresourcegroup(test, rg):
 
 # EXAMPLE: /ApplicationGroups/patch/ApplicationGroups_Update
 @try_manual
-def step__applicationgroups_patch_applicationgroups_update(test, rg):
+def step__applicationgroups_patch(test, rg):
     test.cmd('az desktopvirtualization applicationgroup update '
              '--description "des1" '
              '--friendly-name "friendly" '
              '--tags tag1="value1" tag2="value2" '
              '--name "{myApplicationGroup}" '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("applicationGroupType", "RemoteApp", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("hostPoolArmPath", "/subscriptions/{subscription_id}/resourcegroups/{rg}/providers/Microsof"
+                            "t.DesktopVirtualization/hostpools/{myHostPool}", case_sensitive=False),
+                 test.check("name", "{myApplicationGroup}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /ApplicationGroups/delete/ApplicationGroup_Delete
 @try_manual
-def step__applicationgroups_delete_applicationgroup_delete(test, rg):
-    test.cmd('az desktopvirtualization applicationgroup delete '
+def step__applicationgroups_delete(test, rg):
+    test.cmd('az desktopvirtualization applicationgroup delete -y '
              '--name "{myApplicationGroup}" '
+             '--resource-group "{rg}"',
+             checks=[])
+
+
+# EXAMPLE: /HostPools/delete/HostPool_Delete
+@try_manual
+def step__hostpools_delete_hostpool_delete(test, rg):
+    test.cmd('az desktopvirtualization hostpool delete -y '
+             '--force true '
+             '--name "{myHostPool}" '
              '--resource-group "{rg}"',
              checks=[])
 
@@ -157,7 +252,12 @@ def step__workspaces_put_workspace_create(test, rg):
              '--friendly-name "friendly" '
              '--tags tag1="value1" tag2="value2" '
              '--name "{myWorkspace}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("name", "{myWorkspace}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /Workspaces/get/Workspace_Get
@@ -166,7 +266,12 @@ def step__workspaces_get_workspace_get(test, rg):
     test.cmd('az desktopvirtualization workspace show '
              '--resource-group "{rg}" '
              '--name "{myWorkspace}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("name", "{myWorkspace}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /Workspaces/get/Workspace_ListByResourceGroup
@@ -174,7 +279,9 @@ def step__workspaces_get_workspace_get(test, rg):
 def step__workspaces_get_workspace_listbyresourcegroup(test, rg):
     test.cmd('az desktopvirtualization workspace list '
              '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check('length(@)', 1),
+             ])
 
 
 # EXAMPLE: /Workspaces/get/Workspace_ListBySubscription
@@ -182,7 +289,9 @@ def step__workspaces_get_workspace_listbyresourcegroup(test, rg):
 def step__workspaces_get_workspace_listbysubscription(test, rg):
     test.cmd('az desktopvirtualization workspace list '
              '-g ""',
-             checks=[])
+             checks=[
+                 test.check('length(@)', 1),
+             ])
 
 
 # EXAMPLE: /Workspaces/patch/Workspace_Update
@@ -194,33 +303,30 @@ def step__workspaces_patch_workspace_update(test, rg):
              '--friendly-name "friendly" '
              '--tags tag1="value1" tag2="value2" '
              '--name "{myWorkspace}"',
-             checks=[])
-
-
-# EXAMPLE: /HostPools/delete/HostPool_Delete
-@try_manual
-def step__hostpools_delete_hostpool_delete(test, rg):
-    test.cmd('az desktopvirtualization hostpool delete '
-             '--force true '
-             '--name "{myHostPool}" '
-             '--resource-group "{rg}"',
-             checks=[])
+             checks=[
+                 test.check("location", "centralus", case_sensitive=False),
+                 test.check("description", "des1", case_sensitive=False),
+                 test.check("friendlyName", "friendly", case_sensitive=False),
+                 test.check("name", "{myWorkspace}", case_sensitive=False),
+             ])
 
 
 # EXAMPLE: /Workspaces/delete/Workspace_Delete
 @try_manual
 def step__workspaces_delete_workspace_delete(test, rg):
-    test.cmd('az desktopvirtualization workspace delete '
+    test.cmd('az desktopvirtualization workspace delete -y '
              '--resource-group "{rg}" '
              '--name "{myWorkspace}"',
              checks=[])
 
 
+# Env cleanup
 @try_manual
 def cleanup(test, rg):
     pass
 
 
+# Testcase
 @try_manual
 def call_scenario(test, rg):
     setup(test, rg)
@@ -229,18 +335,18 @@ def call_scenario(test, rg):
     step__hostpools_get_hostpool_list(test, rg)
     step__hostpools_get_hostpool_listbyresourcegroup(test, rg)
     step__hostpools_patch_hostpool_update(test, rg)
-    step__applicationgroups_put_applicationgroup_create(test, rg)
+    step__applicationgroups_put(test, rg)
     step__applicationgroups_get_applicationgroup_get(test, rg)
     step__applicationgroups_get_applicationgroup_list(test, rg)
-    step__applicationgroups_get_applicationgroup_listbyresourcegroup(test, rg)
-    step__applicationgroups_patch_applicationgroups_update(test, rg)
-    step__applicationgroups_delete_applicationgroup_delete(test, rg)
+    step__applicationgroups_get(test, rg)
+    step__applicationgroups_patch(test, rg)
+    step__applicationgroups_delete(test, rg)
+    step__hostpools_delete_hostpool_delete(test, rg)
     step__workspaces_put_workspace_create(test, rg)
     step__workspaces_get_workspace_get(test, rg)
     step__workspaces_get_workspace_listbyresourcegroup(test, rg)
     step__workspaces_get_workspace_listbysubscription(test, rg)
     step__workspaces_patch_workspace_update(test, rg)
-    step__hostpools_delete_hostpool_delete(test, rg)
     step__workspaces_delete_workspace_delete(test, rg)
     cleanup(test, rg)
 
@@ -263,4 +369,5 @@ class DesktopVirtualizationAPIClientScenarioTest(ScenarioTest):
         })
 
         call_scenario(self, rg)
+        calc_coverage(__file__)
         raise_if()

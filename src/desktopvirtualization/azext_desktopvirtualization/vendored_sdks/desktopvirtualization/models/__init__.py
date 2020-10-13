@@ -76,8 +76,10 @@ from ._desktop_virtualization_api_client_enums import (
     HostPoolType,
     LoadBalancerType,
     PersonalDesktopAssignmentType,
+    PreferredAppGroupType,
     RegistrationTokenOperation,
     SessionState,
+    SsoSecretType,
     Status,
     UpdateState,
 )
@@ -119,8 +121,10 @@ __all__ = [
     'HostPoolType',
     'LoadBalancerType',
     'PersonalDesktopAssignmentType',
+    'PreferredAppGroupType',
     'RegistrationTokenOperation',
     'SessionState',
+    'SsoSecretType',
     'Status',
     'UpdateState',
 ]
