@@ -27,6 +27,7 @@ from ._integration_account_partner_operations import IntegrationAccountPartnerOp
 from ._integration_account_agreement_operations import IntegrationAccountAgreementOperations
 from ._integration_account_certificate_operations import IntegrationAccountCertificateOperations
 from ._integration_account_session_operations import IntegrationAccountSessionOperations
+from ._integration_account_usage_configuration_operations import IntegrationAccountUsageConfigurationOperations
 from ._integration_service_environment_operations import IntegrationServiceEnvironmentOperations
 from ._integration_service_environment_sku_operations import IntegrationServiceEnvironmentSkuOperations
 from ._integration_service_environment_network_health_operations import IntegrationServiceEnvironmentNetworkHealthOperations
@@ -56,6 +57,7 @@ __all__ = [
     'IntegrationAccountAgreementOperations',
     'IntegrationAccountCertificateOperations',
     'IntegrationAccountSessionOperations',
+    'IntegrationAccountUsageConfigurationOperations',
     'IntegrationServiceEnvironmentOperations',
     'IntegrationServiceEnvironmentSkuOperations',
     'IntegrationServiceEnvironmentNetworkHealthOperations',

@@ -6,10 +6,14 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
 
-from azure.core import AsyncPipelineClient
+from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
+
+if TYPE_CHECKING:
+    # pylint: disable=unused-import,ungrouped-imports
+    from azure.core.credentials_async import AsyncTokenCredential
 
 from ._configuration_async import LogicManagementClientConfiguration
 from .operations_async import WorkflowOperations
@@ -33,6 +37,7 @@ from .operations_async import IntegrationAccountPartnerOperations
 from .operations_async import IntegrationAccountAgreementOperations
 from .operations_async import IntegrationAccountCertificateOperations
 from .operations_async import IntegrationAccountSessionOperations
+from .operations_async import IntegrationAccountUsageConfigurationOperations
 from .operations_async import IntegrationServiceEnvironmentOperations
 from .operations_async import IntegrationServiceEnvironmentSkuOperations
 from .operations_async import IntegrationServiceEnvironmentNetworkHealthOperations
@@ -87,6 +92,8 @@ class LogicManagementClient(object):
     :vartype integration_account_certificate: logic_management_client.aio.operations_async.IntegrationAccountCertificateOperations
     :ivar integration_account_session: IntegrationAccountSessionOperations operations
     :vartype integration_account_session: logic_management_client.aio.operations_async.IntegrationAccountSessionOperations
+    :ivar integration_account_usage_configuration: IntegrationAccountUsageConfigurationOperations operations
+    :vartype integration_account_usage_configuration: logic_management_client.aio.operations_async.IntegrationAccountUsageConfigurationOperations
     :ivar integration_service_environment: IntegrationServiceEnvironmentOperations operations
     :vartype integration_service_environment: logic_management_client.aio.operations_async.IntegrationServiceEnvironmentOperations
     :ivar integration_service_environment_sku: IntegrationServiceEnvironmentSkuOperations operations
@@ -100,15 +107,16 @@ class LogicManagementClient(object):
     :ivar operation: OperationOperations operations
     :vartype operation: logic_management_client.aio.operations_async.OperationOperations
     :param credential: Credential needed for the client to connect to Azure.
-    :type credential: azure.core.credentials.TokenCredential
+    :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: The subscription id.
     :type subscription_id: str
     :param str base_url: Service URL
+    :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
     """
 
     def __init__(
         self,
-        credential: "TokenCredential",
+        credential: "AsyncTokenCredential",
         subscription_id: str,
         base_url: Optional[str] = None,
         **kwargs: Any
@@ -116,7 +124,7 @@ class LogicManagementClient(object):
         if not base_url:
             base_url = 'https://management.azure.com'
         self._config = LogicManagementClientConfiguration(credential, subscription_id, **kwargs)
-        self._client = AsyncPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
         client_models = {k: v for k, v in models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
@@ -163,6 +171,8 @@ class LogicManagementClient(object):
         self.integration_account_certificate = IntegrationAccountCertificateOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.integration_account_session = IntegrationAccountSessionOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.integration_account_usage_configuration = IntegrationAccountUsageConfigurationOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.integration_service_environment = IntegrationServiceEnvironmentOperations(
             self._client, self._config, self._serialize, self._deserialize)
