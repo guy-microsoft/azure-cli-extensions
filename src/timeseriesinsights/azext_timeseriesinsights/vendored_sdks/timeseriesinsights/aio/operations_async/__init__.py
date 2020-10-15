@@ -6,11 +6,11 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._operation_operations import OperationOperations
-from ._environment_operations import EnvironmentOperations
-from ._event_source_operations import EventSourceOperations
-from ._reference_data_set_operations import ReferenceDataSetOperations
-from ._access_policy_operations import AccessPolicyOperations
+from ._operation_operations_async import OperationOperations
+from ._environment_operations_async import EnvironmentOperations
+from ._event_source_operations_async import EventSourceOperations
+from ._reference_data_set_operations_async import ReferenceDataSetOperations
+from ._access_policy_operations_async import AccessPolicyOperations
 
 __all__ = [
     'OperationOperations',

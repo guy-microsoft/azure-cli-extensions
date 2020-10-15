@@ -6,41 +6,39 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from typing import TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
-from azure.mgmt.core import ARMPipelineClient
+from azure.mgmt.core import AsyncARMPipelineClient
 from msrest import Deserializer, Serializer
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Optional
+    from azure.core.credentials_async import AsyncTokenCredential
 
-    from azure.core.credentials import TokenCredential
-
-from ._configuration import TimeSeriesInsightsClientConfiguration
-from .operations import OperationOperations
-from .operations import EnvironmentOperations
-from .operations import EventSourceOperations
-from .operations import ReferenceDataSetOperations
-from .operations import AccessPolicyOperations
-from . import models
+from ._configuration_async import TimeSeriesInsightsClientConfiguration
+from .operations_async import OperationOperations
+from .operations_async import EnvironmentOperations
+from .operations_async import EventSourceOperations
+from .operations_async import ReferenceDataSetOperations
+from .operations_async import AccessPolicyOperations
+from .. import models
 
 
 class TimeSeriesInsightsClient(object):
     """Time Series Insights client.
 
     :ivar operation: OperationOperations operations
-    :vartype operation: time_series_insights_client.operations.OperationOperations
+    :vartype operation: time_series_insights_client.aio.operations_async.OperationOperations
     :ivar environment: EnvironmentOperations operations
-    :vartype environment: time_series_insights_client.operations.EnvironmentOperations
+    :vartype environment: time_series_insights_client.aio.operations_async.EnvironmentOperations
     :ivar event_source: EventSourceOperations operations
-    :vartype event_source: time_series_insights_client.operations.EventSourceOperations
+    :vartype event_source: time_series_insights_client.aio.operations_async.EventSourceOperations
     :ivar reference_data_set: ReferenceDataSetOperations operations
-    :vartype reference_data_set: time_series_insights_client.operations.ReferenceDataSetOperations
+    :vartype reference_data_set: time_series_insights_client.aio.operations_async.ReferenceDataSetOperations
     :ivar access_policy: AccessPolicyOperations operations
-    :vartype access_policy: time_series_insights_client.operations.AccessPolicyOperations
+    :vartype access_policy: time_series_insights_client.aio.operations_async.AccessPolicyOperations
     :param credential: Credential needed for the client to connect to Azure.
-    :type credential: ~azure.core.credentials.TokenCredential
+    :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: Azure Subscription ID.
     :type subscription_id: str
     :param str base_url: Service URL
@@ -49,16 +47,15 @@ class TimeSeriesInsightsClient(object):
 
     def __init__(
         self,
-        credential,  # type: "TokenCredential"
-        subscription_id,  # type: str
-        base_url=None,  # type: Optional[str]
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> None
+        credential: "AsyncTokenCredential",
+        subscription_id: str,
+        base_url: Optional[str] = None,
+        **kwargs: Any
+    ) -> None:
         if not base_url:
             base_url = 'https://management.azure.com'
         self._config = TimeSeriesInsightsClientConfiguration(credential, subscription_id, **kwargs)
-        self._client = ARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
+        self._client = AsyncARMPipelineClient(base_url=base_url, config=self._config, **kwargs)
 
         client_models = {k: v for k, v in models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
@@ -75,15 +72,12 @@ class TimeSeriesInsightsClient(object):
         self.access_policy = AccessPolicyOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
-    def close(self):
-        # type: () -> None
-        self._client.close()
+    async def close(self) -> None:
+        await self._client.close()
 
-    def __enter__(self):
-        # type: () -> TimeSeriesInsightsClient
-        self._client.__enter__()
+    async def __aenter__(self) -> "TimeSeriesInsightsClient":
+        await self._client.__aenter__()
         return self
 
-    def __exit__(self, *exc_details):
-        # type: (Any) -> None
-        self._client.__exit__(*exc_details)
+    async def __aexit__(self, *exc_details) -> None:
+        await self._client.__aexit__(*exc_details)

@@ -6,11 +6,5 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._time_series_insights_client import TimeSeriesInsightsClient
+from ._time_series_insights_client_async import TimeSeriesInsightsClient
 __all__ = ['TimeSeriesInsightsClient']
-
-try:
-    from ._patch import patch_sdk  # type: ignore
-    patch_sdk()
-except ImportError:
-    pass
