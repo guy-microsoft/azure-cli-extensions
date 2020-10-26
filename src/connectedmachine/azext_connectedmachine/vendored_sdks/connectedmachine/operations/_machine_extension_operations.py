@@ -8,7 +8,7 @@
 from typing import TYPE_CHECKING
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.paging import ItemPaged
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import HttpRequest, HttpResponse
@@ -56,7 +56,7 @@ class MachineExtensionOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         force_update_tag=None,  # type: Optional[str]
         publisher=None,  # type: Optional[str]
-        type=None,  # type: Optional[str]
+        type_properties_type=None,  # type: Optional[str]
         type_handler_version=None,  # type: Optional[str]
         auto_upgrade_minor_version=None,  # type: Optional[bool]
         settings=None,  # type: Optional[object]
@@ -66,12 +66,15 @@ class MachineExtensionOperations(object):
     ):
         # type: (...) -> Optional["models.MachineExtension"]
         cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.MachineExtension"]]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
-        _extension_parameters = models.MachineExtension(tags=tags, location=location, force_update_tag=force_update_tag, publisher=publisher, type_properties_type=type, type_handler_version_properties_type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, status=status)
+        extension_parameters = models.MachineExtension(tags=tags, location=location, force_update_tag=force_update_tag, publisher=publisher, type_properties_type=type_properties_type, type_handler_version_properties_type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, status=status)
         api_version = "2020-08-02"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._create_or_update_initial.metadata['url']  # type: ignore
@@ -90,13 +93,12 @@ class MachineExtensionOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_extension_parameters, 'MachineExtension')
+        body_content = self._serialize.body(extension_parameters, 'MachineExtension')
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -123,7 +125,7 @@ class MachineExtensionOperations(object):
         tags=None,  # type: Optional[Dict[str, str]]
         force_update_tag=None,  # type: Optional[str]
         publisher=None,  # type: Optional[str]
-        type=None,  # type: Optional[str]
+        type_properties_type=None,  # type: Optional[str]
         type_handler_version=None,  # type: Optional[str]
         auto_upgrade_minor_version=None,  # type: Optional[bool]
         settings=None,  # type: Optional[object]
@@ -149,8 +151,9 @@ class MachineExtensionOperations(object):
         :type force_update_tag: str
         :param publisher: The name of the extension handler publisher.
         :type publisher: str
-        :param type: Specifies the type of the extension; an example is "CustomScriptExtension".
-        :type type: str
+        :param type_properties_type: Specifies the type of the extension; an example is
+         "CustomScriptExtension".
+        :type type_properties_type: str
         :param type_handler_version: Specifies the version of the script handler.
         :type type_handler_version: str
         :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
@@ -190,7 +193,7 @@ class MachineExtensionOperations(object):
                 tags=tags,
                 force_update_tag=force_update_tag,
                 publisher=publisher,
-                type=type,
+                type_properties_type=type_properties_type,
                 type_handler_version=type_handler_version,
                 auto_upgrade_minor_version=auto_upgrade_minor_version,
                 settings=settings,
@@ -210,7 +213,14 @@ class MachineExtensionOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'name': self._serialize.url("name", name, 'str'),
+            'extensionName': self._serialize.url("extension_name", extension_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -241,12 +251,15 @@ class MachineExtensionOperations(object):
     ):
         # type: (...) -> Optional["models.MachineExtension"]
         cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.MachineExtension"]]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
-        _extension_parameters = models.MachineExtensionUpdate(tags=tags, force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings)
+        extension_parameters = models.MachineExtensionUpdate(tags=tags, force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings)
         api_version = "2020-08-02"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._update_initial.metadata['url']  # type: ignore
@@ -265,13 +278,12 @@ class MachineExtensionOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_extension_parameters, 'MachineExtensionUpdate')
+        body_content = self._serialize.body(extension_parameters, 'MachineExtensionUpdate')
         body_content_kwargs['content'] = body_content
         request = self._client.patch(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -377,7 +389,14 @@ class MachineExtensionOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'name': self._serialize.url("name", name, 'str'),
+            'extensionName': self._serialize.url("extension_name", extension_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -400,7 +419,9 @@ class MachineExtensionOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-08-02"
 
@@ -483,7 +504,14 @@ class MachineExtensionOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'name': self._serialize.url("name", name, 'str'),
+            'extensionName': self._serialize.url("extension_name", extension_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -519,9 +547,12 @@ class MachineExtensionOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.MachineExtension"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-08-02"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -539,7 +570,7 @@ class MachineExtensionOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -579,14 +610,17 @@ class MachineExtensionOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.MachineExtensionsListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-08-02"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
