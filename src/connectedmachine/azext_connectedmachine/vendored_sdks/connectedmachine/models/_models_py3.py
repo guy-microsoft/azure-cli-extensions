@@ -58,15 +58,9 @@ class ErrorDetail(msrest.serialization.Model):
 class ErrorResponse(msrest.serialization.Model):
     """Contains details when the response code indicates an error.
 
-    All required parameters must be populated in order to send to Azure.
-
-    :param error: Required. The error details.
+    :param error: The error details.
     :type error: ~connected_machine.models.ErrorDetail
     """
-
-    _validation = {
-        'error': {'required': True},
-    }
 
     _attribute_map = {
         'error': {'key': 'error', 'type': 'ErrorDetail'},
@@ -75,7 +69,7 @@ class ErrorResponse(msrest.serialization.Model):
     def __init__(
         self,
         *,
-        error: "ErrorDetail",
+        error: Optional["ErrorDetail"] = None,
         **kwargs
     ):
         super(ErrorResponse, self).__init__(**kwargs)
@@ -161,17 +155,17 @@ class LocationData(msrest.serialization.Model):
 
 
 class Resource(msrest.serialization.Model):
-    """Resource.
+    """Common fields that are returned in the response for all Azure Resource Manager resources.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     """
 
@@ -198,19 +192,19 @@ class Resource(msrest.serialization.Model):
 
 
 class TrackedResource(Resource):
-    """The resource model definition for a ARM tracked top level resource.
+    """The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -252,13 +246,13 @@ class Machine(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -276,7 +270,7 @@ class Machine(TrackedResource):
      "Disconnected", "Error".
     :vartype status: str or ~connected_machine.models.StatusTypes
     :ivar last_status_change: The time of the last status change.
-    :vartype last_status_change: ~datetime.datetime
+    :vartype last_status_change: str
     :ivar error_details: Details about the error state.
     :vartype error_details: list[~connected_machine.models.ErrorDetail]
     :ivar agent_version: The hybrid machine agent full version.
@@ -342,7 +336,7 @@ class Machine(TrackedResource):
         'os_profile': {'key': 'properties.osProfile', 'type': 'OsProfile'},
         'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
         'status': {'key': 'properties.status', 'type': 'str'},
-        'last_status_change': {'key': 'properties.lastStatusChange', 'type': 'iso-8601'},
+        'last_status_change': {'key': 'properties.lastStatusChange', 'type': 'str'},
         'error_details': {'key': 'properties.errorDetails', 'type': '[ErrorDetail]'},
         'agent_version': {'key': 'properties.agentVersion', 'type': 'str'},
         'vm_id': {'key': 'properties.vmId', 'type': 'str'},
@@ -400,13 +394,13 @@ class MachineExtension(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -434,14 +428,14 @@ class MachineExtension(TrackedResource):
     :type protected_settings: object
     :ivar provisioning_state: The provisioning state, which only appears in the response.
     :vartype provisioning_state: str
-    :ivar name_properties_instance_view_name: The machine extension name.
-    :vartype name_properties_instance_view_name: str
-    :ivar type_properties_instance_view_type: Specifies the type of the extension; an example is
+    :ivar name_instance_view_name: The machine extension name.
+    :vartype name_instance_view_name: str
+    :ivar type_instance_view_type: Specifies the type of the extension; an example is
      "CustomScriptExtension".
-    :vartype type_properties_instance_view_type: str
-    :ivar type_handler_version_properties_instance_view_type_handler_version: Specifies the version
-     of the script handler.
-    :vartype type_handler_version_properties_instance_view_type_handler_version: str
+    :vartype type_instance_view_type: str
+    :ivar type_handler_version_instance_view_type_handler_version: Specifies the version of the
+     script handler.
+    :vartype type_handler_version_instance_view_type_handler_version: str
     :param status: Instance view status.
     :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
     """
@@ -452,9 +446,9 @@ class MachineExtension(TrackedResource):
         'type': {'readonly': True},
         'location': {'required': True},
         'provisioning_state': {'readonly': True},
-        'name_properties_instance_view_name': {'readonly': True},
-        'type_properties_instance_view_type': {'readonly': True},
-        'type_handler_version_properties_instance_view_type_handler_version': {'readonly': True},
+        'name_instance_view_name': {'readonly': True},
+        'type_instance_view_type': {'readonly': True},
+        'type_handler_version_instance_view_type_handler_version': {'readonly': True},
     }
 
     _attribute_map = {
@@ -471,10 +465,10 @@ class MachineExtension(TrackedResource):
         'settings': {'key': 'properties.settings', 'type': 'object'},
         'protected_settings': {'key': 'properties.protectedSettings', 'type': 'object'},
         'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
-        'name_properties_instance_view_name': {'key': 'properties.instanceView.name', 'type': 'str'},
-        'type_properties_instance_view_type': {'key': 'properties.instanceView.type', 'type': 'str'},
-        'type_handler_version_properties_instance_view_type_handler_version': {'key': 'properties.instanceView.typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'properties.instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
+        'name_instance_view_name': {'key': 'instanceView.name', 'type': 'str'},
+        'type_instance_view_type': {'key': 'instanceView.type', 'type': 'str'},
+        'type_handler_version_instance_view_type_handler_version': {'key': 'instanceView.typeHandlerVersion', 'type': 'str'},
+        'status': {'key': 'instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
     }
 
     def __init__(
@@ -501,9 +495,9 @@ class MachineExtension(TrackedResource):
         self.settings = settings
         self.protected_settings = protected_settings
         self.provisioning_state = None
-        self.name_properties_instance_view_name = None
-        self.type_properties_instance_view_type = None
-        self.type_handler_version_properties_instance_view_type_handler_version = None
+        self.name_instance_view_name = None
+        self.type_instance_view_type = None
+        self.type_handler_version_instance_view_type_handler_version = None
         self.status = status
 
 
@@ -618,23 +612,12 @@ class MachineExtensionProperties(msrest.serialization.Model):
     :type protected_settings: object
     :ivar provisioning_state: The provisioning state, which only appears in the response.
     :vartype provisioning_state: str
-    :ivar name: The machine extension name.
-    :vartype name: str
-    :ivar type_instance_view_type: Specifies the type of the extension; an example is
-     "CustomScriptExtension".
-    :vartype type_instance_view_type: str
-    :ivar type_handler_version_instance_view_type_handler_version: Specifies the version of the
-     script handler.
-    :vartype type_handler_version_instance_view_type_handler_version: str
-    :param status: Instance view status.
-    :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
+    :param instance_view: The machine extension instance view.
+    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
     """
 
     _validation = {
         'provisioning_state': {'readonly': True},
-        'name': {'readonly': True},
-        'type_instance_view_type': {'readonly': True},
-        'type_handler_version_instance_view_type_handler_version': {'readonly': True},
     }
 
     _attribute_map = {
@@ -646,10 +629,7 @@ class MachineExtensionProperties(msrest.serialization.Model):
         'settings': {'key': 'settings', 'type': 'object'},
         'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'name': {'key': 'instanceView.name', 'type': 'str'},
-        'type_instance_view_type': {'key': 'instanceView.type', 'type': 'str'},
-        'type_handler_version_instance_view_type_handler_version': {'key': 'instanceView.typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
+        'instance_view': {'key': 'instanceView', 'type': 'MachineExtensionInstanceView'},
     }
 
     def __init__(
@@ -662,7 +642,7 @@ class MachineExtensionProperties(msrest.serialization.Model):
         auto_upgrade_minor_version: Optional[bool] = None,
         settings: Optional[object] = None,
         protected_settings: Optional[object] = None,
-        status: Optional["MachineExtensionInstanceViewStatus"] = None,
+        instance_view: Optional["MachineExtensionInstanceView"] = None,
         **kwargs
     ):
         super(MachineExtensionProperties, self).__init__(**kwargs)
@@ -674,10 +654,7 @@ class MachineExtensionProperties(msrest.serialization.Model):
         self.settings = settings
         self.protected_settings = protected_settings
         self.provisioning_state = None
-        self.name = None
-        self.type_instance_view_type = None
-        self.type_handler_version_instance_view_type_handler_version = None
-        self.status = status
+        self.instance_view = instance_view
 
 
 class MachineExtensionPropertiesautogenerated(MachineExtensionProperties):
@@ -705,23 +682,12 @@ class MachineExtensionPropertiesautogenerated(MachineExtensionProperties):
     :type protected_settings: object
     :ivar provisioning_state: The provisioning state, which only appears in the response.
     :vartype provisioning_state: str
-    :ivar name: The machine extension name.
-    :vartype name: str
-    :ivar type_instance_view_type: Specifies the type of the extension; an example is
-     "CustomScriptExtension".
-    :vartype type_instance_view_type: str
-    :ivar type_handler_version_instance_view_type_handler_version: Specifies the version of the
-     script handler.
-    :vartype type_handler_version_instance_view_type_handler_version: str
-    :param status: Instance view status.
-    :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
+    :param instance_view: The machine extension instance view.
+    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
     """
 
     _validation = {
         'provisioning_state': {'readonly': True},
-        'name': {'readonly': True},
-        'type_instance_view_type': {'readonly': True},
-        'type_handler_version_instance_view_type_handler_version': {'readonly': True},
     }
 
     _attribute_map = {
@@ -733,10 +699,7 @@ class MachineExtensionPropertiesautogenerated(MachineExtensionProperties):
         'settings': {'key': 'settings', 'type': 'object'},
         'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'name': {'key': 'instanceView.name', 'type': 'str'},
-        'type_instance_view_type': {'key': 'instanceView.type', 'type': 'str'},
-        'type_handler_version_instance_view_type_handler_version': {'key': 'instanceView.typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
+        'instance_view': {'key': 'instanceView', 'type': 'MachineExtensionInstanceView'},
     }
 
     def __init__(
@@ -749,10 +712,10 @@ class MachineExtensionPropertiesautogenerated(MachineExtensionProperties):
         auto_upgrade_minor_version: Optional[bool] = None,
         settings: Optional[object] = None,
         protected_settings: Optional[object] = None,
-        status: Optional["MachineExtensionInstanceViewStatus"] = None,
+        instance_view: Optional["MachineExtensionInstanceView"] = None,
         **kwargs
     ):
-        super(MachineExtensionPropertiesautogenerated, self).__init__(force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, status=status, **kwargs)
+        super(MachineExtensionPropertiesautogenerated, self).__init__(force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, instance_view=instance_view, **kwargs)
 
 
 class MachineExtensionPropertiesInstanceView(MachineExtensionInstanceView):
@@ -1083,7 +1046,7 @@ class MachineProperties(msrest.serialization.Model):
      "Disconnected", "Error".
     :vartype status: str or ~connected_machine.models.StatusTypes
     :ivar last_status_change: The time of the last status change.
-    :vartype last_status_change: ~datetime.datetime
+    :vartype last_status_change: str
     :ivar error_details: Details about the error state.
     :vartype error_details: list[~connected_machine.models.ErrorDetail]
     :ivar agent_version: The hybrid machine agent full version.
@@ -1139,7 +1102,7 @@ class MachineProperties(msrest.serialization.Model):
         'os_profile': {'key': 'osProfile', 'type': 'OsProfile'},
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
         'status': {'key': 'status', 'type': 'str'},
-        'last_status_change': {'key': 'lastStatusChange', 'type': 'iso-8601'},
+        'last_status_change': {'key': 'lastStatusChange', 'type': 'str'},
         'error_details': {'key': 'errorDetails', 'type': '[ErrorDetail]'},
         'agent_version': {'key': 'agentVersion', 'type': 'str'},
         'vm_id': {'key': 'vmId', 'type': 'str'},
@@ -1201,7 +1164,7 @@ class MachinePropertiesautogenerated(MachineProperties):
      "Disconnected", "Error".
     :vartype status: str or ~connected_machine.models.StatusTypes
     :ivar last_status_change: The time of the last status change.
-    :vartype last_status_change: ~datetime.datetime
+    :vartype last_status_change: str
     :ivar error_details: Details about the error state.
     :vartype error_details: list[~connected_machine.models.ErrorDetail]
     :ivar agent_version: The hybrid machine agent full version.
@@ -1257,7 +1220,7 @@ class MachinePropertiesautogenerated(MachineProperties):
         'os_profile': {'key': 'osProfile', 'type': 'OsProfile'},
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
         'status': {'key': 'status', 'type': 'str'},
-        'last_status_change': {'key': 'lastStatusChange', 'type': 'iso-8601'},
+        'last_status_change': {'key': 'lastStatusChange', 'type': 'str'},
         'error_details': {'key': 'errorDetails', 'type': '[ErrorDetail]'},
         'agent_version': {'key': 'agentVersion', 'type': 'str'},
         'vm_id': {'key': 'vmId', 'type': 'str'},
@@ -1487,6 +1450,8 @@ class OperationValue(msrest.serialization.Model):
     :vartype origin: str
     :ivar name: The name of the compute operation.
     :vartype name: str
+    :ivar is_data_action: Indicates whether the operation applies to data-plane.
+    :vartype is_data_action: str
     :ivar operation: The display name of the compute operation.
     :vartype operation: str
     :ivar resource: The display name of the resource the operation applies to.
@@ -1500,6 +1465,7 @@ class OperationValue(msrest.serialization.Model):
     _validation = {
         'origin': {'readonly': True},
         'name': {'readonly': True},
+        'is_data_action': {'readonly': True},
         'operation': {'readonly': True},
         'resource': {'readonly': True},
         'description': {'readonly': True},
@@ -1509,6 +1475,7 @@ class OperationValue(msrest.serialization.Model):
     _attribute_map = {
         'origin': {'key': 'origin', 'type': 'str'},
         'name': {'key': 'name', 'type': 'str'},
+        'is_data_action': {'key': 'isDataAction', 'type': 'str'},
         'operation': {'key': 'display.operation', 'type': 'str'},
         'resource': {'key': 'display.resource', 'type': 'str'},
         'description': {'key': 'display.description', 'type': 'str'},
@@ -1522,6 +1489,7 @@ class OperationValue(msrest.serialization.Model):
         super(OperationValue, self).__init__(**kwargs)
         self.origin = None
         self.name = None
+        self.is_data_action = None
         self.operation = None
         self.resource = None
         self.description = None

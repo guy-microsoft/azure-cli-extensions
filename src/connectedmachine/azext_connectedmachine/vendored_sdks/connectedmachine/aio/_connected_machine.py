@@ -15,10 +15,10 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from azure.core.credentials_async import AsyncTokenCredential
 
-from ._configuration_async import ConnectedMachineConfiguration
-from .operations_async import MachineOperations
-from .operations_async import MachineExtensionOperations
-from .operations_async import OperationOperations
+from ._configuration import ConnectedMachineConfiguration
+from .operations import MachineOperations
+from .operations import MachineExtensionOperations
+from .operations import OperationOperations
 from .. import models
 
 
@@ -26,11 +26,11 @@ class ConnectedMachine(object):
     """The Hybrid Compute Management Client.
 
     :ivar machine: MachineOperations operations
-    :vartype machine: connected_machine.aio.operations_async.MachineOperations
+    :vartype machine: connected_machine.aio.operations.MachineOperations
     :ivar machine_extension: MachineExtensionOperations operations
-    :vartype machine_extension: connected_machine.aio.operations_async.MachineExtensionOperations
+    :vartype machine_extension: connected_machine.aio.operations.MachineExtensionOperations
     :ivar operation: OperationOperations operations
-    :vartype operation: connected_machine.aio.operations_async.OperationOperations
+    :vartype operation: connected_machine.aio.operations.OperationOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.

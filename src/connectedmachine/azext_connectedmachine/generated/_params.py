@@ -45,21 +45,23 @@ def load_arguments(self, _):
     with self.argument_context('connectedmachine machine-extension show') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('machine_name', type=str, help='The name of the machine containing the extension.', id_part='name')
-        c.argument('name', options_list=['--name', '-n', '--extension-name'], type=str, help='The name of the machine extension.', id_part='child_name_1')
+        c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
+                   'extension.', id_part='child_name_1')
 
     with self.argument_context('connectedmachine machine-extension create') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('machine_name', type=str, help='The name of the machine where the extension should be created or '
                    'updated.')
-        c.argument('name', options_list=['--name', '-n', '--extension-name'], type=str, help='The name of the machine extension.')
+        c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
+                   'extension.')
         c.argument('tags', tags_type)
         c.argument('location', arg_type=get_location_type(self.cli_ctx),
                    validator=get_default_location_from_resource_group)
         c.argument('force_update_tag', type=str, help='How the extension handler should be forced to update even if '
                    'the extension configuration has not changed.')
         c.argument('publisher', type=str, help='The name of the extension handler publisher.')
-        c.argument('type_', options_list=['--type'], type=str, help='Specifies the type of the extension; an example '
-                   'is "CustomScriptExtension".')
+        c.argument('type_properties_type', type=str, help='Specifies the type of the extension; an example is '
+                   '"CustomScriptExtension".')
         c.argument('type_handler_version', type=str, help='Specifies the version of the script handler.')
         c.argument('auto_upgrade_minor_version', options_list=['--auto-upgrade-minor'],
                    arg_type=get_three_state_flag(), help='Indicates whether the extension should use a newer minor '
@@ -75,7 +77,8 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('machine_name', type=str, help='The name of the machine where the extension should be created or '
                    'updated.', id_part='name')
-        c.argument('name', options_list=['--name', '-n', '--extension-name'], type=str, help='The name of the machine extension.', id_part='child_name_1')
+        c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
+                   'extension.', id_part='child_name_1')
         c.argument('tags', tags_type)
         c.argument('force_update_tag', type=str, help='How the extension handler should be forced to update even if '
                    'the extension configuration has not changed.')
@@ -97,9 +100,11 @@ def load_arguments(self, _):
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('machine_name', type=str, help='The name of the machine where the extension should be deleted.',
                    id_part='name')
-        c.argument('name', options_list=['--name', '-n', '--extension-name'], type=str, help='The name of the machine extension.', id_part='child_name_1')
+        c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
+                   'extension.', id_part='child_name_1')
 
     with self.argument_context('connectedmachine machine-extension wait') as c:
         c.argument('resource_group_name', resource_group_name_type)
         c.argument('machine_name', type=str, help='The name of the machine containing the extension.', id_part='name')
-        c.argument('name', options_list=['--name', '-n', '--extension-name'], type=str, help='The name of the machine extension.', id_part='child_name_1')
+        c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
+                   'extension.', id_part='child_name_1')
