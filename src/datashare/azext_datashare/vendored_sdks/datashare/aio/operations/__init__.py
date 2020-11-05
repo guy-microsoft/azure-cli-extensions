@@ -6,18 +6,18 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._account_operations_async import AccountOperations
-from ._consumer_invitation_operations_async import ConsumerInvitationOperations
-from ._data_set_operations_async import DataSetOperations
-from ._data_set_mapping_operations_async import DataSetMappingOperations
-from ._invitation_operations_async import InvitationOperations
-from ._operation_operations_async import OperationOperations
-from ._share_operations_async import ShareOperations
-from ._provider_share_subscription_operations_async import ProviderShareSubscriptionOperations
-from ._share_subscription_operations_async import ShareSubscriptionOperations
-from ._consumer_source_data_set_operations_async import ConsumerSourceDataSetOperations
-from ._synchronization_setting_operations_async import SynchronizationSettingOperations
-from ._trigger_operations_async import TriggerOperations
+from ._account_operations import AccountOperations
+from ._consumer_invitation_operations import ConsumerInvitationOperations
+from ._data_set_operations import DataSetOperations
+from ._data_set_mapping_operations import DataSetMappingOperations
+from ._invitation_operations import InvitationOperations
+from ._operation_operations import OperationOperations
+from ._share_operations import ShareOperations
+from ._provider_share_subscription_operations import ProviderShareSubscriptionOperations
+from ._share_subscription_operations import ShareSubscriptionOperations
+from ._consumer_source_data_set_operations import ConsumerSourceDataSetOperations
+from ._synchronization_setting_operations import SynchronizationSettingOperations
+from ._trigger_operations import TriggerOperations
 
 __all__ = [
     'AccountOperations',
