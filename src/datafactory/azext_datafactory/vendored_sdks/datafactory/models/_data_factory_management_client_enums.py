@@ -86,6 +86,8 @@ class CompressionCodec(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     DEFLATE = "deflate"
     ZIP_DEFLATE = "zipDeflate"
     LZ4 = "lz4"
+    TAR = "tar"
+    TAR_G_ZIP = "tarGZip"
 
 class CopyBehaviorType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """All available types of copy behavior.
@@ -183,7 +185,7 @@ class DynamicsServicePrincipalCredentialType(with_metaclass(_CaseInsensitiveEnum
     SERVICE_PRINCIPAL_CERT = "ServicePrincipalCert"
 
 class DynamicsSinkWriteBehavior(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The write behavior for the operation.
+    """Defines values for DynamicsSinkWriteBehavior.
     """
 
     UPSERT = "Upsert"
@@ -413,14 +415,6 @@ class MongoDBAuthenticationType(with_metaclass(_CaseInsensitiveEnumMeta, str, En
     BASIC = "Basic"
     ANONYMOUS = "Anonymous"
 
-class NetezzaPartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for Netezza read in parallel.
-    """
-
-    NONE = "None"
-    DATA_SLICE = "DataSlice"
-    DYNAMIC_RANGE = "DynamicRange"
-
 class ODataAADServicePrincipalCredentialType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Specify the credential type (key or cert) is used for service principal.
     """
@@ -438,19 +432,12 @@ class ODataAuthenticationType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum
     AAD_SERVICE_PRINCIPAL = "AadServicePrincipal"
     MANAGED_SERVICE_IDENTITY = "ManagedServiceIdentity"
 
-class OraclePartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for Oracle read in parallel.
-    """
-
-    NONE = "None"
-    PHYSICAL_PARTITIONS_OF_TABLE = "PhysicalPartitionsOfTable"
-    DYNAMIC_RANGE = "DynamicRange"
-
 class OrcCompressionCodec(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
 
     NONE = "none"
     ZLIB = "zlib"
     SNAPPY = "snappy"
+    LZO = "lzo"
 
 class ParameterType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Parameter type.
@@ -485,6 +472,13 @@ class PrestoAuthenticationType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enu
 
     ANONYMOUS = "Anonymous"
     LDAP = "LDAP"
+
+class PublicNetworkAccess(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
+    """Whether or not public network access is allowed for the data factory.
+    """
+
+    ENABLED = "Enabled"
+    DISABLED = "Disabled"
 
 class RecurrenceFrequency(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Enumerates possible frequency option for the schedule trigger.
@@ -588,25 +582,6 @@ class SapHanaAuthenticationType(with_metaclass(_CaseInsensitiveEnumMeta, str, En
     BASIC = "Basic"
     WINDOWS = "Windows"
 
-class SapHanaPartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for SAP HANA read in parallel.
-    """
-
-    NONE = "None"
-    PHYSICAL_PARTITIONS_OF_TABLE = "PhysicalPartitionsOfTable"
-    SAP_HANA_DYNAMIC_RANGE = "SapHanaDynamicRange"
-
-class SapTablePartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for SAP table read in parallel.
-    """
-
-    NONE = "None"
-    PARTITION_ON_INT = "PartitionOnInt"
-    PARTITION_ON_CALENDAR_YEAR = "PartitionOnCalendarYear"
-    PARTITION_ON_CALENDAR_MONTH = "PartitionOnCalendarMonth"
-    PARTITION_ON_CALENDAR_DATE = "PartitionOnCalendarDate"
-    PARTITION_ON_TIME = "PartitionOnTime"
-
 class SelfHostedIntegrationRuntimeNodeStatus(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Status of the integration runtime node.
     """
@@ -658,14 +633,6 @@ class SparkThriftTransportProtocol(with_metaclass(_CaseInsensitiveEnumMeta, str,
     SASL = "SASL"
     HTTP = "HTTP "
 
-class SQLPartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for Sql read in parallel.
-    """
-
-    NONE = "None"
-    PHYSICAL_PARTITIONS_OF_TABLE = "PhysicalPartitionsOfTable"
-    DYNAMIC_RANGE = "DynamicRange"
-
 class SsisLogLocationType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """The type of SSIS log location.
     """
@@ -716,14 +683,6 @@ class TeradataAuthenticationType(with_metaclass(_CaseInsensitiveEnumMeta, str, E
     BASIC = "Basic"
     WINDOWS = "Windows"
 
-class TeradataPartitionOption(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
-    """The partition mechanism that will be used for teradata read in parallel.
-    """
-
-    NONE = "None"
-    HASH = "Hash"
-    DYNAMIC_RANGE = "DynamicRange"
-
 class TriggerRunStatus(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Trigger run status.
     """
@@ -746,6 +705,7 @@ class TumblingWindowFrequency(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum
 
     MINUTE = "Minute"
     HOUR = "Hour"
+    MONTH = "Month"
 
 class VariableType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Variable type.
