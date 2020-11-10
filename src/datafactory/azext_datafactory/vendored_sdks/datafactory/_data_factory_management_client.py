@@ -35,6 +35,9 @@ from .operations import DataFlowOperations
 from .operations import DataFlowDebugSessionOperations
 from .operations import ManagedVirtualNetworkOperations
 from .operations import ManagedPrivateEndpointOperations
+from .operations import PrivateEndPointConnectionOperations
+from .operations import PrivateEndpointConnectionOperations
+from .operations import PrivateLinkResourceOperations
 from . import models
 
 
@@ -75,6 +78,12 @@ class DataFactoryManagementClient(object):
     :vartype managed_virtual_network: data_factory_management_client.operations.ManagedVirtualNetworkOperations
     :ivar managed_private_endpoint: ManagedPrivateEndpointOperations operations
     :vartype managed_private_endpoint: data_factory_management_client.operations.ManagedPrivateEndpointOperations
+    :ivar private_end_point_connection: PrivateEndPointConnectionOperations operations
+    :vartype private_end_point_connection: data_factory_management_client.operations.PrivateEndPointConnectionOperations
+    :ivar private_endpoint_connection: PrivateEndpointConnectionOperations operations
+    :vartype private_endpoint_connection: data_factory_management_client.operations.PrivateEndpointConnectionOperations
+    :ivar private_link_resource: PrivateLinkResourceOperations operations
+    :vartype private_link_resource: data_factory_management_client.operations.PrivateLinkResourceOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials.TokenCredential
     :param subscription_id: The subscription identifier.
@@ -133,6 +142,12 @@ class DataFactoryManagementClient(object):
         self.managed_virtual_network = ManagedVirtualNetworkOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.managed_private_endpoint = ManagedPrivateEndpointOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.private_end_point_connection = PrivateEndPointConnectionOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.private_endpoint_connection = PrivateEndpointConnectionOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.private_link_resource = PrivateLinkResourceOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
     def close(self):

@@ -164,3 +164,32 @@ def load_command_table(self, _):
         g.custom_command('cancel', 'datafactory_trigger_run_cancel')
         g.custom_command('query-by-factory', 'datafactory_trigger_run_query_by_factory')
         g.custom_command('rerun', 'datafactory_trigger_run_rerun')
+
+    from azext_datafactory.generated._client_factory import cf_private_end_point_connection
+    datafactory_private_end_point_connection = CliCommandType(
+        operations_tmpl='azext_datafactory.vendored_sdks.datafactory.operations._private_end_point_connection_operation'
+        's#PrivateEndPointConnectionOperations.{}',
+        client_factory=cf_private_end_point_connection)
+    with self.command_group('datafactory private-end-point-connection', datafactory_private_end_point_connection,
+                            client_factory=cf_private_end_point_connection, is_experimental=True) as g:
+        g.custom_command('list', 'datafactory_private_end_point_connection_list')
+
+    from azext_datafactory.generated._client_factory import cf_private_endpoint_connection
+    datafactory_private_endpoint_connection = CliCommandType(
+        operations_tmpl='azext_datafactory.vendored_sdks.datafactory.operations._private_endpoint_connection_operations'
+        '#PrivateEndpointConnectionOperations.{}',
+        client_factory=cf_private_endpoint_connection)
+    with self.command_group('datafactory private-endpoint-connection', datafactory_private_endpoint_connection,
+                            client_factory=cf_private_endpoint_connection, is_experimental=True) as g:
+        g.custom_show_command('show', 'datafactory_private_endpoint_connection_show')
+        g.custom_command('delete', 'datafactory_private_endpoint_connection_delete', confirmation=True)
+        g.custom_command('approve-or-reject', 'datafactory_private_endpoint_connection_approve_or_reject')
+
+    from azext_datafactory.generated._client_factory import cf_private_link_resource
+    datafactory_private_link_resource = CliCommandType(
+        operations_tmpl='azext_datafactory.vendored_sdks.datafactory.operations._private_link_resource_operations#Priva'
+        'teLinkResourceOperations.{}',
+        client_factory=cf_private_link_resource)
+    with self.command_group('datafactory private-link-resource', datafactory_private_link_resource,
+                            client_factory=cf_private_link_resource, is_experimental=True) as g:
+        g.custom_show_command('show', 'datafactory_private_link_resource_show')

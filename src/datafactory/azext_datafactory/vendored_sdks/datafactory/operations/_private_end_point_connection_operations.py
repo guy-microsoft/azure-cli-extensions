@@ -23,8 +23,8 @@ if TYPE_CHECKING:
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
-class OperationOperations(object):
-    """OperationOperations operations.
+class PrivateEndPointConnectionOperations(object):
+    """PrivateEndPointConnectionOperations operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -45,19 +45,25 @@ class OperationOperations(object):
         self._deserialize = deserializer
         self._config = config
 
-    def list(
+    def list_by_factory(
         self,
+        resource_group_name,  # type: str
+        factory_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> Iterable["models.OperationListResponse"]
-        """Lists the available Azure Data Factory API operations.
+        # type: (...) -> Iterable["models.PrivateEndpointConnectionListResponse"]
+        """Lists Private endpoint connections.
 
+        :param resource_group_name: The resource group name.
+        :type resource_group_name: str
+        :param factory_name: The factory name.
+        :type factory_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either OperationListResponse or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~data_factory_management_client.models.OperationListResponse]
+        :return: An iterator like instance of either PrivateEndpointConnectionListResponse or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~data_factory_management_client.models.PrivateEndpointConnectionListResponse]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.OperationListResponse"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.PrivateEndpointConnectionListResponse"]
         error_map = {
             401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
         }
@@ -72,7 +78,13 @@ class OperationOperations(object):
 
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']  # type: ignore
+                url = self.list_by_factory.metadata['url']  # type: ignore
+                path_format_arguments = {
+                    'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+                    'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
+                    'factoryName': self._serialize.url("factory_name", factory_name, 'str', max_length=63, min_length=3, pattern=r'^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$'),
+                }
+                url = self._client.format_url(url, **path_format_arguments)
                 # Construct parameters
                 query_parameters = {}  # type: Dict[str, Any]
                 query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
@@ -85,7 +97,7 @@ class OperationOperations(object):
             return request
 
         def extract_data(pipeline_response):
-            deserialized = self._deserialize('OperationListResponse', pipeline_response)
+            deserialized = self._deserialize('PrivateEndpointConnectionListResponse', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
@@ -106,4 +118,4 @@ class OperationOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/providers/Microsoft.DataFactory/operations'}  # type: ignore
+    list_by_factory.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndPointConnections'}  # type: ignore

@@ -39,7 +39,8 @@ def datafactory_factory_create(client,
                                tags=None,
                                factory_vsts_configuration=None,
                                factory_git_hub_configuration=None,
-                               global_parameters=None):
+                               global_parameters=None,
+                               public_network_access=None):
     all_repo_configuration = []
     if factory_vsts_configuration is not None:
         all_repo_configuration.append(factory_vsts_configuration)
@@ -56,7 +57,8 @@ def datafactory_factory_create(client,
                                    tags=tags,
                                    identity=None,
                                    repo_configuration=repo_configuration,
-                                   global_parameters=global_parameters)
+                                   global_parameters=global_parameters,
+                                   public_network_access=public_network_access)
 
 
 def datafactory_factory_update(client,
@@ -66,7 +68,7 @@ def datafactory_factory_update(client,
     return client.update(resource_group_name=resource_group_name,
                          factory_name=factory_name,
                          tags=tags,
-                         identity={"type": "SystemAssigned"})
+                         identity=json.loads("{\"type\": \"SystemAssigned\"}"))
 
 
 def datafactory_factory_delete(client,
@@ -801,3 +803,50 @@ def datafactory_trigger_run_rerun(client,
                         factory_name=factory_name,
                         trigger_name=trigger_name,
                         run_id=run_id)
+
+
+def datafactory_private_end_point_connection_list(client,
+                                                  resource_group_name,
+                                                  factory_name):
+    return client.list_by_factory(resource_group_name=resource_group_name,
+                                  factory_name=factory_name)
+
+
+def datafactory_private_endpoint_connection_show(client,
+                                                 resource_group_name,
+                                                 factory_name,
+                                                 private_endpoint_connection_name,
+                                                 if_none_match=None):
+    return client.get(resource_group_name=resource_group_name,
+                      factory_name=factory_name,
+                      private_endpoint_connection_name=private_endpoint_connection_name,
+                      if_none_match=if_none_match)
+
+
+def datafactory_private_endpoint_connection_delete(client,
+                                                   resource_group_name,
+                                                   factory_name,
+                                                   private_endpoint_connection_name):
+    return client.delete(resource_group_name=resource_group_name,
+                         factory_name=factory_name,
+                         private_endpoint_connection_name=private_endpoint_connection_name)
+
+
+def datafactory_private_endpoint_connection_approve_or_reject(client,
+                                                              resource_group_name,
+                                                              factory_name,
+                                                              private_endpoint_connection_name,
+                                                              if_match=None,
+                                                              private_link_service_connection_state=None):
+    return client.approve_or_reject(resource_group_name=resource_group_name,
+                                    factory_name=factory_name,
+                                    private_endpoint_connection_name=private_endpoint_connection_name,
+                                    if_match=if_match,
+                                    private_link_service_connection_state=private_link_service_connection_state)
+
+
+def datafactory_private_link_resource_show(client,
+                                           resource_group_name,
+                                           factory_name):
+    return client.get(resource_group_name=resource_group_name,
+                      factory_name=factory_name)

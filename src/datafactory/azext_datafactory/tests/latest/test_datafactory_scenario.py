@@ -17,6 +17,7 @@ from azure.cli.testsdk import ResourceGroupPreparer
 TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))
 
 
+# Env setup
 @try_manual
 def setup(test, rg):
     pass
@@ -671,11 +672,13 @@ def step_factories_delete(test, rg):
              checks=[])
 
 
+# Env cleanup
 @try_manual
 def cleanup(test, rg):
     pass
 
 
+# Testcase
 @try_manual
 def call_scenario(test, rg):
     setup(test, rg)
@@ -761,6 +764,7 @@ class DataFactoryManagementClientScenarioTest(ScenarioTest):
             'myDataset': self.create_random_name(prefix='exampleDataset'[:7], length=14),
             'myPipeline': self.create_random_name(prefix='examplePipeline'[:7], length=15),
             'myTrigger': self.create_random_name(prefix='exampleTrigger'[:7], length=14),
+            'myPrivateEndPointConnection': 'connection',
         })
 
         call_scenario(self, rg)

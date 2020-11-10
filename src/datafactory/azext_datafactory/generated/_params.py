@@ -26,7 +26,8 @@ from azext_datafactory.action import (
     AddFactoryGitHubConfiguration,
     AddFolder,
     AddFilters,
-    AddOrderBy
+    AddOrderBy,
+    AddPrivateLinkServiceConnectionState
 )
 
 
@@ -57,6 +58,8 @@ def load_arguments(self, _):
                    'GitHub repo information.', arg_group='RepoConfiguration')
         c.argument('global_parameters', type=validate_file_or_dict, help='List of parameters for factory. Expected '
                    'value: json-string/@json-file.')
+        c.argument('public_network_access', arg_type=get_enum_type(['Enabled', 'Disabled']), help='Whether or not '
+                   'public network access is allowed for the data factory.')
 
     with self.argument_context('datafactory factory update') as c:
         c.argument('resource_group_name', resource_group_name_type)
@@ -575,3 +578,40 @@ def load_arguments(self, _):
         c.argument('factory_name', type=str, help='The factory name.', id_part='name')
         c.argument('trigger_name', type=str, help='The trigger name.', id_part='child_name_1')
         c.argument('run_id', type=str, help='The pipeline run identifier.', id_part='child_name_2')
+
+    with self.argument_context('datafactory private-end-point-connection list') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('factory_name', type=str, help='The factory name.')
+
+    with self.argument_context('datafactory private-endpoint-connection show') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('factory_name', type=str, help='The factory name.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n', '--private-endpoint-connection-nam'
+                                                                     'e'], type=str, help='The private endpoint '
+                   'connection name.', id_part='child_name_1')
+        c.argument('if_none_match', type=str, help='ETag of the private endpoint connection entity. Should only be '
+                   'specified for get. If the ETag matches the existing entity tag, or if * was provided, then no '
+                   'content will be returned.')
+
+    with self.argument_context('datafactory private-endpoint-connection delete') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('factory_name', type=str, help='The factory name.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n', '--private-endpoint-connection-nam'
+                                                                     'e'], type=str, help='The private endpoint '
+                   'connection name.', id_part='child_name_1')
+
+    with self.argument_context('datafactory private-endpoint-connection approve-or-reject') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('factory_name', type=str, help='The factory name.', id_part='name')
+        c.argument('private_endpoint_connection_name', options_list=['--name', '-n', '--private-endpoint-connection-nam'
+                                                                     'e'], type=str, help='The private endpoint '
+                   'connection name.', id_part='child_name_1')
+        c.argument('if_match', type=str, help='ETag of the private endpoint connection entity.  Should only be '
+                   'specified for update, for which it should match existing entity or can be * for unconditional '
+                   'update.')
+        c.argument('private_link_service_connection_state', action=AddPrivateLinkServiceConnectionState, nargs='*',
+                   help='The state of a private link connection')
+
+    with self.argument_context('datafactory private-link-resource show') as c:
+        c.argument('resource_group_name', resource_group_name_type)
+        c.argument('factory_name', type=str, help='The factory name.', id_part='name')

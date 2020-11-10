@@ -19,11 +19,14 @@ helps['datafactory factory'] = """
 
 helps['datafactory factory list'] = """
     type: command
-    short-summary: "Lists factories under the specified subscription."
+    short-summary: "Lists factories. And Lists factories under the specified subscription."
     examples:
       - name: Factories_ListByResourceGroup
         text: |-
                az datafactory factory list --resource-group "exampleResourceGroup"
+      - name: Factories_List
+        text: |-
+               az datafactory factory list
 """
 
 helps['datafactory factory show'] = """
@@ -37,7 +40,7 @@ helps['datafactory factory show'] = """
 
 helps['datafactory factory create'] = """
     type: command
-    short-summary: "Creates or updates a factory."
+    short-summary: "Create a factory."
     parameters:
       - name: --factory-vsts-configuration
         short-summary: "Factory's VSTS repo information."
@@ -203,7 +206,7 @@ helps['datafactory integration-runtime managed'] = """
 
 helps['datafactory integration-runtime managed create'] = """
     type: command
-    short-summary: "Creates or updates an integration runtime."
+    short-summary: "Create an integration runtime."
 """
 
 helps['datafactory integration-runtime self-hosted'] = """
@@ -213,7 +216,7 @@ helps['datafactory integration-runtime self-hosted'] = """
 
 helps['datafactory integration-runtime self-hosted create'] = """
     type: command
-    short-summary: "Creates or updates an integration runtime."
+    short-summary: "Create an integration runtime."
     examples:
       - name: IntegrationRuntimes_Create
         text: |-
@@ -432,7 +435,7 @@ helps['datafactory linked-service show'] = """
 
 helps['datafactory linked-service create'] = """
     type: command
-    short-summary: "Creates or updates a linked service."
+    short-summary: "Create a linked service."
     examples:
       - name: LinkedServices_Create
         text: |-
@@ -444,7 +447,7 @@ helps['datafactory linked-service create'] = """
 
 helps['datafactory linked-service update'] = """
     type: command
-    short-summary: "Creates or updates a linked service."
+    short-summary: "Update a linked service."
     examples:
       - name: LinkedServices_Update
         text: |-
@@ -488,7 +491,7 @@ helps['datafactory dataset show'] = """
 
 helps['datafactory dataset create'] = """
     type: command
-    short-summary: "Creates or updates a dataset."
+    short-summary: "Create a dataset."
     examples:
       - name: Datasets_Create
         text: |-
@@ -502,7 +505,7 @@ TextFormat\\"},\\"fileName\\":{\\"type\\":\\"Expression\\",\\"value\\":\\"@datas
 
 helps['datafactory dataset update'] = """
     type: command
-    short-summary: "Creates or updates a dataset."
+    short-summary: "Update a dataset."
     parameters:
       - name: --folder
         short-summary: "The folder that this Dataset is in. If not specified, Dataset will appear at the root level."
@@ -556,7 +559,7 @@ helps['datafactory pipeline show'] = """
 
 helps['datafactory pipeline create'] = """
     type: command
-    short-summary: "Creates or updates a pipeline."
+    short-summary: "Create a pipeline."
     examples:
       - name: Pipelines_Create
         text: |-
@@ -576,7 +579,7 @@ st\\":{\\"type\\":\\"Array\\"}},\\"variables\\":{\\"TestVariableArray\\":{\\"typ
 
 helps['datafactory pipeline update'] = """
     type: command
-    short-summary: "Creates or updates a pipeline."
+    short-summary: "Update a pipeline."
     examples:
       - name: Pipelines_Update
         text: |-
@@ -739,7 +742,7 @@ helps['datafactory trigger show'] = """
 
 helps['datafactory trigger create'] = """
     type: command
-    short-summary: "Creates or updates a trigger."
+    short-summary: "Create a trigger."
     examples:
       - name: Triggers_Create
         text: |-
@@ -753,7 +756,7 @@ requency\\":\\"Minute\\",\\"interval\\":4,\\"startTime\\":\\"2018-06-16T00:39:13
 
 helps['datafactory trigger update'] = """
     type: command
-    short-summary: "Creates or updates a trigger."
+    short-summary: "Update a trigger."
     examples:
       - name: Triggers_Update
         text: |-
@@ -899,4 +902,79 @@ helps['datafactory trigger-run rerun'] = """
         text: |-
                az datafactory trigger-run rerun --factory-name "exampleFactoryName" --resource-group \
 "exampleResourceGroup" --run-id "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b" --trigger-name "exampleTrigger"
+"""
+
+helps['datafactory private-end-point-connection'] = """
+    type: group
+    short-summary: datafactory private-end-point-connection
+"""
+
+helps['datafactory private-end-point-connection list'] = """
+    type: command
+    short-summary: "Lists Private endpoint connections."
+    examples:
+      - name: privateEndPointConnections_ListByFactory
+        text: |-
+               az datafactory private-end-point-connection list --factory-name "exampleFactoryName" --resource-group \
+"exampleResourceGroup"
+"""
+
+helps['datafactory private-endpoint-connection'] = """
+    type: group
+    short-summary: datafactory private-endpoint-connection
+"""
+
+helps['datafactory private-endpoint-connection show'] = """
+    type: command
+    short-summary: "Gets a private endpoint connection."
+    examples:
+      - name: Get a private endpoint connection for a datafactory.
+        text: |-
+               az datafactory private-endpoint-connection show --factory-name "exampleFactoryName" --name "connection" \
+--resource-group "exampleResourceGroup"
+"""
+
+helps['datafactory private-endpoint-connection delete'] = """
+    type: command
+    short-summary: "Deletes a private endpoint connection."
+    examples:
+      - name: Delete a private endpoint connection for a datafactory.
+        text: |-
+               az datafactory private-endpoint-connection delete --factory-name "exampleFactoryName" --name \
+"connection" --resource-group "exampleResourceGroup"
+"""
+
+helps['datafactory private-endpoint-connection approve-or-reject'] = """
+    type: command
+    short-summary: "Approves or rejects a private endpoint connection."
+    parameters:
+      - name: --private-link-service-connection-state
+        short-summary: "The state of a private link connection"
+        long-summary: |
+            Usage: --private-link-service-connection-state status=XX description=XX actions-required=XX
+
+            status: Status of a private link connection
+            description: Description of a private link connection
+            actions-required: ActionsRequired for a private link connection
+    examples:
+      - name: Approves or rejects a private endpoint connection for a factory.
+        text: |-
+               az datafactory private-endpoint-connection approve-or-reject --factory-name "exampleFactoryName" --name \
+"connection" --private-link-service-connection-state description="Approved by admin." actions-required="" \
+status="Approved" --resource-group "exampleResourceGroup"
+"""
+
+helps['datafactory private-link-resource'] = """
+    type: group
+    short-summary: datafactory private-link-resource
+"""
+
+helps['datafactory private-link-resource show'] = """
+    type: command
+    short-summary: "Gets the private link resources."
+    examples:
+      - name: Get private link resources of a site
+        text: |-
+               az datafactory private-link-resource show --factory-name "exampleFactoryName" --resource-group \
+"exampleResourceGroup"
 """
