@@ -10,7 +10,6 @@
 # pylint: disable=too-many-lines
 # pylint: disable=unused-argument
 
-import json
 from knack.util import CLIError
 from azure.cli.core.util import sdk_no_wait
 
@@ -39,7 +38,13 @@ def datafactory_factory_create(client,
                                tags=None,
                                factory_vsts_configuration=None,
                                factory_git_hub_configuration=None,
-                               global_parameters=None):
+                               global_parameters=None,
+                               public_network_access=None,
+                               encryption_key_name=None,
+                               encryption_vault_base_url=None,
+                               encryption_key_version=None,
+                               encryption_identity=None,
+                               identity_user_assigned_identities=None):
     all_repo_configuration = []
     if factory_vsts_configuration is not None:
         all_repo_configuration.append(factory_vsts_configuration)
@@ -54,19 +59,25 @@ def datafactory_factory_create(client,
                                    if_match=if_match,
                                    location=location,
                                    tags=tags,
-                                   identity=None,
                                    repo_configuration=repo_configuration,
-                                   global_parameters=global_parameters)
+                                   global_parameters=global_parameters,
+                                   public_network_access=public_network_access,
+                                   key_name=encryption_key_name,
+                                   vault_base_url=encryption_vault_base_url,
+                                   key_version=encryption_key_version,
+                                   identity=encryption_identity,
+                                   user_assigned_identities=identity_user_assigned_identities)
 
 
 def datafactory_factory_update(client,
                                resource_group_name,
                                factory_name,
-                               tags=None):
+                               tags=None,
+                               identity_user_assigned_identities=None):
     return client.update(resource_group_name=resource_group_name,
                          factory_name=factory_name,
                          tags=tags,
-                         identity={"type": "SystemAssigned"})
+                         user_assigned_identities=identity_user_assigned_identities)
 
 
 def datafactory_factory_delete(client,
