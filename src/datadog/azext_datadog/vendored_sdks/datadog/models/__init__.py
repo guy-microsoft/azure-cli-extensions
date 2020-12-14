@@ -7,6 +7,9 @@
 # --------------------------------------------------------------------------
 
 try:
+    from ._models_py3 import DatadogAgreementProperties
+    from ._models_py3 import DatadogAgreementResource
+    from ._models_py3 import DatadogAgreementResourceListResponse
     from ._models_py3 import DatadogApiKey
     from ._models_py3 import DatadogApiKeyListResponse
     from ._models_py3 import DatadogHost
@@ -26,6 +29,7 @@ try:
     from ._models_py3 import FilteringTag
     from ._models_py3 import LinkedResource
     from ._models_py3 import LinkedResourceListResponse
+    from ._models_py3 import MonitorUpdateProperties
     from ._models_py3 import MonitoredResource
     from ._models_py3 import MonitoredResourceListResponse
     from ._models_py3 import MonitoringTagRules
@@ -36,6 +40,9 @@ try:
     from ._models_py3 import ResourceProviderDefaultErrorResponse
     from ._models_py3 import UserInfo
 except (SyntaxError, ImportError):
+    from ._models import DatadogAgreementProperties  # type: ignore
+    from ._models import DatadogAgreementResource  # type: ignore
+    from ._models import DatadogAgreementResourceListResponse  # type: ignore
     from ._models import DatadogApiKey  # type: ignore
     from ._models import DatadogApiKeyListResponse  # type: ignore
     from ._models import DatadogHost  # type: ignore
@@ -55,6 +62,7 @@ except (SyntaxError, ImportError):
     from ._models import FilteringTag  # type: ignore
     from ._models import LinkedResource  # type: ignore
     from ._models import LinkedResourceListResponse  # type: ignore
+    from ._models import MonitorUpdateProperties  # type: ignore
     from ._models import MonitoredResource  # type: ignore
     from ._models import MonitoredResourceListResponse  # type: ignore
     from ._models import MonitoringTagRules  # type: ignore
@@ -76,6 +84,9 @@ from ._microsoft_datadog_client_enums import (
 )
 
 __all__ = [
+    'DatadogAgreementProperties',
+    'DatadogAgreementResource',
+    'DatadogAgreementResourceListResponse',
     'DatadogApiKey',
     'DatadogApiKeyListResponse',
     'DatadogHost',
@@ -95,6 +106,7 @@ __all__ = [
     'FilteringTag',
     'LinkedResource',
     'LinkedResourceListResponse',
+    'MonitorUpdateProperties',
     'MonitoredResource',
     'MonitoredResourceListResponse',
     'MonitoringTagRules',
