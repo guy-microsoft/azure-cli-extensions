@@ -207,14 +207,6 @@ def step__alertruletemplates_get(test, rg):
              ])
 
 
-# EXAMPLE: /AlertRuleTemplates/get/Get all alert rule templates.
-@try_manual
-def step__alertruletemplates_list(test, rg):
-    test.cmd('az sentinel alert-rule-template list '
-             '--resource-group "{rg}" '
-             '--workspace-name {workspace}')
-
-
 # EXAMPLE: /Bookmarks/put/Creates or updates a bookmark.
 @try_manual
 def step__bookmarks_put_creates_or_updates_a_bookmark_(test, rg):
@@ -261,15 +253,6 @@ def step__bookmarks_get_get_all_bookmarks_(test, rg):
                  test.check('[0].name', '73e01a99-5cd7-4139-a149-9f2736ff2ab5'),
                  test.check('[0].query', 'SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)')
              ])
-
-
-# EXAMPLE: /Bookmarks/delete/Delete a bookmark.
-@try_manual
-def step__bookmarks_delete_delete_a_bookmark_(test, rg):
-    test.cmd('az sentinel bookmark delete -y '
-             '--bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" '
-             '--resource-group "{rg}" '
-             '--workspace-name {workspace}')
 
 
 # EXAMPLE: /DataConnectors/put/Creates or updates an Office365 data connector.
@@ -482,15 +465,6 @@ def step__incidents_get_get_an_incident_(test, rg):
                  test.check('title', 'title'),
                  test.check('status', 'Closed')
              ])
-
-
-# EXAMPLE: /Incidents/delete/Delete an incident.
-@try_manual
-def step__incidents_delete_delete_an_incident_(test, rg):
-    test.cmd('az sentinel incident delete -y '
-             '--incident-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" '
-             '--resource-group "{rg}" '
-             '--workspace-name {workspace}')
 
 
 # Env cleanup
