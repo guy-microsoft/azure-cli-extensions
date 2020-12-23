@@ -8,7 +8,7 @@
 from typing import TYPE_CHECKING
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.paging import ItemPaged
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import HttpRequest, HttpResponse
@@ -18,7 +18,7 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -58,14 +58,17 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.FactoryListResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -131,12 +134,15 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Factory"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
         factory_repo_update = models.FactoryRepoUpdate(factory_resource_id=factory_resource_id, repo_configuration=repo_configuration)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.configure_factory_repo.metadata['url']  # type: ignore
@@ -153,13 +159,12 @@ class FactoryOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(factory_repo_update, 'FactoryRepoUpdate')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -191,14 +196,17 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.FactoryListResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -250,9 +258,14 @@ class FactoryOperations(object):
         if_match=None,  # type: Optional[str]
         location=None,  # type: Optional[str]
         tags=None,  # type: Optional[Dict[str, str]]
-        identity=None,  # type: Optional["models.FactoryIdentity"]
         repo_configuration=None,  # type: Optional["models.FactoryRepoConfiguration"]
         global_parameters=None,  # type: Optional[Dict[str, "models.GlobalParameterSpecification"]]
+        public_network_access=None,  # type: Optional[Union[str, "models.PublicNetworkAccess"]]
+        key_name=None,  # type: Optional[str]
+        vault_base_url=None,  # type: Optional[str]
+        key_version=None,  # type: Optional[str]
+        identity=None,  # type: Optional["models.CmkIdentityDefinition"]
+        user_assigned_identities=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Factory"
@@ -269,24 +282,40 @@ class FactoryOperations(object):
         :type location: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
-        :param identity: Managed service identity of the factory.
-        :type identity: ~data_factory_management_client.models.FactoryIdentity
         :param repo_configuration: Git repo information of the factory.
         :type repo_configuration: ~data_factory_management_client.models.FactoryRepoConfiguration
         :param global_parameters: List of parameters for factory.
         :type global_parameters: dict[str, ~data_factory_management_client.models.GlobalParameterSpecification]
+        :param public_network_access: Whether or not public network access is allowed for the data
+         factory.
+        :type public_network_access: str or ~data_factory_management_client.models.PublicNetworkAccess
+        :param key_name: The name of the key in Azure Key Vault to use as Customer Managed Key.
+        :type key_name: str
+        :param vault_base_url: The url of the Azure Key Vault used for CMK.
+        :type vault_base_url: str
+        :param key_version: The version of the key used for CMK. If not provided, latest version will
+         be used.
+        :type key_version: str
+        :param identity: User assigned identity to use to authenticate to customer's key vault. If not
+         provided Managed Service Identity will be used.
+        :type identity: ~data_factory_management_client.models.CmkIdentityDefinition
+        :param user_assigned_identities: List of user assigned identities for the factory.
+        :type user_assigned_identities: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Factory, or the result of cls(response)
         :rtype: ~data_factory_management_client.models.Factory
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Factory"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
-        factory = models.Factory(location=location, tags=tags, identity=identity, repo_configuration=repo_configuration, global_parameters=global_parameters)
+        factory = models.Factory(location=location, tags=tags, repo_configuration=repo_configuration, global_parameters=global_parameters, public_network_access=public_network_access, key_name=key_name, vault_base_url=vault_base_url, key_version=key_version, identity=identity, user_assigned_identities=user_assigned_identities)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.create_or_update.metadata['url']  # type: ignore
@@ -306,13 +335,12 @@ class FactoryOperations(object):
         if if_match is not None:
             header_parameters['If-Match'] = self._serialize.header("if_match", if_match, 'str')
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(factory, 'Factory')
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -333,7 +361,7 @@ class FactoryOperations(object):
         resource_group_name,  # type: str
         factory_name,  # type: str
         tags=None,  # type: Optional[Dict[str, str]]
-        identity=None,  # type: Optional["models.FactoryIdentity"]
+        user_assigned_identities=None,  # type: Optional[Dict[str, object]]
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Factory"
@@ -345,20 +373,23 @@ class FactoryOperations(object):
         :type factory_name: str
         :param tags: The resource tags.
         :type tags: dict[str, str]
-        :param identity: Managed service identity of the factory.
-        :type identity: ~data_factory_management_client.models.FactoryIdentity
+        :param user_assigned_identities: List of user assigned identities for the factory.
+        :type user_assigned_identities: dict[str, object]
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: Factory, or the result of cls(response)
         :rtype: ~data_factory_management_client.models.Factory
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Factory"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
-        factory_update_parameters = models.FactoryUpdateParameters(tags=tags, identity=identity)
+        factory_update_parameters = models.FactoryUpdateParameters(tags=tags, user_assigned_identities=user_assigned_identities)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.update.metadata['url']  # type: ignore
@@ -376,13 +407,12 @@ class FactoryOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(factory_update_parameters, 'FactoryUpdateParameters')
         body_content_kwargs['content'] = body_content
         request = self._client.patch(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -421,9 +451,12 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.Factory"]]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -442,7 +475,7 @@ class FactoryOperations(object):
         header_parameters = {}  # type: Dict[str, Any]
         if if_none_match is not None:
             header_parameters['If-None-Match'] = self._serialize.header("if_none_match", if_none_match, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -481,9 +514,12 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2018-06-01"
+        accept = "application/json"
 
         # Construct URL
         url = self.delete.metadata['url']  # type: ignore
@@ -500,6 +536,7 @@ class FactoryOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.delete(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -542,12 +579,15 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.GitHubAccessTokenResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
         git_hub_access_token_request = models.GitHubAccessTokenRequest(git_hub_access_code=git_hub_access_code, git_hub_client_id=git_hub_client_id, git_hub_access_token_base_url=git_hub_access_token_base_url)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.get_git_hub_access_token.metadata['url']  # type: ignore
@@ -565,13 +605,12 @@ class FactoryOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(git_hub_access_token_request, 'GitHubAccessTokenRequest')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -625,12 +664,15 @@ class FactoryOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AccessPolicyResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
 
         policy = models.UserAccessPolicy(permissions=permissions, access_resource_path=access_resource_path, profile_name=profile_name, start_time=start_time, expire_time=expire_time)
         api_version = "2018-06-01"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.get_data_plane_access.metadata['url']  # type: ignore
@@ -648,13 +690,12 @@ class FactoryOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(policy, 'UserAccessPolicy')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 

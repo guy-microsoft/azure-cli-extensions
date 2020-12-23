@@ -19,11 +19,14 @@ helps['datafactory factory'] = """
 
 helps['datafactory factory list'] = """
     type: command
-    short-summary: "Lists factories under the specified subscription."
+    short-summary: "Lists factories. And Lists factories under the specified subscription."
     examples:
       - name: Factories_ListByResourceGroup
         text: |-
                az datafactory factory list --resource-group "exampleResourceGroup"
+      - name: Factories_List
+        text: |-
+               az datafactory factory list
 """
 
 helps['datafactory factory show'] = """
@@ -37,7 +40,7 @@ helps['datafactory factory show'] = """
 
 helps['datafactory factory create'] = """
     type: command
-    short-summary: "Creates or updates a factory."
+    short-summary: "Create a factory."
     parameters:
       - name: --factory-vsts-configuration
         short-summary: "Factory's VSTS repo information."
@@ -66,6 +69,14 @@ collaboration-branch=XX root-folder=XX last-commit-id=XX
             collaboration-branch: Required. Collaboration branch.
             root-folder: Required. Root folder.
             last-commit-id: Last commit id.
+      - name: --encryption-identity
+        short-summary: "User assigned identity to use to authenticate to customer's key vault. If not provided Managed \
+Service Identity will be used."
+        long-summary: |
+            Usage: --encryption-identity user-assigned-identity=XX
+
+            user-assigned-identity: The resource id of the user assigned identity to authenticate to customer's key \
+vault.
     examples:
       - name: Factories_CreateOrUpdate
         text: |-
@@ -203,7 +214,7 @@ helps['datafactory integration-runtime managed'] = """
 
 helps['datafactory integration-runtime managed create'] = """
     type: command
-    short-summary: "Creates or updates an integration runtime."
+    short-summary: "Create an integration runtime."
 """
 
 helps['datafactory integration-runtime self-hosted'] = """
@@ -213,7 +224,7 @@ helps['datafactory integration-runtime self-hosted'] = """
 
 helps['datafactory integration-runtime self-hosted create'] = """
     type: command
-    short-summary: "Creates or updates an integration runtime."
+    short-summary: "Create an integration runtime."
     examples:
       - name: IntegrationRuntimes_Create
         text: |-
@@ -432,7 +443,7 @@ helps['datafactory linked-service show'] = """
 
 helps['datafactory linked-service create'] = """
     type: command
-    short-summary: "Creates or updates a linked service."
+    short-summary: "Create a linked service."
     examples:
       - name: LinkedServices_Create
         text: |-
@@ -444,7 +455,7 @@ helps['datafactory linked-service create'] = """
 
 helps['datafactory linked-service update'] = """
     type: command
-    short-summary: "Creates or updates a linked service."
+    short-summary: "Update a linked service."
     examples:
       - name: LinkedServices_Update
         text: |-
@@ -488,7 +499,7 @@ helps['datafactory dataset show'] = """
 
 helps['datafactory dataset create'] = """
     type: command
-    short-summary: "Creates or updates a dataset."
+    short-summary: "Create a dataset."
     examples:
       - name: Datasets_Create
         text: |-
@@ -502,7 +513,7 @@ TextFormat\\"},\\"fileName\\":{\\"type\\":\\"Expression\\",\\"value\\":\\"@datas
 
 helps['datafactory dataset update'] = """
     type: command
-    short-summary: "Creates or updates a dataset."
+    short-summary: "Update a dataset."
     parameters:
       - name: --folder
         short-summary: "The folder that this Dataset is in. If not specified, Dataset will appear at the root level."
@@ -556,7 +567,7 @@ helps['datafactory pipeline show'] = """
 
 helps['datafactory pipeline create'] = """
     type: command
-    short-summary: "Creates or updates a pipeline."
+    short-summary: "Create a pipeline."
     examples:
       - name: Pipelines_Create
         text: |-
@@ -576,7 +587,7 @@ st\\":{\\"type\\":\\"Array\\"}},\\"variables\\":{\\"TestVariableArray\\":{\\"typ
 
 helps['datafactory pipeline update'] = """
     type: command
-    short-summary: "Creates or updates a pipeline."
+    short-summary: "Update a pipeline."
     examples:
       - name: Pipelines_Update
         text: |-
@@ -739,7 +750,7 @@ helps['datafactory trigger show'] = """
 
 helps['datafactory trigger create'] = """
     type: command
-    short-summary: "Creates or updates a trigger."
+    short-summary: "Create a trigger."
     examples:
       - name: Triggers_Create
         text: |-
@@ -753,7 +764,7 @@ requency\\":\\"Minute\\",\\"interval\\":4,\\"startTime\\":\\"2018-06-16T00:39:13
 
 helps['datafactory trigger update'] = """
     type: command
-    short-summary: "Creates or updates a trigger."
+    short-summary: "Update a trigger."
     examples:
       - name: Triggers_Update
         text: |-
