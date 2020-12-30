@@ -9,33 +9,46 @@
 # --------------------------------------------------------------------------
 
 
-def cf_costmanagement(cli_ctx, *_):
+def cf_costmanagement_cl(cli_ctx, *_):
     from azure.cli.core.commands.client_factory import get_mgmt_service_client
-    from ..vendored_sdks.costmanagement import CostManagementClient
-    return get_mgmt_service_client(cli_ctx, CostManagementClient,
+    from azext_costmanagement.vendored_sdks.costmanagement import CostManagementClient
+    return get_mgmt_service_client(cli_ctx,
+                                   CostManagementClient,
                                    subscription_bound=False,
                                    base_url_bound=True)
 
 
+def cf_export(cli_ctx, *_):
+    return cf_costmanagement_cl(cli_ctx).exports
+
+
+def cf_generate_detailed_cost_report(cli_ctx, *_):
+    return cf_costmanagement_cl(cli_ctx).generate_detailed_cost_report
+
+
+def cf_generate_detailed_cost_report_operation_result(cli_ctx, *_):
+    return cf_costmanagement_cl(cli_ctx).generate_detailed_cost_report_operation_results
+
+
+def cf_generate_detailed_cost_report_operation_status(cli_ctx, *_):
+    return cf_costmanagement_cl(cli_ctx).generate_detailed_cost_report_operation_status
+
+
 def cf_view(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).view
+    return cf_costmanagement_cl(cli_ctx).views
 
 
 def cf_alert(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).alert
+    return cf_costmanagement_cl(cli_ctx).alerts
 
 
 def cf_forecast(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).forecast
+    return cf_costmanagement_cl(cli_ctx).forecast
 
 
 def cf_dimension(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).dimension
+    return cf_costmanagement_cl(cli_ctx).dimensions
 
 
 def cf_query(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).query
-
-
-def cf_export(cli_ctx, *_):
-    return cf_costmanagement(cli_ctx).export
+    return cf_costmanagement_cl(cli_ctx).query
