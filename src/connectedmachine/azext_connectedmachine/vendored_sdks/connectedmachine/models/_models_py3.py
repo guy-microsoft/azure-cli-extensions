@@ -161,17 +161,17 @@ class LocationData(msrest.serialization.Model):
 
 
 class Resource(msrest.serialization.Model):
-    """Resource.
+    """Common fields that are returned in the response for all Azure Resource Manager resources.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     """
 
@@ -198,19 +198,19 @@ class Resource(msrest.serialization.Model):
 
 
 class TrackedResource(Resource):
-    """The resource model definition for a ARM tracked top level resource.
+    """The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -252,13 +252,13 @@ class Machine(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -400,13 +400,13 @@ class MachineExtension(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -420,9 +420,8 @@ class MachineExtension(TrackedResource):
     :param type_properties_type: Specifies the type of the extension; an example is
      "CustomScriptExtension".
     :type type_properties_type: str
-    :param type_handler_version_properties_type_handler_version: Specifies the version of the
-     script handler.
-    :type type_handler_version_properties_type_handler_version: str
+    :param type_handler_version: Specifies the version of the script handler.
+    :type type_handler_version: str
     :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
      version if one is available at deployment time. Once deployed, however, the extension will not
      upgrade minor versions unless redeployed, even with this property set to true.
@@ -434,16 +433,8 @@ class MachineExtension(TrackedResource):
     :type protected_settings: object
     :ivar provisioning_state: The provisioning state, which only appears in the response.
     :vartype provisioning_state: str
-    :ivar name_instance_view_name: The machine extension name.
-    :vartype name_instance_view_name: str
-    :ivar type_instance_view_type: Specifies the type of the extension; an example is
-     "CustomScriptExtension".
-    :vartype type_instance_view_type: str
-    :ivar type_handler_version_instance_view_type_handler_version: Specifies the version of the
-     script handler.
-    :vartype type_handler_version_instance_view_type_handler_version: str
-    :param status: Instance view status.
-    :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
+    :param instance_view: The machine extension instance view.
+    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
     """
 
     _validation = {
@@ -452,9 +443,6 @@ class MachineExtension(TrackedResource):
         'type': {'readonly': True},
         'location': {'required': True},
         'provisioning_state': {'readonly': True},
-        'name_instance_view_name': {'readonly': True},
-        'type_instance_view_type': {'readonly': True},
-        'type_handler_version_instance_view_type_handler_version': {'readonly': True},
     }
 
     _attribute_map = {
@@ -466,15 +454,12 @@ class MachineExtension(TrackedResource):
         'force_update_tag': {'key': 'properties.forceUpdateTag', 'type': 'str'},
         'publisher': {'key': 'properties.publisher', 'type': 'str'},
         'type_properties_type': {'key': 'properties.type', 'type': 'str'},
-        'type_handler_version_properties_type_handler_version': {'key': 'properties.typeHandlerVersion', 'type': 'str'},
+        'type_handler_version': {'key': 'properties.typeHandlerVersion', 'type': 'str'},
         'auto_upgrade_minor_version': {'key': 'properties.autoUpgradeMinorVersion', 'type': 'bool'},
         'settings': {'key': 'properties.settings', 'type': 'object'},
         'protected_settings': {'key': 'properties.protectedSettings', 'type': 'object'},
         'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
-        'name_instance_view_name': {'key': 'instanceView.name', 'type': 'str'},
-        'type_instance_view_type': {'key': 'instanceView.type', 'type': 'str'},
-        'type_handler_version_instance_view_type_handler_version': {'key': 'instanceView.typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
+        'instance_view': {'key': 'properties.instanceView', 'type': 'MachineExtensionInstanceView'},
     }
 
     def __init__(
@@ -485,26 +470,23 @@ class MachineExtension(TrackedResource):
         force_update_tag: Optional[str] = None,
         publisher: Optional[str] = None,
         type_properties_type: Optional[str] = None,
-        type_handler_version_properties_type_handler_version: Optional[str] = None,
+        type_handler_version: Optional[str] = None,
         auto_upgrade_minor_version: Optional[bool] = None,
         settings: Optional[object] = None,
         protected_settings: Optional[object] = None,
-        status: Optional["MachineExtensionInstanceViewStatus"] = None,
+        instance_view: Optional["MachineExtensionInstanceView"] = None,
         **kwargs
     ):
         super(MachineExtension, self).__init__(tags=tags, location=location, **kwargs)
         self.force_update_tag = force_update_tag
         self.publisher = publisher
         self.type_properties_type = type_properties_type
-        self.type_handler_version_properties_type_handler_version = type_handler_version_properties_type_handler_version
+        self.type_handler_version = type_handler_version
         self.auto_upgrade_minor_version = auto_upgrade_minor_version
         self.settings = settings
         self.protected_settings = protected_settings
         self.provisioning_state = None
-        self.name_instance_view_name = None
-        self.type_instance_view_type = None
-        self.type_handler_version_instance_view_type_handler_version = None
-        self.status = status
+        self.instance_view = instance_view
 
 
 class MachineExtensionInstanceView(msrest.serialization.Model):
@@ -591,174 +573,6 @@ class MachineExtensionInstanceViewStatus(msrest.serialization.Model):
         self.display_status = None
         self.message = None
         self.time = None
-
-
-class MachineExtensionProperties(msrest.serialization.Model):
-    """Describes the properties of a Machine Extension.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param force_update_tag: How the extension handler should be forced to update even if the
-     extension configuration has not changed.
-    :type force_update_tag: str
-    :param publisher: The name of the extension handler publisher.
-    :type publisher: str
-    :param type: Specifies the type of the extension; an example is "CustomScriptExtension".
-    :type type: str
-    :param type_handler_version: Specifies the version of the script handler.
-    :type type_handler_version: str
-    :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
-     version if one is available at deployment time. Once deployed, however, the extension will not
-     upgrade minor versions unless redeployed, even with this property set to true.
-    :type auto_upgrade_minor_version: bool
-    :param settings: Json formatted public settings for the extension.
-    :type settings: object
-    :param protected_settings: The extension can contain either protectedSettings or
-     protectedSettingsFromKeyVault or no protected settings at all.
-    :type protected_settings: object
-    :ivar provisioning_state: The provisioning state, which only appears in the response.
-    :vartype provisioning_state: str
-    :param instance_view: The machine extension instance view.
-    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
-    """
-
-    _validation = {
-        'provisioning_state': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'force_update_tag': {'key': 'forceUpdateTag', 'type': 'str'},
-        'publisher': {'key': 'publisher', 'type': 'str'},
-        'type': {'key': 'type', 'type': 'str'},
-        'type_handler_version': {'key': 'typeHandlerVersion', 'type': 'str'},
-        'auto_upgrade_minor_version': {'key': 'autoUpgradeMinorVersion', 'type': 'bool'},
-        'settings': {'key': 'settings', 'type': 'object'},
-        'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
-        'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'instance_view': {'key': 'instanceView', 'type': 'MachineExtensionInstanceView'},
-    }
-
-    def __init__(
-        self,
-        *,
-        force_update_tag: Optional[str] = None,
-        publisher: Optional[str] = None,
-        type: Optional[str] = None,
-        type_handler_version: Optional[str] = None,
-        auto_upgrade_minor_version: Optional[bool] = None,
-        settings: Optional[object] = None,
-        protected_settings: Optional[object] = None,
-        instance_view: Optional["MachineExtensionInstanceView"] = None,
-        **kwargs
-    ):
-        super(MachineExtensionProperties, self).__init__(**kwargs)
-        self.force_update_tag = force_update_tag
-        self.publisher = publisher
-        self.type = type
-        self.type_handler_version = type_handler_version
-        self.auto_upgrade_minor_version = auto_upgrade_minor_version
-        self.settings = settings
-        self.protected_settings = protected_settings
-        self.provisioning_state = None
-        self.instance_view = instance_view
-
-
-class MachineExtensionPropertiesautogenerated(MachineExtensionProperties):
-    """Describes Machine Extension Properties.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param force_update_tag: How the extension handler should be forced to update even if the
-     extension configuration has not changed.
-    :type force_update_tag: str
-    :param publisher: The name of the extension handler publisher.
-    :type publisher: str
-    :param type: Specifies the type of the extension; an example is "CustomScriptExtension".
-    :type type: str
-    :param type_handler_version: Specifies the version of the script handler.
-    :type type_handler_version: str
-    :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
-     version if one is available at deployment time. Once deployed, however, the extension will not
-     upgrade minor versions unless redeployed, even with this property set to true.
-    :type auto_upgrade_minor_version: bool
-    :param settings: Json formatted public settings for the extension.
-    :type settings: object
-    :param protected_settings: The extension can contain either protectedSettings or
-     protectedSettingsFromKeyVault or no protected settings at all.
-    :type protected_settings: object
-    :ivar provisioning_state: The provisioning state, which only appears in the response.
-    :vartype provisioning_state: str
-    :param instance_view: The machine extension instance view.
-    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
-    """
-
-    _validation = {
-        'provisioning_state': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'force_update_tag': {'key': 'forceUpdateTag', 'type': 'str'},
-        'publisher': {'key': 'publisher', 'type': 'str'},
-        'type': {'key': 'type', 'type': 'str'},
-        'type_handler_version': {'key': 'typeHandlerVersion', 'type': 'str'},
-        'auto_upgrade_minor_version': {'key': 'autoUpgradeMinorVersion', 'type': 'bool'},
-        'settings': {'key': 'settings', 'type': 'object'},
-        'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
-        'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'instance_view': {'key': 'instanceView', 'type': 'MachineExtensionInstanceView'},
-    }
-
-    def __init__(
-        self,
-        *,
-        force_update_tag: Optional[str] = None,
-        publisher: Optional[str] = None,
-        type: Optional[str] = None,
-        type_handler_version: Optional[str] = None,
-        auto_upgrade_minor_version: Optional[bool] = None,
-        settings: Optional[object] = None,
-        protected_settings: Optional[object] = None,
-        instance_view: Optional["MachineExtensionInstanceView"] = None,
-        **kwargs
-    ):
-        super(MachineExtensionPropertiesautogenerated, self).__init__(force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, instance_view=instance_view, **kwargs)
-
-
-class MachineExtensionPropertiesInstanceView(MachineExtensionInstanceView):
-    """The machine extension instance view.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar name: The machine extension name.
-    :vartype name: str
-    :ivar type: Specifies the type of the extension; an example is "CustomScriptExtension".
-    :vartype type: str
-    :ivar type_handler_version: Specifies the version of the script handler.
-    :vartype type_handler_version: str
-    :param status: Instance view status.
-    :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
-    """
-
-    _validation = {
-        'name': {'readonly': True},
-        'type': {'readonly': True},
-        'type_handler_version': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'name': {'key': 'name', 'type': 'str'},
-        'type': {'key': 'type', 'type': 'str'},
-        'type_handler_version': {'key': 'typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'status', 'type': 'MachineExtensionInstanceViewStatus'},
-    }
-
-    def __init__(
-        self,
-        *,
-        status: Optional["MachineExtensionInstanceViewStatus"] = None,
-        **kwargs
-    ):
-        super(MachineExtensionPropertiesInstanceView, self).__init__(status=status, **kwargs)
 
 
 class MachineExtensionsListResult(msrest.serialization.Model):
@@ -868,142 +682,6 @@ class MachineExtensionUpdate(UpdateResource):
         self.protected_settings = protected_settings
 
 
-class MachineExtensionUpdateProperties(msrest.serialization.Model):
-    """Describes the properties of a Machine Extension.
-
-    :param force_update_tag: How the extension handler should be forced to update even if the
-     extension configuration has not changed.
-    :type force_update_tag: str
-    :param publisher: The name of the extension handler publisher.
-    :type publisher: str
-    :param type: Specifies the type of the extension; an example is "CustomScriptExtension".
-    :type type: str
-    :param type_handler_version: Specifies the version of the script handler.
-    :type type_handler_version: str
-    :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
-     version if one is available at deployment time. Once deployed, however, the extension will not
-     upgrade minor versions unless redeployed, even with this property set to true.
-    :type auto_upgrade_minor_version: bool
-    :param settings: Json formatted public settings for the extension.
-    :type settings: object
-    :param protected_settings: The extension can contain either protectedSettings or
-     protectedSettingsFromKeyVault or no protected settings at all.
-    :type protected_settings: object
-    """
-
-    _attribute_map = {
-        'force_update_tag': {'key': 'forceUpdateTag', 'type': 'str'},
-        'publisher': {'key': 'publisher', 'type': 'str'},
-        'type': {'key': 'type', 'type': 'str'},
-        'type_handler_version': {'key': 'typeHandlerVersion', 'type': 'str'},
-        'auto_upgrade_minor_version': {'key': 'autoUpgradeMinorVersion', 'type': 'bool'},
-        'settings': {'key': 'settings', 'type': 'object'},
-        'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
-    }
-
-    def __init__(
-        self,
-        *,
-        force_update_tag: Optional[str] = None,
-        publisher: Optional[str] = None,
-        type: Optional[str] = None,
-        type_handler_version: Optional[str] = None,
-        auto_upgrade_minor_version: Optional[bool] = None,
-        settings: Optional[object] = None,
-        protected_settings: Optional[object] = None,
-        **kwargs
-    ):
-        super(MachineExtensionUpdateProperties, self).__init__(**kwargs)
-        self.force_update_tag = force_update_tag
-        self.publisher = publisher
-        self.type = type
-        self.type_handler_version = type_handler_version
-        self.auto_upgrade_minor_version = auto_upgrade_minor_version
-        self.settings = settings
-        self.protected_settings = protected_settings
-
-
-class MachineExtensionUpdatePropertiesautogenerated(MachineExtensionUpdateProperties):
-    """Describes Machine Extension Update Properties.
-
-    :param force_update_tag: How the extension handler should be forced to update even if the
-     extension configuration has not changed.
-    :type force_update_tag: str
-    :param publisher: The name of the extension handler publisher.
-    :type publisher: str
-    :param type: Specifies the type of the extension; an example is "CustomScriptExtension".
-    :type type: str
-    :param type_handler_version: Specifies the version of the script handler.
-    :type type_handler_version: str
-    :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
-     version if one is available at deployment time. Once deployed, however, the extension will not
-     upgrade minor versions unless redeployed, even with this property set to true.
-    :type auto_upgrade_minor_version: bool
-    :param settings: Json formatted public settings for the extension.
-    :type settings: object
-    :param protected_settings: The extension can contain either protectedSettings or
-     protectedSettingsFromKeyVault or no protected settings at all.
-    :type protected_settings: object
-    """
-
-    _attribute_map = {
-        'force_update_tag': {'key': 'forceUpdateTag', 'type': 'str'},
-        'publisher': {'key': 'publisher', 'type': 'str'},
-        'type': {'key': 'type', 'type': 'str'},
-        'type_handler_version': {'key': 'typeHandlerVersion', 'type': 'str'},
-        'auto_upgrade_minor_version': {'key': 'autoUpgradeMinorVersion', 'type': 'bool'},
-        'settings': {'key': 'settings', 'type': 'object'},
-        'protected_settings': {'key': 'protectedSettings', 'type': 'object'},
-    }
-
-    def __init__(
-        self,
-        *,
-        force_update_tag: Optional[str] = None,
-        publisher: Optional[str] = None,
-        type: Optional[str] = None,
-        type_handler_version: Optional[str] = None,
-        auto_upgrade_minor_version: Optional[bool] = None,
-        settings: Optional[object] = None,
-        protected_settings: Optional[object] = None,
-        **kwargs
-    ):
-        super(MachineExtensionUpdatePropertiesautogenerated, self).__init__(force_update_tag=force_update_tag, publisher=publisher, type=type, type_handler_version=type_handler_version, auto_upgrade_minor_version=auto_upgrade_minor_version, settings=settings, protected_settings=protected_settings, **kwargs)
-
-
-class MachineIdentity(Identity):
-    """MachineIdentity.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param type: The identity type.
-    :type type: str
-    :ivar principal_id: The identity's principal id.
-    :vartype principal_id: str
-    :ivar tenant_id: The identity's tenant id.
-    :vartype tenant_id: str
-    """
-
-    _validation = {
-        'principal_id': {'readonly': True},
-        'tenant_id': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'type': {'key': 'type', 'type': 'str'},
-        'principal_id': {'key': 'principalId', 'type': 'str'},
-        'tenant_id': {'key': 'tenantId', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        type: Optional[str] = None,
-        **kwargs
-    ):
-        super(MachineIdentity, self).__init__(type=type, **kwargs)
-
-
 class MachineListResult(msrest.serialization.Model):
     """The List hybrid machine operation response.
 
@@ -1035,272 +713,6 @@ class MachineListResult(msrest.serialization.Model):
         super(MachineListResult, self).__init__(**kwargs)
         self.value = value
         self.next_link = next_link
-
-
-class MachineProperties(msrest.serialization.Model):
-    """Describes the properties of a hybrid machine.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param location_data: Metadata pertaining to the geographic location of the resource.
-    :type location_data: ~connected_machine.models.LocationData
-    :ivar os_profile: Specifies the operating system settings for the hybrid machine.
-    :vartype os_profile: ~connected_machine.models.OsProfile
-    :ivar provisioning_state: The provisioning state, which only appears in the response.
-    :vartype provisioning_state: str
-    :ivar status: The status of the hybrid machine agent. Possible values include: "Connected",
-     "Disconnected", "Error".
-    :vartype status: str or ~connected_machine.models.StatusTypes
-    :ivar last_status_change: The time of the last status change.
-    :vartype last_status_change: ~datetime.datetime
-    :ivar error_details: Details about the error state.
-    :vartype error_details: list[~connected_machine.models.ErrorDetail]
-    :ivar agent_version: The hybrid machine agent full version.
-    :vartype agent_version: str
-    :param vm_id: Specifies the hybrid machine unique ID.
-    :type vm_id: str
-    :ivar display_name: Specifies the hybrid machine display name.
-    :vartype display_name: str
-    :ivar machine_fqdn: Specifies the hybrid machine FQDN.
-    :vartype machine_fqdn: str
-    :param client_public_key: Public Key that the client provides to be used during initial
-     resource onboarding.
-    :type client_public_key: str
-    :ivar os_name: The Operating System running on the hybrid machine.
-    :vartype os_name: str
-    :ivar os_version: The version of Operating System running on the hybrid machine.
-    :vartype os_version: str
-    :ivar vm_uuid: Specifies the Arc Machine's unique SMBIOS ID.
-    :vartype vm_uuid: str
-    :ivar extensions: Machine Extensions information.
-    :vartype extensions: list[~connected_machine.models.MachineExtensionInstanceView]
-    :ivar os_sku: Specifies the Operating System product SKU.
-    :vartype os_sku: str
-    :ivar domain_name: Specifies the Windows domain name.
-    :vartype domain_name: str
-    :ivar ad_fqdn: Specifies the AD fully qualified display name.
-    :vartype ad_fqdn: str
-    :ivar dns_fqdn: Specifies the DNS fully qualified display name.
-    :vartype dns_fqdn: str
-    """
-
-    _validation = {
-        'os_profile': {'readonly': True},
-        'provisioning_state': {'readonly': True},
-        'status': {'readonly': True},
-        'last_status_change': {'readonly': True},
-        'error_details': {'readonly': True},
-        'agent_version': {'readonly': True},
-        'display_name': {'readonly': True},
-        'machine_fqdn': {'readonly': True},
-        'os_name': {'readonly': True},
-        'os_version': {'readonly': True},
-        'vm_uuid': {'readonly': True},
-        'extensions': {'readonly': True},
-        'os_sku': {'readonly': True},
-        'domain_name': {'readonly': True},
-        'ad_fqdn': {'readonly': True},
-        'dns_fqdn': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'location_data': {'key': 'locationData', 'type': 'LocationData'},
-        'os_profile': {'key': 'osProfile', 'type': 'OsProfile'},
-        'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'status': {'key': 'status', 'type': 'str'},
-        'last_status_change': {'key': 'lastStatusChange', 'type': 'iso-8601'},
-        'error_details': {'key': 'errorDetails', 'type': '[ErrorDetail]'},
-        'agent_version': {'key': 'agentVersion', 'type': 'str'},
-        'vm_id': {'key': 'vmId', 'type': 'str'},
-        'display_name': {'key': 'displayName', 'type': 'str'},
-        'machine_fqdn': {'key': 'machineFqdn', 'type': 'str'},
-        'client_public_key': {'key': 'clientPublicKey', 'type': 'str'},
-        'os_name': {'key': 'osName', 'type': 'str'},
-        'os_version': {'key': 'osVersion', 'type': 'str'},
-        'vm_uuid': {'key': 'vmUuid', 'type': 'str'},
-        'extensions': {'key': 'extensions', 'type': '[MachineExtensionInstanceView]'},
-        'os_sku': {'key': 'osSku', 'type': 'str'},
-        'domain_name': {'key': 'domainName', 'type': 'str'},
-        'ad_fqdn': {'key': 'adFqdn', 'type': 'str'},
-        'dns_fqdn': {'key': 'dnsFqdn', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        location_data: Optional["LocationData"] = None,
-        vm_id: Optional[str] = None,
-        client_public_key: Optional[str] = None,
-        **kwargs
-    ):
-        super(MachineProperties, self).__init__(**kwargs)
-        self.location_data = location_data
-        self.os_profile = None
-        self.provisioning_state = None
-        self.status = None
-        self.last_status_change = None
-        self.error_details = None
-        self.agent_version = None
-        self.vm_id = vm_id
-        self.display_name = None
-        self.machine_fqdn = None
-        self.client_public_key = client_public_key
-        self.os_name = None
-        self.os_version = None
-        self.vm_uuid = None
-        self.extensions = None
-        self.os_sku = None
-        self.domain_name = None
-        self.ad_fqdn = None
-        self.dns_fqdn = None
-
-
-class MachinePropertiesautogenerated(MachineProperties):
-    """Hybrid Compute Machine properties.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param location_data: Metadata pertaining to the geographic location of the resource.
-    :type location_data: ~connected_machine.models.LocationData
-    :ivar os_profile: Specifies the operating system settings for the hybrid machine.
-    :vartype os_profile: ~connected_machine.models.OsProfile
-    :ivar provisioning_state: The provisioning state, which only appears in the response.
-    :vartype provisioning_state: str
-    :ivar status: The status of the hybrid machine agent. Possible values include: "Connected",
-     "Disconnected", "Error".
-    :vartype status: str or ~connected_machine.models.StatusTypes
-    :ivar last_status_change: The time of the last status change.
-    :vartype last_status_change: ~datetime.datetime
-    :ivar error_details: Details about the error state.
-    :vartype error_details: list[~connected_machine.models.ErrorDetail]
-    :ivar agent_version: The hybrid machine agent full version.
-    :vartype agent_version: str
-    :param vm_id: Specifies the hybrid machine unique ID.
-    :type vm_id: str
-    :ivar display_name: Specifies the hybrid machine display name.
-    :vartype display_name: str
-    :ivar machine_fqdn: Specifies the hybrid machine FQDN.
-    :vartype machine_fqdn: str
-    :param client_public_key: Public Key that the client provides to be used during initial
-     resource onboarding.
-    :type client_public_key: str
-    :ivar os_name: The Operating System running on the hybrid machine.
-    :vartype os_name: str
-    :ivar os_version: The version of Operating System running on the hybrid machine.
-    :vartype os_version: str
-    :ivar vm_uuid: Specifies the Arc Machine's unique SMBIOS ID.
-    :vartype vm_uuid: str
-    :ivar extensions: Machine Extensions information.
-    :vartype extensions: list[~connected_machine.models.MachineExtensionInstanceView]
-    :ivar os_sku: Specifies the Operating System product SKU.
-    :vartype os_sku: str
-    :ivar domain_name: Specifies the Windows domain name.
-    :vartype domain_name: str
-    :ivar ad_fqdn: Specifies the AD fully qualified display name.
-    :vartype ad_fqdn: str
-    :ivar dns_fqdn: Specifies the DNS fully qualified display name.
-    :vartype dns_fqdn: str
-    """
-
-    _validation = {
-        'os_profile': {'readonly': True},
-        'provisioning_state': {'readonly': True},
-        'status': {'readonly': True},
-        'last_status_change': {'readonly': True},
-        'error_details': {'readonly': True},
-        'agent_version': {'readonly': True},
-        'display_name': {'readonly': True},
-        'machine_fqdn': {'readonly': True},
-        'os_name': {'readonly': True},
-        'os_version': {'readonly': True},
-        'vm_uuid': {'readonly': True},
-        'extensions': {'readonly': True},
-        'os_sku': {'readonly': True},
-        'domain_name': {'readonly': True},
-        'ad_fqdn': {'readonly': True},
-        'dns_fqdn': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'location_data': {'key': 'locationData', 'type': 'LocationData'},
-        'os_profile': {'key': 'osProfile', 'type': 'OsProfile'},
-        'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
-        'status': {'key': 'status', 'type': 'str'},
-        'last_status_change': {'key': 'lastStatusChange', 'type': 'iso-8601'},
-        'error_details': {'key': 'errorDetails', 'type': '[ErrorDetail]'},
-        'agent_version': {'key': 'agentVersion', 'type': 'str'},
-        'vm_id': {'key': 'vmId', 'type': 'str'},
-        'display_name': {'key': 'displayName', 'type': 'str'},
-        'machine_fqdn': {'key': 'machineFqdn', 'type': 'str'},
-        'client_public_key': {'key': 'clientPublicKey', 'type': 'str'},
-        'os_name': {'key': 'osName', 'type': 'str'},
-        'os_version': {'key': 'osVersion', 'type': 'str'},
-        'vm_uuid': {'key': 'vmUuid', 'type': 'str'},
-        'extensions': {'key': 'extensions', 'type': '[MachineExtensionInstanceView]'},
-        'os_sku': {'key': 'osSku', 'type': 'str'},
-        'domain_name': {'key': 'domainName', 'type': 'str'},
-        'ad_fqdn': {'key': 'adFqdn', 'type': 'str'},
-        'dns_fqdn': {'key': 'dnsFqdn', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        location_data: Optional["LocationData"] = None,
-        vm_id: Optional[str] = None,
-        client_public_key: Optional[str] = None,
-        **kwargs
-    ):
-        super(MachinePropertiesautogenerated, self).__init__(location_data=location_data, vm_id=vm_id, client_public_key=client_public_key, **kwargs)
-
-
-class OsProfile(msrest.serialization.Model):
-    """Specifies the operating system settings for the hybrid machine.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar computer_name: Specifies the host OS name of the hybrid machine.
-    :vartype computer_name: str
-    """
-
-    _validation = {
-        'computer_name': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'computer_name': {'key': 'computerName', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        **kwargs
-    ):
-        super(OsProfile, self).__init__(**kwargs)
-        self.computer_name = None
-
-
-class MachinePropertiesOsProfile(OsProfile):
-    """Specifies the operating system settings for the hybrid machine.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar computer_name: Specifies the host OS name of the hybrid machine.
-    :vartype computer_name: str
-    """
-
-    _validation = {
-        'computer_name': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'computer_name': {'key': 'computerName', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        **kwargs
-    ):
-        super(MachinePropertiesOsProfile, self).__init__(**kwargs)
 
 
 class MachineUpdate(UpdateResource):
@@ -1346,80 +758,6 @@ class MachineUpdate(UpdateResource):
         self.type = type
         self.principal_id = None
         self.tenant_id = None
-
-
-class MachineUpdateIdentity(Identity):
-    """Hybrid Compute Machine Managed Identity.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :param type: The identity type.
-    :type type: str
-    :ivar principal_id: The identity's principal id.
-    :vartype principal_id: str
-    :ivar tenant_id: The identity's tenant id.
-    :vartype tenant_id: str
-    """
-
-    _validation = {
-        'principal_id': {'readonly': True},
-        'tenant_id': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'type': {'key': 'type', 'type': 'str'},
-        'principal_id': {'key': 'principalId', 'type': 'str'},
-        'tenant_id': {'key': 'tenantId', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        *,
-        type: Optional[str] = None,
-        **kwargs
-    ):
-        super(MachineUpdateIdentity, self).__init__(type=type, **kwargs)
-
-
-class MachineUpdateProperties(msrest.serialization.Model):
-    """Describes the ARM updatable properties of a hybrid machine.
-
-    :param location_data: Metadata pertaining to the geographic location of the resource.
-    :type location_data: ~connected_machine.models.LocationData
-    """
-
-    _attribute_map = {
-        'location_data': {'key': 'locationData', 'type': 'LocationData'},
-    }
-
-    def __init__(
-        self,
-        *,
-        location_data: Optional["LocationData"] = None,
-        **kwargs
-    ):
-        super(MachineUpdateProperties, self).__init__(**kwargs)
-        self.location_data = location_data
-
-
-class MachineUpdatePropertiesautogenerated(MachineUpdateProperties):
-    """Hybrid Compute Machine properties.
-
-    :param location_data: Metadata pertaining to the geographic location of the resource.
-    :type location_data: ~connected_machine.models.LocationData
-    """
-
-    _attribute_map = {
-        'location_data': {'key': 'locationData', 'type': 'LocationData'},
-    }
-
-    def __init__(
-        self,
-        *,
-        location_data: Optional["LocationData"] = None,
-        **kwargs
-    ):
-        super(MachineUpdatePropertiesautogenerated, self).__init__(location_data=location_data, **kwargs)
 
 
 class OperationListResult(msrest.serialization.Model):
@@ -1497,77 +835,26 @@ class OperationValue(msrest.serialization.Model):
         self.provider = None
 
 
-class OperationValueDisplay(msrest.serialization.Model):
-    """Describes the properties of a Hybrid Compute Operation Value Display.
+class OsProfile(msrest.serialization.Model):
+    """Specifies the operating system settings for the hybrid machine.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar operation: The display name of the compute operation.
-    :vartype operation: str
-    :ivar resource: The display name of the resource the operation applies to.
-    :vartype resource: str
-    :ivar description: The description of the operation.
-    :vartype description: str
-    :ivar provider: The resource provider for the operation.
-    :vartype provider: str
+    :ivar computer_name: Specifies the host OS name of the hybrid machine.
+    :vartype computer_name: str
     """
 
     _validation = {
-        'operation': {'readonly': True},
-        'resource': {'readonly': True},
-        'description': {'readonly': True},
-        'provider': {'readonly': True},
+        'computer_name': {'readonly': True},
     }
 
     _attribute_map = {
-        'operation': {'key': 'operation', 'type': 'str'},
-        'resource': {'key': 'resource', 'type': 'str'},
-        'description': {'key': 'description', 'type': 'str'},
-        'provider': {'key': 'provider', 'type': 'str'},
+        'computer_name': {'key': 'computerName', 'type': 'str'},
     }
 
     def __init__(
         self,
         **kwargs
     ):
-        super(OperationValueDisplay, self).__init__(**kwargs)
-        self.operation = None
-        self.resource = None
-        self.description = None
-        self.provider = None
-
-
-class OperationValueDisplayautogenerated(OperationValueDisplay):
-    """Display properties.
-
-    Variables are only populated by the server, and will be ignored when sending a request.
-
-    :ivar operation: The display name of the compute operation.
-    :vartype operation: str
-    :ivar resource: The display name of the resource the operation applies to.
-    :vartype resource: str
-    :ivar description: The description of the operation.
-    :vartype description: str
-    :ivar provider: The resource provider for the operation.
-    :vartype provider: str
-    """
-
-    _validation = {
-        'operation': {'readonly': True},
-        'resource': {'readonly': True},
-        'description': {'readonly': True},
-        'provider': {'readonly': True},
-    }
-
-    _attribute_map = {
-        'operation': {'key': 'operation', 'type': 'str'},
-        'resource': {'key': 'resource', 'type': 'str'},
-        'description': {'key': 'description', 'type': 'str'},
-        'provider': {'key': 'provider', 'type': 'str'},
-    }
-
-    def __init__(
-        self,
-        **kwargs
-    ):
-        super(OperationValueDisplayautogenerated, self).__init__(**kwargs)
+        super(OsProfile, self).__init__(**kwargs)
+        self.computer_name = None

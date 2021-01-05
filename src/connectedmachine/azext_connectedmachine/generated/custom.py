@@ -34,88 +34,92 @@ def connectedmachine_delete(client,
                          name=machine_name)
 
 
-def connectedmachine_extension_list(client,
-                                    resource_group_name,
-                                    machine_name,
-                                    expand=None):
+def connectedmachine_machine_extension_list(client,
+                                            resource_group_name,
+                                            machine_name,
+                                            expand=None):
     return client.list(resource_group_name=resource_group_name,
                        name=machine_name,
                        expand=expand)
 
 
-def connectedmachine_extension_show(client,
-                                    resource_group_name,
-                                    machine_name,
-                                    name):
+def connectedmachine_machine_extension_show(client,
+                                            resource_group_name,
+                                            machine_name,
+                                            name):
     return client.get(resource_group_name=resource_group_name,
                       name=machine_name,
                       extension_name=name)
 
 
-def connectedmachine_extension_create(client,
-                                      resource_group_name,
-                                      machine_name,
-                                      name,
-                                      location,
-                                      tags=None,
-                                      force_update_tag=None,
-                                      publisher=None,
-                                      type_=None,
-                                      type_handler_version=None,
-                                      auto_upgrade_minor_version=None,
-                                      settings=None,
-                                      protected_settings=None,
-                                      no_wait=False):
+def connectedmachine_machine_extension_create(client,
+                                              resource_group_name,
+                                              machine_name,
+                                              name,
+                                              location,
+                                              tags=None,
+                                              force_update_tag=None,
+                                              publisher=None,
+                                              type_properties_type=None,
+                                              type_handler_version=None,
+                                              auto_upgrade_minor_version=None,
+                                              settings=None,
+                                              protected_settings=None,
+                                              no_wait=False):
+    extension_parameters = {}
+    extension_parameters['tags'] = tags
+    extension_parameters['location'] = location
+    extension_parameters['force_update_tag'] = force_update_tag
+    extension_parameters['publisher'] = publisher
+    extension_parameters['type_properties_type'] = type_properties_type
+    extension_parameters['type_handler_version'] = type_handler_version
+    extension_parameters['auto_upgrade_minor_version'] = auto_upgrade_minor_version
+    extension_parameters['settings'] = settings
+    extension_parameters['protected_settings'] = protected_settings
+    extension_parameters['instance_view'] = {}
     return sdk_no_wait(no_wait,
                        client.begin_create_or_update,
                        resource_group_name=resource_group_name,
                        name=machine_name,
                        extension_name=name,
-                       tags=tags,
-                       location=location,
-                       force_update_tag=force_update_tag,
-                       publisher=publisher,
-                       type_properties_type=type_,
-                       type_handler_version=type_handler_version,
-                       auto_upgrade_minor_version=auto_upgrade_minor_version,
-                       settings=settings,
-                       protected_settings=protected_settings,
-                       status=None)
+                       extension_parameters=extension_parameters)
 
 
-def connectedmachine_extension_update(client,
-                                      resource_group_name,
-                                      machine_name,
-                                      name,
-                                      tags=None,
-                                      force_update_tag=None,
-                                      publisher=None,
-                                      type_=None,
-                                      type_handler_version=None,
-                                      auto_upgrade_minor_version=None,
-                                      settings=None,
-                                      protected_settings=None,
-                                      no_wait=False):
+def connectedmachine_machine_extension_update(client,
+                                              resource_group_name,
+                                              machine_name,
+                                              name,
+                                              tags=None,
+                                              force_update_tag=None,
+                                              publisher=None,
+                                              type_=None,
+                                              type_handler_version=None,
+                                              auto_upgrade_minor_version=None,
+                                              settings=None,
+                                              protected_settings=None,
+                                              no_wait=False):
+    extension_parameters = {}
+    extension_parameters['tags'] = tags
+    extension_parameters['force_update_tag'] = force_update_tag
+    extension_parameters['publisher'] = publisher
+    extension_parameters['type'] = type_
+    extension_parameters['type_handler_version'] = type_handler_version
+    extension_parameters['auto_upgrade_minor_version'] = auto_upgrade_minor_version
+    extension_parameters['settings'] = settings
+    extension_parameters['protected_settings'] = protected_settings
     return sdk_no_wait(no_wait,
                        client.begin_update,
                        resource_group_name=resource_group_name,
                        name=machine_name,
                        extension_name=name,
-                       tags=tags,
-                       force_update_tag=force_update_tag,
-                       publisher=publisher,
-                       type=type_,
-                       type_handler_version=type_handler_version,
-                       auto_upgrade_minor_version=auto_upgrade_minor_version,
-                       settings=settings,
-                       protected_settings=protected_settings)
+                       extension_parameters=extension_parameters)
 
 
-def connectedmachine_extension_delete(client,
-                                      resource_group_name,
-                                      machine_name,
-                                      name,
-                                      no_wait=False):
+def connectedmachine_machine_extension_delete(client,
+                                              resource_group_name,
+                                              machine_name,
+                                              name,
+                                              no_wait=False):
     return sdk_no_wait(no_wait,
                        client.begin_delete,
                        resource_group_name=resource_group_name,

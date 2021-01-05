@@ -6,12 +6,12 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._machine_operations_async import MachineOperations
-from ._machine_extension_operations_async import MachineExtensionOperations
-from ._operation_operations_async import OperationOperations
+from ._machines_operations import MachinesOperations
+from ._machine_extensions_operations import MachineExtensionsOperations
+from ._operations import Operations
 
 __all__ = [
-    'MachineOperations',
-    'MachineExtensionOperations',
-    'OperationOperations',
+    'MachinesOperations',
+    'MachineExtensionsOperations',
+    'Operations',
 ]
