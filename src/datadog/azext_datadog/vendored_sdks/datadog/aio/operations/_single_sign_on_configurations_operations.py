@@ -9,7 +9,7 @@ from typing import Any, AsyncIterable, Callable, Dict, Generic, Optional, TypeVa
 import warnings
 
 from azure.core.async_paging import AsyncItemPaged, AsyncList
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import AsyncHttpResponse, HttpRequest
 from azure.core.polling import AsyncLROPoller, AsyncNoPolling, AsyncPollingMethod
@@ -21,8 +21,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class SingleSignOnConfigurationOperations:
-    """SingleSignOnConfigurationOperations async operations.
+class SingleSignOnConfigurationsOperations:
+    """SingleSignOnConfigurationsOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -64,14 +64,17 @@ class SingleSignOnConfigurationOperations:
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResourceListResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-02-01-preview"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -123,16 +126,17 @@ class SingleSignOnConfigurationOperations:
         resource_group_name: str,
         monitor_name: str,
         configuration_name: str,
-        properties: Optional["models.DatadogSingleSignOnProperties"] = None,
+        body: Optional["models.DatadogSingleSignOnResource"] = None,
         **kwargs
     ) -> "models.DatadogSingleSignOnResource":
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResource"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        _body = models.DatadogSingleSignOnResource(properties=properties)
         api_version = "2020-02-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._create_or_update_initial.metadata['url']  # type: ignore
@@ -151,16 +155,15 @@ class SingleSignOnConfigurationOperations:
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        if _body is not None:
-            body_content = self._serialize.body(_body, 'DatadogSingleSignOnResource')
+        if body is not None:
+            body_content = self._serialize.body(body, 'DatadogSingleSignOnResource')
         else:
             body_content = None
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -186,7 +189,7 @@ class SingleSignOnConfigurationOperations:
         resource_group_name: str,
         monitor_name: str,
         configuration_name: str,
-        properties: Optional["models.DatadogSingleSignOnProperties"] = None,
+        body: Optional["models.DatadogSingleSignOnResource"] = None,
         **kwargs
     ) -> AsyncLROPoller["models.DatadogSingleSignOnResource"]:
         """Configures single-sign-on for this resource.
@@ -198,10 +201,10 @@ class SingleSignOnConfigurationOperations:
         :type resource_group_name: str
         :param monitor_name: Monitor resource name.
         :type monitor_name: str
-        :param configuration_name:
+        :param configuration_name: Configuration name.
         :type configuration_name: str
-        :param properties:
-        :type properties: ~microsoft_datadog_client.models.DatadogSingleSignOnProperties
+        :param body:
+        :type body: ~microsoft_datadog_client.models.DatadogSingleSignOnResource
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -224,7 +227,7 @@ class SingleSignOnConfigurationOperations:
                 resource_group_name=resource_group_name,
                 monitor_name=monitor_name,
                 configuration_name=configuration_name,
-                properties=properties,
+                body=body,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -239,7 +242,14 @@ class SingleSignOnConfigurationOperations:
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'},  **kwargs)
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'monitorName': self._serialize.url("monitor_name", monitor_name, 'str'),
+            'configurationName': self._serialize.url("configuration_name", configuration_name, 'str'),
+        }
+
+        if polling is True: polling_method = AsyncARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'}, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
         else: polling_method = polling
         if cont_token:
@@ -269,7 +279,7 @@ class SingleSignOnConfigurationOperations:
         :type resource_group_name: str
         :param monitor_name: Monitor resource name.
         :type monitor_name: str
-        :param configuration_name:
+        :param configuration_name: Configuration name.
         :type configuration_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: DatadogSingleSignOnResource, or the result of cls(response)
@@ -277,9 +287,12 @@ class SingleSignOnConfigurationOperations:
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResource"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-02-01-preview"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -297,7 +310,7 @@ class SingleSignOnConfigurationOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)

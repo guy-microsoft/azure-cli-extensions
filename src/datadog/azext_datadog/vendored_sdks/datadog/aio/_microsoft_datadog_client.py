@@ -15,40 +15,43 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from azure.core.credentials_async import AsyncTokenCredential
 
-from ._configuration_async import MicrosoftDatadogClientConfiguration
-from .operations_async import ApiKeyOperations
-from .operations_async import HostOperations
-from .operations_async import LinkedResourceOperations
-from .operations_async import MonitoredResourceOperations
-from .operations_async import OperationOperations
-from .operations_async import MonitorOperations
-from .operations_async import RefreshSetPasswordOperations
-from .operations_async import TagRuleOperations
-from .operations_async import SingleSignOnConfigurationOperations
+from ._configuration import MicrosoftDatadogClientConfiguration
+from .operations import MarketplaceAgreementsOperations
+from .operations import ApiKeysOperations
+from .operations import HostsOperations
+from .operations import LinkedResourcesOperations
+from .operations import MonitoredResourcesOperations
+from .operations import Operations
+from .operations import MonitorsOperations
+from .operations import RefreshSetPasswordOperations
+from .operations import TagRulesOperations
+from .operations import SingleSignOnConfigurationsOperations
 from .. import models
 
 
 class MicrosoftDatadogClient(object):
     """MicrosoftDatadogClient.
 
-    :ivar api_key: ApiKeyOperations operations
-    :vartype api_key: microsoft_datadog_client.aio.operations_async.ApiKeyOperations
-    :ivar host: HostOperations operations
-    :vartype host: microsoft_datadog_client.aio.operations_async.HostOperations
-    :ivar linked_resource: LinkedResourceOperations operations
-    :vartype linked_resource: microsoft_datadog_client.aio.operations_async.LinkedResourceOperations
-    :ivar monitored_resource: MonitoredResourceOperations operations
-    :vartype monitored_resource: microsoft_datadog_client.aio.operations_async.MonitoredResourceOperations
-    :ivar operation: OperationOperations operations
-    :vartype operation: microsoft_datadog_client.aio.operations_async.OperationOperations
-    :ivar monitor: MonitorOperations operations
-    :vartype monitor: microsoft_datadog_client.aio.operations_async.MonitorOperations
+    :ivar marketplace_agreements: MarketplaceAgreementsOperations operations
+    :vartype marketplace_agreements: microsoft_datadog_client.aio.operations.MarketplaceAgreementsOperations
+    :ivar api_keys: ApiKeysOperations operations
+    :vartype api_keys: microsoft_datadog_client.aio.operations.ApiKeysOperations
+    :ivar hosts: HostsOperations operations
+    :vartype hosts: microsoft_datadog_client.aio.operations.HostsOperations
+    :ivar linked_resources: LinkedResourcesOperations operations
+    :vartype linked_resources: microsoft_datadog_client.aio.operations.LinkedResourcesOperations
+    :ivar monitored_resources: MonitoredResourcesOperations operations
+    :vartype monitored_resources: microsoft_datadog_client.aio.operations.MonitoredResourcesOperations
+    :ivar operations: Operations operations
+    :vartype operations: microsoft_datadog_client.aio.operations.Operations
+    :ivar monitors: MonitorsOperations operations
+    :vartype monitors: microsoft_datadog_client.aio.operations.MonitorsOperations
     :ivar refresh_set_password: RefreshSetPasswordOperations operations
-    :vartype refresh_set_password: microsoft_datadog_client.aio.operations_async.RefreshSetPasswordOperations
-    :ivar tag_rule: TagRuleOperations operations
-    :vartype tag_rule: microsoft_datadog_client.aio.operations_async.TagRuleOperations
-    :ivar single_sign_on_configuration: SingleSignOnConfigurationOperations operations
-    :vartype single_sign_on_configuration: microsoft_datadog_client.aio.operations_async.SingleSignOnConfigurationOperations
+    :vartype refresh_set_password: microsoft_datadog_client.aio.operations.RefreshSetPasswordOperations
+    :ivar tag_rules: TagRulesOperations operations
+    :vartype tag_rules: microsoft_datadog_client.aio.operations.TagRulesOperations
+    :ivar single_sign_on_configurations: SingleSignOnConfigurationsOperations operations
+    :vartype single_sign_on_configurations: microsoft_datadog_client.aio.operations.SingleSignOnConfigurationsOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: The Microsoft Azure subscription ID.
@@ -73,23 +76,25 @@ class MicrosoftDatadogClient(object):
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 
-        self.api_key = ApiKeyOperations(
+        self.marketplace_agreements = MarketplaceAgreementsOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.host = HostOperations(
+        self.api_keys = ApiKeysOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.linked_resource = LinkedResourceOperations(
+        self.hosts = HostsOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.monitored_resource = MonitoredResourceOperations(
+        self.linked_resources = LinkedResourcesOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.operation = OperationOperations(
+        self.monitored_resources = MonitoredResourcesOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.monitor = MonitorOperations(
+        self.operations = Operations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.monitors = MonitorsOperations(
             self._client, self._config, self._serialize, self._deserialize)
         self.refresh_set_password = RefreshSetPasswordOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.tag_rule = TagRuleOperations(
+        self.tag_rules = TagRulesOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.single_sign_on_configuration = SingleSignOnConfigurationOperations(
+        self.single_sign_on_configurations = SingleSignOnConfigurationsOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
     async def close(self) -> None:
