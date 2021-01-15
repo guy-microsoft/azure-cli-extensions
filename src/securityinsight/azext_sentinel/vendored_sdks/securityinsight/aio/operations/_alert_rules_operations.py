@@ -19,8 +19,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class AlertRuleOperations:
-    """AlertRuleOperations async operations.
+class AlertRulesOperations:
+    """AlertRulesOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -387,9 +387,7 @@ class AlertRuleOperations:
         workspace_name: str,
         rule_id: str,
         action_id: str,
-        etag: Optional[str] = None,
-        logic_app_resource_id: Optional[str] = None,
-        trigger_uri: Optional[str] = None,
+        action: "models.ActionRequest",
         **kwargs
     ) -> "models.ActionResponse":
         """Creates or updates the action of alert rule.
@@ -403,14 +401,8 @@ class AlertRuleOperations:
         :type rule_id: str
         :param action_id: Action ID.
         :type action_id: str
-        :param etag: Etag of the azure resource.
-        :type etag: str
-        :param logic_app_resource_id: Logic App Resource Id, /subscriptions/{my-
-         subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-
-         workflow-id}.
-        :type logic_app_resource_id: str
-        :param trigger_uri: Logic App Callback URL for this specific workflow.
-        :type trigger_uri: str
+        :param action: The action.
+        :type action: ~security_insights.models.ActionRequest
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: ActionResponse, or the result of cls(response)
         :rtype: ~security_insights.models.ActionResponse
@@ -421,8 +413,6 @@ class AlertRuleOperations:
             401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
         }
         error_map.update(kwargs.pop('error_map', {}))
-
-        action = models.ActionRequest(etag=etag, logic_app_resource_id=logic_app_resource_id, trigger_uri=trigger_uri)
         api_version = "2020-01-01"
         content_type = kwargs.pop("content_type", "application/json")
         accept = "application/json"

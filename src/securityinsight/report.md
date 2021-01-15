@@ -33,7 +33,7 @@
 |[az sentinel alert-rule update](#AlertRulesCreateOrUpdate#Update)|CreateOrUpdate#Update|[Parameters](#ParametersAlertRulesCreateOrUpdate#Update)|Not Found|
 |[az sentinel alert-rule delete](#AlertRulesDeleteAction)|DeleteAction|[Parameters](#ParametersAlertRulesDeleteAction)|[Example](#ExamplesAlertRulesDeleteAction)|
 |[az sentinel alert-rule delete](#AlertRulesDelete)|Delete|[Parameters](#ParametersAlertRulesDelete)|[Example](#ExamplesAlertRulesDelete)|
-|[az sentinel alert-rule get-action](#AlertRulesGetAction)|GetAction|[Parameters](#ParametersAlertRulesGetAction)|[Example](#ExamplesAlertRulesGetAction)|
+|[az sentinel alert-rule show-action](#AlertRulesGetAction)|GetAction|[Parameters](#ParametersAlertRulesGetAction)|[Example](#ExamplesAlertRulesGetAction)|
 
 ### <a name="CommandsInAlertRuleTemplates">Commands in `az sentinel alert-rule-template` group</a>
 |CLI Command|Operation Swagger name|Parameters|Examples|
@@ -218,12 +218,12 @@ az sentinel alert-rule delete --resource-group "myRg" --rule-id "73e01a99-5cd7-4
 ##### <a name="ParametersAlertRulesDelete">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
 |------|----|-----------|----------|------------|
-#### <a name="AlertRulesGetAction">Command `az sentinel alert-rule get-action`</a>
+#### <a name="AlertRulesGetAction">Command `az sentinel alert-rule show-action`</a>
 
 ##### <a name="ExamplesAlertRulesGetAction">Example</a>
 ```
-az sentinel alert-rule get-action --action-id "912bec42-cb66-4c03-ac63-1761b6898c3e" --resource-group "myRg" --rule-id \
-"73e01a99-5cd7-4139-a149-9f2736ff2ab5" --workspace-name "myWorkspace"
+az sentinel alert-rule show-action --action-id "912bec42-cb66-4c03-ac63-1761b6898c3e" --resource-group "myRg" \
+--rule-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersAlertRulesGetAction">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
@@ -292,9 +292,10 @@ az sentinel bookmark show --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" -
 ##### <a name="ExamplesBookmarksCreateOrUpdate#Create">Example</a>
 ```
 az sentinel bookmark create --etag "\\"0300bf09-0000-0000-0000-5c37296e0000\\"" --created "2019-01-01T13:15:30Z" \
---display-name "My bookmark" --labels "Tag1" --labels "Tag2" --notes "Found a suspicious activity" --query \
-"SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)" --query-result "Security Event query \
-result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" \
+--user-info-object-id "2046feea-040d-4a46-9e2b-91c2941bfa70" --display-name "My bookmark" --labels "Tag1" "Tag2" \
+--notes "Found a suspicious activity" --query "SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < \
+ago(2d)" --query-result "Security Event query result" --updated "2019-01-01T13:15:30Z" --object-id \
+"2046feea-040d-4a46-9e2b-91c2941bfa70" --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" \
 --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersBookmarksCreateOrUpdate#Create">Parameters</a> 
@@ -312,7 +313,8 @@ result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-
 |**--query-result**|string|The query result of the bookmark.|query_result|queryResult|
 |**--updated**|date-time|The last time the bookmark was updated|updated|updated|
 |**--incident-info**|object|Describes an incident that relates to bookmark|incident_info|incidentInfo|
-|**--updated-by-object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--user-info-object-id**|uuid|The object id of the user.|user_info_object_id|objectId|
 
 #### <a name="BookmarksCreateOrUpdate#Update">Command `az sentinel bookmark update`</a>
 
@@ -331,7 +333,8 @@ result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-
 |**--query-result**|string|The query result of the bookmark.|query_result|queryResult|
 |**--updated**|date-time|The last time the bookmark was updated|updated|updated|
 |**--incident-info**|object|Describes an incident that relates to bookmark|incident_info|incidentInfo|
-|**--updated-by-object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--user-info-object-id**|uuid|The object id of the user.|user_info_object_id|objectId|
 
 #### <a name="BookmarksDelete">Command `az sentinel bookmark delete`</a>
 
@@ -414,8 +417,14 @@ az sentinel data-connector show --data-connector-id "73e01a99-5cd7-4139-a149-9f2
 ##### <a name="ExamplesDataConnectorsCreateOrUpdate#Create">Example</a>
 ```
 az sentinel data-connector create --office-data-connector etag="\\"0300bf09-0000-0000-0000-5c37296e0000\\"" \
-tenant-id="2070ecc9-b4d5-4ae4-adaa-936fa1954fa8" --data-connector-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" \
---resource-group "myRg" --workspace-name "myWorkspace"
+tenant-id="2070ecc9-b4d5-4ae4-adaa-936fa1954fa8" state-properties-data-types-exchange-state="Enabled" \
+--data-connector-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" --workspace-name "myWorkspace"
+```
+##### <a name="ExamplesDataConnectorsCreateOrUpdate#Create">Example</a>
+```
+az sentinel data-connector create --ti-data-connector tenant-id="06b3ccb8-1384-4bcc-aec7-852f6d57161b" \
+tip-lookback-period="2020-01-01T13:00:30.123Z" state="Enabled" --data-connector-id "73e01a99-5cd7-4139-a149-9f2736ff2ab\
+5" --resource-group "myRg" --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersDataConnectorsCreateOrUpdate#Create">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
