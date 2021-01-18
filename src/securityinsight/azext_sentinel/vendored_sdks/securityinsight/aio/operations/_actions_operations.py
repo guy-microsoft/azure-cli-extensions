@@ -19,8 +19,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class AlertRuleTemplateOperations:
-    """AlertRuleTemplateOperations async operations.
+class ActionsOperations:
+    """ActionsOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -41,25 +41,28 @@ class AlertRuleTemplateOperations:
         self._deserialize = deserializer
         self._config = config
 
-    def list(
+    def list_by_alert_rule(
         self,
         resource_group_name: str,
         workspace_name: str,
+        rule_id: str,
         **kwargs
-    ) -> AsyncIterable["models.AlertRuleTemplatesList"]:
-        """Gets all alert rule templates.
+    ) -> AsyncIterable["models.ActionsList"]:
+        """Gets all actions of alert rule.
 
         :param resource_group_name: The name of the resource group within the user's subscription. The
          name is case insensitive.
         :type resource_group_name: str
         :param workspace_name: The name of the workspace.
         :type workspace_name: str
+        :param rule_id: Alert rule ID.
+        :type rule_id: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either AlertRuleTemplatesList or the result of cls(response)
-        :rtype: ~azure.core.async_paging.AsyncItemPaged[~security_insights.models.AlertRuleTemplatesList]
+        :return: An iterator like instance of either ActionsList or the result of cls(response)
+        :rtype: ~azure.core.async_paging.AsyncItemPaged[~security_insights.models.ActionsList]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.AlertRuleTemplatesList"]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.ActionsList"]
         error_map = {
             401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
         }
@@ -74,11 +77,12 @@ class AlertRuleTemplateOperations:
 
             if not next_link:
                 # Construct URL
-                url = self.list.metadata['url']  # type: ignore
+                url = self.list_by_alert_rule.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str', pattern=r'^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
                     'workspaceName': self._serialize.url("workspace_name", workspace_name, 'str', max_length=90, min_length=1),
+                    'ruleId': self._serialize.url("rule_id", rule_id, 'str'),
                 }
                 url = self._client.format_url(url, **path_format_arguments)
                 # Construct parameters
@@ -93,7 +97,7 @@ class AlertRuleTemplateOperations:
             return request
 
         async def extract_data(pipeline_response):
-            deserialized = self._deserialize('AlertRuleTemplatesList', pipeline_response)
+            deserialized = self._deserialize('ActionsList', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
@@ -114,67 +118,4 @@ class AlertRuleTemplateOperations:
         return AsyncItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates'}  # type: ignore
-
-    async def get(
-        self,
-        resource_group_name: str,
-        workspace_name: str,
-        alert_rule_template_id: str,
-        **kwargs
-    ) -> "models.AlertRuleTemplate":
-        """Gets the alert rule template.
-
-        :param resource_group_name: The name of the resource group within the user's subscription. The
-         name is case insensitive.
-        :type resource_group_name: str
-        :param workspace_name: The name of the workspace.
-        :type workspace_name: str
-        :param alert_rule_template_id: Alert rule template ID.
-        :type alert_rule_template_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: AlertRuleTemplate, or the result of cls(response)
-        :rtype: ~security_insights.models.AlertRuleTemplate
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.AlertRuleTemplate"]
-        error_map = {
-            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
-        }
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-01-01"
-        accept = "application/json"
-
-        # Construct URL
-        url = self.get.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str', pattern=r'^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$'),
-            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str', max_length=90, min_length=1, pattern=r'^[-\w\._\(\)]+$'),
-            'workspaceName': self._serialize.url("workspace_name", workspace_name, 'str', max_length=90, min_length=1),
-            'alertRuleTemplateId': self._serialize.url("alert_rule_template_id", alert_rule_template_id, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
-
-        request = self._client.get(url, query_parameters, header_parameters)
-        pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('AlertRuleTemplate', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates/{alertRuleTemplateId}'}  # type: ignore
+    list_by_alert_rule.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions'}  # type: ignore
