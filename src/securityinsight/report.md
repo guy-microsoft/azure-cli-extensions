@@ -33,7 +33,7 @@
 |[az sentinel alert-rule update](#AlertRulesCreateOrUpdate#Update)|CreateOrUpdate#Update|[Parameters](#ParametersAlertRulesCreateOrUpdate#Update)|Not Found|
 |[az sentinel alert-rule delete](#AlertRulesDeleteAction)|DeleteAction|[Parameters](#ParametersAlertRulesDeleteAction)|[Example](#ExamplesAlertRulesDeleteAction)|
 |[az sentinel alert-rule delete](#AlertRulesDelete)|Delete|[Parameters](#ParametersAlertRulesDelete)|[Example](#ExamplesAlertRulesDelete)|
-|[az sentinel alert-rule get-action](#AlertRulesGetAction)|GetAction|[Parameters](#ParametersAlertRulesGetAction)|[Example](#ExamplesAlertRulesGetAction)|
+|[az sentinel alert-rule show-action](#AlertRulesGetAction)|GetAction|[Parameters](#ParametersAlertRulesGetAction)|[Example](#ExamplesAlertRulesGetAction)|
 
 ### <a name="CommandsInAlertRuleTemplates">Commands in `az sentinel alert-rule-template` group</a>
 |CLI Command|Operation Swagger name|Parameters|Examples|
@@ -73,7 +73,8 @@
 |---------|------------|--------|-----------|
 |[az sentinel incident-comment list](#IncidentCommentsListByIncident)|ListByIncident|[Parameters](#ParametersIncidentCommentsListByIncident)|[Example](#ExamplesIncidentCommentsListByIncident)|
 |[az sentinel incident-comment show](#IncidentCommentsGet)|Get|[Parameters](#ParametersIncidentCommentsGet)|[Example](#ExamplesIncidentCommentsGet)|
-|[az sentinel incident-comment create](#IncidentCommentsCreateComment)|CreateComment|[Parameters](#ParametersIncidentCommentsCreateComment)|[Example](#ExamplesIncidentCommentsCreateComment)|
+|[az sentinel incident-comment create](#IncidentCommentsCreateOrUpdateComment)|CreateOrUpdateComment|[Parameters](#ParametersIncidentCommentsCreateOrUpdateComment)|[Example](#ExamplesIncidentCommentsCreateOrUpdateComment)|
+|[az sentinel incident-comment delete](#IncidentCommentsDeleteComment)|DeleteComment|[Parameters](#ParametersIncidentCommentsDeleteComment)|[Example](#ExamplesIncidentCommentsDeleteComment)|
 
 
 ## COMMAND DETAILS
@@ -218,12 +219,12 @@ az sentinel alert-rule delete --resource-group "myRg" --rule-id "73e01a99-5cd7-4
 ##### <a name="ParametersAlertRulesDelete">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
 |------|----|-----------|----------|------------|
-#### <a name="AlertRulesGetAction">Command `az sentinel alert-rule get-action`</a>
+#### <a name="AlertRulesGetAction">Command `az sentinel alert-rule show-action`</a>
 
 ##### <a name="ExamplesAlertRulesGetAction">Example</a>
 ```
-az sentinel alert-rule get-action --action-id "912bec42-cb66-4c03-ac63-1761b6898c3e" --resource-group "myRg" --rule-id \
-"73e01a99-5cd7-4139-a149-9f2736ff2ab5" --workspace-name "myWorkspace"
+az sentinel alert-rule show-action --action-id "912bec42-cb66-4c03-ac63-1761b6898c3e" --resource-group "myRg" \
+--rule-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersAlertRulesGetAction">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
@@ -292,9 +293,10 @@ az sentinel bookmark show --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" -
 ##### <a name="ExamplesBookmarksCreateOrUpdate#Create">Example</a>
 ```
 az sentinel bookmark create --etag "\\"0300bf09-0000-0000-0000-5c37296e0000\\"" --created "2019-01-01T13:15:30Z" \
---display-name "My bookmark" --labels "Tag1" --labels "Tag2" --notes "Found a suspicious activity" --query \
-"SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)" --query-result "Security Event query \
-result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" \
+--user-info-object-id "2046feea-040d-4a46-9e2b-91c2941bfa70" --display-name "My bookmark" --labels "Tag1" "Tag2" \
+--notes "Found a suspicious activity" --query "SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < \
+ago(2d)" --query-result "Security Event query result" --updated "2019-01-01T13:15:30Z" --object-id \
+"2046feea-040d-4a46-9e2b-91c2941bfa70" --bookmark-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" \
 --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersBookmarksCreateOrUpdate#Create">Parameters</a> 
@@ -312,7 +314,8 @@ result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-
 |**--query-result**|string|The query result of the bookmark.|query_result|queryResult|
 |**--updated**|date-time|The last time the bookmark was updated|updated|updated|
 |**--incident-info**|object|Describes an incident that relates to bookmark|incident_info|incidentInfo|
-|**--updated-by-object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--user-info-object-id**|uuid|The object id of the user.|user_info_object_id|objectId|
 
 #### <a name="BookmarksCreateOrUpdate#Update">Command `az sentinel bookmark update`</a>
 
@@ -331,7 +334,8 @@ result" --updated "2019-01-01T13:15:30Z" --bookmark-id "73e01a99-5cd7-4139-a149-
 |**--query-result**|string|The query result of the bookmark.|query_result|queryResult|
 |**--updated**|date-time|The last time the bookmark was updated|updated|updated|
 |**--incident-info**|object|Describes an incident that relates to bookmark|incident_info|incidentInfo|
-|**--updated-by-object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--object-id**|uuid|The object id of the user.|object_id|objectId|
+|**--user-info-object-id**|uuid|The object id of the user.|user_info_object_id|objectId|
 
 #### <a name="BookmarksDelete">Command `az sentinel bookmark delete`</a>
 
@@ -414,8 +418,8 @@ az sentinel data-connector show --data-connector-id "73e01a99-5cd7-4139-a149-9f2
 ##### <a name="ExamplesDataConnectorsCreateOrUpdate#Create">Example</a>
 ```
 az sentinel data-connector create --office-data-connector etag="\\"0300bf09-0000-0000-0000-5c37296e0000\\"" \
-tenant-id="2070ecc9-b4d5-4ae4-adaa-936fa1954fa8" --data-connector-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" \
---resource-group "myRg" --workspace-name "myWorkspace"
+tenant-id="2070ecc9-b4d5-4ae4-adaa-936fa1954fa8" state-properties-data-types-exchange-state="Enabled" \
+--data-connector-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" --workspace-name "myWorkspace"
 ```
 ##### <a name="ParametersDataConnectorsCreateOrUpdate#Create">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
@@ -593,18 +597,34 @@ az sentinel incident-comment show --incident-comment-id "4bb36b7b-26ff-4d1c-9cbe
 |**--incident-id**|string|Incident ID|incident_id|incidentId|
 |**--incident-comment-id**|string|Incident comment ID|incident_comment_id|incidentCommentId|
 
-#### <a name="IncidentCommentsCreateComment">Command `az sentinel incident-comment create`</a>
+#### <a name="IncidentCommentsCreateOrUpdateComment">Command `az sentinel incident-comment create`</a>
 
-##### <a name="ExamplesIncidentCommentsCreateComment">Example</a>
+##### <a name="ExamplesIncidentCommentsCreateOrUpdateComment">Example</a>
 ```
 az sentinel incident-comment create --message "Some message" --incident-comment-id "4bb36b7b-26ff-4d1c-9cbe-0d8ab3da001\
 4" --incident-id "73e01a99-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" --workspace-name "myWorkspace"
 ```
-##### <a name="ParametersIncidentCommentsCreateComment">Parameters</a> 
+##### <a name="ParametersIncidentCommentsCreateOrUpdateComment">Parameters</a> 
 |Option|Type|Description|Path (SDK)|Swagger name|
 |------|----|-----------|----------|------------|
 |**--resource-group-name**|string|The name of the resource group within the user's subscription. The name is case insensitive.|resource_group_name|resourceGroupName|
 |**--workspace-name**|string|The name of the workspace.|workspace_name|workspaceName|
 |**--incident-id**|string|Incident ID|incident_id|incidentId|
 |**--incident-comment-id**|string|Incident comment ID|incident_comment_id|incidentCommentId|
+|**--etag**|string|Etag of the azure resource|etag|etag|
 |**--message**|string|The comment message|message|message|
+
+#### <a name="IncidentCommentsDeleteComment">Command `az sentinel incident-comment delete`</a>
+
+##### <a name="ExamplesIncidentCommentsDeleteComment">Example</a>
+```
+az sentinel incident-comment delete --incident-comment-id "4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014" --incident-id \
+"73e01a98-5cd7-4139-a149-9f2736ff2ab5" --resource-group "myRg" --workspace-name "myWorkspace"
+```
+##### <a name="ParametersIncidentCommentsDeleteComment">Parameters</a> 
+|Option|Type|Description|Path (SDK)|Swagger name|
+|------|----|-----------|----------|------------|
+|**--resource-group-name**|string|The name of the resource group within the user's subscription. The name is case insensitive.|resource_group_name|resourceGroupName|
+|**--workspace-name**|string|The name of the workspace.|workspace_name|workspaceName|
+|**--incident-id**|string|Incident ID|incident_id|incidentId|
+|**--incident-comment-id**|string|Incident comment ID|incident_comment_id|incidentCommentId|
