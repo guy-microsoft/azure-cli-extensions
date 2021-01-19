@@ -55,7 +55,7 @@ def load_arguments(self, _):
         c.argument('name', options_list=['-n', '--extension-name', '--name'], type=str, help='The name of the machine '
                    'extension.')
         c.argument('tags', tags_type)
-        c.argument('location', arg_type=get_location_type(self.cli_ctx),
+        c.argument('location', arg_type=get_location_type(self.cli_ctx), required=False,
                    validator=get_default_location_from_resource_group)
         c.argument('force_update_tag', type=str, help='How the extension handler should be forced to update even if '
                    'the extension configuration has not changed.')

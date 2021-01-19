@@ -66,21 +66,23 @@ def connectedmachine_extension_create(client,
                                       settings=None,
                                       protected_settings=None,
                                       no_wait=False):
+    extension_parameters = {}
+    extension_parameters['tags'] = tags
+    extension_parameters['location'] = location
+    extension_parameters['force_update_tag'] = force_update_tag
+    extension_parameters['publisher'] = publisher
+    extension_parameters['type_properties_type'] = type_
+    extension_parameters['type_handler_version'] = type_handler_version
+    extension_parameters['auto_upgrade_minor_version'] = auto_upgrade_minor_version
+    extension_parameters['settings'] = settings
+    extension_parameters['protected_settings'] = protected_settings
+    extension_parameters['instance_view'] = {}
     return sdk_no_wait(no_wait,
                        client.begin_create_or_update,
                        resource_group_name=resource_group_name,
                        name=machine_name,
                        extension_name=name,
-                       tags=tags,
-                       location=location,
-                       force_update_tag=force_update_tag,
-                       publisher=publisher,
-                       type_properties_type=type_,
-                       type_handler_version=type_handler_version,
-                       auto_upgrade_minor_version=auto_upgrade_minor_version,
-                       settings=settings,
-                       protected_settings=protected_settings,
-                       status=None)
+                       extension_parameters=extension_parameters)
 
 
 def connectedmachine_extension_update(client,
@@ -96,19 +98,21 @@ def connectedmachine_extension_update(client,
                                       settings=None,
                                       protected_settings=None,
                                       no_wait=False):
+    extension_parameters = {}
+    extension_parameters['tags'] = tags
+    extension_parameters['force_update_tag'] = force_update_tag
+    extension_parameters['publisher'] = publisher
+    extension_parameters['type'] = type_
+    extension_parameters['type_handler_version'] = type_handler_version
+    extension_parameters['auto_upgrade_minor_version'] = auto_upgrade_minor_version
+    extension_parameters['settings'] = settings
+    extension_parameters['protected_settings'] = protected_settings
     return sdk_no_wait(no_wait,
                        client.begin_update,
                        resource_group_name=resource_group_name,
                        name=machine_name,
                        extension_name=name,
-                       tags=tags,
-                       force_update_tag=force_update_tag,
-                       publisher=publisher,
-                       type=type_,
-                       type_handler_version=type_handler_version,
-                       auto_upgrade_minor_version=auto_upgrade_minor_version,
-                       settings=settings,
-                       protected_settings=protected_settings)
+                       extension_parameters=extension_parameters)
 
 
 def connectedmachine_extension_delete(client,

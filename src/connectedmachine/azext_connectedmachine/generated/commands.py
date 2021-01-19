@@ -17,21 +17,22 @@ def load_command_table(self, _):
 
     from azext_connectedmachine.generated._client_factory import cf_machine
     connectedmachine_machine = CliCommandType(
-        operations_tmpl='azext_connectedmachine.vendored_sdks.connectedmachine.operations._machine_operations#MachineOp'
-        'erations.{}',
+        operations_tmpl='azext_connectedmachine.vendored_sdks.connectedmachine.operations._machines_operations#Machines'
+        'Operations.{}',
         client_factory=cf_machine)
-    with self.command_group('connectedmachine', connectedmachine_machine, client_factory=cf_machine) as g:
+    with self.command_group('connectedmachine', connectedmachine_machine, client_factory=cf_machine,
+                            is_experimental=True) as g:
         g.custom_command('list', 'connectedmachine_list')
         g.custom_show_command('show', 'connectedmachine_show')
         g.custom_command('delete', 'connectedmachine_delete', confirmation=True)
 
     from azext_connectedmachine.generated._client_factory import cf_machine_extension
     connectedmachine_machine_extension = CliCommandType(
-        operations_tmpl='azext_connectedmachine.vendored_sdks.connectedmachine.operations._machine_extension_operations'
-        '#MachineExtensionOperations.{}',
+        operations_tmpl='azext_connectedmachine.vendored_sdks.connectedmachine.operations._machine_extensions_operation'
+        's#MachineExtensionsOperations.{}',
         client_factory=cf_machine_extension)
     with self.command_group('connectedmachine extension', connectedmachine_machine_extension,
-                            client_factory=cf_machine_extension, is_experimental=True) as g:
+                            client_factory=cf_machine_extension) as g:
         g.custom_command('list', 'connectedmachine_extension_list')
         g.custom_show_command('show', 'connectedmachine_extension_show')
         g.custom_command('create', 'connectedmachine_extension_create', supports_no_wait=True)

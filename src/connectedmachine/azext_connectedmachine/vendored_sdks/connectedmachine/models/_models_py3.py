@@ -161,17 +161,17 @@ class LocationData(msrest.serialization.Model):
 
 
 class Resource(msrest.serialization.Model):
-    """Resource.
+    """Common fields that are returned in the response for all Azure Resource Manager resources.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     """
 
@@ -198,19 +198,19 @@ class Resource(msrest.serialization.Model):
 
 
 class TrackedResource(Resource):
-    """The resource model definition for a ARM tracked top level resource.
+    """The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'.
 
     Variables are only populated by the server, and will be ignored when sending a request.
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -252,13 +252,13 @@ class Machine(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -400,13 +400,13 @@ class MachineExtension(TrackedResource):
 
     All required parameters must be populated in order to send to Azure.
 
-    :ivar id: Fully qualified resource Id for the resource. Ex -
+    :ivar id: Fully qualified resource ID for the resource. Ex -
      /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
     :vartype id: str
     :ivar name: The name of the resource.
     :vartype name: str
-    :ivar type: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     Microsoft.Storage/storageAccounts.
+    :ivar type: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     "Microsoft.Storage/storageAccounts".
     :vartype type: str
     :param tags: A set of tags. Resource tags.
     :type tags: dict[str, str]
@@ -420,9 +420,8 @@ class MachineExtension(TrackedResource):
     :param type_properties_type: Specifies the type of the extension; an example is
      "CustomScriptExtension".
     :type type_properties_type: str
-    :param type_handler_version_properties_type_handler_version: Specifies the version of the
-     script handler.
-    :type type_handler_version_properties_type_handler_version: str
+    :param type_handler_version: Specifies the version of the script handler.
+    :type type_handler_version: str
     :param auto_upgrade_minor_version: Indicates whether the extension should use a newer minor
      version if one is available at deployment time. Once deployed, however, the extension will not
      upgrade minor versions unless redeployed, even with this property set to true.
@@ -434,16 +433,8 @@ class MachineExtension(TrackedResource):
     :type protected_settings: object
     :ivar provisioning_state: The provisioning state, which only appears in the response.
     :vartype provisioning_state: str
-    :ivar name_instance_view_name: The machine extension name.
-    :vartype name_instance_view_name: str
-    :ivar type_instance_view_type: Specifies the type of the extension; an example is
-     "CustomScriptExtension".
-    :vartype type_instance_view_type: str
-    :ivar type_handler_version_instance_view_type_handler_version: Specifies the version of the
-     script handler.
-    :vartype type_handler_version_instance_view_type_handler_version: str
-    :param status: Instance view status.
-    :type status: ~connected_machine.models.MachineExtensionInstanceViewStatus
+    :param instance_view: The machine extension instance view.
+    :type instance_view: ~connected_machine.models.MachineExtensionInstanceView
     """
 
     _validation = {
@@ -452,9 +443,6 @@ class MachineExtension(TrackedResource):
         'type': {'readonly': True},
         'location': {'required': True},
         'provisioning_state': {'readonly': True},
-        'name_instance_view_name': {'readonly': True},
-        'type_instance_view_type': {'readonly': True},
-        'type_handler_version_instance_view_type_handler_version': {'readonly': True},
     }
 
     _attribute_map = {
@@ -466,15 +454,12 @@ class MachineExtension(TrackedResource):
         'force_update_tag': {'key': 'properties.forceUpdateTag', 'type': 'str'},
         'publisher': {'key': 'properties.publisher', 'type': 'str'},
         'type_properties_type': {'key': 'properties.type', 'type': 'str'},
-        'type_handler_version_properties_type_handler_version': {'key': 'properties.typeHandlerVersion', 'type': 'str'},
+        'type_handler_version': {'key': 'properties.typeHandlerVersion', 'type': 'str'},
         'auto_upgrade_minor_version': {'key': 'properties.autoUpgradeMinorVersion', 'type': 'bool'},
         'settings': {'key': 'properties.settings', 'type': 'object'},
         'protected_settings': {'key': 'properties.protectedSettings', 'type': 'object'},
         'provisioning_state': {'key': 'properties.provisioningState', 'type': 'str'},
-        'name_instance_view_name': {'key': 'instanceView.name', 'type': 'str'},
-        'type_instance_view_type': {'key': 'instanceView.type', 'type': 'str'},
-        'type_handler_version_instance_view_type_handler_version': {'key': 'instanceView.typeHandlerVersion', 'type': 'str'},
-        'status': {'key': 'instanceView.status', 'type': 'MachineExtensionInstanceViewStatus'},
+        'instance_view': {'key': 'properties.instanceView', 'type': 'MachineExtensionInstanceView'},
     }
 
     def __init__(
@@ -485,26 +470,23 @@ class MachineExtension(TrackedResource):
         force_update_tag: Optional[str] = None,
         publisher: Optional[str] = None,
         type_properties_type: Optional[str] = None,
-        type_handler_version_properties_type_handler_version: Optional[str] = None,
+        type_handler_version: Optional[str] = None,
         auto_upgrade_minor_version: Optional[bool] = None,
         settings: Optional[object] = None,
         protected_settings: Optional[object] = None,
-        status: Optional["MachineExtensionInstanceViewStatus"] = None,
+        instance_view: Optional["MachineExtensionInstanceView"] = None,
         **kwargs
     ):
         super(MachineExtension, self).__init__(tags=tags, location=location, **kwargs)
         self.force_update_tag = force_update_tag
         self.publisher = publisher
         self.type_properties_type = type_properties_type
-        self.type_handler_version_properties_type_handler_version = type_handler_version_properties_type_handler_version
+        self.type_handler_version = type_handler_version
         self.auto_upgrade_minor_version = auto_upgrade_minor_version
         self.settings = settings
         self.protected_settings = protected_settings
         self.provisioning_state = None
-        self.name_instance_view_name = None
-        self.type_instance_view_type = None
-        self.type_handler_version_instance_view_type_handler_version = None
-        self.status = status
+        self.instance_view = instance_view
 
 
 class MachineExtensionInstanceView(msrest.serialization.Model):

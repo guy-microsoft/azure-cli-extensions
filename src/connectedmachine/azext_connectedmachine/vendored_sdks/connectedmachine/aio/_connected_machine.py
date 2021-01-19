@@ -15,22 +15,22 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from azure.core.credentials_async import AsyncTokenCredential
 
-from ._configuration_async import ConnectedMachineConfiguration
-from .operations_async import MachineOperations
-from .operations_async import MachineExtensionOperations
-from .operations_async import OperationOperations
+from ._configuration import ConnectedMachineConfiguration
+from .operations import MachinesOperations
+from .operations import MachineExtensionsOperations
+from .operations import Operations
 from .. import models
 
 
 class ConnectedMachine(object):
     """The Hybrid Compute Management Client.
 
-    :ivar machine: MachineOperations operations
-    :vartype machine: connected_machine.aio.operations_async.MachineOperations
-    :ivar machine_extension: MachineExtensionOperations operations
-    :vartype machine_extension: connected_machine.aio.operations_async.MachineExtensionOperations
-    :ivar operation: OperationOperations operations
-    :vartype operation: connected_machine.aio.operations_async.OperationOperations
+    :ivar machines: MachinesOperations operations
+    :vartype machines: connected_machine.aio.operations.MachinesOperations
+    :ivar machine_extensions: MachineExtensionsOperations operations
+    :vartype machine_extensions: connected_machine.aio.operations.MachineExtensionsOperations
+    :ivar operations: Operations operations
+    :vartype operations: connected_machine.aio.operations.Operations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param subscription_id: Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
@@ -53,14 +53,13 @@ class ConnectedMachine(object):
 
         client_models = {k: v for k, v in models.__dict__.items() if isinstance(v, type)}
         self._serialize = Serializer(client_models)
-        self._serialize.client_side_validation = False
         self._deserialize = Deserializer(client_models)
 
-        self.machine = MachineOperations(
+        self.machines = MachinesOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.machine_extension = MachineExtensionOperations(
+        self.machine_extensions = MachineExtensionsOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.operation = OperationOperations(
+        self.operations = Operations(
             self._client, self._config, self._serialize, self._deserialize)
 
     async def close(self) -> None:
