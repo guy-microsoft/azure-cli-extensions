@@ -8,23 +8,25 @@
 from typing import TYPE_CHECKING
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.paging import ItemPaged
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import HttpRequest, HttpResponse
+from azure.core.polling import LROPoller, NoPolling, PollingMethod
 from azure.mgmt.core.exceptions import ARMErrorFormat
+from azure.mgmt.core.polling.arm_polling import ARMPolling
 
 from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
-class TagRuleOperations(object):
-    """TagRuleOperations operations.
+class SingleSignOnConfigurationsOperations(object):
+    """SingleSignOnConfigurationsOperations operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -51,10 +53,10 @@ class TagRuleOperations(object):
         monitor_name,  # type: str
         **kwargs  # type: Any
     ):
-        # type: (...) -> Iterable["models.MonitoringTagRulesListResponse"]
-        """List the tag rules for a given monitor resource.
+        # type: (...) -> Iterable["models.DatadogSingleSignOnResourceListResponse"]
+        """List the single sign-on configurations for a given monitor resource.
 
-        List the tag rules for a given monitor resource.
+        List the single sign-on configurations for a given monitor resource.
 
         :param resource_group_name: The name of the resource group to which the Datadog resource
          belongs.
@@ -62,19 +64,22 @@ class TagRuleOperations(object):
         :param monitor_name: Monitor resource name.
         :type monitor_name: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either MonitoringTagRulesListResponse or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~microsoft_datadog_client.models.MonitoringTagRulesListResponse]
+        :return: An iterator like instance of either DatadogSingleSignOnResourceListResponse or the result of cls(response)
+        :rtype: ~azure.core.paging.ItemPaged[~microsoft_datadog_client.models.DatadogSingleSignOnResourceListResponse]
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.MonitoringTagRulesListResponse"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResourceListResponse"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-02-01-preview"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -97,7 +102,7 @@ class TagRuleOperations(object):
             return request
 
         def extract_data(pipeline_response):
-            deserialized = self._deserialize('MonitoringTagRulesListResponse', pipeline_response)
+            deserialized = self._deserialize('DatadogSingleSignOnResourceListResponse', pipeline_response)
             list_of_elem = deserialized.value
             if cls:
                 list_of_elem = cls(list_of_elem)
@@ -119,71 +124,33 @@ class TagRuleOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules'}  # type: ignore
+    list.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations'}  # type: ignore
 
-    def create_or_update(
+    def _create_or_update_initial(
         self,
         resource_group_name,  # type: str
         monitor_name,  # type: str
-        rule_set_name,  # type: str
-        filtering_tags=None,  # type: Optional[List["models.FilteringTag"]]
-        send_aad_logs=None,  # type: Optional[bool]
-        send_subscription_logs=None,  # type: Optional[bool]
-        send_resource_logs=None,  # type: Optional[bool]
-        log_rules_filtering_tags=None,  # type: Optional[List["models.FilteringTag"]]
+        configuration_name,  # type: str
+        body=None,  # type: Optional["models.DatadogSingleSignOnResource"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.MonitoringTagRules"
-        """Create or update a tag rule set for a given monitor resource.
-
-        Create or update a tag rule set for a given monitor resource.
-
-        :param resource_group_name: The name of the resource group to which the Datadog resource
-         belongs.
-        :type resource_group_name: str
-        :param monitor_name: Monitor resource name.
-        :type monitor_name: str
-        :param rule_set_name:
-        :type rule_set_name: str
-        :param filtering_tags: List of filtering tags to be used for capturing metrics. If empty, all
-         resources will be captured. If only Exclude action is specified, the rules will apply to the
-         list of all available resources. If Include actions are specified, the rules will only include
-         resources with the associated tags.
-        :type filtering_tags: list[~microsoft_datadog_client.models.FilteringTag]
-        :param send_aad_logs: Flag specifying if AAD logs should be sent for the Monitor resource.
-        :type send_aad_logs: bool
-        :param send_subscription_logs: Flag specifying if Azure subscription logs should be sent for
-         the Monitor resource.
-        :type send_subscription_logs: bool
-        :param send_resource_logs: Flag specifying if Azure resource logs should be sent for the
-         Monitor resource.
-        :type send_resource_logs: bool
-        :param log_rules_filtering_tags: List of filtering tags to be used for capturing logs. This
-         only takes effect if SendResourceLogs flag is enabled. If empty, all resources will be
-         captured. If only Exclude action is specified, the rules will apply to the list of all
-         available resources. If Include actions are specified, the rules will only include resources
-         with the associated tags.
-        :type log_rules_filtering_tags: list[~microsoft_datadog_client.models.FilteringTag]
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: MonitoringTagRules, or the result of cls(response)
-        :rtype: ~microsoft_datadog_client.models.MonitoringTagRules
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.MonitoringTagRules"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        # type: (...) -> "models.DatadogSingleSignOnResource"
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResource"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        _body = models.MonitoringTagRules(filtering_tags_properties_metric_rules_filtering_tags=filtering_tags, send_aad_logs=send_aad_logs, send_subscription_logs=send_subscription_logs, send_resource_logs=send_resource_logs, filtering_tags_properties_log_rules_filtering_tags=log_rules_filtering_tags)
         api_version = "2020-02-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self.create_or_update.metadata['url']  # type: ignore
+        url = self._create_or_update_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
             'monitorName': self._serialize.url("monitor_name", monitor_name, 'str'),
-            'ruleSetName': self._serialize.url("rule_set_name", rule_set_name, 'str'),
+            'configurationName': self._serialize.url("configuration_name", configuration_name, 'str'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -194,60 +161,146 @@ class TagRuleOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        if _body is not None:
-            body_content = self._serialize.body(_body, 'MonitoringTagRules')
+        if body is not None:
+            body_content = self._serialize.body(body, 'DatadogSingleSignOnResource')
         else:
             body_content = None
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
-        if response.status_code not in [200]:
+        if response.status_code not in [200, 201]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             error = self._deserialize(models.ResourceProviderDefaultErrorResponse, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('MonitoringTagRules', pipeline_response)
+        if response.status_code == 200:
+            deserialized = self._deserialize('DatadogSingleSignOnResource', pipeline_response)
+
+        if response.status_code == 201:
+            deserialized = self._deserialize('DatadogSingleSignOnResource', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules/{ruleSetName}'}  # type: ignore
+    _create_or_update_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}'}  # type: ignore
 
-    def get(
+    def begin_create_or_update(
         self,
         resource_group_name,  # type: str
         monitor_name,  # type: str
-        rule_set_name,  # type: str
+        configuration_name,  # type: str
+        body=None,  # type: Optional["models.DatadogSingleSignOnResource"]
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.MonitoringTagRules"
-        """Get a tag rule set for a given monitor resource.
+        # type: (...) -> LROPoller["models.DatadogSingleSignOnResource"]
+        """Configures single-sign-on for this resource.
 
-        Get a tag rule set for a given monitor resource.
+        Configures single-sign-on for this resource.
 
         :param resource_group_name: The name of the resource group to which the Datadog resource
          belongs.
         :type resource_group_name: str
         :param monitor_name: Monitor resource name.
         :type monitor_name: str
-        :param rule_set_name:
-        :type rule_set_name: str
+        :param configuration_name: Configuration name.
+        :type configuration_name: str
+        :param body:
+        :type body: ~microsoft_datadog_client.models.DatadogSingleSignOnResource
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: MonitoringTagRules, or the result of cls(response)
-        :rtype: ~microsoft_datadog_client.models.MonitoringTagRules
+        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
+        :keyword polling: True for ARMPolling, False for no polling, or a
+         polling object for personal polling strategy
+        :paramtype polling: bool or ~azure.core.polling.PollingMethod
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either DatadogSingleSignOnResource or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~microsoft_datadog_client.models.DatadogSingleSignOnResource]
+        :raises ~azure.core.exceptions.HttpResponseError:
+        """
+        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResource"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
+        cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
+        if cont_token is None:
+            raw_result = self._create_or_update_initial(
+                resource_group_name=resource_group_name,
+                monitor_name=monitor_name,
+                configuration_name=configuration_name,
+                body=body,
+                cls=lambda x,y,z: x,
+                **kwargs
+            )
+
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
+        def get_long_running_output(pipeline_response):
+            deserialized = self._deserialize('DatadogSingleSignOnResource', pipeline_response)
+
+            if cls:
+                return cls(pipeline_response, deserialized, {})
+            return deserialized
+
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'monitorName': self._serialize.url("monitor_name", monitor_name, 'str'),
+            'configurationName': self._serialize.url("configuration_name", configuration_name, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'azure-async-operation'}, path_format_arguments=path_format_arguments,  **kwargs)
+        elif polling is False: polling_method = NoPolling()
+        else: polling_method = polling
+        if cont_token:
+            return LROPoller.from_continuation_token(
+                polling_method=polling_method,
+                continuation_token=cont_token,
+                client=self._client,
+                deserialization_callback=get_long_running_output
+            )
+        else:
+            return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
+    begin_create_or_update.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}'}  # type: ignore
+
+    def get(
+        self,
+        resource_group_name,  # type: str
+        monitor_name,  # type: str
+        configuration_name,  # type: str
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.DatadogSingleSignOnResource"
+        """Gets the datadog single sign-on resource for the given Monitor.
+
+        Gets the datadog single sign-on resource for the given Monitor.
+
+        :param resource_group_name: The name of the resource group to which the Datadog resource
+         belongs.
+        :type resource_group_name: str
+        :param monitor_name: Monitor resource name.
+        :type monitor_name: str
+        :param configuration_name: Configuration name.
+        :type configuration_name: str
+        :keyword callable cls: A custom type or function that will be passed the direct response
+        :return: DatadogSingleSignOnResource, or the result of cls(response)
+        :rtype: ~microsoft_datadog_client.models.DatadogSingleSignOnResource
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.MonitoringTagRules"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.DatadogSingleSignOnResource"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-02-01-preview"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -255,7 +308,7 @@ class TagRuleOperations(object):
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
             'monitorName': self._serialize.url("monitor_name", monitor_name, 'str'),
-            'ruleSetName': self._serialize.url("rule_set_name", rule_set_name, 'str'),
+            'configurationName': self._serialize.url("configuration_name", configuration_name, 'str'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -265,7 +318,7 @@ class TagRuleOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -276,10 +329,10 @@ class TagRuleOperations(object):
             error = self._deserialize(models.ResourceProviderDefaultErrorResponse, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('MonitoringTagRules', pipeline_response)
+        deserialized = self._deserialize('DatadogSingleSignOnResource', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules/{ruleSetName}'}  # type: ignore
+    get.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}'}  # type: ignore
