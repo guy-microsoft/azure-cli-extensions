@@ -33,6 +33,9 @@ class AlertRuleKind(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     SCHEDULED = "Scheduled"
     MICROSOFT_SECURITY_INCIDENT_CREATION = "MicrosoftSecurityIncidentCreation"
     FUSION = "Fusion"
+    ML_BEHAVIOR_ANALYTICS = "MLBehaviorAnalytics"
+    THREAT_INTELLIGENCE = "ThreatIntelligence"
+    ANOMALY = "Anomaly"
 
 class AlertSeverity(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """The severity of the alert
@@ -156,7 +159,7 @@ class SettingKind(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     UEBA_SETTINGS = "UebaSettings"
     TOGGLE_SETTINGS = "ToggleSettings"
 
-class StatusInMCAS(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
+class StatusInMcas(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App
     Security).
     """
