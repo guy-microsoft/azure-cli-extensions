@@ -6,12 +6,5 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._operations import Operations
-from ._jobs_operations import JobsOperations
-from ._service_operations import ServiceOperations
-
-__all__ = [
-    'Operations',
-    'JobsOperations',
-    'ServiceOperations',
-]
+from ._data_box_management_client import DataBoxManagementClient
+__all__ = ['DataBoxManagementClient']
