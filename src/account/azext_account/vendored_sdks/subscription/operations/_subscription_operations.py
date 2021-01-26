@@ -8,17 +8,18 @@
 from typing import TYPE_CHECKING
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
-from azure.core.paging import ItemPaged
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import HttpRequest, HttpResponse
+from azure.core.polling import LROPoller, NoPolling, PollingMethod
 from azure.mgmt.core.exceptions import ARMErrorFormat
+from azure.mgmt.core.polling.arm_polling import ARMPolling
 
 from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar
+    from typing import Any, Callable, Dict, Generic, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
@@ -45,100 +46,26 @@ class SubscriptionOperations(object):
         self._deserialize = deserializer
         self._config = config
 
-    def list_location(
+    def _create_alias_initial(
         self,
-        subscription_id,  # type: str
+        alias_name,  # type: str
+        body,  # type: "models.PutAliasRequest"
         **kwargs  # type: Any
     ):
-        # type: (...) -> Iterable["models.LocationListResult"]
-        """Gets all available geo-locations.
-
-        This operation provides all the locations that are available for resource providers; however,
-        each resource provider may support a subset of this list.
-
-        :param subscription_id: The ID of the target subscription.
-        :type subscription_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either LocationListResult or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~subscription_client.models.LocationListResult]
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.LocationListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        # type: (...) -> "models.PutAliasResponse"
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.PutAliasResponse"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2016-06-01"
-
-        def prepare_request(next_link=None):
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            if not next_link:
-                # Construct URL
-                url = self.list_location.metadata['url']  # type: ignore
-                path_format_arguments = {
-                    'subscriptionId': self._serialize.url("subscription_id", subscription_id, 'str'),
-                }
-                url = self._client.format_url(url, **path_format_arguments)
-                # Construct parameters
-                query_parameters = {}  # type: Dict[str, Any]
-                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-                request = self._client.get(url, query_parameters, header_parameters)
-            else:
-                url = next_link
-                query_parameters = {}  # type: Dict[str, Any]
-                request = self._client.get(url, query_parameters, header_parameters)
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('LocationListResult', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list_location.metadata = {'url': '/subscriptions/{subscriptionId}/locations'}  # type: ignore
-
-    def get(
-        self,
-        subscription_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.Subscription"
-        """Gets details about a specified subscription.
-
-        :param subscription_id: The ID of the target subscription.
-        :type subscription_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: Subscription, or the result of cls(response)
-        :rtype: ~subscription_client.models.Subscription
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.Subscription"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2016-06-01"
+        api_version = "2021-01-01-preview"
+        content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self.get.metadata['url']  # type: ignore
+        url = self._create_alias_initial.metadata['url']  # type: ignore
         path_format_arguments = {
-            'subscriptionId': self._serialize.url("subscription_id", subscription_id, 'str'),
+            'aliasName': self._serialize.url("alias_name", alias_name, 'str'),
         }
         url = self._client.format_url(url, **path_format_arguments)
 
@@ -148,164 +75,117 @@ class SubscriptionOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
-        request = self._client.get(url, query_parameters, header_parameters)
+        body_content_kwargs = {}  # type: Dict[str, Any]
+        body_content = self._serialize.body(body, 'PutAliasRequest')
+        body_content_kwargs['content'] = body_content
+        request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
-        if response.status_code not in [200]:
+        if response.status_code not in [200, 201]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('Subscription', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    get.metadata = {'url': '/subscriptions/{subscriptionId}'}  # type: ignore
-
-    def list(
-        self,
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> Iterable["models.SubscriptionListResult"]
-        """Gets all subscriptions for a tenant.
-
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: An iterator like instance of either SubscriptionListResult or the result of cls(response)
-        :rtype: ~azure.core.paging.ItemPaged[~subscription_client.models.SubscriptionListResult]
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.SubscriptionListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2016-06-01"
-
-        def prepare_request(next_link=None):
-            # Construct headers
-            header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
-
-            if not next_link:
-                # Construct URL
-                url = self.list.metadata['url']  # type: ignore
-                # Construct parameters
-                query_parameters = {}  # type: Dict[str, Any]
-                query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-                request = self._client.get(url, query_parameters, header_parameters)
-            else:
-                url = next_link
-                query_parameters = {}  # type: Dict[str, Any]
-                request = self._client.get(url, query_parameters, header_parameters)
-            return request
-
-        def extract_data(pipeline_response):
-            deserialized = self._deserialize('SubscriptionListResult', pipeline_response)
-            list_of_elem = deserialized.value
-            if cls:
-                list_of_elem = cls(list_of_elem)
-            return deserialized.next_link or None, iter(list_of_elem)
-
-        def get_next(next_link=None):
-            request = prepare_request(next_link)
-
-            pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-            response = pipeline_response.http_response
-
-            if response.status_code not in [200]:
-                map_error(status_code=response.status_code, response=response, error_map=error_map)
-                raise HttpResponseError(response=response, error_format=ARMErrorFormat)
-
-            return pipeline_response
-
-        return ItemPaged(
-            get_next, extract_data
-        )
-    list.metadata = {'url': '/subscriptions'}  # type: ignore
-
-    def cancel(
-        self,
-        subscription_id,  # type: str
-        **kwargs  # type: Any
-    ):
-        # type: (...) -> "models.CanceledSubscriptionId"
-        """The operation to cancel a subscription.
-
-        :param subscription_id: Subscription Id.
-        :type subscription_id: str
-        :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: CanceledSubscriptionId, or the result of cls(response)
-        :rtype: ~subscription_client.models.CanceledSubscriptionId
-        :raises: ~azure.core.exceptions.HttpResponseError
-        """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.CanceledSubscriptionId"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-09-01"
-
-        # Construct URL
-        url = self.cancel.metadata['url']  # type: ignore
-        path_format_arguments = {
-            'subscriptionId': self._serialize.url("subscription_id", subscription_id, 'str'),
-        }
-        url = self._client.format_url(url, **path_format_arguments)
-
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
-
-        request = self._client.post(url, query_parameters, header_parameters)
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.ErrorResponse, response)
+            error = self._deserialize(models.ErrorResponseBody, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('CanceledSubscriptionId', pipeline_response)
+        if response.status_code == 200:
+            deserialized = self._deserialize('PutAliasResponse', pipeline_response)
+
+        if response.status_code == 201:
+            deserialized = self._deserialize('PutAliasResponse', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    cancel.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/cancel'}  # type: ignore
+    _create_alias_initial.metadata = {'url': '/providers/Microsoft.Subscription/aliases/{aliasName}'}  # type: ignore
 
-    def rename(
+    def begin_create_alias(
         self,
-        subscription_id,  # type: str
-        subscription_name=None,  # type: Optional[str]
+        alias_name,  # type: str
+        body,  # type: "models.PutAliasRequest"
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.RenamedSubscriptionId"
-        """The operation to rename a subscription.
+        # type: (...) -> LROPoller["models.PutAliasResponse"]
+        """Create Alias Subscription.
 
-        :param subscription_id: Subscription Id.
-        :type subscription_id: str
-        :param subscription_name: New subscription name.
-        :type subscription_name: str
+        :param alias_name: Alias Name.
+        :type alias_name: str
+        :param body:
+        :type body: ~subscription_client.models.PutAliasRequest
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: RenamedSubscriptionId, or the result of cls(response)
-        :rtype: ~subscription_client.models.RenamedSubscriptionId
-        :raises: ~azure.core.exceptions.HttpResponseError
+        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
+        :keyword polling: True for ARMPolling, False for no polling, or a
+         polling object for personal polling strategy
+        :paramtype polling: bool or ~azure.core.polling.PollingMethod
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either PutAliasResponse or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~subscription_client.models.PutAliasResponse]
+        :raises ~azure.core.exceptions.HttpResponseError:
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.RenamedSubscriptionId"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
+        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.PutAliasResponse"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
+        cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
+        if cont_token is None:
+            raw_result = self._create_alias_initial(
+                alias_name=alias_name,
+                body=body,
+                cls=lambda x,y,z: x,
+                **kwargs
+            )
 
-        _body = models.SubscriptionName(subscription_name=subscription_name)
-        api_version = "2020-09-01"
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
+        def get_long_running_output(pipeline_response):
+            deserialized = self._deserialize('PutAliasResponse', pipeline_response)
+
+            if cls:
+                return cls(pipeline_response, deserialized, {})
+            return deserialized
+
+        path_format_arguments = {
+            'aliasName': self._serialize.url("alias_name", alias_name, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
+        elif polling is False: polling_method = NoPolling()
+        else: polling_method = polling
+        if cont_token:
+            return LROPoller.from_continuation_token(
+                polling_method=polling_method,
+                continuation_token=cont_token,
+                client=self._client,
+                deserialization_callback=get_long_running_output
+            )
+        else:
+            return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
+    begin_create_alias.metadata = {'url': '/providers/Microsoft.Subscription/aliases/{aliasName}'}  # type: ignore
+
+    def _redeem_initial(
+        self,
+        subscription_id,  # type: str
+        body,  # type: "models.RedeemSubscriptionRequest"
+        **kwargs  # type: Any
+    ):
+        # type: (...) -> "models.PutAliasResponse"
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.PutAliasResponse"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
+        error_map.update(kwargs.pop('error_map', {}))
+        api_version = "2021-01-01-preview"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self.rename.metadata['url']  # type: ignore
+        url = self._redeem_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("subscription_id", subscription_id, 'str'),
         }
@@ -318,77 +198,90 @@ class SubscriptionOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
-        body_content = self._serialize.body(_body, 'SubscriptionName')
+        body_content = self._serialize.body(body, 'RedeemSubscriptionRequest')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.ErrorResponse, response)
+            error = self._deserialize(models.ErrorResponseBody, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('RenamedSubscriptionId', pipeline_response)
+        deserialized = self._deserialize('PutAliasResponse', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    rename.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/rename'}  # type: ignore
+    _redeem_initial.metadata = {'url': '/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/redeem'}  # type: ignore
 
-    def enable(
+    def begin_redeem(
         self,
         subscription_id,  # type: str
+        body,  # type: "models.RedeemSubscriptionRequest"
         **kwargs  # type: Any
     ):
-        # type: (...) -> "models.EnabledSubscriptionId"
-        """The operation to enable a subscription.
+        # type: (...) -> LROPoller["models.PutAliasResponse"]
+        """Redeem subscription.
 
         :param subscription_id: Subscription Id.
         :type subscription_id: str
+        :param body:
+        :type body: ~subscription_client.models.RedeemSubscriptionRequest
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: EnabledSubscriptionId, or the result of cls(response)
-        :rtype: ~subscription_client.models.EnabledSubscriptionId
-        :raises: ~azure.core.exceptions.HttpResponseError
+        :keyword str continuation_token: A continuation token to restart a poller from a saved state.
+        :keyword polling: True for ARMPolling, False for no polling, or a
+         polling object for personal polling strategy
+        :paramtype polling: bool or ~azure.core.polling.PollingMethod
+        :keyword int polling_interval: Default waiting time between two polls for LRO operations if no Retry-After header is present.
+        :return: An instance of LROPoller that returns either PutAliasResponse or the result of cls(response)
+        :rtype: ~azure.core.polling.LROPoller[~subscription_client.models.PutAliasResponse]
+        :raises ~azure.core.exceptions.HttpResponseError:
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.EnabledSubscriptionId"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
-        error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-09-01"
+        polling = kwargs.pop('polling', True)  # type: Union[bool, PollingMethod]
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.PutAliasResponse"]
+        lro_delay = kwargs.pop(
+            'polling_interval',
+            self._config.polling_interval
+        )
+        cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
+        if cont_token is None:
+            raw_result = self._redeem_initial(
+                subscription_id=subscription_id,
+                body=body,
+                cls=lambda x,y,z: x,
+                **kwargs
+            )
 
-        # Construct URL
-        url = self.enable.metadata['url']  # type: ignore
+        kwargs.pop('error_map', None)
+        kwargs.pop('content_type', None)
+
+        def get_long_running_output(pipeline_response):
+            deserialized = self._deserialize('PutAliasResponse', pipeline_response)
+
+            if cls:
+                return cls(pipeline_response, deserialized, {})
+            return deserialized
+
         path_format_arguments = {
             'subscriptionId': self._serialize.url("subscription_id", subscription_id, 'str'),
         }
-        url = self._client.format_url(url, **path_format_arguments)
 
-        # Construct parameters
-        query_parameters = {}  # type: Dict[str, Any]
-        query_parameters['api-version'] = self._serialize.query("api_version", api_version, 'str')
-
-        # Construct headers
-        header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
-
-        request = self._client.post(url, query_parameters, header_parameters)
-        pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
-        response = pipeline_response.http_response
-
-        if response.status_code not in [200]:
-            map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.ErrorResponse, response)
-            raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
-
-        deserialized = self._deserialize('EnabledSubscriptionId', pipeline_response)
-
-        if cls:
-            return cls(pipeline_response, deserialized, {})
-
-        return deserialized
-    enable.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/enable'}  # type: ignore
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
+        elif polling is False: polling_method = NoPolling()
+        else: polling_method = polling
+        if cont_token:
+            return LROPoller.from_continuation_token(
+                polling_method=polling_method,
+                continuation_token=cont_token,
+                client=self._client,
+                deserialization_callback=get_long_running_output
+            )
+        else:
+            return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
+    begin_redeem.metadata = {'url': '/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/redeem'}  # type: ignore

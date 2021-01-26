@@ -10,6 +10,93 @@ from azure.core.exceptions import HttpResponseError
 import msrest.serialization
 
 
+class AdPrincipal(msrest.serialization.Model):
+    """Active Directory Principal who’ll get owner access on the new subscription.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param object_id: Required. Object id of the Principal.
+    :type object_id: str
+    """
+
+    _validation = {
+        'object_id': {'required': True},
+    }
+
+    _attribute_map = {
+        'object_id': {'key': 'objectId', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(AdPrincipal, self).__init__(**kwargs)
+        self.object_id = kwargs['object_id']
+
+
+class BillingAccountPoliciesResponse(msrest.serialization.Model):
+    """Billing account policies information.
+
+    Variables are only populated by the server, and will be ignored when sending a request.
+
+    :ivar id: Fully qualified ID for the policy.
+    :vartype id: str
+    :ivar name: Policy name.
+    :vartype name: str
+    :ivar type: Resource type, Microsoft.Subscription/policies.
+    :vartype type: str
+    :param properties: Put Alias response properties.
+    :type properties: ~subscription_client.models.BillingAccountPoliciesResponseProperties
+    """
+
+    _validation = {
+        'id': {'readonly': True},
+        'name': {'readonly': True},
+        'type': {'readonly': True},
+    }
+
+    _attribute_map = {
+        'id': {'key': 'id', 'type': 'str'},
+        'name': {'key': 'name', 'type': 'str'},
+        'type': {'key': 'type', 'type': 'str'},
+        'properties': {'key': 'properties', 'type': 'BillingAccountPoliciesResponseProperties'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(BillingAccountPoliciesResponse, self).__init__(**kwargs)
+        self.id = None
+        self.name = None
+        self.type = None
+        self.properties = kwargs.get('properties', None)
+
+
+class BillingAccountPoliciesResponseProperties(msrest.serialization.Model):
+    """Put billing account policies response properties.
+
+    :param service_tenants: Service tenant for the billing account.
+    :type service_tenants: list[str]
+    :param allow_transfers: Determine if the transfers are allowed for the billing account.
+    :type allow_transfers: bool
+    """
+
+    _attribute_map = {
+        'service_tenants': {'key': 'serviceTenants', 'type': '[str]'},
+        'allow_transfers': {'key': 'allowTransfers', 'type': 'bool'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(BillingAccountPoliciesResponseProperties, self).__init__(**kwargs)
+        self.service_tenants = kwargs.get('service_tenants', None)
+        self.allow_transfers = kwargs.get('allow_transfers', None)
+
+
 class CanceledSubscriptionId(msrest.serialization.Model):
     """The ID of the canceled subscription.
 
@@ -172,6 +259,93 @@ class LocationListResult(msrest.serialization.Model):
         self.value = kwargs.get('value', None)
 
 
+class ModernCspSubscriptionCreationParameters(msrest.serialization.Model):
+    """The parameters required to create a new CSP subscription.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param display_name: Required. The friendly name of the subscription.
+    :type display_name: str
+    :param sku_id: Required. The SKU ID of the Azure plan. Azure plan determines the pricing and
+     service-level agreement of the subscription.  Use 001 for Microsoft Azure Plan and 002 for
+     Microsoft Azure Plan for DevTest.
+    :type sku_id: str
+    :param reseller_id: Reseller ID, basically MPN Id.
+    :type reseller_id: str
+    """
+
+    _validation = {
+        'display_name': {'required': True},
+        'sku_id': {'required': True},
+    }
+
+    _attribute_map = {
+        'display_name': {'key': 'displayName', 'type': 'str'},
+        'sku_id': {'key': 'skuId', 'type': 'str'},
+        'reseller_id': {'key': 'resellerId', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(ModernCspSubscriptionCreationParameters, self).__init__(**kwargs)
+        self.display_name = kwargs['display_name']
+        self.sku_id = kwargs['sku_id']
+        self.reseller_id = kwargs.get('reseller_id', None)
+
+
+class ModernSubscriptionCreationParameters(msrest.serialization.Model):
+    """The parameters required to create a new subscription.
+
+    All required parameters must be populated in order to send to Azure.
+
+    :param display_name: Required. The friendly name of the subscription.
+    :type display_name: str
+    :param sku_id: Required. The SKU ID of the Azure plan. Azure plan determines the pricing and
+     service-level agreement of the subscription.  Use 001 for Microsoft Azure Plan and 002 for
+     Microsoft Azure Plan for DevTest.
+    :type sku_id: str
+    :param cost_center: If set, the cost center will show up on the Azure usage and charges file.
+    :type cost_center: str
+    :param owner: If specified, the AD principal will get owner access to the subscription, along
+     with the user who is performing the create subscription operation.
+    :type owner: ~subscription_client.models.AdPrincipal
+    :param management_group_id: The identifier of the management group to which this subscription
+     will be associated.
+    :type management_group_id: str
+    :param additional_parameters: Additional, untyped parameters to support custom subscription
+     creation scenarios.
+    :type additional_parameters: dict[str, object]
+    """
+
+    _validation = {
+        'display_name': {'required': True},
+        'sku_id': {'required': True},
+    }
+
+    _attribute_map = {
+        'display_name': {'key': 'displayName', 'type': 'str'},
+        'sku_id': {'key': 'skuId', 'type': 'str'},
+        'cost_center': {'key': 'costCenter', 'type': 'str'},
+        'owner': {'key': 'owner', 'type': 'AdPrincipal'},
+        'management_group_id': {'key': 'managementGroupId', 'type': 'str'},
+        'additional_parameters': {'key': 'additionalParameters', 'type': '{object}'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(ModernSubscriptionCreationParameters, self).__init__(**kwargs)
+        self.display_name = kwargs['display_name']
+        self.sku_id = kwargs['sku_id']
+        self.cost_center = kwargs.get('cost_center', None)
+        self.owner = kwargs.get('owner', None)
+        self.management_group_id = kwargs.get('management_group_id', None)
+        self.additional_parameters = kwargs.get('additional_parameters', None)
+
+
 class Operation(msrest.serialization.Model):
     """REST API operation.
 
@@ -278,15 +452,9 @@ class PutAliasListResult(msrest.serialization.Model):
 class PutAliasRequest(msrest.serialization.Model):
     """The parameters required to create a new subscription.
 
-    All required parameters must be populated in order to send to Azure.
-
-    :param properties: Required. Put alias request properties.
+    :param properties: Put alias request properties.
     :type properties: ~subscription_client.models.PutAliasRequestProperties
     """
-
-    _validation = {
-        'properties': {'required': True},
-    }
 
     _attribute_map = {
         'properties': {'key': 'properties', 'type': 'PutAliasRequestProperties'},
@@ -297,7 +465,38 @@ class PutAliasRequest(msrest.serialization.Model):
         **kwargs
     ):
         super(PutAliasRequest, self).__init__(**kwargs)
-        self.properties = kwargs['properties']
+        self.properties = kwargs.get('properties', None)
+
+
+class PutAliasRequestAdditionalProperties(msrest.serialization.Model):
+    """Put subscription additional properties.
+
+    :param management_group_id: Management group Id for the subscription.
+    :type management_group_id: str
+    :param subscription_tenant_id: Tenant Id of the subscription.
+    :type subscription_tenant_id: str
+    :param subscription_owner_id: Owner Id of the subscription.
+    :type subscription_owner_id: str
+    :param tags: A set of tags. tags for the subscription.
+    :type tags: dict[str, str]
+    """
+
+    _attribute_map = {
+        'management_group_id': {'key': 'managementGroupId', 'type': 'str'},
+        'subscription_tenant_id': {'key': 'subscriptionTenantId', 'type': 'str'},
+        'subscription_owner_id': {'key': 'subscriptionOwnerId', 'type': 'str'},
+        'tags': {'key': 'tags', 'type': '{str}'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(PutAliasRequestAdditionalProperties, self).__init__(**kwargs)
+        self.management_group_id = kwargs.get('management_group_id', None)
+        self.subscription_tenant_id = kwargs.get('subscription_tenant_id', None)
+        self.subscription_owner_id = kwargs.get('subscription_owner_id', None)
+        self.tags = kwargs.get('tags', None)
 
 
 class PutAliasRequestProperties(msrest.serialization.Model):
@@ -316,9 +515,17 @@ class PutAliasRequestProperties(msrest.serialization.Model):
     :param subscription_id: This parameter can be used to create alias for existing subscription
      Id.
     :type subscription_id: str
-    :param reseller_id: Reseller ID, basically MPN Id.
+    :param reseller_id: Reseller Id.
     :type reseller_id: str
+    :param additional_properties: Put alias request additional properties.
+    :type additional_properties: ~subscription_client.models.PutAliasRequestAdditionalProperties
     """
+
+    _validation = {
+        'display_name': {'required': True},
+        'workload': {'required': True},
+        'billing_scope': {'required': True},
+    }
 
     _attribute_map = {
         'display_name': {'key': 'displayName', 'type': 'str'},
@@ -326,6 +533,7 @@ class PutAliasRequestProperties(msrest.serialization.Model):
         'billing_scope': {'key': 'billingScope', 'type': 'str'},
         'subscription_id': {'key': 'subscriptionId', 'type': 'str'},
         'reseller_id': {'key': 'resellerId', 'type': 'str'},
+        'additional_properties': {'key': 'additionalProperties', 'type': 'PutAliasRequestAdditionalProperties'},
     }
 
     def __init__(
@@ -333,11 +541,12 @@ class PutAliasRequestProperties(msrest.serialization.Model):
         **kwargs
     ):
         super(PutAliasRequestProperties, self).__init__(**kwargs)
-        self.display_name = kwargs.get('display_name', None)
-        self.workload = kwargs.get('workload', None)
-        self.billing_scope = kwargs.get('billing_scope', None)
+        self.display_name = kwargs['display_name']
+        self.workload = kwargs['workload']
+        self.billing_scope = kwargs['billing_scope']
         self.subscription_id = kwargs.get('subscription_id', None)
         self.reseller_id = kwargs.get('reseller_id', None)
+        self.additional_properties = kwargs.get('additional_properties', None)
 
 
 class PutAliasResponse(msrest.serialization.Model):
@@ -389,6 +598,11 @@ class PutAliasResponseProperties(msrest.serialization.Model):
     :param provisioning_state: The provisioning state of the resource. Possible values include:
      "Accepted", "Succeeded", "Failed".
     :type provisioning_state: str or ~subscription_client.models.ProvisioningState
+    :param redeem_url: Redeem url.
+    :type redeem_url: str
+    :param redeem_state: The redeem state of the resource. Possible values include: "Pending",
+     "Completed".
+    :type redeem_state: str or ~subscription_client.models.RedeemState
     """
 
     _validation = {
@@ -398,6 +612,8 @@ class PutAliasResponseProperties(msrest.serialization.Model):
     _attribute_map = {
         'subscription_id': {'key': 'subscriptionId', 'type': 'str'},
         'provisioning_state': {'key': 'provisioningState', 'type': 'str'},
+        'redeem_url': {'key': 'redeemUrl', 'type': 'str'},
+        'redeem_state': {'key': 'redeemState', 'type': 'str'},
     }
 
     def __init__(
@@ -407,6 +623,50 @@ class PutAliasResponseProperties(msrest.serialization.Model):
         super(PutAliasResponseProperties, self).__init__(**kwargs)
         self.subscription_id = None
         self.provisioning_state = kwargs.get('provisioning_state', None)
+        self.redeem_url = kwargs.get('redeem_url', None)
+        self.redeem_state = kwargs.get('redeem_state', None)
+
+
+class RedeemSubscriptionRequest(msrest.serialization.Model):
+    """The parameters required to redeem a new subscription.
+
+    :param properties: Put alias request properties.
+    :type properties: ~subscription_client.models.RedeemSubscriptionRequestProperties
+    """
+
+    _attribute_map = {
+        'properties': {'key': 'properties', 'type': 'RedeemSubscriptionRequestProperties'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(RedeemSubscriptionRequest, self).__init__(**kwargs)
+        self.properties = kwargs.get('properties', None)
+
+
+class RedeemSubscriptionRequestProperties(msrest.serialization.Model):
+    """Redeem subscription request properties.
+
+    :param management_group_id: Management group Id for the subscription.
+    :type management_group_id: str
+    :param tags: A set of tags. tags for the subscription.
+    :type tags: dict[str, str]
+    """
+
+    _attribute_map = {
+        'management_group_id': {'key': 'managementGroupId', 'type': 'str'},
+        'tags': {'key': 'tags', 'type': '{str}'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(RedeemSubscriptionRequestProperties, self).__init__(**kwargs)
+        self.management_group_id = kwargs.get('management_group_id', None)
+        self.tags = kwargs.get('tags', None)
 
 
 class RenamedSubscriptionId(msrest.serialization.Model):
@@ -484,6 +744,66 @@ class Subscription(msrest.serialization.Model):
         self.state = None
         self.subscription_policies = kwargs.get('subscription_policies', None)
         self.authorization_source = kwargs.get('authorization_source', None)
+
+
+class SubscriptionCreationParameters(msrest.serialization.Model):
+    """Subscription Creation Parameters required to create a new Azure subscription.
+
+    :param display_name: The display name of the subscription.
+    :type display_name: str
+    :param management_group_id: The Management Group Id.
+    :type management_group_id: str
+    :param owners: The list of principals that should be granted Owner access on the subscription.
+     Principals should be of type User, Service Principal or Security Group.
+    :type owners: list[~subscription_client.models.AdPrincipal]
+    :param offer_type: The offer type of the subscription. For example, MS-AZR-0017P
+     (EnterpriseAgreement) and MS-AZR-0148P (EnterpriseAgreement devTest) are available. Only valid
+     when creating a subscription in a enrollment account scope. Possible values include: "MS-
+     AZR-0017P", "MS-AZR-0148P".
+    :type offer_type: str or ~subscription_client.models.OfferType
+    :param additional_parameters: Additional, untyped parameters to support custom subscription
+     creation scenarios.
+    :type additional_parameters: dict[str, object]
+    """
+
+    _attribute_map = {
+        'display_name': {'key': 'displayName', 'type': 'str'},
+        'management_group_id': {'key': 'managementGroupId', 'type': 'str'},
+        'owners': {'key': 'owners', 'type': '[AdPrincipal]'},
+        'offer_type': {'key': 'offerType', 'type': 'str'},
+        'additional_parameters': {'key': 'additionalParameters', 'type': '{object}'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(SubscriptionCreationParameters, self).__init__(**kwargs)
+        self.display_name = kwargs.get('display_name', None)
+        self.management_group_id = kwargs.get('management_group_id', None)
+        self.owners = kwargs.get('owners', None)
+        self.offer_type = kwargs.get('offer_type', None)
+        self.additional_parameters = kwargs.get('additional_parameters', None)
+
+
+class SubscriptionCreationResult(msrest.serialization.Model):
+    """The created subscription object.
+
+    :param subscription_link: The link to the new subscription. Use this link to check the status
+     of subscription creation operation.
+    :type subscription_link: str
+    """
+
+    _attribute_map = {
+        'subscription_link': {'key': 'subscriptionLink', 'type': 'str'},
+    }
+
+    def __init__(
+        self,
+        **kwargs
+    ):
+        super(SubscriptionCreationResult, self).__init__(**kwargs)
+        self.subscription_link = kwargs.get('subscription_link', None)
 
 
 class SubscriptionListResult(msrest.serialization.Model):

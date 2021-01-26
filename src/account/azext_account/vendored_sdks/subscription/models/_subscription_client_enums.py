@@ -26,6 +26,15 @@ class _CaseInsensitiveEnumMeta(EnumMeta):
             raise AttributeError(name)
 
 
+class OfferType(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
+    """The offer type of the subscription. For example, MS-AZR-0017P (EnterpriseAgreement) and MS-
+    AZR-0148P (EnterpriseAgreement devTest) are available. Only valid when creating a subscription
+    in a enrollment account scope.
+    """
+
+    MS_AZR0017_P = "MS-AZR-0017P"
+    MS_AZR0148_P = "MS-AZR-0148P"
+
 class ProvisioningState(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """The provisioning state of the resource.
     """
@@ -33,6 +42,13 @@ class ProvisioningState(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     ACCEPTED = "Accepted"
     SUCCEEDED = "Succeeded"
     FAILED = "Failed"
+
+class RedeemState(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
+    """The redeem state of the resource.
+    """
+
+    PENDING = "Pending"
+    COMPLETED = "Completed"
 
 class SpendingLimit(with_metaclass(_CaseInsensitiveEnumMeta, str, Enum)):
     """The subscription spending limit.
