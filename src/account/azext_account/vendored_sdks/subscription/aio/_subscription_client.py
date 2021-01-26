@@ -15,25 +15,34 @@ if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
     from azure.core.credentials_async import AsyncTokenCredential
 
-from ._configuration_async import SubscriptionClientConfiguration
-from .operations_async import SubscriptionOperations
-from .operations_async import TenantOperations
-from .operations_async import OperationOperations
-from .operations_async import AliasOperations
+from ._configuration import SubscriptionClientConfiguration
+from .operations import SubscriptionsOperations
+from .operations import TenantsOperations
+from .operations import SubscriptionOperations
+from .operations import SubscriptionOperationOperations
+from .operations import Operations
+from .operations import SubscriptionPolicyOperations
+from .operations import BillingAccountOperations
 from .. import models
 
 
 class SubscriptionClient(object):
     """The subscription client.
 
+    :ivar subscriptions: SubscriptionsOperations operations
+    :vartype subscriptions: subscription_client.aio.operations.SubscriptionsOperations
+    :ivar tenants: TenantsOperations operations
+    :vartype tenants: subscription_client.aio.operations.TenantsOperations
     :ivar subscription: SubscriptionOperations operations
-    :vartype subscription: subscription_client.aio.operations_async.SubscriptionOperations
-    :ivar tenant: TenantOperations operations
-    :vartype tenant: subscription_client.aio.operations_async.TenantOperations
-    :ivar operation: OperationOperations operations
-    :vartype operation: subscription_client.aio.operations_async.OperationOperations
-    :ivar alias: AliasOperations operations
-    :vartype alias: subscription_client.aio.operations_async.AliasOperations
+    :vartype subscription: subscription_client.aio.operations.SubscriptionOperations
+    :ivar subscription_operation: SubscriptionOperationOperations operations
+    :vartype subscription_operation: subscription_client.aio.operations.SubscriptionOperationOperations
+    :ivar operations: Operations operations
+    :vartype operations: subscription_client.aio.operations.Operations
+    :ivar subscription_policy: SubscriptionPolicyOperations operations
+    :vartype subscription_policy: subscription_client.aio.operations.SubscriptionPolicyOperations
+    :ivar billing_account: BillingAccountOperations operations
+    :vartype billing_account: subscription_client.aio.operations.BillingAccountOperations
     :param credential: Credential needed for the client to connect to Azure.
     :type credential: ~azure.core.credentials_async.AsyncTokenCredential
     :param str base_url: Service URL
@@ -55,13 +64,19 @@ class SubscriptionClient(object):
         self._serialize = Serializer(client_models)
         self._deserialize = Deserializer(client_models)
 
+        self.subscriptions = SubscriptionsOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.tenants = TenantsOperations(
+            self._client, self._config, self._serialize, self._deserialize)
         self.subscription = SubscriptionOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.tenant = TenantOperations(
+        self.subscription_operation = SubscriptionOperationOperations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.operation = OperationOperations(
+        self.operations = Operations(
             self._client, self._config, self._serialize, self._deserialize)
-        self.alias = AliasOperations(
+        self.subscription_policy = SubscriptionPolicyOperations(
+            self._client, self._config, self._serialize, self._deserialize)
+        self.billing_account = BillingAccountOperations(
             self._client, self._config, self._serialize, self._deserialize)
 
     async def close(self) -> None:

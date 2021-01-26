@@ -8,7 +8,7 @@
 from typing import Any, Callable, Dict, Generic, Optional, TypeVar
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import AsyncHttpResponse, HttpRequest
 from azure.mgmt.core.exceptions import ARMErrorFormat
@@ -18,8 +18,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class OperationOperations:
-    """OperationOperations async operations.
+class BillingAccountOperations:
+    """BillingAccountOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -40,24 +40,34 @@ class OperationOperations:
         self._deserialize = deserializer
         self._config = config
 
-    async def list(
+    async def get_policy(
         self,
+        billing_account_id: str,
         **kwargs
-    ) -> "models.OperationListResult":
-        """Lists all of the available Microsoft.Subscription API operations.
+    ) -> "models.BillingAccountPoliciesResponse":
+        """Get Billing Account Policy.
 
+        :param billing_account_id: Billing Account Id.
+        :type billing_account_id: str
         :keyword callable cls: A custom type or function that will be passed the direct response
-        :return: OperationListResult, or the result of cls(response)
-        :rtype: ~subscription_client.models.OperationListResult
+        :return: BillingAccountPoliciesResponse, or the result of cls(response)
+        :rtype: ~subscription_client.models.BillingAccountPoliciesResponse
         :raises: ~azure.core.exceptions.HttpResponseError
         """
-        cls = kwargs.pop('cls', None)  # type: ClsType["models.OperationListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        cls = kwargs.pop('cls', None)  # type: ClsType["models.BillingAccountPoliciesResponse"]
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-        api_version = "2020-09-01"
+        api_version = "2021-01-01-preview"
+        accept = "application/json"
 
         # Construct URL
-        url = self.list.metadata['url']  # type: ignore
+        url = self.get_policy.metadata['url']  # type: ignore
+        path_format_arguments = {
+            'billingAccountId': self._serialize.url("billing_account_id", billing_account_id, 'str'),
+        }
+        url = self._client.format_url(url, **path_format_arguments)
 
         # Construct parameters
         query_parameters = {}  # type: Dict[str, Any]
@@ -65,7 +75,7 @@ class OperationOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
@@ -73,13 +83,13 @@ class OperationOperations:
 
         if response.status_code not in [200]:
             map_error(status_code=response.status_code, response=response, error_map=error_map)
-            error = self._deserialize(models.ErrorResponse, response)
+            error = self._deserialize(models.ErrorResponseBody, response)
             raise HttpResponseError(response=response, model=error, error_format=ARMErrorFormat)
 
-        deserialized = self._deserialize('OperationListResult', pipeline_response)
+        deserialized = self._deserialize('BillingAccountPoliciesResponse', pipeline_response)
 
         if cls:
             return cls(pipeline_response, deserialized, {})
 
         return deserialized
-    list.metadata = {'url': '/providers/Microsoft.Subscription/operations'}  # type: ignore
+    get_policy.metadata = {'url': '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Subscription/policies/default'}  # type: ignore
