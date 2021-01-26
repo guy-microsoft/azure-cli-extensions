@@ -8,7 +8,7 @@
 from typing import TYPE_CHECKING
 import warnings
 
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.paging import ItemPaged
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import HttpRequest, HttpResponse
@@ -20,13 +20,13 @@ from .. import models
 
 if TYPE_CHECKING:
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, TypeVar, Union
+    from typing import Any, Callable, Dict, Generic, Iterable, Optional, TypeVar, Union
 
     T = TypeVar('T')
     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]
 
-class ClusterOperations(object):
-    """ClusterOperations operations.
+class ClustersOperations(object):
+    """ClustersOperations operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -66,9 +66,12 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Cluster"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -85,7 +88,7 @@ class ClusterOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -107,31 +110,18 @@ class ClusterOperations(object):
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        location,  # type: str
-        sku,  # type: "models.AzureSku"
-        tags=None,  # type: Optional[Dict[str, str]]
-        zones=None,  # type: Optional[List[str]]
-        trusted_external_tenants=None,  # type: Optional[List["models.TrustedExternalTenant"]]
-        optimized_autoscale=None,  # type: Optional["models.OptimizedAutoscale"]
-        enable_disk_encryption=None,  # type: Optional[bool]
-        enable_streaming_ingest=False,  # type: Optional[bool]
-        virtual_network_configuration=None,  # type: Optional["models.VirtualNetworkConfiguration"]
-        key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
-        enable_purge=False,  # type: Optional[bool]
-        enable_double_encryption=False,  # type: Optional[bool]
-        engine_type=None,  # type: Optional[Union[str, "models.EngineType"]]
-        type=None,  # type: Optional[Union[str, "models.IdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        parameters,  # type: "models.Cluster"
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Cluster"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Cluster"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        parameters = models.Cluster(tags=tags, location=location, sku=sku, zones=zones, trusted_external_tenants=trusted_external_tenants, optimized_autoscale=optimized_autoscale, enable_disk_encryption=enable_disk_encryption, enable_streaming_ingest=enable_streaming_ingest, virtual_network_configuration=virtual_network_configuration, key_vault_properties=key_vault_properties, enable_purge=enable_purge, enable_double_encryption=enable_double_encryption, engine_type=engine_type, type_identity_type=type, user_assigned_identities=user_assigned_identities)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._create_or_update_initial.metadata['url']  # type: ignore
@@ -149,13 +139,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(parameters, 'Cluster')
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -179,21 +168,7 @@ class ClusterOperations(object):
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        location,  # type: str
-        sku,  # type: "models.AzureSku"
-        tags=None,  # type: Optional[Dict[str, str]]
-        zones=None,  # type: Optional[List[str]]
-        trusted_external_tenants=None,  # type: Optional[List["models.TrustedExternalTenant"]]
-        optimized_autoscale=None,  # type: Optional["models.OptimizedAutoscale"]
-        enable_disk_encryption=None,  # type: Optional[bool]
-        enable_streaming_ingest=False,  # type: Optional[bool]
-        virtual_network_configuration=None,  # type: Optional["models.VirtualNetworkConfiguration"]
-        key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
-        enable_purge=False,  # type: Optional[bool]
-        enable_double_encryption=False,  # type: Optional[bool]
-        engine_type=None,  # type: Optional[Union[str, "models.EngineType"]]
-        type=None,  # type: Optional[Union[str, "models.IdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        parameters,  # type: "models.Cluster"
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller["models.Cluster"]
@@ -203,43 +178,8 @@ class ClusterOperations(object):
         :type resource_group_name: str
         :param cluster_name: The name of the Kusto cluster.
         :type cluster_name: str
-        :param location: The geo-location where the resource lives.
-        :type location: str
-        :param sku: The SKU of the cluster.
-        :type sku: ~kusto_management_client.models.AzureSku
-        :param tags: Resource tags.
-        :type tags: dict[str, str]
-        :param zones: The availability zones of the cluster.
-        :type zones: list[str]
-        :param trusted_external_tenants: The cluster's external tenants.
-        :type trusted_external_tenants: list[~kusto_management_client.models.TrustedExternalTenant]
-        :param optimized_autoscale: Optimized auto scale definition.
-        :type optimized_autoscale: ~kusto_management_client.models.OptimizedAutoscale
-        :param enable_disk_encryption: A boolean value that indicates if the cluster's disks are
-         encrypted.
-        :type enable_disk_encryption: bool
-        :param enable_streaming_ingest: A boolean value that indicates if the streaming ingest is
-         enabled.
-        :type enable_streaming_ingest: bool
-        :param virtual_network_configuration: Virtual network definition.
-        :type virtual_network_configuration: ~kusto_management_client.models.VirtualNetworkConfiguration
-        :param key_vault_properties: KeyVault properties for the cluster encryption.
-        :type key_vault_properties: ~kusto_management_client.models.KeyVaultProperties
-        :param enable_purge: A boolean value that indicates if the purge operations are enabled.
-        :type enable_purge: bool
-        :param enable_double_encryption: A boolean value that indicates if double encryption is
-         enabled.
-        :type enable_double_encryption: bool
-        :param engine_type: The engine type.
-        :type engine_type: str or ~kusto_management_client.models.EngineType
-        :param type: The type of managed identity used. The type 'SystemAssigned, UserAssigned'
-         includes both an implicitly created identity and a set of user-assigned identities. The type
-         'None' will remove all identities.
-        :type type: str or ~kusto_management_client.models.IdentityType
-        :param user_assigned_identities: The list of user identities associated with the Kusto cluster.
-         The user identity dictionary key references will be ARM resource ids in the form:
-         '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-        :type user_assigned_identities: dict[str, ~kusto_management_client.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+        :param parameters: The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+        :type parameters: ~kusto_management_client.models.Cluster
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -261,21 +201,7 @@ class ClusterOperations(object):
             raw_result = self._create_or_update_initial(
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
-                location=location,
-                sku=sku,
-                tags=tags,
-                zones=zones,
-                trusted_external_tenants=trusted_external_tenants,
-                optimized_autoscale=optimized_autoscale,
-                enable_disk_encryption=enable_disk_encryption,
-                enable_streaming_ingest=enable_streaming_ingest,
-                virtual_network_configuration=virtual_network_configuration,
-                key_vault_properties=key_vault_properties,
-                enable_purge=enable_purge,
-                enable_double_encryption=enable_double_encryption,
-                engine_type=engine_type,
-                type=type,
-                user_assigned_identities=user_assigned_identities,
+                parameters=parameters,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -290,7 +216,13 @@ class ClusterOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -308,30 +240,18 @@ class ClusterOperations(object):
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        tags=None,  # type: Optional[Dict[str, str]]
-        location=None,  # type: Optional[str]
-        sku=None,  # type: Optional["models.AzureSku"]
-        trusted_external_tenants=None,  # type: Optional[List["models.TrustedExternalTenant"]]
-        optimized_autoscale=None,  # type: Optional["models.OptimizedAutoscale"]
-        enable_disk_encryption=None,  # type: Optional[bool]
-        enable_streaming_ingest=False,  # type: Optional[bool]
-        virtual_network_configuration=None,  # type: Optional["models.VirtualNetworkConfiguration"]
-        key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
-        enable_purge=False,  # type: Optional[bool]
-        enable_double_encryption=False,  # type: Optional[bool]
-        engine_type=None,  # type: Optional[Union[str, "models.EngineType"]]
-        type=None,  # type: Optional[Union[str, "models.IdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        parameters,  # type: "models.ClusterUpdate"
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.Cluster"
         cls = kwargs.pop('cls', None)  # type: ClsType["models.Cluster"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        parameters = models.ClusterUpdate(tags=tags, location=location, sku=sku, trusted_external_tenants=trusted_external_tenants, optimized_autoscale=optimized_autoscale, enable_disk_encryption=enable_disk_encryption, enable_streaming_ingest=enable_streaming_ingest, virtual_network_configuration=virtual_network_configuration, key_vault_properties=key_vault_properties, enable_purge=enable_purge, enable_double_encryption=enable_double_encryption, engine_type=engine_type, type_identity_type=type, user_assigned_identities=user_assigned_identities)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._update_initial.metadata['url']  # type: ignore
@@ -349,13 +269,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(parameters, 'ClusterUpdate')
         body_content_kwargs['content'] = body_content
         request = self._client.patch(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -382,20 +301,7 @@ class ClusterOperations(object):
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        tags=None,  # type: Optional[Dict[str, str]]
-        location=None,  # type: Optional[str]
-        sku=None,  # type: Optional["models.AzureSku"]
-        trusted_external_tenants=None,  # type: Optional[List["models.TrustedExternalTenant"]]
-        optimized_autoscale=None,  # type: Optional["models.OptimizedAutoscale"]
-        enable_disk_encryption=None,  # type: Optional[bool]
-        enable_streaming_ingest=False,  # type: Optional[bool]
-        virtual_network_configuration=None,  # type: Optional["models.VirtualNetworkConfiguration"]
-        key_vault_properties=None,  # type: Optional["models.KeyVaultProperties"]
-        enable_purge=False,  # type: Optional[bool]
-        enable_double_encryption=False,  # type: Optional[bool]
-        engine_type=None,  # type: Optional[Union[str, "models.EngineType"]]
-        type=None,  # type: Optional[Union[str, "models.IdentityType"]]
-        user_assigned_identities=None,  # type: Optional[Dict[str, "models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties"]]
+        parameters,  # type: "models.ClusterUpdate"
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller["models.Cluster"]
@@ -405,41 +311,8 @@ class ClusterOperations(object):
         :type resource_group_name: str
         :param cluster_name: The name of the Kusto cluster.
         :type cluster_name: str
-        :param tags: Resource tags.
-        :type tags: dict[str, str]
-        :param location: Resource location.
-        :type location: str
-        :param sku: The SKU of the cluster.
-        :type sku: ~kusto_management_client.models.AzureSku
-        :param trusted_external_tenants: The cluster's external tenants.
-        :type trusted_external_tenants: list[~kusto_management_client.models.TrustedExternalTenant]
-        :param optimized_autoscale: Optimized auto scale definition.
-        :type optimized_autoscale: ~kusto_management_client.models.OptimizedAutoscale
-        :param enable_disk_encryption: A boolean value that indicates if the cluster's disks are
-         encrypted.
-        :type enable_disk_encryption: bool
-        :param enable_streaming_ingest: A boolean value that indicates if the streaming ingest is
-         enabled.
-        :type enable_streaming_ingest: bool
-        :param virtual_network_configuration: Virtual network definition.
-        :type virtual_network_configuration: ~kusto_management_client.models.VirtualNetworkConfiguration
-        :param key_vault_properties: KeyVault properties for the cluster encryption.
-        :type key_vault_properties: ~kusto_management_client.models.KeyVaultProperties
-        :param enable_purge: A boolean value that indicates if the purge operations are enabled.
-        :type enable_purge: bool
-        :param enable_double_encryption: A boolean value that indicates if double encryption is
-         enabled.
-        :type enable_double_encryption: bool
-        :param engine_type: The engine type.
-        :type engine_type: str or ~kusto_management_client.models.EngineType
-        :param type: The type of managed identity used. The type 'SystemAssigned, UserAssigned'
-         includes both an implicitly created identity and a set of user-assigned identities. The type
-         'None' will remove all identities.
-        :type type: str or ~kusto_management_client.models.IdentityType
-        :param user_assigned_identities: The list of user identities associated with the Kusto cluster.
-         The user identity dictionary key references will be ARM resource ids in the form:
-         '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-        :type user_assigned_identities: dict[str, ~kusto_management_client.models.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties]
+        :param parameters: The Kusto cluster parameters supplied to the Update operation.
+        :type parameters: ~kusto_management_client.models.ClusterUpdate
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -461,20 +334,7 @@ class ClusterOperations(object):
             raw_result = self._update_initial(
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
-                tags=tags,
-                location=location,
-                sku=sku,
-                trusted_external_tenants=trusted_external_tenants,
-                optimized_autoscale=optimized_autoscale,
-                enable_disk_encryption=enable_disk_encryption,
-                enable_streaming_ingest=enable_streaming_ingest,
-                virtual_network_configuration=virtual_network_configuration,
-                key_vault_properties=key_vault_properties,
-                enable_purge=enable_purge,
-                enable_double_encryption=enable_double_encryption,
-                engine_type=engine_type,
-                type=type,
-                user_assigned_identities=user_assigned_identities,
+                parameters=parameters,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -489,7 +349,13 @@ class ClusterOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -511,9 +377,12 @@ class ClusterOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore
@@ -530,6 +399,7 @@ class ClusterOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.delete(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -589,7 +459,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -611,9 +487,12 @@ class ClusterOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self._stop_initial.metadata['url']  # type: ignore
@@ -630,6 +509,7 @@ class ClusterOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.post(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -689,7 +569,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -711,9 +597,12 @@ class ClusterOperations(object):
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self._start_initial.metadata['url']  # type: ignore
@@ -730,6 +619,7 @@ class ClusterOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.post(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -789,7 +679,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -803,7 +699,7 @@ class ClusterOperations(object):
             return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
     begin_start.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/start'}  # type: ignore
 
-    def list_follower_database(
+    def list_follower_databases(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
@@ -823,18 +719,21 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.FollowerDatabaseListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
-                url = self.list_follower_database.metadata['url']  # type: ignore
+                url = self.list_follower_databases.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
@@ -874,27 +773,27 @@ class ClusterOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_follower_database.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases'}  # type: ignore
+    list_follower_databases.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases'}  # type: ignore
 
-    def _detach_follower_database_initial(
+    def _detach_follower_databases_initial(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        cluster_resource_id,  # type: str
-        attached_database_configuration_name,  # type: str
+        follower_database_to_remove,  # type: "models.FollowerDatabaseDefinition"
         **kwargs  # type: Any
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        follower_database_to_remove = models.FollowerDatabaseDefinition(cluster_resource_id=cluster_resource_id, attached_database_configuration_name=attached_database_configuration_name)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self._detach_follower_database_initial.metadata['url']  # type: ignore
+        url = self._detach_follower_databases_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
             'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
@@ -909,12 +808,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(follower_database_to_remove, 'FollowerDatabaseDefinition')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -925,14 +824,13 @@ class ClusterOperations(object):
         if cls:
             return cls(pipeline_response, None, {})
 
-    _detach_follower_database_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases'}  # type: ignore
+    _detach_follower_databases_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases'}  # type: ignore
 
-    def begin_detach_follower_database(
+    def begin_detach_follower_databases(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        cluster_resource_id,  # type: str
-        attached_database_configuration_name,  # type: str
+        follower_database_to_remove,  # type: "models.FollowerDatabaseDefinition"
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller[None]
@@ -942,12 +840,8 @@ class ClusterOperations(object):
         :type resource_group_name: str
         :param cluster_name: The name of the Kusto cluster.
         :type cluster_name: str
-        :param cluster_resource_id: Resource id of the cluster that follows a database owned by this
-         cluster.
-        :type cluster_resource_id: str
-        :param attached_database_configuration_name: Resource name of the attached database
-         configuration in the follower cluster.
-        :type attached_database_configuration_name: str
+        :param follower_database_to_remove: The follower databases properties to remove.
+        :type follower_database_to_remove: ~kusto_management_client.models.FollowerDatabaseDefinition
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -966,11 +860,10 @@ class ClusterOperations(object):
         )
         cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
         if cont_token is None:
-            raw_result = self._detach_follower_database_initial(
+            raw_result = self._detach_follower_databases_initial(
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
-                cluster_resource_id=cluster_resource_id,
-                attached_database_configuration_name=attached_database_configuration_name,
+                follower_database_to_remove=follower_database_to_remove,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -982,7 +875,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -994,7 +893,7 @@ class ClusterOperations(object):
             )
         else:
             return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_detach_follower_database.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases'}  # type: ignore
+    begin_detach_follower_databases.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases'}  # type: ignore
 
     def _diagnose_virtual_network_initial(
         self,
@@ -1004,9 +903,12 @@ class ClusterOperations(object):
     ):
         # type: (...) -> Optional["models.DiagnoseVirtualNetworkResult"]
         cls = kwargs.pop('cls', None)  # type: ClsType[Optional["models.DiagnoseVirtualNetworkResult"]]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self._diagnose_virtual_network_initial.metadata['url']  # type: ignore
@@ -1023,7 +925,7 @@ class ClusterOperations(object):
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.post(url, query_parameters, header_parameters)
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
@@ -1092,7 +994,13 @@ class ClusterOperations(object):
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'location'},  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, lro_options={'final-state-via': 'location'}, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -1122,14 +1030,17 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ClusterListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -1187,14 +1098,17 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ClusterListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -1238,7 +1152,7 @@ class ClusterOperations(object):
         )
     list.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters'}  # type: ignore
 
-    def list_sku(
+    def list_skus(
         self,
         **kwargs  # type: Any
     ):
@@ -1251,18 +1165,21 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.SkuDescriptionList"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
-                url = self.list_sku.metadata['url']  # type: ignore
+                url = self.list_skus.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                 }
@@ -1300,13 +1217,12 @@ class ClusterOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_sku.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/skus'}  # type: ignore
+    list_skus.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/skus'}  # type: ignore
 
     def check_name_availability(
         self,
         location,  # type: str
-        name,  # type: str
-        type,  # type: Union[str, "models.Type"]
+        cluster_name,  # type: "models.ClusterCheckNameRequest"
         **kwargs  # type: Any
     ):
         # type: (...) -> "models.CheckNameResult"
@@ -1314,22 +1230,21 @@ class ClusterOperations(object):
 
         :param location: Azure location.
         :type location: str
-        :param name: Cluster name.
-        :type name: str
-        :param type: The type of resource, Microsoft.Kusto/clusters.
-        :type type: str or ~kusto_management_client.models.Type
+        :param cluster_name: The name of the cluster.
+        :type cluster_name: ~kusto_management_client.models.ClusterCheckNameRequest
         :keyword callable cls: A custom type or function that will be passed the direct response
         :return: CheckNameResult, or the result of cls(response)
         :rtype: ~kusto_management_client.models.CheckNameResult
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.CheckNameResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        cluster_name = models.ClusterCheckNameRequest(name=name, type=type)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self.check_name_availability.metadata['url']  # type: ignore
@@ -1346,13 +1261,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(cluster_name, 'ClusterCheckNameRequest')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -1368,7 +1282,7 @@ class ClusterOperations(object):
         return deserialized
     check_name_availability.metadata = {'url': '/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/checkNameAvailability'}  # type: ignore
 
-    def list_sku_by_resource(
+    def list_skus_by_resource(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
@@ -1387,18 +1301,21 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.ListResourceSkusResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
-                url = self.list_sku_by_resource.metadata['url']  # type: ignore
+                url = self.list_skus_by_resource.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
                     'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
@@ -1438,9 +1355,9 @@ class ClusterOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_sku_by_resource.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus'}  # type: ignore
+    list_skus_by_resource.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus'}  # type: ignore
 
-    def list_language_extension(
+    def list_language_extensions(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
@@ -1459,18 +1376,21 @@ class ClusterOperations(object):
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.LanguageExtensionsList"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
-                url = self.list_language_extension.metadata['url']  # type: ignore
+                url = self.list_language_extensions.metadata['url']  # type: ignore
                 path_format_arguments = {
                     'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
                     'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -1510,26 +1430,27 @@ class ClusterOperations(object):
         return ItemPaged(
             get_next, extract_data
         )
-    list_language_extension.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions'}  # type: ignore
+    list_language_extensions.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions'}  # type: ignore
 
-    def _add_language_extension_initial(
+    def _add_language_extensions_initial(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        value=None,  # type: Optional[List["models.LanguageExtension"]]
+        language_extensions_to_add,  # type: "models.LanguageExtensionsList"
         **kwargs  # type: Any
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        language_extensions_to_add = models.LanguageExtensionsList(value=value)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self._add_language_extension_initial.metadata['url']  # type: ignore
+        url = self._add_language_extensions_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -1544,12 +1465,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(language_extensions_to_add, 'LanguageExtensionsList')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -1560,13 +1481,13 @@ class ClusterOperations(object):
         if cls:
             return cls(pipeline_response, None, {})
 
-    _add_language_extension_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions'}  # type: ignore
+    _add_language_extensions_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions'}  # type: ignore
 
-    def begin_add_language_extension(
+    def begin_add_language_extensions(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        value=None,  # type: Optional[List["models.LanguageExtension"]]
+        language_extensions_to_add,  # type: "models.LanguageExtensionsList"
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller[None]
@@ -1576,8 +1497,8 @@ class ClusterOperations(object):
         :type resource_group_name: str
         :param cluster_name: The name of the Kusto cluster.
         :type cluster_name: str
-        :param value: The list of language extensions.
-        :type value: list[~kusto_management_client.models.LanguageExtension]
+        :param language_extensions_to_add: The language extensions to add.
+        :type language_extensions_to_add: ~kusto_management_client.models.LanguageExtensionsList
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -1596,10 +1517,10 @@ class ClusterOperations(object):
         )
         cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
         if cont_token is None:
-            raw_result = self._add_language_extension_initial(
+            raw_result = self._add_language_extensions_initial(
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
-                value=value,
+                language_extensions_to_add=language_extensions_to_add,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -1611,7 +1532,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -1623,26 +1550,27 @@ class ClusterOperations(object):
             )
         else:
             return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_add_language_extension.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions'}  # type: ignore
+    begin_add_language_extensions.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions'}  # type: ignore
 
-    def _remove_language_extension_initial(
+    def _remove_language_extensions_initial(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        value=None,  # type: Optional[List["models.LanguageExtension"]]
+        language_extensions_to_remove,  # type: "models.LanguageExtensionsList"
         **kwargs  # type: Any
     ):
         # type: (...) -> None
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        language_extensions_to_remove = models.LanguageExtensionsList(value=value)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
-        url = self._remove_language_extension_initial.metadata['url']  # type: ignore
+        url = self._remove_language_extensions_initial.metadata['url']  # type: ignore
         path_format_arguments = {
             'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
             'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
@@ -1657,12 +1585,12 @@ class ClusterOperations(object):
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(language_extensions_to_remove, 'LanguageExtensionsList')
         body_content_kwargs['content'] = body_content
         request = self._client.post(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -1673,13 +1601,13 @@ class ClusterOperations(object):
         if cls:
             return cls(pipeline_response, None, {})
 
-    _remove_language_extension_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions'}  # type: ignore
+    _remove_language_extensions_initial.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions'}  # type: ignore
 
-    def begin_remove_language_extension(
+    def begin_remove_language_extensions(
         self,
         resource_group_name,  # type: str
         cluster_name,  # type: str
-        value=None,  # type: Optional[List["models.LanguageExtension"]]
+        language_extensions_to_remove,  # type: "models.LanguageExtensionsList"
         **kwargs  # type: Any
     ):
         # type: (...) -> LROPoller[None]
@@ -1689,8 +1617,8 @@ class ClusterOperations(object):
         :type resource_group_name: str
         :param cluster_name: The name of the Kusto cluster.
         :type cluster_name: str
-        :param value: The list of language extensions.
-        :type value: list[~kusto_management_client.models.LanguageExtension]
+        :param language_extensions_to_remove: The language extensions to remove.
+        :type language_extensions_to_remove: ~kusto_management_client.models.LanguageExtensionsList
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -1709,10 +1637,10 @@ class ClusterOperations(object):
         )
         cont_token = kwargs.pop('continuation_token', None)  # type: Optional[str]
         if cont_token is None:
-            raw_result = self._remove_language_extension_initial(
+            raw_result = self._remove_language_extensions_initial(
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
-                value=value,
+                language_extensions_to_remove=language_extensions_to_remove,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -1724,7 +1652,13 @@ class ClusterOperations(object):
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = ARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+        }
+
+        if polling is True: polling_method = ARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = NoPolling()
         else: polling_method = polling
         if cont_token:
@@ -1736,4 +1670,4 @@ class ClusterOperations(object):
             )
         else:
             return LROPoller(self._client, raw_result, get_long_running_output, polling_method)
-    begin_remove_language_extension.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions'}  # type: ignore
+    begin_remove_language_extensions.metadata = {'url': '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions'}  # type: ignore

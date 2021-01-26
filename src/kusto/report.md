@@ -206,7 +206,7 @@ az kusto cluster show --name "kustoclusterrptest4" --resource-group "kustorptest
 
 ##### <a name="ExamplesClustersCreateOrUpdate#Create">Example</a>
 ```
-az kusto cluster create --name "kustoclusterrptest4" --identity-type "SystemAssigned" --location "westus" \
+az kusto cluster create --name "kustoclusterrptest4" --type "SystemAssigned" --location "westus" \
 --enable-double-encryption false --enable-purge true --enable-streaming-ingest true --sku name="Standard_L8s" \
 capacity=2 tier="Standard" --resource-group "kustorptest"
 ```
@@ -228,15 +228,15 @@ capacity=2 tier="Standard" --resource-group "kustorptest"
 |**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|enablePurge|
 |**--enable-double-encryption**|boolean|A boolean value that indicates if double encryption is enabled.|enable_double_encryption|enableDoubleEncryption|
 |**--engine-type**|choice|The engine type|engine_type|engineType|
-|**--identity-type**|choice|The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove all identities.|type|type|
-|**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|userAssignedIdentities|
+|**--type**|choice|The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove all identities.|type|type|
+|**--user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|userAssignedIdentities|
 
 #### <a name="ClustersUpdate">Command `az kusto cluster update`</a>
 
 ##### <a name="ExamplesClustersUpdate">Example</a>
 ```
-az kusto cluster update --name "kustoclusterrptest4" --identity-type "SystemAssigned" --location "westus" \
---enable-purge true --enable-streaming-ingest true --engine-type "V2" --key-vault-properties key-name="keyName" \
+az kusto cluster update --name "kustoclusterrptest4" --type "SystemAssigned" --location "westus" --enable-purge true \
+--enable-streaming-ingest true --engine-type "V2" --key-vault-properties key-name="keyName" \
 key-vault-uri="https://dummy.keyvault.com" key-version="keyVersion" --resource-group "kustorptest"
 ```
 ##### <a name="ParametersClustersUpdate">Parameters</a> 
@@ -256,8 +256,8 @@ key-vault-uri="https://dummy.keyvault.com" key-version="keyVersion" --resource-g
 |**--enable-purge**|boolean|A boolean value that indicates if the purge operations are enabled.|enable_purge|enablePurge|
 |**--enable-double-encryption**|boolean|A boolean value that indicates if double encryption is enabled.|enable_double_encryption|enableDoubleEncryption|
 |**--engine-type**|choice|The engine type|engine_type|engineType|
-|**--identity-type**|choice|The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove all identities.|type|type|
-|**--identity-user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|userAssignedIdentities|
+|**--type**|choice|The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove all identities.|type|type|
+|**--user-assigned-identities**|dictionary|The list of user identities associated with the Kusto cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.|user_assigned_identities|userAssignedIdentities|
 
 #### <a name="ClustersDelete">Command `az kusto cluster delete`</a>
 

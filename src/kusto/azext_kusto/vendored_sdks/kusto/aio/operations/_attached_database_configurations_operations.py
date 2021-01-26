@@ -9,7 +9,7 @@ from typing import Any, AsyncIterable, Callable, Dict, Generic, Optional, TypeVa
 import warnings
 
 from azure.core.async_paging import AsyncItemPaged, AsyncList
-from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
+from azure.core.exceptions import ClientAuthenticationError, HttpResponseError, ResourceExistsError, ResourceNotFoundError, map_error
 from azure.core.pipeline import PipelineResponse
 from azure.core.pipeline.transport import AsyncHttpResponse, HttpRequest
 from azure.core.polling import AsyncLROPoller, AsyncNoPolling, AsyncPollingMethod
@@ -21,8 +21,8 @@ from ... import models
 T = TypeVar('T')
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, Dict[str, Any]], Any]]
 
-class AttachedDatabaseConfigurationOperations:
-    """AttachedDatabaseConfigurationOperations async operations.
+class AttachedDatabaseConfigurationsOperations:
+    """AttachedDatabaseConfigurationsOperations async operations.
 
     You should not instantiate this class directly. Instead, you should create a Client instance that
     instantiates it for you and attaches it as an attribute.
@@ -61,14 +61,17 @@ class AttachedDatabaseConfigurationOperations:
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AttachedDatabaseConfigurationListResult"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         def prepare_request(next_link=None):
             # Construct headers
             header_parameters = {}  # type: Dict[str, Any]
-            header_parameters['Accept'] = 'application/json'
+            header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
             if not next_link:
                 # Construct URL
@@ -135,9 +138,12 @@ class AttachedDatabaseConfigurationOperations:
         :raises: ~azure.core.exceptions.HttpResponseError
         """
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AttachedDatabaseConfiguration"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self.get.metadata['url']  # type: ignore
@@ -155,7 +161,7 @@ class AttachedDatabaseConfigurationOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.get(url, query_parameters, header_parameters)
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
@@ -178,19 +184,17 @@ class AttachedDatabaseConfigurationOperations:
         resource_group_name: str,
         cluster_name: str,
         attached_database_configuration_name: str,
-        location: Optional[str] = None,
-        database_name: Optional[str] = None,
-        cluster_resource_id: Optional[str] = None,
-        default_principals_modification_kind: Optional[Union[str, "models.DefaultPrincipalsModificationKind"]] = None,
+        parameters: "models.AttachedDatabaseConfiguration",
         **kwargs
     ) -> "models.AttachedDatabaseConfiguration":
         cls = kwargs.pop('cls', None)  # type: ClsType["models.AttachedDatabaseConfiguration"]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
-
-        parameters = models.AttachedDatabaseConfiguration(location=location, database_name=database_name, cluster_resource_id=cluster_resource_id, default_principals_modification_kind=default_principals_modification_kind)
         api_version = "2020-09-18"
         content_type = kwargs.pop("content_type", "application/json")
+        accept = "application/json"
 
         # Construct URL
         url = self._create_or_update_initial.metadata['url']  # type: ignore
@@ -209,13 +213,12 @@ class AttachedDatabaseConfigurationOperations:
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
         header_parameters['Content-Type'] = self._serialize.header("content_type", content_type, 'str')
-        header_parameters['Accept'] = 'application/json'
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         body_content_kwargs = {}  # type: Dict[str, Any]
         body_content = self._serialize.body(parameters, 'AttachedDatabaseConfiguration')
         body_content_kwargs['content'] = body_content
         request = self._client.put(url, query_parameters, header_parameters, **body_content_kwargs)
-
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
         response = pipeline_response.http_response
 
@@ -243,10 +246,7 @@ class AttachedDatabaseConfigurationOperations:
         resource_group_name: str,
         cluster_name: str,
         attached_database_configuration_name: str,
-        location: Optional[str] = None,
-        database_name: Optional[str] = None,
-        cluster_resource_id: Optional[str] = None,
-        default_principals_modification_kind: Optional[Union[str, "models.DefaultPrincipalsModificationKind"]] = None,
+        parameters: "models.AttachedDatabaseConfiguration",
         **kwargs
     ) -> AsyncLROPoller["models.AttachedDatabaseConfiguration"]:
         """Creates or updates an attached database configuration.
@@ -257,16 +257,8 @@ class AttachedDatabaseConfigurationOperations:
         :type cluster_name: str
         :param attached_database_configuration_name: The name of the attached database configuration.
         :type attached_database_configuration_name: str
-        :param location: Resource location.
-        :type location: str
-        :param database_name: The name of the database which you would like to attach, use * if you
-         want to follow all current and future databases.
-        :type database_name: str
-        :param cluster_resource_id: The resource id of the cluster where the databases you would like
-         to attach reside.
-        :type cluster_resource_id: str
-        :param default_principals_modification_kind: The default principals modification kind.
-        :type default_principals_modification_kind: str or ~kusto_management_client.models.DefaultPrincipalsModificationKind
+        :param parameters: The database parameters supplied to the CreateOrUpdate operation.
+        :type parameters: ~kusto_management_client.models.AttachedDatabaseConfiguration
         :keyword callable cls: A custom type or function that will be passed the direct response
         :keyword str continuation_token: A continuation token to restart a poller from a saved state.
         :keyword polling: True for ARMPolling, False for no polling, or a
@@ -289,10 +281,7 @@ class AttachedDatabaseConfigurationOperations:
                 resource_group_name=resource_group_name,
                 cluster_name=cluster_name,
                 attached_database_configuration_name=attached_database_configuration_name,
-                location=location,
-                database_name=database_name,
-                cluster_resource_id=cluster_resource_id,
-                default_principals_modification_kind=default_principals_modification_kind,
+                parameters=parameters,
                 cls=lambda x,y,z: x,
                 **kwargs
             )
@@ -307,7 +296,14 @@ class AttachedDatabaseConfigurationOperations:
                 return cls(pipeline_response, deserialized, {})
             return deserialized
 
-        if polling is True: polling_method = AsyncARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'attachedDatabaseConfigurationName': self._serialize.url("attached_database_configuration_name", attached_database_configuration_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = AsyncARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
         else: polling_method = polling
         if cont_token:
@@ -329,9 +325,12 @@ class AttachedDatabaseConfigurationOperations:
         **kwargs
     ) -> None:
         cls = kwargs.pop('cls', None)  # type: ClsType[None]
-        error_map = {404: ResourceNotFoundError, 409: ResourceExistsError}
+        error_map = {
+            401: ClientAuthenticationError, 404: ResourceNotFoundError, 409: ResourceExistsError
+        }
         error_map.update(kwargs.pop('error_map', {}))
         api_version = "2020-09-18"
+        accept = "application/json"
 
         # Construct URL
         url = self._delete_initial.metadata['url']  # type: ignore
@@ -349,6 +348,7 @@ class AttachedDatabaseConfigurationOperations:
 
         # Construct headers
         header_parameters = {}  # type: Dict[str, Any]
+        header_parameters['Accept'] = self._serialize.header("accept", accept, 'str')
 
         request = self._client.delete(url, query_parameters, header_parameters)
         pipeline_response = await self._client._pipeline.run(request, stream=False, **kwargs)
@@ -411,7 +411,14 @@ class AttachedDatabaseConfigurationOperations:
             if cls:
                 return cls(pipeline_response, None, {})
 
-        if polling is True: polling_method = AsyncARMPolling(lro_delay,  **kwargs)
+        path_format_arguments = {
+            'resourceGroupName': self._serialize.url("resource_group_name", resource_group_name, 'str'),
+            'clusterName': self._serialize.url("cluster_name", cluster_name, 'str'),
+            'attachedDatabaseConfigurationName': self._serialize.url("attached_database_configuration_name", attached_database_configuration_name, 'str'),
+            'subscriptionId': self._serialize.url("self._config.subscription_id", self._config.subscription_id, 'str'),
+        }
+
+        if polling is True: polling_method = AsyncARMPolling(lro_delay, path_format_arguments=path_format_arguments,  **kwargs)
         elif polling is False: polling_method = AsyncNoPolling()
         else: polling_method = polling
         if cont_token:
