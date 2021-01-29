@@ -6,10 +6,14 @@
 # Changes may cause incorrect behavior and will be lost if the code is regenerated.
 # --------------------------------------------------------------------------
 
-from ._operation_operations import OperationOperations
-from ._dashboard_operations import DashboardOperations
+from ._operations import Operations
+from ._dashboards_operations import DashboardsOperations
+from ._tenant_configurations_operations import TenantConfigurationsOperations
+from ._list_tenant_configuration_violations_operations import ListTenantConfigurationViolationsOperations
 
 __all__ = [
-    'OperationOperations',
-    'DashboardOperations',
+    'Operations',
+    'DashboardsOperations',
+    'TenantConfigurationsOperations',
+    'ListTenantConfigurationViolationsOperations',
 ]
